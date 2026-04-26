@@ -1,0 +1,197 @@
+{%- comment -%}
+  Seym Attributes — 4-column luxury craft strip.
+  Communicates the key differentiators of handcrafted glass in a minimal,
+  editorial grid that sits between the story intro and the collection reveal.
+{%- endcomment -%}
+
+<style>
+  .seym-attrs {
+    padding: 8rem 5rem;
+    border-top: 1px solid rgba(239, 236, 236, 0.07);
+    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .seym-attrs::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 300%;
+    background: radial-gradient(ellipse at center, rgba(201, 165, 120, 0.04), transparent 55%);
+    pointer-events: none;
+  }
+
+  .seym-attrs__inner {
+    max-width: 144rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+
+  .seym-attr {
+    padding: 4.8rem 3.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: background 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .seym-attr::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 18%;
+    bottom: 18%;
+    width: 1px;
+    background: rgba(239, 236, 236, 0.07);
+  }
+  .seym-attr:last-child::after { display: none; }
+  .seym-attr:hover {
+    background: rgba(27, 54, 93, 0.18);
+  }
+
+  .seym-attr__glyph {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 2.8rem;
+    opacity: 0.7;
+    color: #c9a578;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .seym-attr:hover .seym-attr__glyph {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+  .seym-attr__glyph svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 0.8;
+  }
+
+  .seym-attr__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #efecec;
+    margin: 0 0 1.2rem;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    transition: opacity 0.4s ease;
+  }
+  .seym-attr:hover .seym-attr__title { opacity: 0.9; }
+
+  .seym-attr__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(239, 236, 236, 0.45);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 989px) {
+    .seym-attrs { padding: 6rem 2.4rem; }
+    .seym-attrs__inner { grid-template-columns: repeat(2, 1fr); }
+    .seym-attr:nth-child(2)::after { display: none; }
+    .seym-attr:nth-child(1),
+    .seym-attr:nth-child(2) {
+      border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    }
+  }
+  @media (max-width: 600px) {
+    .seym-attrs { padding: 5rem 0; }
+    .seym-attrs__inner { grid-template-columns: 1fr; }
+    .seym-attr { padding: 3.2rem 2.4rem; }
+    .seym-attr::after { display: none; }
+    .seym-attr { border-bottom: 1px solid rgba(239, 236, 236, 0.07); }
+    .seym-attr:last-child { border-bottom: none; }
+  }
+</style>
+
+<div class="seym-attrs">
+  <div class="seym-attrs__inner">
+
+    <div class="seym-attr scroll-trigger animate--slide-in">
+      <div class="seym-attr__glyph">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="14"/>
+          <ellipse cx="20" cy="20" rx="8" ry="11"/>
+          <ellipse cx="15" cy="13" rx="3" ry="2" style="fill: rgba(239,236,236,0.3); stroke: none"/>
+        </svg>
+      </div>
+      <p class="seym-attr__title">{{ section.settings.attr1_title | default: 'Mouth-Blown' }}</p>
+      <p class="seym-attr__desc">{{ section.settings.attr1_desc | default: 'By master glassblowers' }}</p>
+    </div>
+
+    <div class="seym-attr scroll-trigger animate--slide-in" style="--animation-order: 1">
+      <div class="seym-attr__glyph">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6 L34 20 L20 34 L6 20 Z"/>
+          <path d="M20 13 L27 20 L20 27 L13 20 Z"/>
+        </svg>
+      </div>
+      <p class="seym-attr__title">{{ section.settings.attr2_title | default: 'Never Repeated' }}</p>
+      <p class="seym-attr__desc">{{ section.settings.attr2_desc | default: 'Every piece is singular' }}</p>
+    </div>
+
+    <div class="seym-attr scroll-trigger animate--slide-in" style="--animation-order: 2">
+      <div class="seym-attr__glyph">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 20 C8 14 12 10 20 10 C28 10 32 14 32 20 C32 26 28 30 20 30 C12 30 8 26 8 20 Z"/>
+          <path d="M6 20 Q13 10 20 20 Q27 30 34 20"/>
+          <circle cx="20" cy="20" r="2" style="fill: #c9a578; stroke: none"/>
+        </svg>
+      </div>
+      <p class="seym-attr__title">{{ section.settings.attr3_title | default: 'Mythology-Rooted' }}</p>
+      <p class="seym-attr__desc">{{ section.settings.attr3_desc | default: 'Story in every curve' }}</p>
+    </div>
+
+    <div class="seym-attr scroll-trigger animate--slide-in" style="--animation-order: 3">
+      <div class="seym-attr__glyph">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 8 L20 32"/>
+          <path d="M8 20 L32 20"/>
+          <circle cx="20" cy="20" r="5"/>
+          <path d="M20 8 L24 16 L20 14 L16 16 Z"/>
+        </svg>
+      </div>
+      <p class="seym-attr__title">{{ section.settings.attr4_title | default: 'Istanbul Atelier' }}</p>
+      <p class="seym-attr__desc">{{ section.settings.attr4_desc | default: 'Çengelköy, est. 2022' }}</p>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Seym Attributes",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "attr1_title", "label": "Attribute 1 title", "default": "Mouth-Blown" },
+    { "type": "text", "id": "attr1_desc",  "label": "Attribute 1 description", "default": "By master glassblowers" },
+    { "type": "text", "id": "attr2_title", "label": "Attribute 2 title", "default": "Never Repeated" },
+    { "type": "text", "id": "attr2_desc",  "label": "Attribute 2 description", "default": "Every piece is singular" },
+    { "type": "text", "id": "attr3_title", "label": "Attribute 3 title", "default": "Mythology-Rooted" },
+    { "type": "text", "id": "attr3_desc",  "label": "Attribute 3 description", "default": "Story in every curve" },
+    { "type": "text", "id": "attr4_title", "label": "Attribute 4 title", "default": "Istanbul Atelier" },
+    { "type": "text", "id": "attr4_desc",  "label": "Attribute 4 description", "default": "Çengelköy, est. 2022" }
+  ],
+  "presets": [
+    { "name": "Seym Attributes" }
+  ]
+}
+{% endschema %}

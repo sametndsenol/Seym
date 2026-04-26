@@ -1610,3 +1610,175 @@ deferred-media .deferred-media__poster-button svg { fill: currentColor; width: 2
   font-size: 1rem !important;
 }
 
+/* ============================================================
+   28. LUXURY POLISH — additional refinements
+   ============================================================ */
+
+/* Lumen (gold) accent — subtle pulse shimmer on interactive elements */
+@keyframes seym-lumen-pulse {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; }
+}
+.seym-attr__glyph { animation: seym-lumen-pulse 3.5s ease-in-out infinite; }
+
+/* Product card — a whisper-thin gold border appears on hover,
+   giving the card a "framed artifact" feel */
+.card-wrapper:hover .card__media {
+  box-shadow: inset 0 0 0 1px rgba(201, 165, 120, 0.18) !important;
+}
+
+/* Collection card image — vignette frame on hover */
+.card--collection:hover .card__media {
+  box-shadow: inset 0 0 0 1px rgba(201, 165, 120, 0.18) !important;
+}
+
+/* Price — slightly larger on product page, reinforcing premium */
+.product .price .price-item--regular {
+  font-size: 1.6rem !important;
+  letter-spacing: 0.22em !important;
+}
+
+/* Product page — "handcrafted" note above the add-to-cart */
+.product-form__buttons {
+  border-top: 1px solid var(--seym-line-soft);
+  padding-top: 2.4rem;
+  margin-top: 2.4rem;
+}
+
+/* Gold accent on the submit button dot-border on hover */
+.product-form__submit:hover {
+  border-color: var(--seym-lumen) !important;
+}
+
+/* Rich-text sections — wider breathing room */
+.rich-text__wrapper.page-width {
+  max-width: 96rem !important;
+}
+
+/* Manifesto blockquote — editorial pull-quote style with left gold bar */
+.rich-text .rte blockquote {
+  border-left: 2px solid var(--seym-lumen) !important;
+  padding-left: 2.4rem !important;
+  margin-left: 0 !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-size: 2rem !important;
+  color: var(--seym-cream-soft) !important;
+}
+
+/* Collection page hero — larger editorial heading */
+.main-collection-banner .collection-hero__title,
+.collection-hero__title {
+  font-size: clamp(4rem, 7vw, 9rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Section padding — more generous vertical rhythm for luxury feel */
+.shopify-section-group-header-group + main > .shopify-section:first-child {
+  padding-top: 0;
+}
+
+/* Announcement bar — gold accent for key words */
+.seym-utility strong {
+  color: var(--seym-lumen);
+  font-weight: 400;
+}
+
+/* Predictive search result — luxury styling */
+.predictive-search__result-group-heading {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3em !important;
+  font-size: 0.95rem !important;
+  color: var(--seym-cream-dim) !important;
+}
+.predictive-search .price {
+  font-size: 1.1rem !important;
+  letter-spacing: 0.2em !important;
+}
+
+/* Related products — match the main grid gap */
+.related-products .product-grid {
+  column-gap: 3.2rem !important;
+  row-gap: 8rem !important;
+}
+
+/* Cart page — luxury table-like layout */
+.cart-items .cart-item {
+  border-top: 1px solid var(--seym-line-soft) !important;
+}
+.cart-item__name a {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-size: 1.9rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Cart totals — prominent luxury typography */
+.totals__total-value,
+.totals__subtotal-value {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream) !important;
+}
+
+/* Quantity input — borderless refinement */
+.cart-item .quantity {
+  border: 1px solid var(--seym-line-soft) !important;
+}
+
+/* Scroll-reveal for our custom sections */
+.seym-attrs,
+.seym-craft {
+  will-change: opacity, transform;
+}
+
+/* Featured collection section — more breathing room */
+.featured-collection .collection {
+  margin-top: 0 !important;
+}
+
+/* Collage sections — more premium */
+.collage-card--half,
+.collage-card--third {
+  background: var(--seym-void-soft) !important;
+}
+
+/* Search results page — clean editorial */
+.main-search .section-header { margin-bottom: 4rem; }
+
+/* Remove any lingering box shadows that contradict the flat aesthetic */
+.card--standard.card--media,
+.card--card.card--media {
+  box-shadow: none !important;
+}
+
+/* ---- 29. LUMEN GOLD LINK TREATMENT ---- */
+/* Any explicit gold-class can be used in custom liquid or RTE */
+.seym-gold {
+  color: var(--seym-lumen) !important;
+}
+.seym-gold-line {
+  display: block;
+  width: 5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--seym-lumen), transparent);
+  opacity: 0.65;
+  margin: 3.2rem auto;
+}
+
+/* ---- 30. REFINED MOBILE PRODUCT FORM ---- */
+@media (max-width: 749px) {
+  .product-form__submit {
+    font-size: 1rem !important;
+    letter-spacing: 0.28em !important;
+  }
+  .product__title h1 {
+    font-size: clamp(3rem, 9vw, 5rem) !important;
+  }
+}
+
