@@ -1,1 +1,217 @@
-{"sections":{"main":{"type":"main-product","blocks":{"text":{"type":"text","settings":{"text":"","text_style":"body"}},"title":{"type":"title","settings":{}},"price":{"type":"price","settings":{}},"quantity_selector":{"type":"quantity_selector","disabled":true,"settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{"show_dynamic_checkout":false,"show_gift_card_recipient":true}},"text_E9GDxj":{"type":"text","settings":{"text":"","text_style":"body"}},"description":{"type":"description","disabled":true,"settings":{}},"essential_trust_badges_app_block_B7r3EP":{"type":"shopify:\/\/apps\/essential-trust-badges\/blocks\/app-block\/0ff65b25-07e1-408e-950f-f54dd3d1751b","settings":{"banner_display":"single","banner_id":"5aa0fbef-047f-4b68-a0c1-2a9427fed4f9"}},"share":{"type":"share","settings":{"share_label":"Share"}},"icon_with_text_8ehaPN":{"type":"icon-with-text","disabled":true,"settings":{"layout":"horizontal","icon_1":"heart","heading_1":"Heading","icon_2":"return","heading_2":"Heading","icon_3":"truck","heading_3":"Heading"}},"rating_Refck3":{"type":"rating","disabled":true,"settings":{}},"complementary_CGjTJ7":{"type":"complementary","disabled":true,"settings":{"block_heading":"Pairs well with","make_collapsible_row":false,"icon":"price_tag","product_list_limit":10,"products_per_page":3,"pagination_style":"counter","image_ratio":"square","enable_quick_add":false}},"collapsible_tab_AywaAj":{"type":"collapsible_tab","settings":{"heading":"Dimensions","icon":"none","content":"<p>{{ product.metafields.custom.dimensions.value }}<\/p>","page":""}},"collapsible_tab_V4DUnP":{"type":"collapsible_tab","settings":{"heading":"Product Info","icon":"none","content":"<p>{{ product.metafields.custom.urunbilgisi | metafield_tag }}<\/p>","page":""}},"collapsible_tab_VFjFXp":{"type":"collapsible_tab","settings":{"heading":"Return Policy","icon":"none","content":"<p>For returns and exchanges, the exchange period is 14 days. For returns, please contact us by sending an email to <a>info@seym.com.tr<\/a>.<\/p><p>Since the products are made to order, we cannot accept exchanges. No cancellations will be allowed once your order has been placed. If you encounter a problem after receiving your new product, please contact us immediately via email; We are always here to solve the problem.<\/p>","page":""}},"icon_with_text_8CMqzb":{"type":"icon-with-text","disabled":true,"settings":{"layout":"horizontal","icon_1":"heart","heading_1":"Heading","icon_2":"return","heading_2":"Heading","icon_3":"truck","heading_3":"Heading"}}},"block_order":["text","title","price","quantity_selector","buy_buttons","text_E9GDxj","description","essential_trust_badges_app_block_B7r3EP","share","icon_with_text_8ehaPN","rating_Refck3","complementary_CGjTJ7","collapsible_tab_AywaAj","collapsible_tab_V4DUnP","collapsible_tab_VFjFXp","icon_with_text_8CMqzb"],"settings":{"enable_sticky_info":false,"color_scheme":"background-1","media_size":"small","constrain_to_viewport":true,"media_fit":"contain","gallery_layout":"stacked","media_position":"left","image_zoom":"lightbox","mobile_thumbnails":"show","hide_variants":false,"enable_video_looping":false,"padding_top":36,"padding_bottom":44}},"related-products":{"type":"related-products","disabled":true,"settings":{"heading":"You may also like","heading_size":"h2","products_to_show":4,"columns_desktop":4,"color_scheme":"background-1","image_ratio":"square","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"columns_mobile":"2","padding_top":36,"padding_bottom":68}},"rich_text_rWCm4R":{"type":"rich-text","blocks":{"heading_fQXYXp":{"type":"heading","settings":{"heading":"{{ product.title }}","heading_size":"h1"}},"text_tQb3dk":{"type":"text","settings":{"text":"<p>Yansıtıcı yüzeyi ile Maris, sizlere denizlerin güçlü ve soğuk güzelliğini anlatıyor. Zarif ve modern tasarımıyla, yaşam alanlarınıza suyun şeffaflığını ve dinginliğini getiriyor.<\/p>"}},"button_e74FMX":{"type":"button","disabled":true,"settings":{"button_label":"Button label","button_link":"","button_style_secondary":false,"button_label_2":"","button_link_2":"","button_style_secondary_2":false}}},"block_order":["heading_fQXYXp","text_tQb3dk","button_e74FMX"],"disabled":true,"settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"","full_width":true,"padding_top":40,"padding_bottom":52}},"collage_nnPQ7z":{"type":"collage","blocks":{"image_nxhftD":{"type":"image","settings":{}},"product_F68qcJ":{"type":"product","settings":{"product":"","second_image":false}},"collection_cXLXaA":{"type":"collection","settings":{"collection":""}}},"block_order":["image_nxhftD","product_F68qcJ","collection_cXLXaA"],"disabled":true,"settings":{"heading":"Multimedia collage","heading_size":"h1","desktop_layout":"left","mobile_layout":"column","card_styles":"product-card-wrapper","color_scheme":"","padding_top":36,"padding_bottom":36}},"featured_collection_yNCmzQ":{"type":"featured-collection","settings":{"title":"{{ section.settings.collection.title }}","heading_size":"h2","description":"<p>{{ section.settings.collection.metafields.custom.koleksiyonaciklamasi | metafield_tag }}<\/p>","show_description":false,"description_style":"body","collection":"{{ product.metafields.custom.koleksiyon.value }}","products_to_show":25,"columns_desktop":5,"full_width":false,"show_view_all":false,"view_all_style":"solid","enable_desktop_slider":true,"color_scheme":"","image_ratio":"adapt","image_shape":"arch","show_secondary_image":false,"show_vendor":false,"show_rating":false,"enable_quick_add":false,"columns_mobile":"2","swipe_on_mobile":true,"padding_top":0,"padding_bottom":36}}},"order":["main","related-products","rich_text_rWCm4R","collage_nnPQ7z","featured_collection_yNCmzQ"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "eyebrow": {
+          "type": "text",
+          "settings": {
+            "text": "Mouth-blown · Istanbul · Limited Edition",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "collapsible_tab_provenance": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Provenance",
+            "icon": "none",
+            "content": "<p>Mouth-blown by master hands in our Çengelköy atelier, Istanbul. Each piece is finished one at a time and bears its maker's quiet signature. Universal glass-art tradition reimagined for contemporary spaces.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_material": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Material & Care",
+            "icon": "none",
+            "content": "<p>100% Czech crystal glass. Hand-wash only with warm water and mild soap. Dry with a soft cloth to preserve clarity. Avoid abrupt temperature changes. Decorative use; not dishwasher-safe.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_dimensions": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Dimensions",
+            "icon": "none",
+            "content": "<p>{{ product.metafields.custom.dimensions.value }}</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_shipping": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "icon": "none",
+            "content": "<p>Complimentary insured shipping within Türkiye. International shipping arranged personally — please contact info@seym.com.tr. Each piece is made to order; cancellations and exchanges are not accepted once production has begun. We are committed to resolving any quality concerns; please write to us within 14 days of receipt.</p>",
+            "page": ""
+          }
+        },
+        "essential_trust_badges_app_block_B7r3EP": {
+          "type": "shopify://apps/essential-trust-badges/blocks/app-block/0ff65b25-07e1-408e-950f-f54dd3d1751b",
+          "disabled": true,
+          "settings": {
+            "banner_display": "single",
+            "banner_id": "5aa0fbef-047f-4b68-a0c1-2a9427fed4f9"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share",
+        "collapsible_tab_provenance",
+        "collapsible_tab_material",
+        "collapsible_tab_dimensions",
+        "collapsible_tab_shipping",
+        "essential_trust_badges_app_block_B7r3EP"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "background-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 44
+      }
+    },
+    "story": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_story": {
+          "type": "caption",
+          "settings": {
+            "caption": "The Story",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading_story": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ product.title }}",
+            "heading_size": "h1"
+          }
+        },
+        "text_story": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Each Seym piece carries a quiet narrative — a fragment of myth, a memory of nature, captured in glass. Hold it to the light, and the story begins.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "caption_story",
+        "heading_story",
+        "text_story"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 140,
+        "padding_bottom": 140
+      }
+    },
+    "featured_collection_parent": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "From the same collection",
+        "heading_size": "h2",
+        "description": "<p>{{ section.settings.collection.metafields.custom.koleksiyonaciklamasi | metafield_tag }}</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "{{ product.metafields.custom.koleksiyon.value }}",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "link",
+        "enable_desktop_slider": true,
+        "color_scheme": "",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 80
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also be drawn to",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 120
+      }
+    }
+  },
+  "order": [
+    "main",
+    "story",
+    "featured_collection_parent",
+    "related-products"
+  ]
+}

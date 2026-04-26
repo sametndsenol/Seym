@@ -1,1 +1,113 @@
-{"sections":{"rich_text_RfzmRB":{"type":"rich-text","blocks":{"heading_EKFGKp":{"type":"heading","settings":{"heading":"{{ collection.title }}","heading_size":"h1"}},"text_jWpKfk":{"type":"text","settings":{"text":"<p>{{ collection.metafields.custom.koleksiyonaciklamasi | metafield_tag }}<\/p>"}},"button_DLhNeD":{"type":"button","disabled":true,"settings":{"button_label":"Button label","button_link":"","button_style_secondary":false,"button_label_2":"","button_link_2":"","button_style_secondary_2":false}}},"block_order":["heading_EKFGKp","text_jWpKfk","button_DLhNeD"],"settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"","full_width":true,"padding_top":40,"padding_bottom":52}},"slideshow_Y7HGmj":{"type":"slideshow","blocks":{"slide_PWJUGj":{"type":"slide","disabled":true,"settings":{"image":"shopify:\/\/shop_images\/19201080.png","heading":"","heading_size":"h1","subheading":"","button_label":"","link":"","button_style_secondary":false,"box_align":"middle-center","show_text_box":false,"text_alignment":"center","image_overlay_opacity":0,"color_scheme":"","text_alignment_mobile":"center"}},"slide_rtLzdr":{"type":"slide","settings":{"heading":"Image slide","heading_size":"h1","subheading":"Tell your brand's story through images","button_label":"Button label","link":"","button_style_secondary":false,"box_align":"middle-center","show_text_box":false,"text_alignment":"center","image_overlay_opacity":0,"color_scheme":"","text_alignment_mobile":"center"}}},"block_order":["slide_PWJUGj","slide_rtLzdr"],"disabled":true,"settings":{"layout":"full_bleed","slide_height":"medium","slider_visual":"counter","auto_rotate":false,"change_slides_speed":5,"image_behavior":"none","show_text_below":true,"accessibility_info":"Slideshow about our brand"}},"main-collection-banner":{"type":"main-collection-banner","disabled":true,"settings":{"show_collection_description":true,"show_collection_image":false,"color_scheme":"background-1"}},"slideshow_X68BtL":{"type":"slideshow","blocks":{"slide_GfTDmW":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/SDSDFSDF.png","heading":"","heading_size":"h1","subheading":"","button_label":"","link":"","button_style_secondary":false,"box_align":"middle-center","show_text_box":false,"text_alignment":"center","image_overlay_opacity":0,"color_scheme":"","text_alignment_mobile":"center"}},"slide_6FbyYt":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/SADASD.png","heading":"","heading_size":"h1","subheading":"","button_label":"","link":"","button_style_secondary":false,"box_align":"middle-center","show_text_box":false,"text_alignment":"center","image_overlay_opacity":0,"color_scheme":"","text_alignment_mobile":"center"}}},"block_order":["slide_GfTDmW","slide_6FbyYt"],"settings":{"layout":"grid","slide_height":"medium","slider_visual":"numbers","auto_rotate":false,"change_slides_speed":5,"image_behavior":"none","show_text_below":true,"accessibility_info":"Slideshow about our brand"}},"main-collection-product-grid":{"type":"main-collection-product-grid","settings":{"products_per_page":16,"columns_desktop":5,"color_scheme":"background-1","image_ratio":"portrait","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"enable_quick_add":false,"enable_filtering":true,"filter_type":"horizontal","enable_sorting":true,"columns_mobile":"2","padding_top":20,"padding_bottom":68}}},"order":["rich_text_RfzmRB","slideshow_Y7HGmj","main-collection-banner","slideshow_X68BtL","main-collection-product-grid"]}
+{
+  "sections": {
+    "main-collection-banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "color_scheme": "background-1"
+      }
+    },
+    "main-collection-product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "filter_type": "vertical",
+        "enable_quick_add": true,
+        "color_scheme": "",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "story": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_story": {
+          "type": "caption",
+          "settings": {
+            "caption": "Our Story",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading_story": {
+          "type": "heading",
+          "settings": {
+            "heading": "Twelve characters, born of earth and sky.",
+            "heading_size": "h1"
+          }
+        },
+        "text_story": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our pieces draw from a story full of mythological elements. Each name — <em>Flos, Solis, Glacies, Luminis, Maris, Luna</em> — is a fragment of nature reshaped as a living object. Mouth-blown in Istanbul, finished by master hands.</p>"
+          }
+        }
+      },
+      "block_order": ["caption_story", "heading_story", "text_story"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "closing": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_closing": {
+          "type": "caption",
+          "settings": {
+            "caption": "Continue",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading_closing": {
+          "type": "heading",
+          "settings": {
+            "heading": "Explore the full atelier.",
+            "heading_size": "h1"
+          }
+        },
+        "button_closing": {
+          "type": "button",
+          "settings": {
+            "button_label": "Visit the Journal",
+            "button_link": "shopify://blogs/news",
+            "button_style_secondary": true,
+            "button_label_2": "See all collections",
+            "button_link_2": "shopify://collections",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": ["caption_closing", "heading_closing", "button_closing"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "main-collection-banner",
+    "main-collection-product-grid",
+    "story",
+    "closing"
+  ]
+}
