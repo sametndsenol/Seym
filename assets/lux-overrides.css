@@ -929,6 +929,142 @@ fieldset.product-form__input--pill label {
   color: var(--seym-cream) !important;
 }
 
+/* ---------- 10b. COLLECTION PAGE — editorial fixes ---------- */
+
+/* Collection hero title — controlled, not screaming */
+.collection-hero__title {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: clamp(3.2rem, 4.5vw, 6rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.05 !important;
+  color: var(--seym-cream) !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Collection description under title */
+.collection-hero__description {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.4rem !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.7 !important;
+  color: var(--seym-cream-soft) !important;
+  max-width: 56ch;
+}
+
+/* Collection hero inner — tight padding */
+.collection-hero__inner {
+  padding-top: 6rem !important;
+  padding-bottom: 5rem !important;
+}
+
+/* Product count — small, discrete, never a heading */
+.product-count-vertical,
+.product-count,
+.product-count__text,
+h2.product-count__text,
+.product-count-vertical h2,
+.product-count-vertical .product-count__text {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream-dim) !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  display: inline-block !important;
+}
+
+/* Facets / Filter sidebar */
+.facets-vertical .facets__heading,
+.facets__heading {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream) !important;
+  border-bottom: 1px solid var(--seym-line-soft) !important;
+  padding-bottom: 1.6rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.facets__summary,
+.mobile-facets__summary {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream-soft) !important;
+  border-top: 1px solid var(--seym-line-soft) !important;
+  padding: 1.6rem 0 !important;
+}
+.facets__summary:hover { color: var(--seym-cream) !important; }
+
+.facets__checkbox + .facets__checkbox-label,
+.facets .label-text,
+.facets label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.2rem !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.04em !important;
+  color: var(--seym-cream-soft) !important;
+}
+
+/* Sort by label + select */
+.facet-filters__label,
+h2.facet-filters__label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.24em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream-dim) !important;
+}
+
+.facet-filters__sort {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.1rem !important;
+  font-weight: 300 !important;
+  color: var(--seym-cream) !important;
+  background: transparent !important;
+  border: 1px solid var(--seym-cream-faint) !important;
+  border-radius: 0 !important;
+  padding: 0.8rem 1.6rem !important;
+}
+
+/* Active filter pill */
+.active-facets__button,
+.active-facets .button {
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: 1px solid var(--seym-cream-faint) !important;
+  color: var(--seym-cream-soft) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  padding: 0.6rem 1.2rem !important;
+  min-height: 0 !important;
+}
+
+/* Collection image — if ever shown, force dark overlay */
+.collection-hero__image-container {
+  position: relative;
+  overflow: hidden;
+}
+.collection-hero__image-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 20, 36, 0.65);
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* ---------- 11. FOOTER — atelier colophon (deep midnight) ---------- */
 .footer {
   background: var(--seym-midnight-deep) !important;

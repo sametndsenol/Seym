@@ -1,237 +1,229 @@
 {%- comment -%}
-  Seym header — two-row premium navigation for Midnight Gallery.
-  Row 1: hamburger/search (left) — logo centered — account/cart (right)
-  Row 2: nav menu centered with wide letter-spacing
-  Mobile: single row with hamburger + logo + cart
+  Seym header — single-row luxury navigation.
+  Logo left · Nav centered (absolute) · Icons right.
+  On scroll: slight compression, backdrop blur.
+  Mobile: logo left · hamburger right.
 {%- endcomment -%}
 
 <style>
-  .seym-utility {
+  /* ── Announcement bar ── */
+  .seym-bar {
     background: #0a1424;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
-    color: rgba(239, 236, 236, 0.7);
+    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    color: rgba(239, 236, 236, 0.6);
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.24em;
+    font-size: 0.95rem;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
     text-align: center;
-    padding: 0.9rem 2rem;
+    padding: 1rem 2rem;
     position: relative;
     z-index: 60;
   }
-  .seym-utility a { color: inherit; text-decoration: none; }
+  .seym-bar a { color: inherit; text-decoration: none; }
 
-  .seym-header {
+  /* ── Header shell ── */
+  .seym-hd {
     position: sticky;
     top: 0;
     z-index: 50;
     background: #0a1424;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
-    transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                padding 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    transition: background 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                padding 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .seym-header.is-scrolled {
-    background: rgba(10, 20, 36, 0.92);
-    -webkit-backdrop-filter: saturate(160%) blur(20px);
-    backdrop-filter: saturate(160%) blur(20px);
+  .seym-hd.is-scrolled {
+    background: rgba(10, 20, 36, 0.94);
+    -webkit-backdrop-filter: saturate(150%) blur(24px);
+    backdrop-filter: saturate(150%) blur(24px);
   }
 
-  /* Row 1 — icons / logo / icons */
-  .seym-header__top {
-    max-width: 156rem;
+  /* ── Inner row ── */
+  .seym-hd__row {
+    max-width: 160rem;
     margin: 0 auto;
-    padding: 1.6rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 2rem;
-    transition: padding 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .seym-header.is-scrolled .seym-header__top { padding: 0.8rem 4rem; }
-
-  .seym-header__icons {
+    padding: 0 4rem;
+    height: 7.2rem;
     display: flex;
-    gap: 0.4rem;
     align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .seym-header__icons.--right { justify-content: flex-end; }
-
-  .seym-header__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    color: #efecec;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
+    justify-content: space-between;
     position: relative;
+    transition: height 400ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .seym-header__icon:hover { opacity: 0.65; }
-  .seym-header__icon svg { width: 2rem; height: 2rem; stroke: currentColor; fill: none; stroke-width: 1.4; }
-  .seym-header__icon-label {
-    margin-left: 0.6rem;
-    font-family: 'Inter', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.24em;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #efecec;
-  }
+  .seym-hd.is-scrolled .seym-hd__row { height: 5.6rem; }
 
-  .seym-header__cart-count {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    background: #efecec;
-    color: #0a1424;
-    width: 1.6rem;
-    height: 1.6rem;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    font-weight: 500;
-    line-height: 1;
-  }
-
-  .seym-header__logo {
+  /* ── Logo ── */
+  .seym-hd__logo {
     display: flex;
     align-items: center;
-    justify-content: center;
     text-decoration: none;
     color: #efecec;
-    padding: 0.4rem 2rem;
+    flex-shrink: 0;
+    z-index: 2;
   }
-  .seym-header__logo img {
-    max-height: 6rem;
+  .seym-hd__logo img {
+    max-height: 4.4rem;
     width: auto;
     filter: brightness(0) invert(1);
-    transition: max-height 0.4s ease, opacity 0.3s ease;
+    transition: max-height 400ms ease, opacity 300ms ease;
+    display: block;
   }
-  .seym-header.is-scrolled .seym-header__logo img { max-height: 4rem; }
-  .seym-header__logo:hover img { opacity: 0.85; }
-
-  .seym-header__logo-text {
+  .seym-hd.is-scrolled .seym-hd__logo img { max-height: 3.2rem; }
+  .seym-hd__logo:hover img { opacity: 0.8; }
+  .seym-hd__logo-text {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
-    font-size: 2.8rem;
+    font-size: 2.2rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: #efecec;
     line-height: 1;
   }
-  .seym-header.is-scrolled .seym-header__logo-text { font-size: 2rem; }
 
-  /* Row 2 — nav menu centered */
-  .seym-header__nav-row {
-    border-top: 1px solid rgba(239, 236, 236, 0.06);
-    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
-    overflow: hidden;
-  }
-  .seym-header.is-scrolled .seym-header__nav-row {
-    max-height: 0;
-    opacity: 0;
-    padding: 0 !important;
-    border-top-color: transparent;
-  }
-
-  .seym-header__nav {
-    max-width: 156rem;
-    margin: 0 auto;
-    padding: 1.4rem 4rem;
+  /* ── Nav — centered absolutely so logo stays left-anchored ── */
+  .seym-hd__nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
-    gap: 3.6rem;
+    align-items: center;
+    gap: 0;
     list-style: none;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
   }
-  .seym-header__nav a {
-    color: #efecec;
+  .seym-hd__nav a {
+    color: rgba(239, 236, 236, 0.75);
     text-decoration: none;
     font-family: 'Inter', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 0.28em;
-    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    font-size: 1rem;
     font-weight: 400;
-    padding: 0.4rem 0;
+    padding: 0.5rem 1.6rem;
     position: relative;
-    white-space: nowrap;
     display: inline-block;
-    transition: opacity 0.3s ease;
+    transition: color 300ms ease;
   }
-  .seym-header__nav a::after {
+  .seym-hd__nav a::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
+    bottom: -1px;
+    left: 1.6rem;
+    right: 1.6rem;
     height: 1px;
-    background: currentColor;
+    background: #efecec;
     transform: scaleX(0);
     transform-origin: right center;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .seym-header__nav a:hover { opacity: 1; }
-  .seym-header__nav a:hover::after {
+  .seym-hd__nav a:hover { color: #efecec; }
+  .seym-hd__nav a:hover::after {
     transform: scaleX(1);
     transform-origin: left center;
   }
+  .seym-hd__nav a.is-active { color: #efecec; }
+  .seym-hd__nav a.is-active::after { transform: scaleX(1); }
 
-  .seym-header__hamburger {
-    display: none;
-    width: 4rem;
-    height: 4rem;
+  /* ── Icons (right side) ── */
+  .seym-hd__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+  .seym-hd__btn {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    color: #efecec;
     background: transparent;
     border: none;
     cursor: pointer;
-    color: #efecec;
-  }
-  .seym-header__hamburger span {
-    display: block;
-    width: 2.4rem;
-    height: 1px;
-    background: currentColor;
+    text-decoration: none;
     position: relative;
+    transition: opacity 300ms ease;
   }
-  .seym-header__hamburger span::before,
-  .seym-header__hamburger span::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: currentColor;
+  .seym-hd__btn:hover { opacity: 0.65; }
+  .seym-hd__btn svg {
+    width: 1.9rem;
+    height: 1.9rem;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .seym-header__hamburger span::before { top: -7px; }
-  .seym-header__hamburger span::after { top: 7px; }
 
-  /* Mobile drawer */
-  .seym-mobile-menu {
+  /* Cart badge */
+  .seym-hd__badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #efecec;
+    color: #0a1424;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Hamburger (mobile only) */
+  .seym-hd__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 4rem;
+    height: 4rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.8rem;
+  }
+  .seym-hd__hamburger span {
+    display: block;
+    height: 1px;
+    background: #efecec;
+    transition: all 300ms ease;
+  }
+  .seym-hd__hamburger span:nth-child(1) { width: 100%; }
+  .seym-hd__hamburger span:nth-child(2) { width: 70%; margin-left: auto; }
+  .seym-hd__hamburger span:nth-child(3) { width: 100%; }
+
+  /* ── Mobile drawer ── */
+  .seym-drawer {
     position: fixed;
     inset: 0;
     background: #0a1424;
     z-index: 100;
-    transform: translateY(-100%);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateX(-100%);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
     display: flex;
     flex-direction: column;
-    padding: 8rem 3rem 3rem;
+    padding: 0;
     overflow-y: auto;
   }
-  .seym-mobile-menu.is-open { transform: translateY(0); }
-  .seym-mobile-menu__close {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
+  .seym-drawer.is-open { transform: translateX(0); }
+  .seym-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 2.4rem;
+    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+    flex-shrink: 0;
+  }
+  .seym-drawer__close {
     background: transparent;
     border: none;
     color: #efecec;
@@ -242,71 +234,56 @@
     align-items: center;
     justify-content: center;
   }
-  .seym-mobile-menu__close svg { width: 2.4rem; height: 2.4rem; }
-  .seym-mobile-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .seym-drawer__close svg { width: 2.2rem; height: 2.2rem; stroke: currentColor; fill: none; stroke-width: 1.4; }
+  .seym-drawer__nav {
+    padding: 3.2rem 2.4rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0;
+    list-style: none;
+    margin: 0;
   }
-  .seym-mobile-menu li a {
+  .seym-drawer__nav a {
     color: #efecec;
     text-decoration: none;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 300;
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
     line-height: 1.2;
     display: block;
-    padding: 1.4rem 0;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    transition: opacity 300ms ease;
   }
+  .seym-drawer__nav a:hover { opacity: 0.7; }
+  .seym-drawer__nav li:last-child a { border-bottom: none; }
 
+  /* ── Responsive ── */
   @media (max-width: 989px) {
-    .seym-header__top { padding: 1.2rem 2rem; grid-template-columns: 1fr auto 1fr; }
-    .seym-header.is-scrolled .seym-header__top { padding: 0.8rem 2rem; }
-    .seym-header__nav-row { display: none; }
-    .seym-header__hamburger { display: inline-flex; }
-    .seym-header__icons.--left .seym-header__icon { display: none; }
-    .seym-header__icons.--left .seym-header__hamburger { display: inline-flex; }
-    .seym-header__icons.--right { gap: 0.2rem; }
-    .seym-header__icons.--right .seym-header__icon[data-account] { display: none; }
-    .seym-header__icon-label { display: none; }
-    .seym-header__logo img { max-height: 4rem; }
-    .seym-header__logo-text { font-size: 1.8rem; letter-spacing: 0.28em; }
+    .seym-hd__nav { display: none; }
+    .seym-hd__hamburger { display: flex; }
+    .seym-hd__row { padding: 0 2rem; }
+    .seym-hd__btn[data-account] { display: none; }
+  }
+  @media (max-width: 749px) {
+    .seym-hd__row { height: 6rem; }
+    .seym-hd.is-scrolled .seym-hd__row { height: 5rem; }
+    .seym-hd__logo img { max-height: 3.6rem; }
   }
 </style>
 
 {%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
-  <div class="seym-utility">
-    {{ section.settings.announcement_text }}
+  <div class="seym-bar" role="banner">
+    <span>{{ section.settings.announcement_text }}</span>
   </div>
 {%- endif -%}
 
-<header class="seym-header" id="SeymHeader">
+<header class="seym-hd" id="SeymHd">
+  <div class="seym-hd__row">
 
-  {%- comment -%} Row 1: icons | logo | icons {%- endcomment -%}
-  <div class="seym-header__top">
-
-    <ul class="seym-header__icons --left">
-      <li>
-        <button class="seym-header__hamburger" aria-label="Open menu" id="SeymMenuOpen">
-          <span></span>
-        </button>
-      </li>
-      <li>
-        <a href="{{ routes.search_url }}" class="seym-header__icon" aria-label="Search">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="11" cy="11" r="7"/>
-            <line x1="16.5" y1="16.5" x2="21" y2="21"/>
-          </svg>
-        </a>
-      </li>
-    </ul>
-
-    <a href="{{ routes.root_url }}" class="seym-header__logo">
+    {{- '<!-- left: logo -->' -}}
+    <a href="{{ routes.root_url }}" class="seym-hd__logo" aria-label="{{ shop.name }}">
       {%- if settings.logo != blank -%}
         {{ settings.logo | image_url: width: 540 | image_tag:
             loading: 'eager',
@@ -315,57 +292,67 @@
             alt: shop.name
         }}
       {%- else -%}
-        <span class="seym-header__logo-text">{{ shop.name }}</span>
+        <span class="seym-hd__logo-text">{{ shop.name }}</span>
       {%- endif -%}
     </a>
 
-    <ul class="seym-header__icons --right">
-      {%- if shop.customer_accounts_enabled -%}
-      <li>
-        <a href="{{ routes.account_url }}" class="seym-header__icon" data-account aria-label="Account">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
-          </svg>
-        </a>
-      </li>
-      {%- endif -%}
-      <li>
-        <a href="{{ routes.cart_url }}" class="seym-header__icon" aria-label="Cart">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 7h14l-1.5 12.5a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7L5 7z"/>
-            <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
-          </svg>
-          {%- if cart.item_count > 0 -%}
-            <span class="seym-header__cart-count">{{ cart.item_count }}</span>
-          {%- endif -%}
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  {%- comment -%} Row 2: nav menu centered {%- endcomment -%}
-  <div class="seym-header__nav-row">
-    <nav>
-      <ul class="seym-header__nav">
+    {{- '<!-- center: nav -->' -}}
+    <nav aria-label="Main navigation">
+      <ul class="seym-hd__nav">
         {%- for link in linklists[section.settings.menu].links -%}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          <li>
+            <a href="{{ link.url }}"{% if link.active %} class="is-active" aria-current="page"{% endif %}>
+              {{- link.title -}}
+            </a>
+          </li>
         {%- endfor -%}
       </ul>
     </nav>
+
+    {{- '<!-- right: icons -->' -}}
+    <div class="seym-hd__actions">
+
+      <a href="{{ routes.search_url }}" class="seym-hd__btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      </a>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="seym-hd__btn" data-account aria-label="Account">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        </a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="seym-hd__btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12.5a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7L5 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="seym-hd__badge" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+
+      <button class="seym-hd__hamburger" aria-label="Open menu" id="SeymMenuOpen" aria-controls="SeymDrawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
   </div>
 </header>
 
-{%- comment -%} Mobile drawer menu {%- endcomment -%}
-<div class="seym-mobile-menu" id="SeymMobileMenu" aria-hidden="true">
-  <button class="seym-mobile-menu__close" aria-label="Close menu" id="SeymMenuClose">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" stroke-width="1.4">
-      <line x1="6" y1="6" x2="18" y2="18"/>
-      <line x1="6" y1="18" x2="18" y2="6"/>
-    </svg>
-  </button>
-  <nav>
-    <ul>
+{{- '<!-- Mobile drawer -->' -}}
+<div class="seym-drawer" id="SeymDrawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <div class="seym-drawer__head">
+    <a href="{{ routes.root_url }}" class="seym-hd__logo" tabindex="-1">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 320 | image_tag: alt: shop.name, width: settings.logo.width, height: settings.logo.height }}
+      {%- else -%}
+        <span class="seym-hd__logo-text" style="font-size:1.8rem">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+    <button class="seym-drawer__close" aria-label="Close menu" id="SeymMenuClose">
+      <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile navigation">
+    <ul class="seym-drawer__nav">
       {%- for link in linklists[section.settings.menu].links -%}
         <li><a href="{{ link.url }}">{{ link.title }}</a></li>
       {%- endfor -%}
@@ -374,22 +361,49 @@
 </div>
 
 <script>
-(function() {
-  const header = document.getElementById('SeymHeader');
-  const onScroll = () => {
-    if (window.scrollY > 12) header.classList.add('is-scrolled');
-    else header.classList.remove('is-scrolled');
-  };
+(function () {
+  const hd     = document.getElementById('SeymHd');
+  const drawer = document.getElementById('SeymDrawer');
+  const openBtn  = document.getElementById('SeymMenuOpen');
+  const closeBtn = document.getElementById('SeymMenuClose');
+
+  // Scroll behaviour
+  let lastScroll = 0;
+  function onScroll() {
+    const y = window.scrollY;
+    if (y > 12) hd.classList.add('is-scrolled');
+    else        hd.classList.remove('is-scrolled');
+    lastScroll = y;
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  const menu = document.getElementById('SeymMobileMenu');
-  const open = document.getElementById('SeymMenuOpen');
-  const close = document.getElementById('SeymMenuClose');
-  if (open && menu && close) {
-    open.addEventListener('click', () => { menu.classList.add('is-open'); menu.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; });
-    close.addEventListener('click', () => { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
-    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('is-open'); document.body.style.overflow=''; }));
+  // Drawer
+  function openDrawer() {
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    openBtn.focus();
+  }
+
+  if (openBtn)  openBtn.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (drawer) {
+    drawer.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeDrawer);
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+    });
   }
 })();
 </script>
