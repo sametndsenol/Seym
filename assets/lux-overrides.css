@@ -1,384 +1,980 @@
-/* =========================================================
-   LUX OVERRIDES — Premium polish for the existing theme
-   Applied globally on top of base.css. No new sections.
-   ========================================================= */
+/* ========================================================================
+   ATELIER — Editorial transformation, Marquisate-grade
+   Drop-in stylesheet that overrides Dawn aesthetics:
+   • Pure black on pure white • Sharp edges (no radius, no shadows)
+   • Cormorant Garamond + Inter typography • Generous whitespace
+   • Slow cinematic motion • Minimal nav • Editorial product cards
+   ======================================================================== */
 
-/* ---------- 1. ROOT TOKENS & SMOOTH BASE ---------- */
-:root {
-  --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --lux-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --lux-fast: 220ms;
-  --lux-mid: 480ms;
-  --lux-slow: 900ms;
-  --lux-shadow-soft: 0 12px 40px -12px rgba(0, 0, 0, 0.18);
-  --lux-shadow-hover: 0 28px 60px -20px rgba(0, 0, 0, 0.28);
-  --lux-line: rgba(var(--color-foreground), 0.12);
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ---------- 0. RESET TOKENS ---------- */
+:root,
+body {
+  --color-foreground: 18, 18, 18 !important;
+  --color-background: 252, 251, 248 !important; /* warm off-white */
+  --color-base-text: 18, 18, 18 !important;
+  --color-base-background-1: 252, 251, 248 !important;
+  --color-base-background-2: 245, 243, 238 !important;
+  --color-shadow: 0, 0, 0 !important;
+
+  --buttons-radius: 0px !important;
+  --buttons-radius-outset: 0px !important;
+  --inputs-radius: 0px !important;
+  --inputs-radius-outset: 0px !important;
+  --media-radius: 0px !important;
+  --product-card-corner-radius: 0px !important;
+  --collection-card-corner-radius: 0px !important;
+  --blog-card-corner-radius: 0px !important;
+  --variant-pills-radius: 0px !important;
+  --badge-corner-radius: 0px !important;
+  --popup-corner-radius: 0px !important;
+  --text-boxes-radius: 0px !important;
+
+  --media-shadow-opacity: 0 !important;
+  --product-card-shadow-opacity: 0 !important;
+  --collection-card-shadow-opacity: 0 !important;
+  --blog-card-shadow-opacity: 0 !important;
+  --buttons-shadow-opacity: 0 !important;
+  --buttons-border-width: 1px !important;
+
+  --product-card-border-opacity: 0 !important;
+  --collection-card-border-opacity: 0 !important;
+  --card-border-opacity: 0 !important;
+
+  --atelier-line: rgba(18, 18, 18, 0.14);
+  --atelier-line-strong: rgba(18, 18, 18, 0.85);
+  --atelier-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --atelier-slow: 1100ms;
+  --atelier-mid: 600ms;
+  --atelier-fast: 280ms;
+
+  --font-heading-family: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif !important;
+  --font-body-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif !important;
+  --font-heading-style: normal !important;
+  --font-heading-weight: 400 !important;
+  --font-body-style: normal !important;
+  --font-body-weight: 300 !important;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Force solid white-on-black scheme everywhere */
+.color-background-1,
+.color-background-2,
+.color-accent-1,
+.color-accent-2,
+.color-inverse,
+.color-scheme-1,
+.color-scheme-2,
+.color-scheme-3,
+.color-scheme-4,
+.color-scheme-5 {
+  --color-background: 252, 251, 248 !important;
+  --color-foreground: 18, 18, 18 !important;
+  --color-button: 18, 18, 18 !important;
+  --color-button-text: 252, 251, 248 !important;
+  --color-secondary-button: 252, 251, 248 !important;
+  --color-secondary-button-text: 18, 18, 18 !important;
+  --color-link: 18, 18, 18 !important;
+  --color-badge-foreground: 18, 18, 18 !important;
+  --color-badge-background: 252, 251, 248 !important;
+  --color-badge-border: 18, 18, 18 !important;
+  --gradient-background: rgb(252, 251, 248) !important;
 }
+
+/* Inverse for hero & manifesto */
+.color-inverse,
+.atelier-inverse {
+  --color-background: 18, 18, 18 !important;
+  --color-foreground: 252, 251, 248 !important;
+  --color-button: 252, 251, 248 !important;
+  --color-button-text: 18, 18, 18 !important;
+  --color-secondary-button: 18, 18, 18 !important;
+  --color-secondary-button-text: 252, 251, 248 !important;
+  background: rgb(18, 18, 18) !important;
+}
+
+html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 body {
+  background: rgb(252, 251, 248) !important;
+  color: rgb(18, 18, 18) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 1.5rem;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-::selection {
-  background: rgb(var(--color-foreground));
-  color: rgb(var(--color-background));
+::selection { background: #121212; color: #fcfbf8; }
+
+/* ---------- 1. EDITORIAL TYPOGRAPHY ---------- */
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5,
+.card__heading,
+.product__title,
+.product__title h1,
+.product__title h2,
+.banner__heading,
+.slideshow__heading,
+.collection-hero__title,
+.title,
+.title-wrapper h1,
+.title-wrapper h2,
+.section-header__title,
+.rich-text__heading,
+.collection__title h2 {
+  font-family: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.05 !important;
+  color: rgb(18, 18, 18);
 }
 
-/* Refined custom scrollbar (desktop only) */
-@media (min-width: 990px) {
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(var(--color-foreground), 0.18);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    transition: background var(--lux-fast) var(--lux-ease);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(var(--color-foreground), 0.4);
-    background-clip: padding-box;
-    border: 2px solid transparent;
-  }
+.h0, h1, .banner h2, .slideshow__heading {
+  font-size: clamp(4.4rem, 8vw, 9.5rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 0.98 !important;
 }
 
-/* ---------- 2. TYPOGRAPHY POLISH ---------- */
-h1, h2, h3, .h0, .h1, .h2, .h3 {
-  letter-spacing: -0.01em;
-  line-height: 1.08;
-  font-feature-settings: "liga", "kern", "ss01";
+h2, .h1, .title-wrapper-with-link h2 {
+  font-size: clamp(3.4rem, 5.2vw, 6rem) !important;
+  font-weight: 400 !important;
 }
 
-h1, .h0, .h1 {
-  letter-spacing: -0.025em;
+h3, .h2 {
+  font-size: clamp(2.6rem, 3.4vw, 4rem) !important;
 }
 
-p, li, .rte {
-  font-feature-settings: "liga", "kern";
-}
-
-/* Eyebrow / small heading caps */
+/* Eyebrow / subtitle: small caps style */
 .subtitle,
-.card__heading + .price,
-.price__regular .price-item--regular {
-  letter-spacing: 0.04em;
-}
-
-/* ---------- 3. LINKS — animated underline ---------- */
-.rte a:not(.button),
-.footer-block a:not(.button),
-.list-menu__item--link {
-  position: relative;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  transition: background-size var(--lux-mid) var(--lux-ease);
-}
-
-.rte a:hover,
-.footer-block a:hover,
-.list-menu__item--link:hover {
-  background-size: 100% 1px;
-}
-
-/* ---------- 4. BUTTONS — sliding fill on hover ---------- */
-.button:not([disabled]) {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition:
-    color var(--lux-mid) var(--lux-ease),
-    transform var(--lux-mid) var(--lux-ease),
-    box-shadow var(--lux-mid) var(--lux-ease);
-  letter-spacing: 0.08em;
+.caption-with-letter-spacing,
+.caption,
+.footer-block__heading,
+.product__text,
+.section-header__title,
+.collection-hero__description {
+  font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  font-size: 1.3rem;
+  letter-spacing: 0.22em !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  opacity: 0.78;
 }
 
-.button:not([disabled])::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(var(--color-foreground), 1);
-  transform: translateY(101%);
-  transition: transform var(--lux-mid) var(--lux-ease);
-  z-index: -1;
-  border-radius: inherit;
+/* Body paragraphs */
+.rte p, .rich-text__text p, p {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
+  line-height: 1.7 !important;
+  letter-spacing: 0.005em;
+  font-size: 1.55rem;
 }
 
-.button:not([disabled]):hover {
-  color: rgb(var(--color-background));
-  transform: translateY(-1px);
-  box-shadow: var(--lux-shadow-soft);
+/* Editorial italic accent inside rich text */
+.rte em, .rich-text em, .rich-text__text em {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic;
+  font-size: 1.15em;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
-.button:not([disabled]):hover::after {
-  transform: translateY(0);
+/* ---------- 2. PAGE WIDTH & RHYTHM ---------- */
+.page-width,
+.page-width-tablet,
+.page-width-desktop {
+  max-width: 156rem !important;
+  padding: 0 4rem !important;
 }
 
-/* Secondary buttons keep transparent base, fill with foreground */
-.button--secondary:not([disabled])::after {
-  background: rgb(var(--color-foreground));
+@media (max-width: 749px) {
+  .page-width, .page-width-tablet, .page-width-desktop { padding: 0 2rem !important; }
 }
 
-/* Disable double effect on inverse schemes */
-.button.button--tertiary,
-.shopify-payment-button__button {
-  transition: transform var(--lux-mid) var(--lux-ease), box-shadow var(--lux-mid) var(--lux-ease);
+/* Generous vertical rhythm between sections */
+.shopify-section + .shopify-section { padding-top: 0; }
+.shopify-section { padding-top: 0; padding-bottom: 0; }
+
+main .shopify-section {
+  margin: 0;
 }
 
-.shopify-payment-button__button--unbranded:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--lux-shadow-soft);
-}
-
-/* ---------- 5. HEADER — glassmorphism + refined motion ---------- */
-.shopify-section-header-sticky .header-wrapper,
-sticky-header .header-wrapper,
-.section-header .header-wrapper {
-  transition:
-    background-color var(--lux-mid) var(--lux-ease),
-    backdrop-filter var(--lux-mid) var(--lux-ease),
-    box-shadow var(--lux-mid) var(--lux-ease),
-    padding var(--lux-mid) var(--lux-ease);
+/* ---------- 3. HEADER — minimal editorial ---------- */
+.header-wrapper {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 1.6rem 0 !important;
+  transition: background var(--atelier-mid) var(--atelier-ease),
+              backdrop-filter var(--atelier-mid) var(--atelier-ease),
+              padding var(--atelier-mid) var(--atelier-ease) !important;
 }
 
 .scrolled-past-header .header-wrapper,
 sticky-header.shopify-section-header-sticky .header-wrapper {
-  background-color: rgba(var(--color-background), 0.78) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(18px);
-  backdrop-filter: saturate(180%) blur(18px);
-  box-shadow: 0 1px 0 rgba(var(--color-foreground), 0.06), 0 12px 30px -20px rgba(0,0,0,0.15);
+  background: rgba(252, 251, 248, 0.9) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--atelier-line) !important;
+  padding: 0.8rem 0 !important;
+  box-shadow: none !important;
 }
 
-.header__menu-item {
+.header {
+  padding: 0 4rem !important;
+  align-items: center;
+}
+
+.header__heading-link,
+.header__heading {
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-weight: 500 !important;
+  font-size: 1.8rem !important;
+  color: rgb(18, 18, 18) !important;
+}
+
+.header__menu-item,
+.header__active-menu-item,
+.list-menu__item--link {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.18em !important;
+  font-size: 1.15rem !important;
+  font-weight: 400 !important;
+  padding: 0.6rem 1.6rem !important;
+  color: rgb(18, 18, 18) !important;
+  text-decoration: none !important;
   position: relative;
-  transition: color var(--lux-fast) var(--lux-ease);
-  letter-spacing: 0.06em;
+  transition: opacity var(--atelier-fast) var(--atelier-ease);
 }
 
-.header__menu-item span {
+.header__menu-item span,
+.list-menu__item--link span {
   position: relative;
+  display: inline-block;
 }
 
-.header__menu-item span::after {
+.header__menu-item span::after,
+.list-menu__item--link span::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
+  left: 0; right: 0; bottom: -3px;
   height: 1px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right center;
-  transition: transform var(--lux-mid) var(--lux-ease);
+  transition: transform var(--atelier-mid) var(--atelier-ease);
 }
 
 .header__menu-item:hover span::after,
-.header__menu-item[aria-expanded="true"] span::after {
+.list-menu__item--link:hover span::after {
   transform: scaleX(1);
   transform-origin: left center;
 }
 
-/* Header icons subtle hover */
-.header__icon {
-  transition: transform var(--lux-fast) var(--lux-ease), opacity var(--lux-fast) var(--lux-ease);
+.header__icon,
+.header__icon svg {
+  color: rgb(18, 18, 18) !important;
+  transition: opacity var(--atelier-fast) var(--atelier-ease);
 }
-.header__icon:hover {
-  transform: translateY(-1px);
-  opacity: 0.85;
-}
+.header__icon:hover { opacity: 0.6; }
 
-/* Cart bubble glow */
+/* Cart bubble - minimal dot */
 .cart-count-bubble {
-  box-shadow: 0 0 0 0 rgba(var(--color-foreground), 0.4);
-  animation: lux-pulse 2.4s var(--lux-ease) infinite;
+  background: rgb(18, 18, 18) !important;
+  color: rgb(252, 251, 248) !important;
+  border-radius: 999px !important;
+  min-width: 1.6rem !important;
+  height: 1.6rem !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0;
+  border: none !important;
 }
 
-@keyframes lux-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--color-foreground), 0.0); }
-  50% { box-shadow: 0 0 0 6px rgba(var(--color-foreground), 0.0); }
+/* Announcement bar */
+.announcement-bar {
+  background: rgb(18, 18, 18) !important;
+  color: rgb(252, 251, 248) !important;
+  border: none !important;
+}
+.announcement-bar p {
+  text-transform: uppercase;
+  letter-spacing: 0.24em !important;
+  font-size: 1.05rem !important;
+  color: rgb(252, 251, 248) !important;
+  font-weight: 400;
+  padding: 0.9rem 0 !important;
 }
 
-/* ---------- 6. PRODUCT / COLLECTION CARDS — lift + image zoom ---------- */
-.card-wrapper,
-.product-card-wrapper {
-  transition: transform var(--lux-mid) var(--lux-ease);
-}
-
-.card-wrapper:hover {
-  transform: translateY(-6px);
-}
-
-.card,
-.card--standard,
-.card--card {
-  transition:
-    box-shadow var(--lux-mid) var(--lux-ease),
-    transform var(--lux-mid) var(--lux-ease);
-  will-change: transform;
-}
-
-.card-wrapper:hover .card {
-  box-shadow: var(--lux-shadow-hover);
-}
-
-/* Card image zoom + cross fade */
-.card .media,
-.card__media .media {
+/* ---------- 4. BUTTONS — editorial sharp ---------- */
+.button,
+.shopify-payment-button__button,
+button.button {
+  border-radius: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.22em !important;
+  font-weight: 500 !important;
+  font-size: 1.15rem !important;
+  padding: 1.6rem 3.2rem !important;
+  min-height: 4.8rem !important;
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
+  background: rgb(18, 18, 18) !important;
+  color: rgb(252, 251, 248) !important;
+  border: 1px solid rgb(18, 18, 18) !important;
+  box-shadow: none !important;
+  transition: color var(--atelier-mid) var(--atelier-ease) !important;
 }
 
-.card .media img,
-.card__media .media img,
-.card-wrapper .media > img {
-  transition:
-    transform 1.4s var(--lux-ease-out),
-    opacity var(--lux-mid) var(--lux-ease) !important;
-  will-change: transform;
+.button::before,
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(252, 251, 248);
+  transform: translateY(101%);
+  transition: transform var(--atelier-mid) var(--atelier-ease);
+  z-index: -1;
 }
 
-.card-wrapper:hover .media > img:first-child,
-.card-wrapper:hover .card__media .media img:first-child {
-  transform: scale(1.06);
+.button:not([disabled]):hover {
+  color: rgb(18, 18, 18) !important;
+  background: rgb(18, 18, 18) !important;
+}
+.button:not([disabled]):hover::after { transform: translateY(0); }
+
+.button--secondary {
+  background: transparent !important;
+  color: rgb(18, 18, 18) !important;
+  border: 1px solid rgb(18, 18, 18) !important;
+}
+.button--secondary::after { background: rgb(18, 18, 18); }
+.button--secondary:not([disabled]):hover { color: rgb(252, 251, 248) !important; }
+
+.button--tertiary {
+  background: transparent !important;
+  color: rgb(18, 18, 18) !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(18, 18, 18) !important;
+  padding: 0.6rem 0 !important;
+  min-height: 0 !important;
+}
+.button--tertiary::after { display: none; }
+.button--tertiary:hover { opacity: 0.6; background: transparent !important; color: rgb(18, 18, 18) !important; }
+
+/* Disabled / sold out */
+.button[disabled],
+.button[aria-disabled="true"] {
+  background: transparent !important;
+  color: rgba(18,18,18,0.45) !important;
+  border-color: rgba(18,18,18,0.25) !important;
+  cursor: not-allowed;
 }
 
-/* If theme has secondary image, cross fade */
-.card-wrapper:hover .media > img + img,
-.card-wrapper:hover .card__media .media > img + img {
-  opacity: 1 !important;
-  transform: scale(1.06);
+/* ---------- 5. SLIDESHOW / IMAGE BANNER — full bleed cinema ---------- */
+.banner,
+.slideshow {
+  background: rgb(252, 251, 248) !important;
 }
 
-/* Title slight shift */
-.card-information .card__heading,
-.card__information .card__heading {
-  transition: transform var(--lux-mid) var(--lux-ease), color var(--lux-fast) var(--lux-ease);
-}
-.card-wrapper:hover .card__heading {
-  transform: translateX(2px);
+.banner__content,
+.slideshow__text {
+  padding: 6rem !important;
 }
 
-/* Quick add button — refined */
-.quick-add__submit,
-.card .quick-add__submit {
-  border-radius: 999px;
-  letter-spacing: 0.08em;
-  transition:
-    transform var(--lux-mid) var(--lux-ease),
-    background var(--lux-mid) var(--lux-ease),
-    box-shadow var(--lux-mid) var(--lux-ease);
+.banner__media,
+.slideshow__media {
+  overflow: hidden;
+  background: rgb(245, 243, 238);
 }
 
-.card-wrapper:hover .quick-add__submit {
-  transform: translateY(-2px);
-  box-shadow: var(--lux-shadow-soft);
-}
-
-/* ---------- 7. SLIDESHOW / IMAGE BANNER — Ken Burns drift ---------- */
 .banner__media img,
 .slideshow__media img,
-.slideshow .banner__media img {
-  transition: transform 8s linear !important;
+.slideshow__slide img {
+  transition: transform 12s linear !important;
   will-change: transform;
 }
 
 .slideshow__slide.is-selected .banner__media img,
-.slideshow__slide[aria-hidden="false"] .banner__media img {
-  transform: scale(1.06);
+.slideshow__slide[aria-hidden="false"] img,
+.banner.banner--mobile-bottom .banner__media img {
+  transform: scale(1.08);
 }
 
-/* Banner overlay refinement */
+.banner__heading {
+  font-size: clamp(4.4rem, 8vw, 11rem) !important;
+  letter-spacing: -0.03em !important;
+  font-weight: 300 !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: normal !important;
+  line-height: 0.98 !important;
+}
+
+.banner__text {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.01em;
+  font-size: 1.6rem !important;
+  line-height: 1.6;
+  max-width: 56ch;
+}
+
 .banner__box {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  transition: transform var(--lux-slow) var(--lux-ease);
+  background: transparent !important;
+  border: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
-/* ---------- 8. PRODUCT PAGE — gallery & details ---------- */
-.product__media-item {
-  transition: opacity var(--lux-mid) var(--lux-ease);
-}
-.product__media-item img {
-  transition: transform var(--lux-slow) var(--lux-ease);
-}
-.product__media-item:hover img {
-  transform: scale(1.02);
+/* Slideshow controls — small dots / numbers, low presence */
+.slideshow__control-wrapper,
+.slider-counter {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.16em !important;
+  font-size: 1.1rem !important;
 }
 
-/* Variant pills — premium feel */
-.product-form__input--pill input[type='radio'] + label,
-fieldset.product-form__input--pill label {
+/* ---------- 6. PRODUCT / COLLECTION CARDS — strip card chrome ---------- */
+.card-wrapper,
+.product-card-wrapper {
+  background: transparent !important;
+}
+
+.card,
+.card--standard,
+.card--card,
+.card--product,
+.card--media,
+.card--text {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.card__inner,
+.card__media,
+.card .media {
+  background: rgb(245, 243, 238) !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.card__media .media,
+.card .media {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+/* Hide the gradient overlay if any */
+.card.gradient::before,
+.card__inner.gradient::before { display: none !important; }
+
+/* Image inside card — slow zoom, cross-fade */
+.card .media > img,
+.card__media .media > img,
+.card-wrapper .media img {
   transition:
-    background var(--lux-fast) var(--lux-ease),
-    color var(--lux-fast) var(--lux-ease),
-    border-color var(--lux-fast) var(--lux-ease),
-    transform var(--lux-fast) var(--lux-ease);
-  letter-spacing: 0.04em;
+    transform 1.6s var(--atelier-ease),
+    opacity var(--atelier-mid) var(--atelier-ease) !important;
 }
 
-.product-form__input--pill input[type='radio'] + label:hover {
-  border-color: rgb(var(--color-foreground));
-  transform: translateY(-1px);
+.card-wrapper:hover .media > img:first-child {
+  transform: scale(1.05);
+}
+.card-wrapper:hover .media > img + img {
+  opacity: 1 !important;
+  transform: scale(1.05);
 }
 
-.product-form__input--pill input[type='radio']:checked + label {
-  background: rgb(var(--color-foreground));
-  color: rgb(var(--color-background));
-  border-color: rgb(var(--color-foreground));
+/* Card information — tiny + centered */
+.card__content,
+.card__information,
+.card-information {
+  background: transparent !important;
+  padding: 1.8rem 0 0 0 !important;
+  text-align: center !important;
+  --product-card-text-alignment: center !important;
 }
 
-/* Add to cart button pulse on focus */
-.product-form__submit:focus-visible {
-  box-shadow: 0 0 0 3px rgba(var(--color-foreground), 0.25);
+.card__heading,
+.card__heading a,
+.card-information .card__heading,
+.card__information .card__heading {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 1.9rem !important;
+  letter-spacing: 0 !important;
+  line-height: 1.2 !important;
+  color: rgb(18, 18, 18) !important;
+  text-transform: none !important;
+  margin: 0 0 0.6rem 0 !important;
 }
 
-/* Sticky-ish padding for product info on desktop */
+.card-information .price,
+.card__information .price,
+.price__regular .price-item {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase;
+  color: rgb(18, 18, 18) !important;
+}
+
+.price--end .price__regular { display: flex; justify-content: center; gap: 0.6rem; }
+
+/* Quick add — minimal pill, only on hover (desktop) */
+.quick-add {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: auto !important;
+  opacity: 0;
+  transition: opacity var(--atelier-mid) var(--atelier-ease), transform var(--atelier-mid) var(--atelier-ease);
+  z-index: 3;
+}
 @media (min-width: 990px) {
-  .product__info-wrapper {
-    padding-top: 1.5rem;
+  .card-wrapper:hover .quick-add {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
-
-/* ---------- 9. PRICE — refined emphasis ---------- */
-.price__regular .price-item,
-.price__sale .price-item--last,
-.price-item {
-  font-feature-settings: "tnum";
-  letter-spacing: 0.02em;
+@media (max-width: 989px) {
+  .quick-add { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-.price--on-sale .price-item--sale {
-  font-weight: 600;
+.quick-add__submit {
+  background: rgb(252, 251, 248) !important;
+  color: rgb(18, 18, 18) !important;
+  border: 1px solid rgb(18, 18, 18) !important;
+  border-radius: 0 !important;
+  font-size: 1.05rem !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  padding: 1.1rem 2rem !important;
+  min-height: 0 !important;
+  width: auto !important;
+  white-space: nowrap;
+}
+.quick-add__submit::after { background: rgb(18, 18, 18); }
+.quick-add__submit:hover { color: rgb(252, 251, 248) !important; }
+
+/* Card badge */
+.card__badge { top: 1.2rem; left: 1.2rem; bottom: auto; right: auto; }
+.badge {
+  background: transparent !important;
+  border: 1px solid rgb(18, 18, 18) !important;
+  color: rgb(18, 18, 18) !important;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.2em !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0 !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  text-transform: uppercase;
 }
 
-/* ---------- 10. FORMS / INPUTS — clean lines ---------- */
+/* Collection grid spacing */
+.product-grid,
+.grid--product {
+  column-gap: 4rem !important;
+  row-gap: 9rem !important;
+}
+@media (max-width: 749px) {
+  .product-grid, .grid--product { column-gap: 1.6rem !important; row-gap: 5rem !important; }
+}
+
+/* ---------- 7. SECTION HEADERS — magazine titles ---------- */
+.title-wrapper-with-link,
+.collection__title,
+.title-wrapper {
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 4.4rem !important;
+  margin-top: 8rem !important;
+  margin-bottom: 4rem !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.title-wrapper-with-link h2,
+.collection__title h2 {
+  font-size: clamp(3.2rem, 5vw, 5.6rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+}
+
+.title-wrapper-with-link .link {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1.1rem;
+  text-decoration: none !important;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 4px;
+  transition: opacity var(--atelier-fast) var(--atelier-ease);
+}
+.title-wrapper-with-link .link:hover { opacity: 0.55; }
+
+/* Center variant */
+.center .title { text-align: center; width: 100%; }
+
+/* ---------- 8. RICH TEXT BLOCK — manifesto vibe ---------- */
+.rich-text__wrapper,
+.rich-text {
+  padding: 12rem 0 !important;
+}
+
+.rich-text__heading {
+  font-size: clamp(3.4rem, 6vw, 7rem) !important;
+  font-weight: 400 !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  margin-bottom: 3.2rem !important;
+  max-width: 22ch;
+}
+
+.rich-text__text {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 1.7rem !important;
+  line-height: 1.7 !important;
+  max-width: 70ch;
+  margin: 0 auto;
+  letter-spacing: 0.005em;
+}
+
+.rich-text__buttons { margin-top: 4rem; }
+
+/* ---------- 9. PRODUCT PAGE — editorial layout ---------- */
+.product {
+  padding-top: 4rem !important;
+}
+
+.product__title h1,
+.product__title {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: clamp(3.6rem, 5vw, 6rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.05 !important;
+  margin-bottom: 1.8rem !important;
+}
+
+.product__info-container > * + * { margin-top: 2.4rem; }
+
+.product__info-wrapper { padding: 4rem 0 4rem 4rem !important; }
+@media (max-width: 989px) { .product__info-wrapper { padding: 2.4rem 0 !important; } }
+
+.product__info-container .price,
+.product .price__regular .price-item {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.4rem !important;
+  letter-spacing: 0.18em !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  color: rgb(18, 18, 18) !important;
+}
+
+.product .price--on-sale .price-item--sale {
+  color: rgb(18, 18, 18) !important;
+  font-weight: 600 !important;
+}
+
+.product__description,
+.product__description .rte {
+  font-size: 1.55rem !important;
+  line-height: 1.7 !important;
+  font-weight: 300 !important;
+  margin-top: 2.4rem;
+  max-width: 56ch;
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 2.4rem;
+}
+
+/* Variant pills */
+.product-form__input--pill input[type='radio'] + label,
+fieldset.product-form__input--pill label {
+  border-radius: 0 !important;
+  border: 1px solid rgba(18,18,18,0.35) !important;
+  background: transparent !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.05rem !important;
+  padding: 1.2rem 2rem !important;
+  color: rgb(18, 18, 18) !important;
+  transition: all var(--atelier-fast) var(--atelier-ease);
+}
+.product-form__input--pill input[type='radio']:checked + label {
+  background: rgb(18, 18, 18) !important;
+  color: rgb(252, 251, 248) !important;
+  border-color: rgb(18, 18, 18) !important;
+}
+.product-form__input--pill input[type='radio'] + label:hover {
+  border-color: rgb(18, 18, 18) !important;
+}
+
+/* Variant labels (Color: Red) */
+.product-form__input .form__label,
+.product-form__input legend {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: rgb(18, 18, 18) !important;
+  opacity: 0.78;
+  margin-bottom: 1.2rem;
+}
+
+/* Quantity */
+.quantity {
+  border: 1px solid rgba(18,18,18,0.35) !important;
+  border-radius: 0 !important;
+  width: fit-content;
+}
+.quantity__input {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  background: transparent !important;
+}
+
+/* Add to cart full width */
+.product-form__buttons,
+.product-form__buttons > * {
+  width: 100% !important;
+}
+.product-form__submit {
+  width: 100% !important;
+  padding: 2rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 0.28em !important;
+}
+
+/* Product gallery */
+.product__media-wrapper,
+.product__media-list {
+  background: rgb(245, 243, 238);
+}
+.product__media-item {
+  background: rgb(245, 243, 238) !important;
+  overflow: hidden;
+}
+.product__media-item img {
+  transition: transform 1.4s var(--atelier-ease) !important;
+}
+.product__media-item:hover img { transform: scale(1.025); }
+
+.product__media-list {
+  gap: 1px !important;
+}
+
+/* Thumbnails */
+.thumbnail {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+/* Collapsible (product info, shipping, return) */
+.product__accordion summary,
+.accordion summary {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1.15rem !important;
+  font-weight: 500 !important;
+  border-top: 1px solid var(--atelier-line);
+  padding: 2.4rem 0 !important;
+}
+.product__accordion .accordion__content,
+.accordion__content {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  font-weight: 300;
+  padding-bottom: 2.4rem;
+}
+
+/* Pickup availability */
+.product__pickup-availabilities {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 2rem;
+}
+
+/* Tax / shipping note */
+.product__tax,
+.product__taxes-included {
+  font-size: 1.1rem !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ---------- 10. COLLECTION LIST ---------- */
+.collection-list-wrapper { padding: 8rem 0 !important; }
+.collection__title,
+.collection-list .title {
+  text-align: center;
+  font-size: clamp(3rem, 4vw, 5rem) !important;
+}
+
+/* Collection card image — full bleed */
+.card--collection,
+.card--collection .card__inner {
+  background: rgb(245, 243, 238) !important;
+}
+.card--collection .card__heading {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-size: 2.4rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+}
+
+/* ---------- 11. FOOTER — newsroom ---------- */
+.footer {
+  background: rgb(252, 251, 248) !important;
+  color: rgb(18, 18, 18) !important;
+  border-top: 1px solid var(--atelier-line) !important;
+  padding-top: 8rem !important;
+  padding-bottom: 4rem !important;
+  margin-top: 8rem;
+}
+
+.footer__content-top {
+  padding-bottom: 6rem !important;
+}
+
+.footer-block__heading,
+.footer__heading {
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.24em !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  opacity: 0.78;
+  margin-bottom: 2rem !important;
+  border: none !important;
+}
+
+.footer-block__details-content a,
+.footer-block__details-content p,
+.footer__list-social a,
+.list-menu__item--link {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.3rem !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.04em;
+  color: rgb(18, 18, 18) !important;
+  text-decoration: none !important;
+  display: inline-block;
+  padding: 0.4rem 0 !important;
+  transition: opacity var(--atelier-fast) var(--atelier-ease), transform var(--atelier-fast) var(--atelier-ease);
+}
+
+.footer-block__details-content a:hover,
+.footer__list-social a:hover {
+  opacity: 0.55;
+  transform: translateX(2px);
+}
+
+.footer__copyright,
+.copyright__content {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.05rem !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 3rem !important;
+  margin-top: 3rem;
+}
+
+/* Newsletter input */
+.newsletter-form__field-wrapper .field {
+  border: none !important;
+  border-bottom: 1px solid rgb(18, 18, 18) !important;
+}
+.newsletter-form__field-wrapper .field__input {
+  background: transparent !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  padding: 1.4rem 0 !important;
+}
+.newsletter-form__button {
+  background: transparent !important;
+  color: rgb(18, 18, 18) !important;
+}
+
+/* ---------- 12. CART DRAWER ---------- */
+cart-drawer .drawer__inner {
+  background: rgb(252, 251, 248) !important;
+  border-left: 1px solid var(--atelier-line);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+cart-drawer .drawer__header {
+  border-bottom: 1px solid var(--atelier-line);
+  padding: 2.4rem !important;
+}
+
+cart-drawer .drawer__heading {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-weight: 400 !important;
+  font-size: 2.6rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.cart-item__name {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 1.8rem !important;
+  letter-spacing: 0;
+}
+
+cart-drawer .totals__total-value,
+cart-drawer .totals__subtotal-value {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.3rem !important;
+}
+
+/* ---------- 13. FORMS / INPUTS ---------- */
 .field__input,
 .select__select,
-.text-area,
 input[type="text"],
 input[type="email"],
 input[type="search"],
@@ -386,154 +982,148 @@ input[type="tel"],
 input[type="number"],
 textarea,
 select {
-  transition:
-    border-color var(--lux-fast) var(--lux-ease),
-    box-shadow var(--lux-fast) var(--lux-ease),
-    background var(--lux-fast) var(--lux-ease);
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: 1px solid rgba(18,18,18,0.35) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 1.4rem !important;
+  letter-spacing: 0.02em;
+  color: rgb(18, 18, 18) !important;
+  transition: border-color var(--atelier-fast) var(--atelier-ease);
 }
 
-.field:focus-within,
-.field__input:focus,
-.select__select:focus,
-input:focus,
-textarea:focus {
-  box-shadow: 0 0 0 2px rgba(var(--color-foreground), 0.08);
+.field:focus-within .field__input,
+input:focus, textarea:focus, select:focus {
+  border-color: rgb(18,18,18) !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-/* ---------- 11. CART DRAWER & NOTIFICATION ---------- */
-cart-drawer {
-  transition: visibility var(--lux-mid) var(--lux-ease);
-}
-
-cart-drawer .drawer__inner {
-  transition: transform var(--lux-mid) var(--lux-ease) !important;
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-}
-
-cart-drawer.is-empty .drawer__inner {
-  transform: translateX(100%);
-}
-
-cart-drawer .drawer__overlay,
-cart-notification .cart-notification-overlay {
-  transition: opacity var(--lux-mid) var(--lux-ease) !important;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-
-/* ---------- 12. RICH-TEXT / SECTION REVEALS ---------- */
-.scroll-trigger.animate--slide-in {
-  --animation-slide-in-offset: 18px;
-}
-
-/* Soft fade-in for any element with .scroll-trigger */
-.scroll-trigger:not(.scroll-trigger--offscreen) {
-  transition:
-    opacity var(--lux-slow) var(--lux-ease),
-    transform var(--lux-slow) var(--lux-ease) !important;
-}
-
-/* ---------- 13. FOOTER — refined ---------- */
-.footer {
-  border-top: 1px solid var(--lux-line);
-}
-
-.footer__heading {
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-size: 1.2rem;
+.field__label, label {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  font-size: 1.05rem !important;
   opacity: 0.78;
+  font-weight: 500 !important;
 }
 
-.footer-block__details-content a {
-  transition: opacity var(--lux-fast) var(--lux-ease), transform var(--lux-fast) var(--lux-ease);
-  display: inline-block;
-}
-.footer-block__details-content a:hover {
-  opacity: 1;
-  transform: translateX(2px);
-}
-
-.copyright__content {
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
-  opacity: 0.6;
-}
-
-/* ---------- 14. BADGES — refined ---------- */
-.badge {
-  letter-spacing: 0.1em;
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(var(--color-foreground), 0.08);
-}
-
-/* ---------- 15. PAGE LOADER — first paint fade ---------- */
-body {
-  opacity: 0;
-  animation: lux-page-in 600ms var(--lux-ease-out) forwards;
-}
-
-@keyframes lux-page-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Skip the body fade in editor preview to avoid flicker on resize */
-.shopify-design-mode body {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
-
-/* ---------- 16. COLLECTION GRID — refined gaps ---------- */
-@media (min-width: 990px) {
-  .product-grid,
-  .collection-list {
-    column-gap: 28px;
-    row-gap: 56px;
-  }
-}
-
-/* ---------- 17. UTILITY: subtle parallax-ready containers ---------- */
-.lux-parallax {
-  overflow: hidden;
-}
-.lux-parallax > * {
-  transition: transform var(--lux-slow) var(--lux-ease);
-  will-change: transform;
-}
-
-/* ---------- 18. IMAGE PLACEHOLDER refinement ---------- */
-.placeholder-svg {
-  background: linear-gradient(135deg, rgba(var(--color-foreground),0.04), rgba(var(--color-foreground),0.08));
-}
-
-/* ---------- 19. PAGINATION ---------- */
+/* ---------- 14. PAGINATION & PAGE WIDTHS ---------- */
 .pagination__list a,
 .pagination__list button {
-  transition: transform var(--lux-fast) var(--lux-ease), color var(--lux-fast) var(--lux-ease);
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: opacity var(--atelier-fast) var(--atelier-ease);
 }
 .pagination__list a:hover,
-.pagination__list button:hover {
-  transform: translateY(-1px);
+.pagination__list button:hover { opacity: 0.55; }
+.pagination__list .pagination__item--current {
+  background: transparent !important;
+  border-bottom: 1px solid currentColor !important;
 }
 
-/* ---------- 20. FOCUS VISIBILITY — accessibility kept clean ---------- */
+/* ---------- 15. PAGE LOAD FADE ---------- */
+body {
+  opacity: 0;
+  animation: atelier-page-in 700ms var(--atelier-ease) forwards;
+}
+@keyframes atelier-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.shopify-design-mode body { animation: none; opacity: 1; transform: none; }
+
+/* ---------- 16. SCROLLBAR ---------- */
+@media (min-width: 990px) {
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(18,18,18,0.2);
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(18,18,18,0.5); }
+}
+
+/* ---------- 17. FOCUS OUTLINE ---------- */
 :focus-visible {
-  outline: 2px solid rgba(var(--color-foreground), 0.4);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 1px solid rgb(18,18,18) !important;
+  outline-offset: 4px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
-/* ---------- 21. MOBILE TWEAKS ---------- */
+/* ---------- 18. UTILITY: hide gradient backgrounds across cards ---------- */
+.gradient {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* ---------- 19. BREADCRUMBS / SECONDARY LINKS ---------- */
+.breadcrumb a,
+.breadcrumb {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 1.05rem !important;
+  opacity: 0.65;
+}
+
+/* ---------- 20. NEWSLETTER & FORM SECTIONS ---------- */
+.email-signup-banner__heading,
+.newsletter__heading {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: clamp(3rem, 4vw, 5rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.015em !important;
+}
+
+/* ---------- 21. MOBILE TUNING ---------- */
 @media (max-width: 749px) {
-  h1, .h0 { font-size: 3.6rem; }
-  .button:not([disabled]) { font-size: 1.2rem; }
-  .card-wrapper:hover { transform: none; }
-  .card-wrapper:hover .media > img:first-child { transform: scale(1.03); }
+  .header { padding: 0 2rem !important; }
+  .product__info-wrapper { padding: 2rem 0 !important; }
+  .rich-text__wrapper, .rich-text { padding: 6rem 0 !important; }
+  .footer { padding-top: 5rem !important; }
+  .title-wrapper-with-link { margin-top: 5rem !important; padding-top: 3rem !important; flex-direction: column; align-items: flex-start; }
+  .button { font-size: 1.05rem !important; padding: 1.4rem 2.6rem !important; }
+}
+
+/* ---------- 22. REMOVE LEGACY CARD GRADIENTS / SHADOWS ---------- */
+.card--standard.card--media .card__inner,
+.card--standard.card--text .card__inner,
+.card.card--card.card--media,
+.card.card--card.card--text {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ---------- 23. SLIDESHOW NAVIGATION ---------- */
+.slider-counter,
+.slider-counter--medium {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+.slider-button {
+  background: transparent !important;
+  border: 1px solid rgb(18,18,18) !important;
+  border-radius: 0 !important;
+  width: 4.4rem;
+  height: 4.4rem;
+  transition: background var(--atelier-fast) var(--atelier-ease), color var(--atelier-fast) var(--atelier-ease);
+}
+.slider-button:hover {
+  background: rgb(18,18,18) !important;
+  color: rgb(252,251,248) !important;
+}
+
+/* ---------- 24. SECTION DIVIDERS ---------- */
+.shopify-section + .shopify-section {
+  border-top: none;
 }
