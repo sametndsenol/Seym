@@ -1,0 +1,539 @@
+/* =========================================================
+   LUX OVERRIDES — Premium polish for the existing theme
+   Applied globally on top of base.css. No new sections.
+   ========================================================= */
+
+/* ---------- 1. ROOT TOKENS & SMOOTH BASE ---------- */
+:root {
+  --lux-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lux-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --lux-fast: 220ms;
+  --lux-mid: 480ms;
+  --lux-slow: 900ms;
+  --lux-shadow-soft: 0 12px 40px -12px rgba(0, 0, 0, 0.18);
+  --lux-shadow-hover: 0 28px 60px -20px rgba(0, 0, 0, 0.28);
+  --lux-line: rgba(var(--color-foreground), 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+/* Refined custom scrollbar (desktop only) */
+@media (min-width: 990px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(var(--color-foreground), 0.18);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background var(--lux-fast) var(--lux-ease);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-foreground), 0.4);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+}
+
+/* ---------- 2. TYPOGRAPHY POLISH ---------- */
+h1, h2, h3, .h0, .h1, .h2, .h3 {
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  font-feature-settings: "liga", "kern", "ss01";
+}
+
+h1, .h0, .h1 {
+  letter-spacing: -0.025em;
+}
+
+p, li, .rte {
+  font-feature-settings: "liga", "kern";
+}
+
+/* Eyebrow / small heading caps */
+.subtitle,
+.card__heading + .price,
+.price__regular .price-item--regular {
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 3. LINKS — animated underline ---------- */
+.rte a:not(.button),
+.footer-block a:not(.button),
+.list-menu__item--link {
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size var(--lux-mid) var(--lux-ease);
+}
+
+.rte a:hover,
+.footer-block a:hover,
+.list-menu__item--link:hover {
+  background-size: 100% 1px;
+}
+
+/* ---------- 4. BUTTONS — sliding fill on hover ---------- */
+.button:not([disabled]) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color var(--lux-mid) var(--lux-ease),
+    transform var(--lux-mid) var(--lux-ease),
+    box-shadow var(--lux-mid) var(--lux-ease);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+}
+
+.button:not([disabled])::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--color-foreground), 1);
+  transform: translateY(101%);
+  transition: transform var(--lux-mid) var(--lux-ease);
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.button:not([disabled]):hover {
+  color: rgb(var(--color-background));
+  transform: translateY(-1px);
+  box-shadow: var(--lux-shadow-soft);
+}
+
+.button:not([disabled]):hover::after {
+  transform: translateY(0);
+}
+
+/* Secondary buttons keep transparent base, fill with foreground */
+.button--secondary:not([disabled])::after {
+  background: rgb(var(--color-foreground));
+}
+
+/* Disable double effect on inverse schemes */
+.button.button--tertiary,
+.shopify-payment-button__button {
+  transition: transform var(--lux-mid) var(--lux-ease), box-shadow var(--lux-mid) var(--lux-ease);
+}
+
+.shopify-payment-button__button--unbranded:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--lux-shadow-soft);
+}
+
+/* ---------- 5. HEADER — glassmorphism + refined motion ---------- */
+.shopify-section-header-sticky .header-wrapper,
+sticky-header .header-wrapper,
+.section-header .header-wrapper {
+  transition:
+    background-color var(--lux-mid) var(--lux-ease),
+    backdrop-filter var(--lux-mid) var(--lux-ease),
+    box-shadow var(--lux-mid) var(--lux-ease),
+    padding var(--lux-mid) var(--lux-ease);
+}
+
+.scrolled-past-header .header-wrapper,
+sticky-header.shopify-section-header-sticky .header-wrapper {
+  background-color: rgba(var(--color-background), 0.78) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  box-shadow: 0 1px 0 rgba(var(--color-foreground), 0.06), 0 12px 30px -20px rgba(0,0,0,0.15);
+}
+
+.header__menu-item {
+  position: relative;
+  transition: color var(--lux-fast) var(--lux-ease);
+  letter-spacing: 0.06em;
+}
+
+.header__menu-item span {
+  position: relative;
+}
+
+.header__menu-item span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--lux-mid) var(--lux-ease);
+}
+
+.header__menu-item:hover span::after,
+.header__menu-item[aria-expanded="true"] span::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Header icons subtle hover */
+.header__icon {
+  transition: transform var(--lux-fast) var(--lux-ease), opacity var(--lux-fast) var(--lux-ease);
+}
+.header__icon:hover {
+  transform: translateY(-1px);
+  opacity: 0.85;
+}
+
+/* Cart bubble glow */
+.cart-count-bubble {
+  box-shadow: 0 0 0 0 rgba(var(--color-foreground), 0.4);
+  animation: lux-pulse 2.4s var(--lux-ease) infinite;
+}
+
+@keyframes lux-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--color-foreground), 0.0); }
+  50% { box-shadow: 0 0 0 6px rgba(var(--color-foreground), 0.0); }
+}
+
+/* ---------- 6. PRODUCT / COLLECTION CARDS — lift + image zoom ---------- */
+.card-wrapper,
+.product-card-wrapper {
+  transition: transform var(--lux-mid) var(--lux-ease);
+}
+
+.card-wrapper:hover {
+  transform: translateY(-6px);
+}
+
+.card,
+.card--standard,
+.card--card {
+  transition:
+    box-shadow var(--lux-mid) var(--lux-ease),
+    transform var(--lux-mid) var(--lux-ease);
+  will-change: transform;
+}
+
+.card-wrapper:hover .card {
+  box-shadow: var(--lux-shadow-hover);
+}
+
+/* Card image zoom + cross fade */
+.card .media,
+.card__media .media {
+  overflow: hidden;
+}
+
+.card .media img,
+.card__media .media img,
+.card-wrapper .media > img {
+  transition:
+    transform 1.4s var(--lux-ease-out),
+    opacity var(--lux-mid) var(--lux-ease) !important;
+  will-change: transform;
+}
+
+.card-wrapper:hover .media > img:first-child,
+.card-wrapper:hover .card__media .media img:first-child {
+  transform: scale(1.06);
+}
+
+/* If theme has secondary image, cross fade */
+.card-wrapper:hover .media > img + img,
+.card-wrapper:hover .card__media .media > img + img {
+  opacity: 1 !important;
+  transform: scale(1.06);
+}
+
+/* Title slight shift */
+.card-information .card__heading,
+.card__information .card__heading {
+  transition: transform var(--lux-mid) var(--lux-ease), color var(--lux-fast) var(--lux-ease);
+}
+.card-wrapper:hover .card__heading {
+  transform: translateX(2px);
+}
+
+/* Quick add button — refined */
+.quick-add__submit,
+.card .quick-add__submit {
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  transition:
+    transform var(--lux-mid) var(--lux-ease),
+    background var(--lux-mid) var(--lux-ease),
+    box-shadow var(--lux-mid) var(--lux-ease);
+}
+
+.card-wrapper:hover .quick-add__submit {
+  transform: translateY(-2px);
+  box-shadow: var(--lux-shadow-soft);
+}
+
+/* ---------- 7. SLIDESHOW / IMAGE BANNER — Ken Burns drift ---------- */
+.banner__media img,
+.slideshow__media img,
+.slideshow .banner__media img {
+  transition: transform 8s linear !important;
+  will-change: transform;
+}
+
+.slideshow__slide.is-selected .banner__media img,
+.slideshow__slide[aria-hidden="false"] .banner__media img {
+  transform: scale(1.06);
+}
+
+/* Banner overlay refinement */
+.banner__box {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: transform var(--lux-slow) var(--lux-ease);
+}
+
+/* ---------- 8. PRODUCT PAGE — gallery & details ---------- */
+.product__media-item {
+  transition: opacity var(--lux-mid) var(--lux-ease);
+}
+.product__media-item img {
+  transition: transform var(--lux-slow) var(--lux-ease);
+}
+.product__media-item:hover img {
+  transform: scale(1.02);
+}
+
+/* Variant pills — premium feel */
+.product-form__input--pill input[type='radio'] + label,
+fieldset.product-form__input--pill label {
+  transition:
+    background var(--lux-fast) var(--lux-ease),
+    color var(--lux-fast) var(--lux-ease),
+    border-color var(--lux-fast) var(--lux-ease),
+    transform var(--lux-fast) var(--lux-ease);
+  letter-spacing: 0.04em;
+}
+
+.product-form__input--pill input[type='radio'] + label:hover {
+  border-color: rgb(var(--color-foreground));
+  transform: translateY(-1px);
+}
+
+.product-form__input--pill input[type='radio']:checked + label {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-foreground));
+}
+
+/* Add to cart button pulse on focus */
+.product-form__submit:focus-visible {
+  box-shadow: 0 0 0 3px rgba(var(--color-foreground), 0.25);
+}
+
+/* Sticky-ish padding for product info on desktop */
+@media (min-width: 990px) {
+  .product__info-wrapper {
+    padding-top: 1.5rem;
+  }
+}
+
+/* ---------- 9. PRICE — refined emphasis ---------- */
+.price__regular .price-item,
+.price__sale .price-item--last,
+.price-item {
+  font-feature-settings: "tnum";
+  letter-spacing: 0.02em;
+}
+
+.price--on-sale .price-item--sale {
+  font-weight: 600;
+}
+
+/* ---------- 10. FORMS / INPUTS — clean lines ---------- */
+.field__input,
+.select__select,
+.text-area,
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  transition:
+    border-color var(--lux-fast) var(--lux-ease),
+    box-shadow var(--lux-fast) var(--lux-ease),
+    background var(--lux-fast) var(--lux-ease);
+}
+
+.field:focus-within,
+.field__input:focus,
+.select__select:focus,
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 2px rgba(var(--color-foreground), 0.08);
+}
+
+/* ---------- 11. CART DRAWER & NOTIFICATION ---------- */
+cart-drawer {
+  transition: visibility var(--lux-mid) var(--lux-ease);
+}
+
+cart-drawer .drawer__inner {
+  transition: transform var(--lux-mid) var(--lux-ease) !important;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+cart-drawer.is-empty .drawer__inner {
+  transform: translateX(100%);
+}
+
+cart-drawer .drawer__overlay,
+cart-notification .cart-notification-overlay {
+  transition: opacity var(--lux-mid) var(--lux-ease) !important;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* ---------- 12. RICH-TEXT / SECTION REVEALS ---------- */
+.scroll-trigger.animate--slide-in {
+  --animation-slide-in-offset: 18px;
+}
+
+/* Soft fade-in for any element with .scroll-trigger */
+.scroll-trigger:not(.scroll-trigger--offscreen) {
+  transition:
+    opacity var(--lux-slow) var(--lux-ease),
+    transform var(--lux-slow) var(--lux-ease) !important;
+}
+
+/* ---------- 13. FOOTER — refined ---------- */
+.footer {
+  border-top: 1px solid var(--lux-line);
+}
+
+.footer__heading {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  opacity: 0.78;
+}
+
+.footer-block__details-content a {
+  transition: opacity var(--lux-fast) var(--lux-ease), transform var(--lux-fast) var(--lux-ease);
+  display: inline-block;
+}
+.footer-block__details-content a:hover {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+.copyright__content {
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+/* ---------- 14. BADGES — refined ---------- */
+.badge {
+  letter-spacing: 0.1em;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+/* ---------- 15. PAGE LOADER — first paint fade ---------- */
+body {
+  opacity: 0;
+  animation: lux-page-in 600ms var(--lux-ease-out) forwards;
+}
+
+@keyframes lux-page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skip the body fade in editor preview to avoid flicker on resize */
+.shopify-design-mode body {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- 16. COLLECTION GRID — refined gaps ---------- */
+@media (min-width: 990px) {
+  .product-grid,
+  .collection-list {
+    column-gap: 28px;
+    row-gap: 56px;
+  }
+}
+
+/* ---------- 17. UTILITY: subtle parallax-ready containers ---------- */
+.lux-parallax {
+  overflow: hidden;
+}
+.lux-parallax > * {
+  transition: transform var(--lux-slow) var(--lux-ease);
+  will-change: transform;
+}
+
+/* ---------- 18. IMAGE PLACEHOLDER refinement ---------- */
+.placeholder-svg {
+  background: linear-gradient(135deg, rgba(var(--color-foreground),0.04), rgba(var(--color-foreground),0.08));
+}
+
+/* ---------- 19. PAGINATION ---------- */
+.pagination__list a,
+.pagination__list button {
+  transition: transform var(--lux-fast) var(--lux-ease), color var(--lux-fast) var(--lux-ease);
+}
+.pagination__list a:hover,
+.pagination__list button:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- 20. FOCUS VISIBILITY — accessibility kept clean ---------- */
+:focus-visible {
+  outline: 2px solid rgba(var(--color-foreground), 0.4);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- 21. MOBILE TWEAKS ---------- */
+@media (max-width: 749px) {
+  h1, .h0 { font-size: 3.6rem; }
+  .button:not([disabled]) { font-size: 1.2rem; }
+  .card-wrapper:hover { transform: none; }
+  .card-wrapper:hover .media > img:first-child { transform: scale(1.03); }
+}
