@@ -1,0 +1,396 @@
+{%- comment -%}
+  Seym header — purpose-built minimalist navigation for Midnight Gallery.
+  Replaces Dawn's complex header system. No customizer required.
+{%- endcomment -%}
+
+<style>
+  .seym-utility {
+    background: #0a1424;
+    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+    color: rgba(239, 236, 236, 0.7);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.9rem 2rem;
+    position: relative;
+    z-index: 60;
+  }
+  .seym-utility a { color: inherit; text-decoration: none; }
+
+  .seym-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #0a1424;
+    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+    transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                padding 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    padding: 1.6rem 0;
+  }
+  .seym-header.is-scrolled {
+    background: rgba(10, 20, 36, 0.92);
+    -webkit-backdrop-filter: saturate(160%) blur(20px);
+    backdrop-filter: saturate(160%) blur(20px);
+    padding: 0.8rem 0;
+  }
+
+  .seym-header__inner {
+    max-width: 156rem;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .seym-header__left,
+  .seym-header__right {
+    display: flex;
+    align-items: center;
+    gap: 2.4rem;
+  }
+  .seym-header__right { justify-content: flex-end; }
+
+  .seym-header__nav {
+    display: flex;
+    gap: 2.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .seym-header__nav a {
+    color: #efecec;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 1.05rem;
+    font-weight: 400;
+    padding: 0.4rem 0;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .seym-header__nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .seym-header__nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .seym-header__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #efecec;
+  }
+  .seym-header__logo img {
+    max-height: 4.6rem;
+    width: auto;
+    filter: brightness(0) invert(1);
+    transition: opacity 0.3s ease;
+  }
+  .seym-header.is-scrolled .seym-header__logo img {
+    max-height: 3.4rem;
+  }
+  .seym-header__logo:hover img { opacity: 0.85; }
+  .seym-header__logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 2.4rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .seym-header__icons {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+  }
+  .seym-header__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    color: #efecec;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    position: relative;
+  }
+  .seym-header__icon:hover { opacity: 0.7; }
+  .seym-header__icon svg { width: 2rem; height: 2rem; stroke: currentColor; fill: none; stroke-width: 1.4; }
+
+  .seym-header__cart-count {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #efecec;
+    color: #0a1424;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .seym-header__hamburger {
+    display: none;
+    width: 4rem;
+    height: 4rem;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #efecec;
+  }
+  .seym-header__hamburger span {
+    display: block;
+    width: 2.4rem;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .seym-header__hamburger span::before,
+  .seym-header__hamburger span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+  }
+  .seym-header__hamburger span::before { top: -7px; }
+  .seym-header__hamburger span::after { top: 7px; }
+
+  /* Mobile drawer */
+  .seym-mobile-menu {
+    position: fixed;
+    inset: 0;
+    background: #0a1424;
+    z-index: 100;
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 8rem 3rem 3rem;
+    overflow-y: auto;
+  }
+  .seym-mobile-menu.is-open { transform: translateY(0); }
+  .seym-mobile-menu__close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: none;
+    color: #efecec;
+    cursor: pointer;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .seym-mobile-menu__close svg { width: 2.4rem; height: 2.4rem; }
+  .seym-mobile-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .seym-mobile-menu li a {
+    color: #efecec;
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.4rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    display: block;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+  }
+
+  @media (max-width: 989px) {
+    .seym-header__inner {
+      grid-template-columns: auto 1fr auto;
+      padding: 0 2rem;
+    }
+    .seym-header__nav { display: none; }
+    .seym-header__hamburger { display: inline-flex; }
+    .seym-header__left { gap: 1rem; }
+    .seym-header__right { gap: 0.8rem; }
+    .seym-header__logo img { max-height: 3.6rem; }
+    .seym-header__logo-text { font-size: 1.8rem; }
+  }
+
+  /* Body padding so sticky header doesn't overlap content
+     unless first section is hero (lux-scroll-showcase) */
+  body.template-index .seym-header { background: transparent; border-bottom-color: transparent; }
+  body.template-index .seym-header.is-scrolled { background: rgba(10, 20, 36, 0.92); border-bottom-color: rgba(239, 236, 236, 0.08); }
+</style>
+
+{%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
+  <div class="seym-utility">
+    {{ section.settings.announcement_text }}
+  </div>
+{%- endif -%}
+
+<header class="seym-header" id="SeymHeader">
+  <div class="seym-header__inner">
+
+    <div class="seym-header__left">
+      <button class="seym-header__hamburger" aria-label="Open menu" id="SeymMenuOpen">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="seym-header__nav">
+          {%- for link in linklists[section.settings.menu].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="seym-header__logo">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 360 | image_tag:
+            loading: 'eager',
+            width: settings.logo.width,
+            height: settings.logo.height,
+            alt: shop.name
+        }}
+      {%- else -%}
+        <span class="seym-header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="seym-header__right">
+      <ul class="seym-header__icons" style="list-style:none; padding:0; margin:0;">
+        <li>
+          <a href="{{ routes.search_url }}" class="seym-header__icon" aria-label="Search">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+            </svg>
+          </a>
+        </li>
+        {%- if shop.customer_accounts_enabled -%}
+        <li>
+          <a href="{{ routes.account_url }}" class="seym-header__icon" aria-label="Account">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+            </svg>
+          </a>
+        </li>
+        {%- endif -%}
+        <li>
+          <a href="{{ routes.cart_url }}" class="seym-header__icon" aria-label="Cart">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 7h14l-1.5 12.5a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7L5 7z"/>
+              <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+            </svg>
+            {%- if cart.item_count > 0 -%}
+              <span class="seym-header__cart-count">{{ cart.item_count }}</span>
+            {%- endif -%}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+{%- comment -%} Mobile drawer menu {%- endcomment -%}
+<div class="seym-mobile-menu" id="SeymMobileMenu" aria-hidden="true">
+  <button class="seym-mobile-menu__close" aria-label="Close menu" id="SeymMenuClose">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" stroke-width="1.4">
+      <line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="6" y1="18" x2="18" y2="6"/>
+    </svg>
+  </button>
+  <nav>
+    <ul>
+      {%- for link in linklists[section.settings.menu].links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+</div>
+
+<script>
+(function() {
+  const header = document.getElementById('SeymHeader');
+  const onScroll = () => {
+    if (window.scrollY > 12) header.classList.add('is-scrolled');
+    else header.classList.remove('is-scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menu = document.getElementById('SeymMobileMenu');
+  const open = document.getElementById('SeymMenuOpen');
+  const close = document.getElementById('SeymMenuClose');
+  if (open && menu && close) {
+    open.addEventListener('click', () => { menu.classList.add('is-open'); menu.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; });
+    close.addEventListener('click', () => { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('is-open'); document.body.style.overflow=''; }));
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Seym Header",
+  "tag": "header",
+  "class": "shopify-section-header shopify-section-header-sticky",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Seym Header"
+    }
+  ]
+}
+{% endschema %}
