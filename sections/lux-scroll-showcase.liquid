@@ -1,0 +1,299 @@
+{%- style -%}
+  .lux-scroll-container {
+    position: relative;
+    background-color: {{ section.settings.bg_color }};
+    /* The height will be determined by the number of steps * 100vh to give enough scroll room */
+    height: calc({{ section.blocks.size }} * 100vh + 100vh);
+  }
+
+  .lux-sticky-wrap {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lux-image-wrapper {
+    position: absolute;
+    width: 50vw;
+    height: 50vw;
+    max-width: 600px;
+    max-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    /* initial state for GSAP */
+    transform-origin: center center;
+  }
+
+  .lux-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0px 20px 40px rgba(0,0,0,0.15));
+  }
+
+  .lux-text-step {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    pointer-events: none;
+    padding: 0 10%;
+    opacity: 0; /* Hidden by default, GSAP will animate */
+  }
+
+  .lux-text-content {
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: {{ section.settings.text_color }};
+  }
+
+  .lux-text-content h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+    line-height: 1.1;
+    color: inherit;
+  }
+
+  .lux-text-content p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    line-height: 1.6;
+    color: inherit;
+  }
+
+  /* Alignment variations */
+  .lux-align-left { justify-content: flex-start; }
+  .lux-align-right { justify-content: flex-end; }
+  .lux-align-center { justify-content: center; text-align: center; }
+
+  @media screen and (max-width: 768px) {
+    .lux-image-wrapper {
+      width: 80vw;
+      height: 80vw;
+    }
+    .lux-text-content {
+      padding: 20px;
+    }
+    .lux-text-content h2 {
+      font-size: 2rem;
+    }
+    .lux-text-step {
+      align-items: flex-end;
+      padding-bottom: 15vh;
+      justify-content: center;
+    }
+  }
+{%- endstyle -%}
+
+<div class="lux-scroll-container" id="lux-container-{{ section.id }}">
+  <div class="lux-sticky-wrap">
+    
+    <!-- Product Image -->
+    <div class="lux-image-wrapper" id="lux-image-{{ section.id }}">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+
+    <!-- Text Steps -->
+    {% for block in section.blocks %}
+      <div class="lux-text-step lux-align-{{ block.settings.alignment }} lux-step-{{ section.id }}" id="lux-step-{{ block.id }}">
+        <div class="lux-text-content">
+          {% if block.settings.title != blank %}
+            <h2>{{ block.settings.title }}</h2>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <div class="lux-rte">{{ block.settings.text }}</div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    // Wait for GSAP to load
+    const checkGSAP = setInterval(() => {
+      if (window.gsap && window.ScrollTrigger) {
+        clearInterval(checkGSAP);
+        initLuxAnimation();
+      }
+    }, 100);
+
+    function initLuxAnimation() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const sectionId = "{{ section.id }}";
+      const container = document.getElementById(`lux-container-${sectionId}`);
+      const image = document.getElementById(`lux-image-${sectionId}`);
+      const steps = gsap.utils.toArray(`.lux-step-${sectionId}`);
+
+      if (!container || !image || steps.length === 0) return;
+
+      // Create a master timeline tied to the container's scroll
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1, // Smooth scrubbing effect
+        }
+      });
+
+      // Calculate how much to scale/move based on number of steps
+      // For each step, we fade it in, then fade it out, and slightly animate the image
+      
+      steps.forEach((step, index) => {
+        // Text animation
+        tl.to(step, {
+          opacity: 1,
+          y: -20,
+          duration: 1,
+          ease: "power2.out"
+        })
+        
+        // Image animation (subtle scaling and rotating for that Mac feel)
+        .to(image, {
+          scale: 1 + (index * 0.2), // Gradually gets bigger
+          rotation: (index % 2 === 0 ? 5 : -5), // Slight tilt left/right
+          duration: 1,
+          ease: "power1.inOut"
+        }, "<") // Start at the same time as the text fade in
+
+        // Hold the state for a moment
+        .to({}, {duration: 0.5})
+
+        // Fade out text if it's not the last step
+        if(index !== steps.length - 1) {
+          tl.to(step, {
+            opacity: 0,
+            y: -40,
+            duration: 1,
+            ease: "power2.in"
+          });
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Lux Scroll Showcase",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Product Image",
+      "info": "Use a high resolution PNG with a transparent background for best results."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f5f7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1d1d1f"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Exceptional Quality"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Description",
+          "default": "<p>Discover the finest materials and craftsmanship.</p>"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lux Scroll Showcase",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Unrivaled Elegance",
+            "alignment": "left"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Masterful Craftsmanship",
+            "alignment": "right"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Timeless Design",
+            "alignment": "left"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
