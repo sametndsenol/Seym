@@ -239,23 +239,28 @@ h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; font-weight: 400 !im
 
 main .shopify-section { margin: 0; }
 
-/* ---------- 3. HEADER — invisible until needed ---------- */
+/* ---------- 3. HEADER — solid midnight bar, always legible ---------- */
+.shopify-section-header,
+.shopify-section-header-sticky,
+sticky-header {
+  background: var(--seym-void) !important;
+}
+
 .header-wrapper {
-  background: transparent !important;
-  border-bottom: none !important;
-  padding: 2rem 0 !important;
+  background: var(--seym-void) !important;
+  border-bottom: 1px solid var(--seym-line-soft) !important;
+  padding: 1.4rem 0 !important;
   transition: background var(--seym-mid) var(--seym-ease),
-              backdrop-filter var(--seym-mid) var(--seym-ease),
               padding var(--seym-mid) var(--seym-ease) !important;
 }
 
 .scrolled-past-header .header-wrapper,
 sticky-header.shopify-section-header-sticky .header-wrapper {
-  background: rgba(10, 20, 36, 0.78) !important;
+  background: rgba(10, 20, 36, 0.92) !important;
   -webkit-backdrop-filter: saturate(160%) blur(20px);
   backdrop-filter: saturate(160%) blur(20px);
   border-bottom: 1px solid var(--seym-line-soft) !important;
-  padding: 1rem 0 !important;
+  padding: 0.9rem 0 !important;
   box-shadow: none !important;
 }
 
@@ -1236,3 +1241,268 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 
 /* Sale badge / sold-out badge */
 .badge--bottom-left { color: var(--seym-cream) !important; }
+
+/* ============================================================
+   25. SCREEN-FIX OVERRIDES — corrections for the live build
+   ============================================================ */
+
+/* Hide Dawn's slideshow number/dot indicator that appears
+   between the hero and the next section ("1 2" pagination). */
+.slideshow__controls,
+.slideshow__control-wrapper,
+.slider-counter--dots,
+.slideshow .slider-buttons,
+.banner__indicators,
+.slideshow__autoplay-button,
+.slider-buttons.slider-buttons--with-counter,
+.slideshow + nav.slider-buttons,
+.shopify-section .slider-counter {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove any persistent slider control rail */
+.slideshow .slideshow__controls,
+.slideshow__text--bottom .slideshow__controls {
+  display: none !important;
+}
+
+/* Slideshow auto-overlay — make the white-background JPG hero
+   feel more cinematic by overlaying a bottom-up midnight gradient. */
+.slideshow .banner__media::after,
+.banner.slideshow__slide .banner__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 40%, rgba(10, 20, 36, 0.45) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Footer — kill the colourful third-party trust-badge banner
+   (Essential Trust Badges app block) and any random app blocks
+   that pollute the footer rhythm. */
+.footer .shopify-app-block,
+.footer .essential-trust-badges,
+.footer [data-app-block-id*="trust-badges"],
+.shopify-section-group-footer-group .shopify-app-block:not(.newsletter-app):not(.brand_information),
+.shopify-section [class*="essential-trust-badges"] {
+  display: none !important;
+}
+
+/* Language selector inside the footer block looks like an orphan;
+   compact it into a small inline pill rather than a giant header. */
+.footer .localization-form,
+.footer .localization-selector {
+  margin-top: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: transparent !important;
+}
+
+.footer .localization-form__select,
+.footer .disclosure__button {
+  background: transparent !important;
+  border: 1px solid var(--seym-line-soft) !important;
+  color: var(--seym-cream-soft) !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1rem !important;
+  padding: 0.8rem 1.4rem !important;
+  border-radius: 0 !important;
+}
+
+/* Hide the giant "Language" / "Country" footer headings
+   (these pages literally read "Language" as a heading). */
+.footer h2.h4,
+.footer .footer__localization > h2,
+.footer__column.footer__localization > h2 {
+  text-transform: uppercase !important;
+  letter-spacing: 0.3em !important;
+  font-size: 1rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  opacity: 0.78;
+  font-style: normal !important;
+}
+
+/* Footer columns — proper alignment & spacing */
+.footer__content-top {
+  display: grid !important;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 6rem;
+  align-items: flex-start;
+}
+@media (max-width: 989px) {
+  .footer__content-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+@media (max-width: 600px) {
+  .footer__content-top {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Quick links / menu items list — remove inline crushed look */
+.footer-block__details-content > ul,
+.footer__list-menu,
+.footer-block ul.list-unstyled {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Social icons — crisp size, even spacing */
+.footer__list-social {
+  display: flex !important;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+.footer__list-social .list-social__item a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border: 1px solid var(--seym-line-soft);
+  color: var(--seym-cream) !important;
+  transition: background var(--seym-fast) var(--seym-ease), color var(--seym-fast) var(--seym-ease);
+}
+.footer__list-social .list-social__item a:hover {
+  background: var(--seym-cream);
+  color: var(--seym-void) !important;
+}
+.footer__list-social svg { width: 1.6rem; height: 1.6rem; }
+
+/* Stop the "single Instagram icon" loneliness at the very bottom */
+.copyright .footer__list-social,
+.footer__copyright .footer__list-social {
+  display: none !important;
+}
+
+/* Newsletter — remove the rectangular outline + tighten layout */
+.footer .newsletter-form__field-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Remove the colourful inline app cards if they sneak into newsletter section */
+.shopify-section-group-footer-group .shopify-app-block + .shopify-app-block,
+.newsletter .shopify-app-block,
+.shopify-section .shopify-app-block:has(img[src*="cdn.shopify.com/extensions"]) {
+  display: none !important;
+}
+
+/* Video section — never let it become a giant black box.
+   Add visible aspect ratio + subtle frame. */
+.video-section,
+.shopify-section[class*="video"],
+deferred-media {
+  background: var(--seym-void) !important;
+}
+.video-section .video-section__media,
+.video-section video,
+deferred-media video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto !important;
+  max-height: 80vh;
+  object-fit: cover;
+  display: block;
+}
+deferred-media .deferred-media__poster {
+  background: var(--seym-void);
+}
+deferred-media .deferred-media__poster-button {
+  background: rgba(239, 236, 236, 0.95) !important;
+  color: var(--seym-void) !important;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 999px !important;
+  border: none !important;
+}
+deferred-media .deferred-media__poster-button svg { fill: currentColor; width: 2.4rem; height: 2.4rem; }
+
+/* Featured-collection / collection-list — compact "View All" button */
+.collection-list-wrapper .button,
+.collection-list .button,
+.title-wrapper-with-link + * .button {
+  display: inline-flex;
+  width: auto !important;
+  margin: 4rem auto 0 auto;
+}
+
+/* When collection cards have empty thumbnails (no image),
+   render a soft luminous tile instead of a giant void hole. */
+.card--collection .card__inner:not(:has(img)),
+.card--collection.card--text {
+  min-height: 0;
+}
+.card--collection.card--text {
+  padding: 4rem 2rem !important;
+}
+
+/* "View all" button container needs breathing room */
+.collection-list .center,
+.collection-list-wrapper .center {
+  margin-top: 4rem;
+  padding-top: 0;
+}
+
+/* Center "View all" button on its own row */
+.collection-list-wrapper .button--secondary,
+.collection-list-wrapper .button--full-width {
+  width: auto !important;
+  margin: 4rem auto 0 !important;
+}
+
+/* About Us section — when it's still using legacy rich-text,
+   make sure heading & body align with our editorial scale */
+.shopify-section [class*="rich-text"] .rich-text__heading {
+  font-size: clamp(3.4rem, 5vw, 6rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* Buttons inside legacy rich-text: standardize sizing */
+.rich-text__buttons .button {
+  min-width: 220px;
+}
+
+/* ----------- 26. CART ICON BUBBLE — drop-in fix ----------- */
+.cart-count-bubble {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+}
+
+/* ----------- 27. UTILITY BAR (top mini-nav) ----------- */
+.utility-bar {
+  background: var(--seym-void) !important;
+  border-bottom: 1px solid var(--seym-line-soft) !important;
+}
+.utility-bar .localization-form__select,
+.utility-bar .disclosure__button {
+  color: var(--seym-cream) !important;
+  background: transparent !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.22em !important;
+  font-size: 1rem !important;
+}
+
