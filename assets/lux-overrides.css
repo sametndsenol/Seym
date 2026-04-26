@@ -1,22 +1,37 @@
 /* ========================================================================
-   ATELIER — Editorial transformation, Marquisate-grade
-   Drop-in stylesheet that overrides Dawn aesthetics:
-   • Pure black on pure white • Sharp edges (no radius, no shadows)
-   • Cormorant Garamond + Inter typography • Generous whitespace
-   • Slow cinematic motion • Minimal nav • Editorial product cards
+   SEYM ATELIER — Brand-aligned editorial system
+   Brand DNA: artisanal elegance · luminous textures · modern heritage
+   Voice: magical, artistic, elegant, sophisticated
+   Palette:
+     • #efecec  Cream     — primary background (soft daylight)
+     • #1b365d  Midnight  — accent (mythic depth, links, focus)
+     • #121212  Ink       — typography
    ======================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap');
 
-/* ---------- 0. RESET TOKENS ---------- */
+/* ---------- 0. BRAND TOKENS ---------- */
 :root,
 body {
+  /* RGB triples used by Dawn variables */
   --color-foreground: 18, 18, 18 !important;
-  --color-background: 252, 251, 248 !important; /* warm off-white */
+  --color-background: 239, 236, 236 !important;
   --color-base-text: 18, 18, 18 !important;
-  --color-base-background-1: 252, 251, 248 !important;
-  --color-base-background-2: 245, 243, 238 !important;
-  --color-shadow: 0, 0, 0 !important;
+  --color-base-background-1: 239, 236, 236 !important;
+  --color-base-background-2: 232, 228, 226 !important;
+  --color-shadow: 27, 54, 93 !important;
+
+  /* Brand hexes available as utilities */
+  --seym-cream: #efecec;
+  --seym-cream-deep: #e6e2df;
+  --seym-cream-soft: #f5f2ef;
+  --seym-midnight: #1b365d;
+  --seym-midnight-soft: #2a4775;
+  --seym-ink: #121212;
+  --seym-ink-soft: #2a2a2a;
+  --seym-line: rgba(18, 18, 18, 0.14);
+  --seym-line-soft: rgba(18, 18, 18, 0.08);
+  --seym-line-strong: rgba(18, 18, 18, 0.85);
 
   --buttons-radius: 0px !important;
   --buttons-radius-outset: 0px !important;
@@ -37,17 +52,14 @@ body {
   --blog-card-shadow-opacity: 0 !important;
   --buttons-shadow-opacity: 0 !important;
   --buttons-border-width: 1px !important;
-
   --product-card-border-opacity: 0 !important;
   --collection-card-border-opacity: 0 !important;
   --card-border-opacity: 0 !important;
 
-  --atelier-line: rgba(18, 18, 18, 0.14);
-  --atelier-line-strong: rgba(18, 18, 18, 0.85);
-  --atelier-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --atelier-slow: 1100ms;
-  --atelier-mid: 600ms;
-  --atelier-fast: 280ms;
+  --seym-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --seym-slow: 1100ms;
+  --seym-mid: 600ms;
+  --seym-fast: 280ms;
 
   --font-heading-family: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif !important;
   --font-body-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif !important;
@@ -57,7 +69,7 @@ body {
   --font-body-weight: 300 !important;
 }
 
-/* Force solid white-on-black scheme everywhere */
+/* Force brand palette across every Dawn color scheme */
 .color-background-1,
 .color-background-2,
 .color-accent-1,
@@ -68,29 +80,30 @@ body {
 .color-scheme-3,
 .color-scheme-4,
 .color-scheme-5 {
-  --color-background: 252, 251, 248 !important;
+  --color-background: 239, 236, 236 !important;
   --color-foreground: 18, 18, 18 !important;
   --color-button: 18, 18, 18 !important;
-  --color-button-text: 252, 251, 248 !important;
-  --color-secondary-button: 252, 251, 248 !important;
+  --color-button-text: 239, 236, 236 !important;
+  --color-secondary-button: 239, 236, 236 !important;
   --color-secondary-button-text: 18, 18, 18 !important;
-  --color-link: 18, 18, 18 !important;
+  --color-link: 27, 54, 93 !important;
   --color-badge-foreground: 18, 18, 18 !important;
-  --color-badge-background: 252, 251, 248 !important;
+  --color-badge-background: 239, 236, 236 !important;
   --color-badge-border: 18, 18, 18 !important;
-  --gradient-background: rgb(252, 251, 248) !important;
+  --gradient-background: rgb(239, 236, 236) !important;
 }
 
-/* Inverse for hero & manifesto */
+/* Inverse / midnight scheme — for hero, manifesto, dramatic moments */
 .color-inverse,
-.atelier-inverse {
-  --color-background: 18, 18, 18 !important;
-  --color-foreground: 252, 251, 248 !important;
-  --color-button: 252, 251, 248 !important;
-  --color-button-text: 18, 18, 18 !important;
-  --color-secondary-button: 18, 18, 18 !important;
-  --color-secondary-button-text: 252, 251, 248 !important;
-  background: rgb(18, 18, 18) !important;
+.seym-night {
+  --color-background: 27, 54, 93 !important;
+  --color-foreground: 239, 236, 236 !important;
+  --color-button: 239, 236, 236 !important;
+  --color-button-text: 27, 54, 93 !important;
+  --color-secondary-button: 27, 54, 93 !important;
+  --color-secondary-button-text: 239, 236, 236 !important;
+  --color-link: 239, 236, 236 !important;
+  background: rgb(27, 54, 93) !important;
 }
 
 html { scroll-behavior: smooth; }
@@ -100,20 +113,34 @@ html { scroll-behavior: smooth; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* ---------- LUMINOUS GRAIN — paper texture, off by default in editor ---------- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.85 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 280px 280px;
+}
+.shopify-design-mode body::before { display: none; }
+
 body {
-  background: rgb(252, 251, 248) !important;
-  color: rgb(18, 18, 18) !important;
+  background: var(--seym-cream) !important;
+  color: var(--seym-ink) !important;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-weight: 300 !important;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   line-height: 1.65;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-::selection { background: #121212; color: #fcfbf8; }
+::selection { background: var(--seym-midnight); color: var(--seym-cream); }
 
 /* ---------- 1. EDITORIAL TYPOGRAPHY ---------- */
 h1, h2, h3, h4, h5, h6,
@@ -131,17 +158,17 @@ h1, h2, h3, h4, h5, h6,
 .section-header__title,
 .rich-text__heading,
 .collection__title h2 {
-  font-family: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif !important;
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
   font-weight: 400 !important;
   letter-spacing: -0.015em !important;
   line-height: 1.05 !important;
-  color: rgb(18, 18, 18);
+  color: var(--seym-ink);
 }
 
-.h0, h1, .banner h2, .slideshow__heading {
+.h0, h1, .banner h2, .slideshow__heading, .banner__heading {
   font-size: clamp(4.4rem, 8vw, 9.5rem) !important;
   font-weight: 300 !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: -0.028em !important;
   line-height: 0.98 !important;
 }
 
@@ -150,42 +177,57 @@ h2, .h1, .title-wrapper-with-link h2 {
   font-weight: 400 !important;
 }
 
-h3, .h2 {
-  font-size: clamp(2.6rem, 3.4vw, 4rem) !important;
-}
+h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; }
 
-/* Eyebrow / subtitle: small caps style */
+/* Eyebrow / caption — small caps */
 .subtitle,
 .caption-with-letter-spacing,
 .caption,
 .footer-block__heading,
 .product__text,
-.section-header__title,
-.collection-hero__description {
+.section-header__title {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  letter-spacing: 0.22em !important;
+  letter-spacing: 0.24em !important;
   font-size: 1.05rem !important;
   font-weight: 500 !important;
-  opacity: 0.78;
+  color: var(--seym-ink) !important;
+  opacity: 0.72;
 }
 
-/* Body paragraphs */
+/* Paragraphs */
 .rte p, .rich-text__text p, p {
   font-family: 'Inter', sans-serif !important;
   font-weight: 300 !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
   letter-spacing: 0.005em;
   font-size: 1.55rem;
+  color: var(--seym-ink);
 }
 
-/* Editorial italic accent inside rich text */
-.rte em, .rich-text em, .rich-text__text em {
+/* Italic accent — magical voice */
+.rte em, .rich-text em, .rich-text__text em,
+.banner__text em, blockquote {
   font-family: 'Cormorant Garamond', serif !important;
-  font-style: italic;
-  font-size: 1.15em;
+  font-style: italic !important;
+  font-size: 1.18em;
   font-weight: 400;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
+  color: var(--seym-midnight);
+}
+
+/* Inline links — midnight blue with refined underline */
+a:not(.button):not(.header__menu-item):not(.header__heading-link):not(.list-menu__item--link):not(.full-unstyled-link) {
+  color: var(--seym-midnight) !important;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: background-size var(--seym-mid) var(--seym-ease), color var(--seym-fast) var(--seym-ease);
+}
+a:not(.button):not(.header__menu-item):not(.header__heading-link):not(.list-menu__item--link):not(.full-unstyled-link):hover {
+  background-size: 0% 1px;
 }
 
 /* ---------- 2. PAGE WIDTH & RHYTHM ---------- */
@@ -195,43 +237,33 @@ h3, .h2 {
   max-width: 156rem !important;
   padding: 0 4rem !important;
 }
-
 @media (max-width: 749px) {
   .page-width, .page-width-tablet, .page-width-desktop { padding: 0 2rem !important; }
 }
 
-/* Generous vertical rhythm between sections */
-.shopify-section + .shopify-section { padding-top: 0; }
-.shopify-section { padding-top: 0; padding-bottom: 0; }
+main .shopify-section { margin: 0; }
 
-main .shopify-section {
-  margin: 0;
-}
-
-/* ---------- 3. HEADER — minimal editorial ---------- */
+/* ---------- 3. HEADER — minimal heritage ---------- */
 .header-wrapper {
   background: transparent !important;
   border-bottom: none !important;
   padding: 1.6rem 0 !important;
-  transition: background var(--atelier-mid) var(--atelier-ease),
-              backdrop-filter var(--atelier-mid) var(--atelier-ease),
-              padding var(--atelier-mid) var(--atelier-ease) !important;
+  transition: background var(--seym-mid) var(--seym-ease),
+              backdrop-filter var(--seym-mid) var(--seym-ease),
+              padding var(--seym-mid) var(--seym-ease) !important;
 }
 
 .scrolled-past-header .header-wrapper,
 sticky-header.shopify-section-header-sticky .header-wrapper {
-  background: rgba(252, 251, 248, 0.9) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  backdrop-filter: saturate(180%) blur(16px);
-  border-bottom: 1px solid var(--atelier-line) !important;
+  background: rgba(239, 236, 236, 0.86) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border-bottom: 1px solid var(--seym-line) !important;
   padding: 0.8rem 0 !important;
   box-shadow: none !important;
 }
 
-.header {
-  padding: 0 4rem !important;
-  align-items: center;
-}
+.header { padding: 0 4rem !important; align-items: center; }
 
 .header__heading-link,
 .header__heading {
@@ -240,7 +272,7 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
   font-family: 'Cormorant Garamond', serif !important;
   font-weight: 500 !important;
   font-size: 1.8rem !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
 }
 
 .header__menu-item,
@@ -248,51 +280,49 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
 .list-menu__item--link {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.18em !important;
+  letter-spacing: 0.2em !important;
   font-size: 1.15rem !important;
   font-weight: 400 !important;
   padding: 0.6rem 1.6rem !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
   text-decoration: none !important;
   position: relative;
-  transition: opacity var(--atelier-fast) var(--atelier-ease);
+  transition: color var(--seym-fast) var(--seym-ease);
 }
+
+.header__menu-item:hover,
+.list-menu__item--link:hover { color: var(--seym-midnight) !important; }
 
 .header__menu-item span,
 .list-menu__item--link span {
-  position: relative;
-  display: inline-block;
+  position: relative; display: inline-block;
 }
-
 .header__menu-item span::after,
 .list-menu__item--link span::after {
   content: '';
   position: absolute;
   left: 0; right: 0; bottom: -3px;
   height: 1px;
-  background: currentColor;
+  background: var(--seym-midnight);
   transform: scaleX(0);
   transform-origin: right center;
-  transition: transform var(--atelier-mid) var(--atelier-ease);
+  transition: transform var(--seym-mid) var(--seym-ease);
 }
-
 .header__menu-item:hover span::after,
 .list-menu__item--link:hover span::after {
   transform: scaleX(1);
   transform-origin: left center;
 }
 
-.header__icon,
-.header__icon svg {
-  color: rgb(18, 18, 18) !important;
-  transition: opacity var(--atelier-fast) var(--atelier-ease);
+.header__icon, .header__icon svg {
+  color: var(--seym-ink) !important;
+  transition: color var(--seym-fast) var(--seym-ease), opacity var(--seym-fast) var(--seym-ease);
 }
-.header__icon:hover { opacity: 0.6; }
+.header__icon:hover { color: var(--seym-midnight) !important; opacity: 0.88; }
 
-/* Cart bubble - minimal dot */
 .cart-count-bubble {
-  background: rgb(18, 18, 18) !important;
-  color: rgb(252, 251, 248) !important;
+  background: var(--seym-midnight) !important;
+  color: var(--seym-cream) !important;
   border-radius: 999px !important;
   min-width: 1.6rem !important;
   height: 1.6rem !important;
@@ -302,29 +332,29 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
   border: none !important;
 }
 
-/* Announcement bar */
+/* Announcement bar — midnight banner */
 .announcement-bar {
-  background: rgb(18, 18, 18) !important;
-  color: rgb(252, 251, 248) !important;
+  background: var(--seym-midnight) !important;
+  color: var(--seym-cream) !important;
   border: none !important;
 }
 .announcement-bar p {
   text-transform: uppercase;
-  letter-spacing: 0.24em !important;
+  letter-spacing: 0.26em !important;
   font-size: 1.05rem !important;
-  color: rgb(252, 251, 248) !important;
+  color: var(--seym-cream) !important;
   font-weight: 400;
   padding: 0.9rem 0 !important;
 }
 
-/* ---------- 4. BUTTONS — editorial sharp ---------- */
+/* ---------- 4. BUTTONS — sharp, slow fill ---------- */
 .button,
 .shopify-payment-button__button,
 button.button {
   border-radius: 0 !important;
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.22em !important;
+  letter-spacing: 0.24em !important;
   font-weight: 500 !important;
   font-size: 1.15rem !important;
   padding: 1.6rem 3.2rem !important;
@@ -332,50 +362,53 @@ button.button {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: rgb(18, 18, 18) !important;
-  color: rgb(252, 251, 248) !important;
-  border: 1px solid rgb(18, 18, 18) !important;
+  background: var(--seym-ink) !important;
+  color: var(--seym-cream) !important;
+  border: 1px solid var(--seym-ink) !important;
   box-shadow: none !important;
-  transition: color var(--atelier-mid) var(--atelier-ease) !important;
+  transition: color var(--seym-mid) var(--seym-ease), border-color var(--seym-mid) var(--seym-ease) !important;
 }
 
-.button::before,
 .button::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgb(252, 251, 248);
+  background: var(--seym-midnight);
   transform: translateY(101%);
-  transition: transform var(--atelier-mid) var(--atelier-ease);
+  transition: transform var(--seym-mid) var(--seym-ease);
   z-index: -1;
 }
 
 .button:not([disabled]):hover {
-  color: rgb(18, 18, 18) !important;
-  background: rgb(18, 18, 18) !important;
+  color: var(--seym-cream) !important;
+  border-color: var(--seym-midnight) !important;
+  background: var(--seym-ink) !important;
 }
 .button:not([disabled]):hover::after { transform: translateY(0); }
 
 .button--secondary {
   background: transparent !important;
-  color: rgb(18, 18, 18) !important;
-  border: 1px solid rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
+  border: 1px solid var(--seym-ink) !important;
 }
-.button--secondary::after { background: rgb(18, 18, 18); }
-.button--secondary:not([disabled]):hover { color: rgb(252, 251, 248) !important; }
+.button--secondary::after { background: var(--seym-ink); }
+.button--secondary:not([disabled]):hover { color: var(--seym-cream) !important; border-color: var(--seym-ink) !important; }
 
 .button--tertiary {
   background: transparent !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
   border: none !important;
-  border-bottom: 1px solid rgb(18, 18, 18) !important;
+  border-bottom: 1px solid var(--seym-ink) !important;
   padding: 0.6rem 0 !important;
   min-height: 0 !important;
 }
 .button--tertiary::after { display: none; }
-.button--tertiary:hover { opacity: 0.6; background: transparent !important; color: rgb(18, 18, 18) !important; }
+.button--tertiary:hover {
+  background: transparent !important;
+  color: var(--seym-midnight) !important;
+  border-color: var(--seym-midnight) !important;
+}
 
-/* Disabled / sold out */
 .button[disabled],
 .button[aria-disabled="true"] {
   background: transparent !important;
@@ -384,34 +417,44 @@ button.button {
   cursor: not-allowed;
 }
 
-/* ---------- 5. SLIDESHOW / IMAGE BANNER — full bleed cinema ---------- */
-.banner,
-.slideshow {
-  background: rgb(252, 251, 248) !important;
+/* ---------- 5. HERO SLIDESHOW — luminous cinema ---------- */
+.banner, .slideshow {
+  background: var(--seym-cream) !important;
+  position: relative;
+}
+
+/* Magical luminous gradient over hero edges */
+.slideshow::after,
+.banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 70% at 50% 110%, rgba(27,54,93,0.18), transparent 60%);
+  mix-blend-mode: multiply;
+  z-index: 1;
 }
 
 .banner__content,
-.slideshow__text {
-  padding: 6rem !important;
-}
+.slideshow__text { padding: 6rem !important; position: relative; z-index: 2; }
 
 .banner__media,
 .slideshow__media {
   overflow: hidden;
-  background: rgb(245, 243, 238);
+  background: var(--seym-cream-deep);
 }
 
 .banner__media img,
 .slideshow__media img,
 .slideshow__slide img {
-  transition: transform 12s linear !important;
+  transition: transform 14s linear !important;
   will-change: transform;
 }
 
 .slideshow__slide.is-selected .banner__media img,
 .slideshow__slide[aria-hidden="false"] img,
 .banner.banner--mobile-bottom .banner__media img {
-  transform: scale(1.08);
+  transform: scale(1.09);
 }
 
 .banner__heading {
@@ -426,9 +469,9 @@ button.button {
 .banner__text {
   font-family: 'Inter', sans-serif !important;
   font-weight: 300 !important;
-  letter-spacing: 0.01em;
-  font-size: 1.6rem !important;
-  line-height: 1.6;
+  letter-spacing: 0.005em;
+  font-size: 1.65rem !important;
+  line-height: 1.65;
   max-width: 56ch;
 }
 
@@ -439,19 +482,8 @@ button.button {
   backdrop-filter: none !important;
 }
 
-/* Slideshow controls — small dots / numbers, low presence */
-.slideshow__control-wrapper,
-.slider-counter {
-  font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.16em !important;
-  font-size: 1.1rem !important;
-}
-
-/* ---------- 6. PRODUCT / COLLECTION CARDS — strip card chrome ---------- */
-.card-wrapper,
-.product-card-wrapper {
-  background: transparent !important;
-}
+/* ---------- 6. PRODUCT / COLLECTION CARDS — luminous canvas ---------- */
+.card-wrapper, .product-card-wrapper { background: transparent !important; }
 
 .card,
 .card--standard,
@@ -468,10 +500,22 @@ button.button {
 .card__inner,
 .card__media,
 .card .media {
-  background: rgb(245, 243, 238) !important;
+  background: var(--seym-cream-deep) !important;
   border-radius: 0 !important;
   border: none !important;
+  position: relative;
 }
+
+/* Soft luminous halo behind each card image */
+.card__media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 60% at 50% 50%, rgba(255,255,255,0.55), transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+}
+.card__media img { position: relative; z-index: 2; }
 
 .card__media .media,
 .card .media {
@@ -479,28 +523,19 @@ button.button {
   aspect-ratio: 1 / 1;
 }
 
-/* Hide the gradient overlay if any */
 .card.gradient::before,
 .card__inner.gradient::before { display: none !important; }
 
-/* Image inside card — slow zoom, cross-fade */
 .card .media > img,
 .card__media .media > img,
 .card-wrapper .media img {
   transition:
-    transform 1.6s var(--atelier-ease),
-    opacity var(--atelier-mid) var(--atelier-ease) !important;
+    transform 1.8s var(--seym-ease),
+    opacity var(--seym-mid) var(--seym-ease) !important;
 }
+.card-wrapper:hover .media > img:first-child { transform: scale(1.05); }
+.card-wrapper:hover .media > img + img { opacity: 1 !important; transform: scale(1.05); }
 
-.card-wrapper:hover .media > img:first-child {
-  transform: scale(1.05);
-}
-.card-wrapper:hover .media > img + img {
-  opacity: 1 !important;
-  transform: scale(1.05);
-}
-
-/* Card information — tiny + centered */
 .card__content,
 .card__information,
 .card-information {
@@ -517,12 +552,12 @@ button.button {
   font-family: 'Cormorant Garamond', serif !important;
   font-style: italic !important;
   font-weight: 400 !important;
-  font-size: 1.9rem !important;
+  font-size: 2rem !important;
   letter-spacing: 0 !important;
   line-height: 1.2 !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
   text-transform: none !important;
-  margin: 0 0 0.6rem 0 !important;
+  margin: 0 0 0.7rem 0 !important;
 }
 
 .card-information .price,
@@ -531,14 +566,14 @@ button.button {
   font-family: 'Inter', sans-serif !important;
   font-weight: 400 !important;
   font-size: 1.2rem !important;
-  letter-spacing: 0.16em !important;
+  letter-spacing: 0.18em !important;
   text-transform: uppercase;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
 }
 
 .price--end .price__regular { display: flex; justify-content: center; gap: 0.6rem; }
 
-/* Quick add — minimal pill, only on hover (desktop) */
+/* Quick add */
 .quick-add {
   position: absolute;
   bottom: 1.6rem;
@@ -546,26 +581,23 @@ button.button {
   transform: translateX(-50%) translateY(8px);
   width: auto !important;
   opacity: 0;
-  transition: opacity var(--atelier-mid) var(--atelier-ease), transform var(--atelier-mid) var(--atelier-ease);
-  z-index: 3;
+  transition: opacity var(--seym-mid) var(--seym-ease), transform var(--seym-mid) var(--seym-ease);
+  z-index: 4;
 }
 @media (min-width: 990px) {
-  .card-wrapper:hover .quick-add {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  .card-wrapper:hover .quick-add { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 @media (max-width: 989px) {
   .quick-add { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .quick-add__submit {
-  background: rgb(252, 251, 248) !important;
-  color: rgb(18, 18, 18) !important;
-  border: 1px solid rgb(18, 18, 18) !important;
+  background: var(--seym-cream) !important;
+  color: var(--seym-ink) !important;
+  border: 1px solid var(--seym-ink) !important;
   border-radius: 0 !important;
   font-size: 1.05rem !important;
-  letter-spacing: 0.22em !important;
+  letter-spacing: 0.24em !important;
   text-transform: uppercase !important;
   font-weight: 500 !important;
   padding: 1.1rem 2rem !important;
@@ -573,17 +605,16 @@ button.button {
   width: auto !important;
   white-space: nowrap;
 }
-.quick-add__submit::after { background: rgb(18, 18, 18); }
-.quick-add__submit:hover { color: rgb(252, 251, 248) !important; }
+.quick-add__submit::after { background: var(--seym-midnight); }
+.quick-add__submit:hover { color: var(--seym-cream) !important; }
 
-/* Card badge */
 .card__badge { top: 1.2rem; left: 1.2rem; bottom: auto; right: auto; }
 .badge {
   background: transparent !important;
-  border: 1px solid rgb(18, 18, 18) !important;
-  color: rgb(18, 18, 18) !important;
+  border: 1px solid var(--seym-ink) !important;
+  color: var(--seym-ink) !important;
   font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.2em !important;
+  letter-spacing: 0.22em !important;
   font-size: 0.95rem !important;
   font-weight: 500 !important;
   padding: 0.5rem 1rem !important;
@@ -593,7 +624,6 @@ button.button {
   text-transform: uppercase;
 }
 
-/* Collection grid spacing */
 .product-grid,
 .grid--product {
   column-gap: 4rem !important;
@@ -603,11 +633,11 @@ button.button {
   .product-grid, .grid--product { column-gap: 1.6rem !important; row-gap: 5rem !important; }
 }
 
-/* ---------- 7. SECTION HEADERS — magazine titles ---------- */
+/* ---------- 7. SECTION HEADERS — manuscript dividers ---------- */
 .title-wrapper-with-link,
 .collection__title,
 .title-wrapper {
-  border-top: 1px solid var(--atelier-line);
+  border-top: 1px solid var(--seym-line);
   padding-top: 4.4rem !important;
   margin-top: 8rem !important;
   margin-bottom: 4rem !important;
@@ -628,23 +658,21 @@ button.button {
 .title-wrapper-with-link .link {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   font-size: 1.1rem;
   text-decoration: none !important;
   border-bottom: 1px solid currentColor;
   padding-bottom: 4px;
-  transition: opacity var(--atelier-fast) var(--atelier-ease);
+  color: var(--seym-midnight) !important;
+  transition: opacity var(--seym-fast) var(--seym-ease);
 }
-.title-wrapper-with-link .link:hover { opacity: 0.55; }
+.title-wrapper-with-link .link:hover { opacity: 0.6; }
 
-/* Center variant */
 .center .title { text-align: center; width: 100%; }
 
-/* ---------- 8. RICH TEXT BLOCK — manifesto vibe ---------- */
+/* ---------- 8. RICH-TEXT — magical manifesto ---------- */
 .rich-text__wrapper,
-.rich-text {
-  padding: 12rem 0 !important;
-}
+.rich-text { padding: 12rem 0 !important; }
 
 .rich-text__heading {
   font-size: clamp(3.4rem, 6vw, 7rem) !important;
@@ -652,13 +680,14 @@ button.button {
   font-family: 'Cormorant Garamond', serif !important;
   margin-bottom: 3.2rem !important;
   max-width: 22ch;
+  font-style: italic;
 }
 
 .rich-text__text {
   font-family: 'Inter', sans-serif !important;
   font-weight: 300 !important;
   font-size: 1.7rem !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
   max-width: 70ch;
   margin: 0 auto;
   letter-spacing: 0.005em;
@@ -666,10 +695,18 @@ button.button {
 
 .rich-text__buttons { margin-top: 4rem; }
 
-/* ---------- 9. PRODUCT PAGE — editorial layout ---------- */
-.product {
-  padding-top: 4rem !important;
+/* Optional inverse mood for any rich-text */
+.rich-text.color-inverse,
+.rich-text[class*="background-2"]:has(.atelier-night),
+.atelier-rich--night .rich-text {
+  background: var(--seym-midnight) !important;
 }
+.rich-text.color-inverse .rich-text__heading,
+.rich-text.color-inverse .rich-text__text,
+.rich-text.color-inverse * { color: var(--seym-cream) !important; }
+
+/* ---------- 9. PRODUCT PAGE — editorial monograph ---------- */
+.product { padding-top: 4rem !important; }
 
 .product__title h1,
 .product__title {
@@ -682,7 +719,6 @@ button.button {
 }
 
 .product__info-container > * + * { margin-top: 2.4rem; }
-
 .product__info-wrapper { padding: 4rem 0 4rem 4rem !important; }
 @media (max-width: 989px) { .product__info-wrapper { padding: 2.4rem 0 !important; } }
 
@@ -690,29 +726,27 @@ button.button {
 .product .price__regular .price-item {
   font-family: 'Inter', sans-serif !important;
   font-size: 1.4rem !important;
-  letter-spacing: 0.18em !important;
+  letter-spacing: 0.2em !important;
   font-weight: 400 !important;
   text-transform: uppercase;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
 }
-
 .product .price--on-sale .price-item--sale {
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-midnight) !important;
   font-weight: 600 !important;
 }
 
 .product__description,
 .product__description .rte {
   font-size: 1.55rem !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
   font-weight: 300 !important;
   margin-top: 2.4rem;
   max-width: 56ch;
-  border-top: 1px solid var(--atelier-line);
+  border-top: 1px solid var(--seym-line);
   padding-top: 2.4rem;
 }
 
-/* Variant pills */
 .product-form__input--pill input[type='radio'] + label,
 fieldset.product-form__input--pill label {
   border-radius: 0 !important;
@@ -720,35 +754,31 @@ fieldset.product-form__input--pill label {
   background: transparent !important;
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   font-size: 1.05rem !important;
   padding: 1.2rem 2rem !important;
-  color: rgb(18, 18, 18) !important;
-  transition: all var(--atelier-fast) var(--atelier-ease);
+  color: var(--seym-ink) !important;
+  transition: all var(--seym-fast) var(--seym-ease);
 }
 .product-form__input--pill input[type='radio']:checked + label {
-  background: rgb(18, 18, 18) !important;
-  color: rgb(252, 251, 248) !important;
-  border-color: rgb(18, 18, 18) !important;
+  background: var(--seym-midnight) !important;
+  color: var(--seym-cream) !important;
+  border-color: var(--seym-midnight) !important;
 }
-.product-form__input--pill input[type='radio'] + label:hover {
-  border-color: rgb(18, 18, 18) !important;
-}
+.product-form__input--pill input[type='radio'] + label:hover { border-color: var(--seym-ink) !important; }
 
-/* Variant labels (Color: Red) */
 .product-form__input .form__label,
 .product-form__input legend {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   font-size: 1rem !important;
   font-weight: 500 !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-ink) !important;
   opacity: 0.78;
   margin-bottom: 1.2rem;
 }
 
-/* Quantity */
 .quantity {
   border: 1px solid rgba(18,18,18,0.35) !important;
   border-radius: 0 !important;
@@ -761,75 +791,67 @@ fieldset.product-form__input--pill label {
   background: transparent !important;
 }
 
-/* Add to cart full width */
 .product-form__buttons,
-.product-form__buttons > * {
-  width: 100% !important;
-}
+.product-form__buttons > * { width: 100% !important; }
 .product-form__submit {
   width: 100% !important;
   padding: 2rem !important;
   font-size: 1.2rem !important;
-  letter-spacing: 0.28em !important;
+  letter-spacing: 0.3em !important;
 }
 
-/* Product gallery */
 .product__media-wrapper,
-.product__media-list {
-  background: rgb(245, 243, 238);
-}
+.product__media-list { background: var(--seym-cream-deep); }
 .product__media-item {
-  background: rgb(245, 243, 238) !important;
+  background: var(--seym-cream-deep) !important;
   overflow: hidden;
+  position: relative;
 }
-.product__media-item img {
-  transition: transform 1.4s var(--atelier-ease) !important;
+.product__media-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(255,255,255,0.4), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
 }
+.product__media-item img { transition: transform 1.6s var(--seym-ease) !important; position: relative; z-index: 2; }
 .product__media-item:hover img { transform: scale(1.025); }
+.product__media-list { gap: 1px !important; }
 
-.product__media-list {
-  gap: 1px !important;
-}
+.thumbnail { border-radius: 0 !important; overflow: hidden; }
 
-/* Thumbnails */
-.thumbnail {
-  border-radius: 0 !important;
-  overflow: hidden;
-}
-
-/* Collapsible (product info, shipping, return) */
 .product__accordion summary,
 .accordion summary {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   font-size: 1.15rem !important;
   font-weight: 500 !important;
-  border-top: 1px solid var(--atelier-line);
+  border-top: 1px solid var(--seym-line);
   padding: 2.4rem 0 !important;
+  color: var(--seym-ink) !important;
 }
 .product__accordion .accordion__content,
 .accordion__content {
   font-size: 1.5rem;
-  line-height: 1.7;
+  line-height: 1.75;
   font-weight: 300;
   padding-bottom: 2.4rem;
 }
 
-/* Pickup availability */
 .product__pickup-availabilities {
   font-family: 'Inter', sans-serif !important;
   font-weight: 300;
   letter-spacing: 0.01em;
-  border-top: 1px solid var(--atelier-line);
+  border-top: 1px solid var(--seym-line);
   padding-top: 2rem;
 }
 
-/* Tax / shipping note */
 .product__tax,
 .product__taxes-included {
   font-size: 1.1rem !important;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   opacity: 0.6;
 }
@@ -837,16 +859,10 @@ fieldset.product-form__input--pill label {
 /* ---------- 10. COLLECTION LIST ---------- */
 .collection-list-wrapper { padding: 8rem 0 !important; }
 .collection__title,
-.collection-list .title {
-  text-align: center;
-  font-size: clamp(3rem, 4vw, 5rem) !important;
-}
+.collection-list .title { text-align: center; font-size: clamp(3rem, 4vw, 5rem) !important; }
 
-/* Collection card image — full bleed */
 .card--collection,
-.card--collection .card__inner {
-  background: rgb(245, 243, 238) !important;
-}
+.card--collection .card__inner { background: var(--seym-cream-deep) !important; }
 .card--collection .card__heading {
   font-family: 'Cormorant Garamond', serif !important;
   font-style: italic !important;
@@ -857,50 +873,51 @@ fieldset.product-form__input--pill label {
   text-transform: none !important;
 }
 
-/* ---------- 11. FOOTER — newsroom ---------- */
+/* ---------- 11. FOOTER — atelier colophon ---------- */
 .footer {
-  background: rgb(252, 251, 248) !important;
-  color: rgb(18, 18, 18) !important;
-  border-top: 1px solid var(--atelier-line) !important;
+  background: var(--seym-midnight) !important;
+  color: var(--seym-cream) !important;
+  border-top: none !important;
   padding-top: 8rem !important;
   padding-bottom: 4rem !important;
   margin-top: 8rem;
 }
 
-.footer__content-top {
-  padding-bottom: 6rem !important;
-}
+.footer * { color: var(--seym-cream) !important; }
+
+.footer__content-top { padding-bottom: 6rem !important; }
 
 .footer-block__heading,
 .footer__heading {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.24em !important;
+  letter-spacing: 0.26em !important;
   font-size: 1.05rem !important;
   font-weight: 500 !important;
   opacity: 0.78;
   margin-bottom: 2rem !important;
   border: none !important;
+  color: var(--seym-cream) !important;
 }
 
 .footer-block__details-content a,
 .footer-block__details-content p,
 .footer__list-social a,
-.list-menu__item--link {
+.footer .list-menu__item--link {
   font-family: 'Inter', sans-serif !important;
   font-size: 1.3rem !important;
   font-weight: 300 !important;
   letter-spacing: 0.04em;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-cream) !important;
   text-decoration: none !important;
   display: inline-block;
   padding: 0.4rem 0 !important;
-  transition: opacity var(--atelier-fast) var(--atelier-ease), transform var(--atelier-fast) var(--atelier-ease);
+  background-image: none !important;
+  transition: opacity var(--seym-fast) var(--seym-ease), transform var(--seym-fast) var(--seym-ease);
 }
-
 .footer-block__details-content a:hover,
 .footer__list-social a:hover {
-  opacity: 0.55;
+  opacity: 0.7;
   transform: translateX(2px);
 }
 
@@ -908,45 +925,49 @@ fieldset.product-form__input--pill label {
 .copyright__content {
   font-family: 'Inter', sans-serif !important;
   font-size: 1.05rem !important;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  opacity: 0.55;
-  border-top: 1px solid var(--atelier-line);
+  opacity: 0.6;
+  border-top: 1px solid rgba(239, 236, 236, 0.18);
   padding-top: 3rem !important;
   margin-top: 3rem;
+  color: var(--seym-cream) !important;
 }
 
-/* Newsletter input */
 .newsletter-form__field-wrapper .field {
   border: none !important;
-  border-bottom: 1px solid rgb(18, 18, 18) !important;
+  border-bottom: 1px solid var(--seym-cream) !important;
+  background: transparent !important;
 }
 .newsletter-form__field-wrapper .field__input {
   background: transparent !important;
   border: none !important;
+  color: var(--seym-cream) !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 300;
   letter-spacing: 0.04em;
   padding: 1.4rem 0 !important;
 }
+.newsletter-form__field-wrapper .field__label {
+  color: rgba(239, 236, 236, 0.7) !important;
+}
 .newsletter-form__button {
   background: transparent !important;
-  color: rgb(18, 18, 18) !important;
+  color: var(--seym-cream) !important;
 }
+.newsletter-form__button svg path { stroke: var(--seym-cream); }
 
 /* ---------- 12. CART DRAWER ---------- */
 cart-drawer .drawer__inner {
-  background: rgb(252, 251, 248) !important;
-  border-left: 1px solid var(--atelier-line);
+  background: var(--seym-cream) !important;
+  border-left: 1px solid var(--seym-line);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
-
 cart-drawer .drawer__header {
-  border-bottom: 1px solid var(--atelier-line);
+  border-bottom: 1px solid var(--seym-line);
   padding: 2.4rem !important;
 }
-
 cart-drawer .drawer__heading {
   font-family: 'Cormorant Garamond', serif !important;
   font-weight: 400 !important;
@@ -954,7 +975,6 @@ cart-drawer .drawer__heading {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
-
 .cart-item__name {
   font-family: 'Cormorant Garamond', serif !important;
   font-style: italic !important;
@@ -962,7 +982,6 @@ cart-drawer .drawer__heading {
   font-size: 1.8rem !important;
   letter-spacing: 0;
 }
-
 cart-drawer .totals__total-value,
 cart-drawer .totals__subtotal-value {
   font-family: 'Inter', sans-serif !important;
@@ -989,52 +1008,50 @@ select {
   font-weight: 300 !important;
   font-size: 1.4rem !important;
   letter-spacing: 0.02em;
-  color: rgb(18, 18, 18) !important;
-  transition: border-color var(--atelier-fast) var(--atelier-ease);
+  color: var(--seym-ink) !important;
+  transition: border-color var(--seym-fast) var(--seym-ease);
 }
-
 .field:focus-within .field__input,
 input:focus, textarea:focus, select:focus {
-  border-color: rgb(18,18,18) !important;
+  border-color: var(--seym-midnight) !important;
   box-shadow: none !important;
   outline: none !important;
 }
-
 .field__label, label {
   font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.16em !important;
+  letter-spacing: 0.18em !important;
   text-transform: uppercase !important;
   font-size: 1.05rem !important;
   opacity: 0.78;
   font-weight: 500 !important;
+  color: var(--seym-ink) !important;
 }
 
-/* ---------- 14. PAGINATION & PAGE WIDTHS ---------- */
+/* ---------- 14. PAGINATION ---------- */
 .pagination__list a,
 .pagination__list button {
   border-radius: 0 !important;
   background: transparent !important;
   border: none !important;
   font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.18em !important;
+  letter-spacing: 0.2em !important;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 1.05rem;
-  transition: opacity var(--atelier-fast) var(--atelier-ease);
+  color: var(--seym-ink) !important;
+  transition: opacity var(--seym-fast) var(--seym-ease), color var(--seym-fast) var(--seym-ease);
 }
 .pagination__list a:hover,
-.pagination__list button:hover { opacity: 0.55; }
+.pagination__list button:hover { color: var(--seym-midnight) !important; }
 .pagination__list .pagination__item--current {
   background: transparent !important;
-  border-bottom: 1px solid currentColor !important;
+  border-bottom: 1px solid var(--seym-midnight) !important;
+  color: var(--seym-midnight) !important;
 }
 
 /* ---------- 15. PAGE LOAD FADE ---------- */
-body {
-  opacity: 0;
-  animation: atelier-page-in 700ms var(--atelier-ease) forwards;
-}
-@keyframes atelier-page-in {
+body { opacity: 0; animation: seym-page-in 700ms var(--seym-ease) forwards; }
+@keyframes seym-page-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -1044,47 +1061,65 @@ body {
 @media (min-width: 990px) {
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(18,18,18,0.2);
-    border-radius: 0;
-  }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(18,18,18,0.5); }
+  ::-webkit-scrollbar-thumb { background: rgba(27,54,93,0.3); border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(27,54,93,0.7); }
 }
 
 /* ---------- 17. FOCUS OUTLINE ---------- */
 :focus-visible {
-  outline: 1px solid rgb(18,18,18) !important;
+  outline: 1px solid var(--seym-midnight) !important;
   outline-offset: 4px !important;
   border-radius: 0 !important;
   box-shadow: none !important;
 }
 
-/* ---------- 18. UTILITY: hide gradient backgrounds across cards ---------- */
-.gradient {
-  background: transparent !important;
-  background-image: none !important;
-}
+/* ---------- 18. RESET LEGACY GRADIENT ---------- */
+.gradient { background: transparent !important; background-image: none !important; }
 
-/* ---------- 19. BREADCRUMBS / SECONDARY LINKS ---------- */
-.breadcrumb a,
-.breadcrumb {
+/* ---------- 19. BREADCRUMB ---------- */
+.breadcrumb a, .breadcrumb {
   font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   font-size: 1.05rem !important;
   opacity: 0.65;
+  color: var(--seym-ink) !important;
 }
 
-/* ---------- 20. NEWSLETTER & FORM SECTIONS ---------- */
+/* ---------- 20. NEWSLETTER & EMAIL SECTIONS ---------- */
 .email-signup-banner__heading,
 .newsletter__heading {
   font-family: 'Cormorant Garamond', serif !important;
   font-size: clamp(3rem, 4vw, 5rem) !important;
   font-weight: 400 !important;
   letter-spacing: -0.015em !important;
+  font-style: italic;
 }
 
-/* ---------- 21. MOBILE TUNING ---------- */
+/* ---------- 21. SLIDESHOW NAV ---------- */
+.slider-counter,
+.slider-counter--medium {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--seym-ink) !important;
+}
+.slider-button {
+  background: transparent !important;
+  border: 1px solid var(--seym-ink) !important;
+  border-radius: 0 !important;
+  width: 4.4rem;
+  height: 4.4rem;
+  color: var(--seym-ink) !important;
+  transition: background var(--seym-fast) var(--seym-ease), color var(--seym-fast) var(--seym-ease);
+}
+.slider-button:hover {
+  background: var(--seym-midnight) !important;
+  color: var(--seym-cream) !important;
+  border-color: var(--seym-midnight) !important;
+}
+
+/* ---------- 22. MOBILE TUNING ---------- */
 @media (max-width: 749px) {
   .header { padding: 0 2rem !important; }
   .product__info-wrapper { padding: 2rem 0 !important; }
@@ -1094,36 +1129,20 @@ body {
   .button { font-size: 1.05rem !important; padding: 1.4rem 2.6rem !important; }
 }
 
-/* ---------- 22. REMOVE LEGACY CARD GRADIENTS / SHADOWS ---------- */
-.card--standard.card--media .card__inner,
-.card--standard.card--text .card__inner,
-.card.card--card.card--media,
-.card.card--card.card--text {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* ---------- 23. SLIDESHOW NAVIGATION ---------- */
-.slider-counter,
-.slider-counter--medium {
+/* ---------- 23. UTILITY CLASSES ---------- */
+.seym-italic { font-family: 'Cormorant Garamond', serif !important; font-style: italic !important; font-weight: 400 !important; }
+.seym-eyebrow {
   font-family: 'Inter', sans-serif !important;
-  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 1.05rem !important;
   font-weight: 500;
+  opacity: 0.78;
 }
-.slider-button {
-  background: transparent !important;
-  border: 1px solid rgb(18,18,18) !important;
-  border-radius: 0 !important;
-  width: 4.4rem;
-  height: 4.4rem;
-  transition: background var(--atelier-fast) var(--atelier-ease), color var(--atelier-fast) var(--atelier-ease);
-}
-.slider-button:hover {
-  background: rgb(18,18,18) !important;
-  color: rgb(252,251,248) !important;
-}
-
-/* ---------- 24. SECTION DIVIDERS ---------- */
-.shopify-section + .shopify-section {
-  border-top: none;
+.seym-divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--seym-line);
+  margin: 4rem 0;
 }
