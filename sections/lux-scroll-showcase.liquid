@@ -1,295 +1,469 @@
+{%- comment -%}
+  SEYM Hero — Cinematic scroll-reveal stage.
+  Acts as the homepage opener. Pin the canvas while the user scrolls,
+  rotate / zoom / cross-fade the object, and animate eyebrow + headline
+  + caption layers in sequence. Designed for Midnight Gallery.
+{%- endcomment -%}
+
+{%- liquid
+  assign overlay_color = section.settings.bg_color | default: '#0a1424'
+  assign accent_color = section.settings.text_color | default: '#efecec'
+-%}
+
 {%- style -%}
-  .lux-scroll-container {
+  .seym-hero-{{ section.id }} {
+    --seym-hero-bg: {{ overlay_color }};
+    --seym-hero-fg: {{ accent_color }};
     position: relative;
-    background-color: {{ section.settings.bg_color }};
-    /* The height will be determined by the number of steps * 100vh to give enough scroll room */
-    height: calc({{ section.blocks.size }} * 100vh + 100vh);
+    background: var(--seym-hero-bg);
+    color: var(--seym-hero-fg);
+    height: calc({{ section.blocks.size | at_least: 1 }} * 100vh + 100vh);
+    overflow: visible;
+    margin: 0 -5rem 0 -5rem;
   }
 
-  .lux-sticky-wrap {
+  .seym-hero-stage-{{ section.id }} {
     position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
     height: 100vh;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(27, 54, 93, 0.55), transparent 55%),
+      radial-gradient(ellipse at 50% 110%, rgba(27, 54, 93, 0.4), transparent 55%),
+      var(--seym-hero-bg);
   }
 
-  .lux-image-wrapper {
+  /* Subtle vignette */
+  .seym-hero-stage-{{ section.id }}::before {
+    content: '';
     position: absolute;
-    width: 50vw;
-    height: 50vw;
-    max-width: 600px;
-    max-height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    inset: 0;
+    background:
+      radial-gradient(75% 100% at 50% 50%, transparent 35%, rgba(10, 20, 36, 0.55) 100%);
     z-index: 1;
-    /* initial state for GSAP */
-    transform-origin: center center;
+    pointer-events: none;
   }
 
-  .lux-image-wrapper img {
+  /* Spotlight aperture behind object */
+  .seym-hero-light-{{ section.id }} {
+    position: absolute;
+    width: 60vmin;
+    height: 60vmin;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 50% 60%, rgba(239, 236, 236, 0.18), transparent 60%);
+    pointer-events: none;
+    z-index: 2;
+    filter: blur(20px);
+    will-change: transform, opacity;
+  }
+
+  .seym-hero-object-{{ section.id }} {
+    position: relative;
+    width: 50vmin;
+    height: 70vmin;
+    max-width: 720px;
+    max-height: 820px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+  }
+
+  .seym-hero-object-{{ section.id }} img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0px 20px 40px rgba(0,0,0,0.15));
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 -10px 30px rgba(239, 236, 236, 0.05));
+    transition: opacity 0.6s ease;
   }
 
-  .lux-text-step {
+  .seym-hero-object-{{ section.id }} img + img {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    inset: 0;
+    opacity: 0;
+  }
+
+  /* Eyebrow — small caps, small, top center */
+  .seym-hero-eyebrow-{{ section.id }} {
+    position: absolute;
+    top: 12vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--seym-hero-fg);
+    opacity: 0.55;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Tagline / step text */
+  .seym-hero-step-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 6vw 12vh;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+  }
+
+  .seym-hero-step-{{ section.id }} .step-inner {
+    max-width: 760px;
+    text-align: center;
+    color: var(--seym-hero-fg);
+  }
+
+  .seym-hero-step-{{ section.id }} .step-eyebrow {
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.36em;
+    font-size: 0.95rem;
+    font-weight: 400;
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 1.6rem;
+  }
+
+  .seym-hero-step-{{ section.id }} .step-headline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(3.2rem, 5vw, 6rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 1.6rem 0;
+    color: var(--seym-hero-fg);
+  }
+
+  .seym-hero-step-{{ section.id }} .step-headline em {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--seym-hero-fg);
+    opacity: 0.85;
+  }
+
+  .seym-hero-step-{{ section.id }} .step-body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.7;
+    letter-spacing: 0.005em;
+    opacity: 0.7;
+    max-width: 56ch;
+    margin: 0 auto;
+  }
+
+  /* Bottom scroll cue */
+  .seym-hero-cue-{{ section.id }} {
+    position: absolute;
+    bottom: 4vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--seym-hero-fg);
+    opacity: 0.4;
     display: flex;
     align-items: center;
-    z-index: 2;
-    pointer-events: none;
-    padding: 0 10%;
-    opacity: 0; /* Hidden by default, GSAP will animate */
+    gap: 1.2rem;
+    transition: opacity 0.6s ease;
+  }
+  .seym-hero-cue-{{ section.id }} .cue-line {
+    width: 60px;
+    height: 1px;
+    background: currentColor;
+    animation: seym-cue-drop 2.4s var(--seym-ease, cubic-bezier(0.22,1,0.36,1)) infinite;
+    transform-origin: top;
+  }
+  @keyframes seym-cue-drop {
+    0%, 30% { transform: scaleY(0); transform-origin: top; opacity: 0.3; }
+    60% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
   }
 
-  .lux-text-content {
-    max-width: 400px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: {{ section.settings.text_color }};
-  }
+  .scrolled-active-{{ section.id }} .seym-hero-cue-{{ section.id }} { opacity: 0; }
 
-  .lux-text-content h2 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    font-weight: 300;
-    line-height: 1.1;
-    color: inherit;
-  }
-
-  .lux-text-content p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    line-height: 1.6;
-    color: inherit;
-  }
-
-  /* Alignment variations */
-  .lux-align-left { justify-content: flex-start; }
-  .lux-align-right { justify-content: flex-end; }
-  .lux-align-center { justify-content: center; text-align: center; }
-
-  @media screen and (max-width: 768px) {
-    .lux-image-wrapper {
-      width: 80vw;
-      height: 80vw;
+  @media (max-width: 749px) {
+    .seym-hero-{{ section.id }} {
+      margin: 0 -2.4rem;
+      height: calc({{ section.blocks.size | at_least: 1 }} * 90vh + 90vh);
     }
-    .lux-text-content {
-      padding: 20px;
-    }
-    .lux-text-content h2 {
-      font-size: 2rem;
-    }
-    .lux-text-step {
-      align-items: flex-end;
-      padding-bottom: 15vh;
-      justify-content: center;
-    }
+    .seym-hero-stage-{{ section.id }} { height: 100vh; }
+    .seym-hero-object-{{ section.id }} { width: 78vmin; height: 78vmin; }
+    .seym-hero-step-{{ section.id }} { padding: 0 6vw 10vh; }
+    .seym-hero-step-{{ section.id }} .step-headline { font-size: clamp(2.6rem, 8vw, 4rem); }
   }
 {%- endstyle -%}
 
-<div class="lux-scroll-container" id="lux-container-{{ section.id }}">
-  <div class="lux-sticky-wrap">
-    
-    <!-- Product Image -->
-    <div class="lux-image-wrapper" id="lux-image-{{ section.id }}">
+<section class="seym-hero-{{ section.id }}" id="seym-hero-{{ section.id }}">
+  <div class="seym-hero-stage-{{ section.id }}" id="seym-hero-stage-{{ section.id }}">
+
+    <div class="seym-hero-light-{{ section.id }}" id="seym-hero-light-{{ section.id }}"></div>
+
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="seym-hero-eyebrow-{{ section.id }}">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+
+    <div class="seym-hero-object-{{ section.id }}" id="seym-hero-object-{{ section.id }}">
       {% if section.settings.image != blank %}
-        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', class: 'seym-hero-img-primary' }}
       {% else %}
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {% endif %}
+      {% if section.settings.image_secondary != blank %}
+        {{ section.settings.image_secondary | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'seym-hero-img-secondary' }}
+      {% endif %}
     </div>
 
-    <!-- Text Steps -->
     {% for block in section.blocks %}
-      <div class="lux-text-step lux-align-{{ block.settings.alignment }} lux-step-{{ section.id }}" id="lux-step-{{ block.id }}">
-        <div class="lux-text-content">
-          {% if block.settings.title != blank %}
-            <h2>{{ block.settings.title }}</h2>
+      <div
+        class="seym-hero-step-{{ section.id }} seym-hero-step seym-hero-step-{{ forloop.index }}"
+        data-step-index="{{ forloop.index0 }}"
+        id="seym-hero-step-{{ block.id }}"
+      >
+        <div class="step-inner">
+          {% if block.settings.eyebrow != blank %}
+            <span class="step-eyebrow">{{ block.settings.eyebrow }}</span>
           {% endif %}
-          {% if block.settings.text != blank %}
-            <div class="lux-rte">{{ block.settings.text }}</div>
+          {% if block.settings.headline != blank %}
+            <h2 class="step-headline">{{ block.settings.headline }}</h2>
+          {% endif %}
+          {% if block.settings.body != blank %}
+            <div class="step-body">{{ block.settings.body }}</div>
           {% endif %}
         </div>
       </div>
     {% endfor %}
 
-  </div>
-</div>
+    <div class="seym-hero-cue-{{ section.id }}">
+      {{ section.settings.scroll_label | default: 'Scroll' }}
+      <span class="cue-line"></span>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  </div>
+</section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", (event) => {
-    // Wait for GSAP to load
-    const checkGSAP = setInterval(() => {
-      if (window.gsap && window.ScrollTrigger) {
-        clearInterval(checkGSAP);
-        initLuxAnimation();
-      }
-    }, 100);
+(function() {
+  const sectionId = "{{ section.id }}";
+  const container = document.getElementById('seym-hero-' + sectionId);
+  const stage = document.getElementById('seym-hero-stage-' + sectionId);
+  const obj = document.getElementById('seym-hero-object-' + sectionId);
+  const light = document.getElementById('seym-hero-light-' + sectionId);
+  const steps = container ? container.querySelectorAll('.seym-hero-step') : [];
+  const primary = obj ? obj.querySelector('.seym-hero-img-primary') : null;
+  const secondary = obj ? obj.querySelector('.seym-hero-img-secondary') : null;
 
-    function initLuxAnimation() {
-      gsap.registerPlugin(ScrollTrigger);
+  if (!container || !obj || steps.length === 0) return;
 
-      const sectionId = "{{ section.id }}";
-      const container = document.getElementById(`lux-container-${sectionId}`);
-      const image = document.getElementById(`lux-image-${sectionId}`);
-      const steps = gsap.utils.toArray(`.lux-step-${sectionId}`);
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    steps.forEach((s) => { s.style.opacity = 1; s.style.transform = 'none'; });
+    return;
+  }
 
-      if (!container || !image || steps.length === 0) return;
+  let ticking = false;
+  const totalSteps = steps.length;
 
-      // Create a master timeline tied to the container's scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1, // Smooth scrubbing effect
-        }
-      });
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2; }
 
-      // Calculate how much to scale/move based on number of steps
-      // For each step, we fade it in, then fade it out, and slightly animate the image
-      
-      steps.forEach((step, index) => {
-        // Text animation
-        tl.to(step, {
-          opacity: 1,
-          y: -20,
-          duration: 1,
-          ease: "power2.out"
-        })
-        
-        // Image animation (subtle scaling and rotating for that Mac feel)
-        .to(image, {
-          scale: 1 + (index * 0.2), // Gradually gets bigger
-          rotation: (index % 2 === 0 ? 5 : -5), // Slight tilt left/right
-          duration: 1,
-          ease: "power1.inOut"
-        }, "<") // Start at the same time as the text fade in
+  function update() {
+    const rect = container.getBoundingClientRect();
+    const total = container.offsetHeight - window.innerHeight;
+    if (total <= 0) return;
+    const scrolled = clamp01(-rect.top / total);
 
-        // Hold the state for a moment
-        .to({}, {duration: 0.5})
+    if (scrolled > 0.02) container.classList.add('scrolled-active-' + sectionId);
+    else container.classList.remove('scrolled-active-' + sectionId);
 
-        // Fade out text if it's not the last step
-        if(index !== steps.length - 1) {
-          tl.to(step, {
-            opacity: 0,
-            y: -40,
-            duration: 1,
-            ease: "power2.in"
-          });
-        }
-      });
+    const progress = scrolled * totalSteps;
+
+    const baseScale = 0.92;
+    const scaleAdd = 0.18 * easeInOut(scrolled);
+    const rotation = (Math.sin(scrolled * Math.PI * (totalSteps + 1)) * 14) - 4;
+    const yShift = -20 * easeInOut(scrolled);
+
+    obj.style.transform =
+      'translate3d(0, ' + yShift + 'px, 0) rotate(' + rotation.toFixed(2) + 'deg) scale(' + (baseScale + scaleAdd).toFixed(3) + ')';
+
+    if (light) {
+      const lightScale = 0.9 + 0.6 * easeInOut(scrolled);
+      const lightOpacity = 0.4 + 0.6 * easeInOut(scrolled);
+      light.style.transform = 'translate(-50%, -50%) scale(' + lightScale.toFixed(3) + ')';
+      light.style.opacity = lightOpacity.toFixed(3);
     }
-  });
+
+    if (secondary) {
+      const fadeIn = clamp01((scrolled - 0.55) / 0.25);
+      secondary.style.opacity = fadeIn.toFixed(3);
+      primary.style.opacity = (1 - fadeIn).toFixed(3);
+    }
+
+    steps.forEach((step, i) => {
+      const stepStart = i / totalSteps;
+      const stepEnd = (i + 1) / totalSteps;
+      const stepRange = stepEnd - stepStart;
+
+      let local = (scrolled - stepStart) / stepRange;
+      let opacity = 0;
+      let translate = 30;
+
+      if (local < 0.25) {
+        const t = clamp01(local / 0.25);
+        opacity = t;
+        translate = lerp(30, 0, t);
+      } else if (local < 0.75) {
+        opacity = 1;
+        translate = 0;
+      } else if (local <= 1.05) {
+        const t = clamp01((local - 0.75) / 0.3);
+        opacity = 1 - t;
+        translate = lerp(0, -30, t);
+      }
+
+      step.style.opacity = opacity.toFixed(3);
+      step.style.transform = 'translate3d(0, ' + translate.toFixed(2) + 'px, 0)';
+    });
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+})();
 </script>
 
 {% schema %}
 {
-  "name": "Lux Scroll Showcase",
+  "name": "Seym Hero",
   "tag": "section",
-  "class": "section",
+  "class": "section seym-hero-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Stage"
+    },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Product Image",
-      "info": "Use a high resolution PNG with a transparent background for best results."
+      "label": "Primary object (PNG with transparent background)",
+      "info": "Use a high-resolution PNG. Transparent background gives the cinematic spotlight effect."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_secondary",
+      "label": "Secondary object (optional, cross-fades near the end)"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color",
-      "default": "#f5f5f7"
+      "label": "Background",
+      "default": "#0a1424"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text Color",
-      "default": "#1d1d1f"
+      "label": "Text colour",
+      "default": "#efecec"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Top eyebrow label",
+      "default": "Seym Glass Studio · Istanbul"
+    },
+    {
+      "type": "text",
+      "id": "scroll_label",
+      "label": "Scroll cue label",
+      "default": "Scroll"
     }
   ],
   "blocks": [
     {
-      "type": "feature",
-      "name": "Feature Step",
+      "type": "step",
+      "name": "Scroll step",
       "settings": [
         {
           "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Exceptional Quality"
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Chapter I"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline",
+          "default": "A unique aesthetic approach that combines glass art with a mysterious story."
         },
         {
           "type": "richtext",
-          "id": "text",
-          "label": "Description",
-          "default": "<p>Discover the finest materials and craftsmanship.</p>"
-        },
-        {
-          "type": "select",
-          "id": "alignment",
-          "label": "Text Alignment",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "left"
+          "id": "body",
+          "label": "Caption",
+          "default": "<p>Mouth-blown in Istanbul. Inspired by mythology and nature.</p>"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Lux Scroll Showcase",
+      "name": "Seym Hero",
       "blocks": [
         {
-          "type": "feature",
+          "type": "step",
           "settings": {
-            "title": "Unrivaled Elegance",
-            "alignment": "left"
+            "eyebrow": "Chapter I — Origin",
+            "headline": "A unique aesthetic approach that combines glass art with a mysterious story.",
+            "body": "<p>Mouth-blown in Istanbul. Inspired by mythology and nature.</p>"
           }
         },
         {
-          "type": "feature",
+          "type": "step",
           "settings": {
-            "title": "Masterful Craftsmanship",
-            "alignment": "right"
+            "eyebrow": "Chapter II — Craft",
+            "headline": "Each piece begins as breath, becomes <em>memory</em>.",
+            "body": "<p>Universal glass art tradition shaped by master hands in our atelier.</p>"
           }
         },
         {
-          "type": "feature",
+          "type": "step",
           "settings": {
-            "title": "Timeless Design",
-            "alignment": "left"
+            "eyebrow": "Chapter III — Presence",
+            "headline": "Modern heritage, designed to <em>endure</em>.",
+            "body": "<p>Story-driven, sculptural, never repeated. A quiet companion to contemporary living spaces.</p>"
           }
         }
       ]
