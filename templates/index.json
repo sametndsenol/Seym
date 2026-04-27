@@ -11,12 +11,6 @@
   "sections": {
     "seym_hero": {
       "type": "lux-scroll-showcase",
-      "settings": {
-        "bg_color": "#fafaf7",
-        "text_color": "#0d0d0d",
-        "eyebrow": "Seym Glass Studio · Istanbul",
-        "scroll_label": "Scroll"
-      },
       "blocks": {
         "step_1": {
           "type": "step",
@@ -47,7 +41,14 @@
         "step_1",
         "step_2",
         "step_3"
-      ]
+      ],
+      "settings": {
+        "image": "shopify://shop_images/1_9062ce90-921e-4e2c-aaad-3dd308023202.png",
+        "bg_color": "#fafaf7",
+        "text_color": "#0d0d0d",
+        "eyebrow": "Seym Glass Studio · Istanbul",
+        "scroll_label": "Scroll"
+      }
     },
     "intro": {
       "type": "rich-text",
@@ -96,8 +97,8 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 100,
-        "padding_bottom": 100
+        "padding_top": 60,
+        "padding_bottom": 76
       }
     },
     "collections_intro": {
@@ -135,7 +136,7 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 80,
+        "padding_top": 44,
         "padding_bottom": 40
       }
     },
@@ -202,12 +203,6 @@
     },
     "spin_showcase": {
       "type": "seym-spin-showcase",
-      "settings": {
-        "eyebrow": "Selected Pieces",
-        "heading": "Crafted for those who notice.",
-        "cta_label": "Explore the full collection",
-        "cta_link": "/collections"
-      },
       "blocks": {
         "sp1": {
           "type": "product_item",
@@ -225,7 +220,13 @@
       "block_order": [
         "sp1",
         "sp2"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Selected Pieces",
+        "heading": "Crafted for those who notice.",
+        "cta_label": "Explore the full collection",
+        "cta_link": "/collections"
+      }
     },
     "manifesto": {
       "type": "rich-text",
