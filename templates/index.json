@@ -23,8 +23,8 @@
           "type": "step",
           "settings": {
             "eyebrow": "Chapter I — Origin",
-            "headline": "Glass that carries the silence of nature and the depth of myth.",
-            "body": "<p>Mouth-blown in Istanbul. Inspired by mythology and the living world.</p>"
+            "headline": "A unique aesthetic approach that combines glass art with a mysterious story.",
+            "body": "<p>Mouth-blown in Istanbul. Inspired by mythology and nature.</p>"
           }
         },
         "step_2": {
@@ -32,22 +32,22 @@
           "settings": {
             "eyebrow": "Chapter II — Craft",
             "headline": "Each piece begins as breath, becomes <em>memory</em>.",
-            "body": "<p>Shaped by master hands in our Çengelköy atelier. Never repeated.</p>"
+            "body": "<p>Universal glass-art tradition shaped by master hands in our Çengelköy atelier.</p>"
           }
         },
         "step_3": {
           "type": "step",
           "settings": {
             "eyebrow": "Chapter III — Presence",
-            "headline": "Not glass as you know it. This is <em>Seym</em>.",
-            "body": "<p>Story-driven, sculptural, designed to endure. A quiet companion to spaces that demand character.</p>"
+            "headline": "Modern heritage, designed to <em>endure</em>.",
+            "body": "<p>Story-driven, sculptural, never repeated. A quiet companion to contemporary living spaces.</p>"
           }
         }
       },
       "block_order": ["step_1", "step_2", "step_3"]
     },
 
-    "brand_statement": {
+    "intro": {
       "type": "rich-text",
       "blocks": {
         "caption": {
@@ -68,7 +68,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Founded in 2022, Seym Glass Studio creates handcrafted, mouth-blown glass objects inspired by mythology and nature. Each piece is a singular object — story-driven, never repeated, designed to carry the beauty of the universe into the spaces you live in.</p>"
+            "text": "<p>Founded in 2022, Seym Glass Studio creates handcrafted, mouth-blown glass objects inspired by mythology and nature. We blend universal glass-art tradition with a singular aesthetic — story-driven, artistic pieces that carry the beauty of the universe into modern living spaces.</p>"
           }
         },
         "button": {
@@ -200,6 +200,25 @@
       "block_order": ["t1", "t2", "t3"]
     },
 
+    "model_viewer": {
+      "type": "seym-3d-viewer",
+      "settings": {
+        "model_file": "KHcshJYfvUsxoFGRrpAKO_model.glb",
+        "model_alt": "Seym Glass Studio — interactive 3D model",
+        "eyebrow": "Examine Up Close",
+        "heading": "Turn it. Study it. Own it.",
+        "subheading": "Every facet. Every angle. Every decision.",
+        "caption": "Hand-blown in Istanbul. This exact piece will never be made again.",
+        "shadow_intensity": 1,
+        "exposure": 10,
+        "enable_ar": true,
+        "ar_label": "View in your space",
+        "hint_text": "Drag to rotate · Pinch to zoom",
+        "cta_label": "Acquire this piece",
+        "cta_link": "\/collections"
+      }
+    },
+
     "collections_intro": {
       "type": "rich-text",
       "blocks": {
@@ -231,7 +250,7 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 100,
+        "padding_top": 80,
         "padding_bottom": 40
       }
     },
@@ -261,46 +280,17 @@
       }
     },
 
-    "spin_showcase": {
-      "type": "seym-spin-showcase",
+    "product_video": {
+      "type": "seym-product-video",
       "settings": {
-        "eyebrow": "Selected Pieces",
-        "heading": "Crafted for those who notice.",
-        "cta_label": "Explore the full collection",
-        "cta_link": "\/collections"
-      },
-      "blocks": {
-        "sp1": {
-          "type": "product_item",
-          "settings": {
-            "product": "solis-amber",
-            "collection": "soli̇s"
-          }
-        },
-        "sp2": {
-          "type": "product_item",
-          "settings": {
-            "product": "black-luminis-1",
-            "collection": "luminis"
-          }
-        }
-      },
-      "block_order": ["sp1", "sp2"]
-    },
-
-    "video_section": {
-      "type": "video",
-      "settings": {
-        "heading": "",
-        "heading_size": "h2",
-        "enable_video_looping": true,
-        "video": "shopify://files/videos/Final v3.mp4",
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
-        "full_width": true,
-        "color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "video_asset": "product-showcase.mp4",
+        "eyebrow": "In Motion",
+        "caption": "Hand-blown in Istanbul.",
+        "aspect_ratio": "16:9",
+        "max_width": 120,
+        "bg_color": "#fafaf7",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     },
 
@@ -385,13 +375,13 @@
 
   "order": [
     "seym_hero",
-    "brand_statement",
+    "intro",
     "editorial",
     "feature_tiles",
+    "model_viewer",
     "collections_intro",
     "collections",
-    "spin_showcase",
-    "video_section",
+    "product_video",
     "manifesto",
     "closing"
   ]
