@@ -337,34 +337,49 @@
   }
 
   var lastIdx = 0;
+  var ticking = false;
+
+  /* iOS/Safari: video must start playing before currentTime can be set */
+  function initSafariScrub() {
+    if (video.readyState >= 1) {
+      video.play().then(function() { video.pause(); video.currentTime = 0; }).catch(function(){});
+    }
+  }
+  document.addEventListener('touchstart', initSafariScrub, { once: true, passive: true });
+  document.addEventListener('click',      initSafariScrub, { once: true });
 
   function onScroll() {
-    var sectionTop    = section.getBoundingClientRect().top + window.scrollY;
-    var scrollable    = section.offsetHeight - window.innerHeight;
-    var scrolled      = window.scrollY - sectionTop;
-    var progress      = Math.max(0, Math.min(1, scrolled / scrollable));
+    ticking = false;
+    var sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    var scrollable = section.offsetHeight - window.innerHeight;
+    var scrolled   = window.scrollY - sectionTop;
+    var progress   = Math.max(0, Math.min(1, scrolled / scrollable));
 
-    /* Scrub video */
+    /* Scrub video — only if delta is meaningful (avoids jank on tiny moves) */
     if (ready && video.duration && isFinite(video.duration)) {
-      video.currentTime = progress * video.duration;
+      var target = progress * video.duration;
+      if (Math.abs(video.currentTime - target) > 0.015) {
+        video.currentTime = target;
+      }
     }
 
     /* Progress bar */
     if (progFill) progFill.style.width = (progress * 100) + '%';
 
     /* Chapter — even slices */
-    var rawIdx  = Math.floor(progress * n);
-    var chapIdx = Math.min(rawIdx, n - 1);
+    var chapIdx = Math.min(Math.floor(progress * n), n - 1);
     if (chapIdx !== lastIdx) { setChapter(chapIdx); lastIdx = chapIdx; }
 
-    /* Hide scroll hint after first nudge */
+    /* Hide scroll hint */
     if (!hintGone && progress > 0.015 && hint) {
       hint.style.opacity = '0';
       hintGone = true;
     }
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+  }, { passive: true });
   onScroll();
 })();
 </script>

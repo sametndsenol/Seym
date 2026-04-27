@@ -16,7 +16,7 @@
         "video_asset": "product-showcase.mp4",
         "eyebrow": "Seym Glass Studio · Istanbul",
         "scroll_label": "Scroll",
-        "scroll_height": 4
+        "scroll_height": 3
       },
       "blocks": {
         "step_1": {
@@ -89,8 +89,8 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
 
@@ -245,8 +245,8 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
 
@@ -286,8 +286,8 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     }
 
