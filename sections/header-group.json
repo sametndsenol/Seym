@@ -1,1 +1,24 @@
-{"name":"t:sections.header.name","type":"header","sections":{"announcement-bar":{"type":"announcement-bar","blocks":{"announcement_main":{"type":"announcement","settings":{"text":"Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr","link":""}},"announcement_secondary":{"type":"announcement","settings":{"text":"Each piece mouth-blown in Istanbul · Made to order","link":""}}},"block_order":["announcement_main","announcement_secondary"],"settings":{"color_scheme":"accent-1","show_line_separator":false,"show_social":false,"auto_rotate":true,"change_slides_speed":7,"enable_country_selector":false,"enable_language_selector":false}},"header":{"type":"header","custom_css":[".header-wrapper { position: relative; z-index: 50; background: transparent !important; }",".header__inline-menu { font-weight: 400; }"],"settings":{"logo_position":"top-center","menu":"main-menu","menu_type_desktop":"dropdown","sticky_header_type":"on-scroll-up","show_line_separator":false,"color_scheme":"background-1","menu_color_scheme":"background-1","enable_country_selector":false,"enable_language_selector":true,"mobile_logo_position":"center","margin_bottom":0,"padding_top":24,"padding_bottom":24}}},"order":["announcement-bar","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "seym-header": {
+      "type": "seym-header",
+      "settings": {
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "seym-header"
+  ]
+}

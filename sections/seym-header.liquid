@@ -1,344 +1,247 @@
 {%- comment -%}
-  Seym header — single-row luxury navigation.
-  Logo left · Nav centered (absolute) · Icons right.
-  On scroll: slight compression, backdrop blur.
-  Mobile: logo left · hamburger right.
+  Seym Header — single-row luxury.
+  Logo left · Nav center (absolute) · Icons right.
+  Hermès/Bottega pattern. Sticky + blur on scroll.
 {%- endcomment -%}
 
 <style>
-  /* ── Announcement bar ── */
+  /* — Announcement bar — */
   .seym-bar {
     background: #0a1424;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
-    color: rgba(239, 236, 236, 0.6);
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
+    border-bottom: 1px solid rgba(239,236,236,0.07);
     text-align: center;
     padding: 1rem 2rem;
-    position: relative;
-    z-index: 60;
+    position: relative; z-index: 60;
+  }
+  .seym-bar p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(239,236,236,0.58);
+    margin: 0;
   }
   .seym-bar a { color: inherit; text-decoration: none; }
 
-  /* ── Header shell ── */
+  /* — Header shell — */
   .seym-hd {
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    position: sticky; top: 0; z-index: 50;
     background: #0a1424;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
-    transition: background 500ms cubic-bezier(0.22, 1, 0.36, 1),
-                padding 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    border-bottom: 1px solid rgba(239,236,236,0.07);
+    transition: background 600ms cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-hd.is-scrolled {
-    background: rgba(10, 20, 36, 0.94);
-    -webkit-backdrop-filter: saturate(150%) blur(24px);
-    backdrop-filter: saturate(150%) blur(24px);
+  .seym-hd.scrolled {
+    background: rgba(10,20,36,0.92);
+    -webkit-backdrop-filter: saturate(160%) blur(24px);
+    backdrop-filter: saturate(160%) blur(24px);
   }
 
-  /* ── Inner row ── */
+  /* — Single row — */
   .seym-hd__row {
-    max-width: 160rem;
-    margin: 0 auto;
-    padding: 0 4rem;
-    height: 7.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    max-width: 160rem; margin: 0 auto;
+    padding: 0 4.8rem;
+    height: 7rem;
+    display: flex; align-items: center; justify-content: space-between;
     position: relative;
-    transition: height 400ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: height 400ms cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-hd.is-scrolled .seym-hd__row { height: 5.6rem; }
+  .seym-hd.scrolled .seym-hd__row { height: 5.4rem; }
 
-  /* ── Logo ── */
+  /* — Logo — */
   .seym-hd__logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #efecec;
-    flex-shrink: 0;
-    z-index: 2;
+    display: flex; align-items: center;
+    text-decoration: none; color: #efecec;
+    flex-shrink: 0; z-index: 2;
+    transition: opacity 300ms ease;
   }
+  .seym-hd__logo:hover { opacity: 0.75; }
   .seym-hd__logo img {
-    max-height: 4.4rem;
-    width: auto;
+    max-height: 4.6rem; width: auto;
     filter: brightness(0) invert(1);
-    transition: max-height 400ms ease, opacity 300ms ease;
+    transition: max-height 400ms ease;
     display: block;
   }
-  .seym-hd.is-scrolled .seym-hd__logo img { max-height: 3.2rem; }
-  .seym-hd__logo:hover img { opacity: 0.8; }
+  .seym-hd.scrolled .seym-hd__logo img { max-height: 3.4rem; }
   .seym-hd__logo-text {
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-size: 2.2rem;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: #efecec;
-    line-height: 1;
+    font-weight: 400; font-size: 2.2rem;
+    letter-spacing: 0.36em; text-transform: uppercase;
+    color: #efecec; line-height: 1;
   }
 
-  /* ── Nav — centered absolutely so logo stays left-anchored ── */
+  /* — Nav (centered absolutely) — */
   .seym-hd__nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 0;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center;
+    list-style: none; margin: 0; padding: 0;
+    white-space: nowrap; gap: 0;
   }
   .seym-hd__nav a {
-    color: rgba(239, 236, 236, 0.75);
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 1rem;
-    font-weight: 400;
-    padding: 0.5rem 1.6rem;
-    position: relative;
     display: inline-block;
+    padding: 0.6rem 1.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(239,236,236,0.7);
+    text-decoration: none; position: relative;
     transition: color 300ms ease;
   }
   .seym-hd__nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 1.6rem;
-    right: 1.6rem;
-    height: 1px;
-    background: #efecec;
-    transform: scaleX(0);
-    transform-origin: right center;
-    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    content: ''; position: absolute;
+    bottom: 2px; left: 1.8rem; right: 1.8rem;
+    height: 1px; background: #efecec;
+    transform: scaleX(0); transform-origin: right center;
+    transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-hd__nav a:hover { color: #efecec; }
-  .seym-hd__nav a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left center;
+  .seym-hd__nav a:hover,
+  .seym-hd__nav a[aria-current] { color: #efecec; }
+  .seym-hd__nav a:hover::after,
+  .seym-hd__nav a[aria-current]::after {
+    transform: scaleX(1); transform-origin: left center;
   }
-  .seym-hd__nav a.is-active { color: #efecec; }
-  .seym-hd__nav a.is-active::after { transform: scaleX(1); }
 
-  /* ── Icons (right side) ── */
-  .seym-hd__actions {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    flex-shrink: 0;
-    z-index: 2;
+  /* — Icon cluster — */
+  .seym-hd__icons {
+    display: flex; align-items: center; gap: 0.4rem;
+    flex-shrink: 0; z-index: 2;
   }
-  .seym-hd__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    color: #efecec;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    position: relative;
+  .seym-hd__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 4rem; height: 4rem;
+    color: #efecec; background: none; border: none;
+    cursor: pointer; text-decoration: none; position: relative;
     transition: opacity 300ms ease;
   }
-  .seym-hd__btn:hover { opacity: 0.65; }
-  .seym-hd__btn svg {
-    width: 1.9rem;
-    height: 1.9rem;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .seym-hd__icon:hover { opacity: 0.6; }
+  .seym-hd__icon svg {
+    width: 1.9rem; height: 1.9rem;
+    stroke: currentColor; fill: none;
+    stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
   }
-
-  /* Cart badge */
   .seym-hd__badge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #efecec;
-    color: #0a1424;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 600;
-    line-height: 1;
+    position: absolute; top: 5px; right: 5px;
+    background: #efecec; color: #0a1424;
+    width: 1.5rem; height: 1.5rem; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
     font-family: 'Inter', sans-serif;
+    font-size: 0.8rem; font-weight: 600; line-height: 1;
   }
 
-  /* Hamburger (mobile only) */
-  .seym-hd__hamburger {
+  /* — Hamburger (mobile) — */
+  .seym-hd__burger {
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 4rem;
-    height: 4rem;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0.8rem;
+    flex-direction: column; justify-content: center; gap: 5px;
+    width: 4rem; height: 4rem;
+    background: none; border: none; cursor: pointer; padding: 1rem;
   }
-  .seym-hd__hamburger span {
-    display: block;
-    height: 1px;
-    background: #efecec;
+  .seym-hd__burger span {
+    display: block; height: 1px; background: #efecec;
     transition: all 300ms ease;
   }
-  .seym-hd__hamburger span:nth-child(1) { width: 100%; }
-  .seym-hd__hamburger span:nth-child(2) { width: 70%; margin-left: auto; }
-  .seym-hd__hamburger span:nth-child(3) { width: 100%; }
+  .seym-hd__burger span:nth-child(2) { width: 70%; margin-left: auto; }
 
-  /* ── Mobile drawer ── */
+  /* — Mobile drawer — */
   .seym-drawer {
-    position: fixed;
-    inset: 0;
-    background: #0a1424;
-    z-index: 100;
+    position: fixed; inset: 0;
+    background: #0a1424; z-index: 100;
     transform: translateX(-100%);
-    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    display: flex;
-    flex-direction: column;
-    padding: 0;
+    transition: transform 600ms cubic-bezier(0.22,1,0.36,1);
     overflow-y: auto;
+    display: flex; flex-direction: column;
   }
-  .seym-drawer.is-open { transform: translateX(0); }
+  .seym-drawer.open { transform: translateX(0); }
   .seym-drawer__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 2rem 2.4rem;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.08);
+    border-bottom: 1px solid rgba(239,236,236,0.07);
     flex-shrink: 0;
   }
   .seym-drawer__close {
-    background: transparent;
-    border: none;
-    color: #efecec;
-    cursor: pointer;
-    width: 4rem;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: none; border: none; color: #efecec;
+    cursor: pointer; width: 4rem; height: 4rem;
+    display: flex; align-items: center; justify-content: center;
   }
-  .seym-drawer__close svg { width: 2.2rem; height: 2.2rem; stroke: currentColor; fill: none; stroke-width: 1.4; }
-  .seym-drawer__nav {
-    padding: 3.2rem 2.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    list-style: none;
-    margin: 0;
+  .seym-drawer__close svg { width: 2rem; height: 2rem; stroke: currentColor; fill: none; stroke-width: 1.4; }
+  .seym-drawer__links {
+    list-style: none; margin: 0; padding: 3rem 2.4rem;
+    display: flex; flex-direction: column; gap: 0;
   }
-  .seym-drawer__nav a {
-    color: #efecec;
-    text-decoration: none;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+  .seym-drawer__links a {
     display: block;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid rgba(239, 236, 236, 0.07);
+    padding: 1.4rem 0;
+    border-bottom: 1px solid rgba(239,236,236,0.07);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem; font-weight: 300; letter-spacing: -0.01em;
+    color: #efecec; text-decoration: none;
     transition: opacity 300ms ease;
   }
-  .seym-drawer__nav a:hover { opacity: 0.7; }
-  .seym-drawer__nav li:last-child a { border-bottom: none; }
+  .seym-drawer__links a:hover { opacity: 0.65; }
+  .seym-drawer__links li:last-child a { border-bottom: none; }
 
-  /* ── Responsive ── */
+  /* — Responsive — */
   @media (max-width: 989px) {
     .seym-hd__nav { display: none; }
-    .seym-hd__hamburger { display: flex; }
+    .seym-hd__burger { display: flex; }
     .seym-hd__row { padding: 0 2rem; }
-    .seym-hd__btn[data-account] { display: none; }
+    .seym-hd__icon[data-account] { display: none; }
   }
   @media (max-width: 749px) {
-    .seym-hd__row { height: 6rem; }
-    .seym-hd.is-scrolled .seym-hd__row { height: 5rem; }
-    .seym-hd__logo img { max-height: 3.6rem; }
+    .seym-hd__row { height: 5.8rem; }
+    .seym-hd.scrolled .seym-hd__row { height: 4.8rem; }
   }
 </style>
 
-{%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
-  <div class="seym-bar" role="banner">
-    <span>{{ section.settings.announcement_text }}</span>
-  </div>
+{%- if section.settings.show_bar and section.settings.bar_text != blank -%}
+<div class="seym-bar">
+  <p>{{ section.settings.bar_text }}</p>
+</div>
 {%- endif -%}
 
 <header class="seym-hd" id="SeymHd">
   <div class="seym-hd__row">
 
-    {{- '<!-- left: logo -->' -}}
     <a href="{{ routes.root_url }}" class="seym-hd__logo" aria-label="{{ shop.name }}">
       {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 540 | image_tag:
-            loading: 'eager',
-            width: settings.logo.width,
-            height: settings.logo.height,
-            alt: shop.name
-        }}
+        {{ settings.logo | image_url: width: 540 | image_tag: loading: 'eager', width: settings.logo.width, height: settings.logo.height, alt: shop.name }}
       {%- else -%}
         <span class="seym-hd__logo-text">{{ shop.name }}</span>
       {%- endif -%}
     </a>
 
-    {{- '<!-- center: nav -->' -}}
-    <nav aria-label="Main navigation">
+    <nav aria-label="Main">
       <ul class="seym-hd__nav">
         {%- for link in linklists[section.settings.menu].links -%}
           <li>
-            <a href="{{ link.url }}"{% if link.active %} class="is-active" aria-current="page"{% endif %}>
-              {{- link.title -}}
-            </a>
+            <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
           </li>
         {%- endfor -%}
       </ul>
     </nav>
 
-    {{- '<!-- right: icons -->' -}}
-    <div class="seym-hd__actions">
-
-      <a href="{{ routes.search_url }}" class="seym-hd__btn" aria-label="Search">
+    <div class="seym-hd__icons">
+      <a href="{{ routes.search_url }}" class="seym-hd__icon" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
       </a>
-
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{{ routes.account_url }}" class="seym-hd__btn" data-account aria-label="Account">
+        <a href="{{ routes.account_url }}" class="seym-hd__icon" data-account aria-label="Account">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
         </a>
       {%- endif -%}
-
-      <a href="{{ routes.cart_url }}" class="seym-hd__btn" aria-label="Cart ({{ cart.item_count }} items)">
+      <a href="{{ routes.cart_url }}" class="seym-hd__icon" aria-label="Cart ({{ cart.item_count }})">
         <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12.5a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7L5 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
         {%- if cart.item_count > 0 -%}
           <span class="seym-hd__badge" aria-hidden="true">{{ cart.item_count }}</span>
         {%- endif -%}
       </a>
-
-      <button class="seym-hd__hamburger" aria-label="Open menu" id="SeymMenuOpen" aria-controls="SeymDrawer" aria-expanded="false">
+      <button class="seym-hd__burger" id="SeymBurger" aria-label="Menu" aria-expanded="false" aria-controls="SeymDrawer">
         <span></span><span></span><span></span>
       </button>
-
     </div>
+
   </div>
 </header>
 
-{{- '<!-- Mobile drawer -->' -}}
-<div class="seym-drawer" id="SeymDrawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+<div class="seym-drawer" id="SeymDrawer" role="dialog" aria-label="Menu" aria-hidden="true">
   <div class="seym-drawer__head">
     <a href="{{ routes.root_url }}" class="seym-hd__logo" tabindex="-1">
       {%- if settings.logo != blank -%}
@@ -347,12 +250,12 @@
         <span class="seym-hd__logo-text" style="font-size:1.8rem">{{ shop.name }}</span>
       {%- endif -%}
     </a>
-    <button class="seym-drawer__close" aria-label="Close menu" id="SeymMenuClose">
+    <button class="seym-drawer__close" id="SeymDrawerClose" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
     </button>
   </div>
-  <nav aria-label="Mobile navigation">
-    <ul class="seym-drawer__nav">
+  <nav>
+    <ul class="seym-drawer__links">
       {%- for link in linklists[section.settings.menu].links -%}
         <li><a href="{{ link.url }}">{{ link.title }}</a></li>
       {%- endfor -%}
@@ -361,50 +264,33 @@
 </div>
 
 <script>
-(function () {
-  const hd     = document.getElementById('SeymHd');
+(function(){
+  const hd = document.getElementById('SeymHd');
   const drawer = document.getElementById('SeymDrawer');
-  const openBtn  = document.getElementById('SeymMenuOpen');
-  const closeBtn = document.getElementById('SeymMenuClose');
+  const burger = document.getElementById('SeymBurger');
+  const closeBtn = document.getElementById('SeymDrawerClose');
 
-  // Scroll behaviour
-  let lastScroll = 0;
-  function onScroll() {
-    const y = window.scrollY;
-    if (y > 12) hd.classList.add('is-scrolled');
-    else        hd.classList.remove('is-scrolled');
-    lastScroll = y;
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.addEventListener('scroll', function(){
+    hd.classList.toggle('scrolled', window.scrollY > 12);
+  }, {passive: true});
+  hd.classList.toggle('scrolled', window.scrollY > 12);
 
-  // Drawer
-  function openDrawer() {
-    drawer.classList.add('is-open');
-    drawer.setAttribute('aria-hidden', 'false');
-    openBtn.setAttribute('aria-expanded', 'true');
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    burger.setAttribute('aria-expanded','true');
     document.body.style.overflow = 'hidden';
-    closeBtn.focus();
   }
-  function closeDrawer() {
-    drawer.classList.remove('is-open');
-    drawer.setAttribute('aria-hidden', 'true');
-    openBtn.setAttribute('aria-expanded', 'false');
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
     document.body.style.overflow = '';
-    openBtn.focus();
   }
-
-  if (openBtn)  openBtn.addEventListener('click', openDrawer);
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  if (drawer) {
-    drawer.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', closeDrawer);
-    });
-    // Close on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
-    });
-  }
+  if(burger) burger.addEventListener('click', openDrawer);
+  if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  drawer && drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
 })();
 </script>
 
@@ -414,29 +300,11 @@
   "tag": "header",
   "class": "shopify-section-header shopify-section-header-sticky",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_announcement",
-      "label": "Show announcement bar",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "announcement_text",
-      "label": "Announcement text",
-      "default": "Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Main menu",
-      "default": "main-menu"
-    }
+    { "type": "checkbox", "id": "show_bar", "label": "Show announcement bar", "default": true },
+    { "type": "text", "id": "bar_text", "label": "Announcement text",
+      "default": "Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr" },
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" }
   ],
-  "presets": [
-    {
-      "name": "Seym Header"
-    }
-  ]
+  "presets": [{ "name": "Seym Header" }]
 }
 {% endschema %}

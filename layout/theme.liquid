@@ -310,13 +310,13 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    {% section 'seym-header' %}
+    {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
-    {% section 'seym-footer' %}
+    {% sections 'footer-group' %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
@@ -368,5 +368,6 @@
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    <script src="{{ 'seym-luxury.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>
