@@ -1,0 +1,274 @@
+{%- comment -%}
+  Seym Feature Tiles
+  Three reasons to buy — clean editorial grid.
+  Number in gold · Headline · Short body.
+  Separated by vertical lines, full-width horizontal rule above.
+{%- endcomment -%}
+
+<style>
+  .seym-tiles {
+    background: #fafaf7;
+    padding: 9rem 0 10rem;
+    border-top: 1px solid rgba(13,13,13,0.07);
+  }
+
+  .seym-tiles__intro {
+    text-align: center;
+    margin-bottom: 7rem;
+  }
+
+  .seym-tiles__intro-eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.38);
+    margin-bottom: 0;
+  }
+
+  .seym-tiles__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 144rem;
+    margin: 0 auto;
+    padding: 0 5rem;
+  }
+
+  .seym-tiles__tile {
+    padding: 4rem 5rem 4rem 0;
+    border-left: 1px solid rgba(13,13,13,0.07);
+    padding-left: 5rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 700ms cubic-bezier(0.22,1,0.36,1),
+                transform 700ms cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-tiles__tile:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+  .seym-tiles__tile.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .seym-tiles__tile:nth-child(2) { transition-delay: 120ms; }
+  .seym-tiles__tile:nth-child(3) { transition-delay: 240ms; }
+
+  .seym-tiles__num {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    color: #c9a96e;
+    margin-bottom: 2.8rem;
+  }
+
+  .seym-tiles__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 2.6vw, 3.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #0d0d0d;
+    margin: 0 0 2rem 0;
+  }
+
+  .seym-tiles__body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 300;
+    line-height: 1.76;
+    letter-spacing: 0.005em;
+    color: rgba(13,13,13,0.55);
+    margin: 0;
+    max-width: 32ch;
+  }
+
+  .seym-tiles__link {
+    display: inline-block;
+    margin-top: 2.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #0d0d0d;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(13,13,13,0.25);
+    padding-bottom: 2px;
+    transition: border-color 300ms ease, opacity 300ms ease;
+  }
+  .seym-tiles__link:hover {
+    border-color: #0d0d0d;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 989px) {
+    .seym-tiles__grid {
+      grid-template-columns: 1fr 1fr;
+      padding: 0 3rem;
+      gap: 0;
+    }
+    .seym-tiles__tile:nth-child(3) {
+      grid-column: span 2;
+      border-top: 1px solid rgba(13,13,13,0.07);
+      border-left: none;
+      padding-left: 0;
+      padding-top: 4rem;
+      margin-top: 4rem;
+    }
+    .seym-tiles__tile:nth-child(2) {
+      padding-left: 3rem;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .seym-tiles { padding: 7rem 0 8rem; }
+    .seym-tiles__grid {
+      grid-template-columns: 1fr;
+      padding: 0 2.4rem;
+    }
+    .seym-tiles__tile {
+      border-left: none;
+      border-top: 1px solid rgba(13,13,13,0.07);
+      padding: 3.6rem 0;
+    }
+    .seym-tiles__tile:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    .seym-tiles__tile:nth-child(2),
+    .seym-tiles__tile:nth-child(3) {
+      grid-column: auto;
+      padding-left: 0;
+      margin-top: 0;
+    }
+    .seym-tiles__tile.visible { opacity: 1; transform: none; }
+  }
+</style>
+
+<section class="seym-tiles" id="SeymTiles-{{ section.id }}">
+  {%- if section.settings.eyebrow != blank -%}
+    <div class="seym-tiles__intro page-width">
+      <span class="seym-tiles__intro-eyebrow">{{ section.settings.eyebrow }}</span>
+    </div>
+  {%- endif -%}
+
+  <div class="seym-tiles__grid">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tile' -%}
+        <div class="seym-tiles__tile" {{ block.shopify_attributes }}>
+          {%- if block.settings.number != blank -%}
+            <span class="seym-tiles__num">{{ block.settings.number }}</span>
+          {%- endif -%}
+          {%- if block.settings.heading != blank -%}
+            <h3 class="seym-tiles__heading">{{ block.settings.heading }}</h3>
+          {%- endif -%}
+          {%- if block.settings.body != blank -%}
+            <p class="seym-tiles__body">{{ block.settings.body }}</p>
+          {%- endif -%}
+          {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}
+            <a href="{{ block.settings.link_url }}" class="seym-tiles__link">{{ block.settings.link_label }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+(function () {
+  var tiles = document.querySelectorAll('#SeymTiles-{{ section.id }} .seym-tiles__tile');
+  if (!tiles.length) return;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.2 });
+  tiles.forEach(function (t) { obs.observe(t); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Feature Tiles",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Why Seym"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number / label",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Hand-blown, never cast."
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body text",
+          "default": "Every Seym piece is shaped by lung and hand — not a mould, not a machine. The variation you see is not a flaw. It is proof."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text (optional)"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Feature Tiles",
+      "blocks": [
+        {
+          "type": "tile",
+          "settings": {
+            "number": "01",
+            "heading": "Hand-blown, never cast.",
+            "body": "Every Seym piece is shaped by lung and hand — not a mould, not a machine. The variation you see is not a flaw. It is proof."
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "number": "02",
+            "heading": "Istanbul. Since 2022.",
+            "body": "Our Çengelköy atelier sits on the Bosphorus. The same water that inspired the myths that name each piece. Place and story are inseparable."
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "number": "03",
+            "heading": "Edition of twelve.",
+            "body": "We do not repeat. Each series closes permanently. Ownership is not just possession — it is position within a finite story."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

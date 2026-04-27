@@ -292,6 +292,9 @@
 </style>
 
 {%- assign product = all_products[section.settings.product] -%}
+{%- if product == blank and section.settings.collection != blank -%}
+  {%- assign product = collections[section.settings.collection].products.first -%}
+{%- endif -%}
 
 <section class="seym-ed" id="SeymEd-{{ section.id }}">
   <div class="seym-ed__inner">
@@ -432,7 +435,12 @@
     {
       "type": "product",
       "id": "product",
-      "label": "Product"
+      "label": "Product (specific)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection (uses first product if no specific product set)"
     },
     {
       "type": "image_picker",
