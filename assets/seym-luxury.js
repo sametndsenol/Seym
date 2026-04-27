@@ -1,44 +1,10 @@
 /* SEYM — Luxury interactions
-   Custom cursor · Page transitions · Parallax · Scroll reveals */
+   Page transitions · Parallax · Scroll reveals */
 
 (function () {
   'use strict';
 
-  /* ── 1. CUSTOM CURSOR ─────────────────────────────────────────── */
-  (function initCursor() {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
-    var el = document.createElement('div');
-    el.className = 'seym-cursor';
-    el.innerHTML = '<div class="seym-cursor__dot"></div><div class="seym-cursor__ring"></div>';
-    document.body.appendChild(el);
-
-    // Only hide native cursor after the element is in the DOM
-    document.body.classList.add('seym-cursor-ready');
-
-    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-
-    document.addEventListener('mousemove', function (e) {
-      mx = e.clientX;
-      my = e.clientY;
-      el.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
-    }, { passive: true });
-
-    var hoverable = 'a,button,[role="button"],label,select,.card-wrapper,.seym-hd__icon';
-    document.addEventListener('mouseover', function (e) {
-      if (e.target.closest(hoverable)) el.classList.add('seym-cursor--hover');
-    });
-    document.addEventListener('mouseout', function (e) {
-      if (e.target.closest(hoverable)) el.classList.remove('seym-cursor--hover');
-    });
-    document.addEventListener('mousedown', function () { el.classList.add('seym-cursor--click'); });
-    document.addEventListener('mouseup', function () { el.classList.remove('seym-cursor--click'); });
-    document.addEventListener('mouseleave', function () { el.classList.add('seym-cursor--hidden'); });
-    document.addEventListener('mouseenter', function () { el.classList.remove('seym-cursor--hidden'); });
-  })();
-
-
-  /* ── 2. SCROLL REVEAL (section wrappers) ─────────────────────── */
+  /* ── 1. SCROLL REVEAL (section wrappers) ─────────────────────── */
   (function initReveal() {
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
