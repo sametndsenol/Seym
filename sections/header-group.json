@@ -14,6 +14,8 @@
     "seym-header": {
       "type": "seym-header",
       "settings": {
+        "show_bar": true,
+        "bar_text": "Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr",
         "menu": "main-menu"
       }
     }
