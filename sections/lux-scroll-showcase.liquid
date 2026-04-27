@@ -1,8 +1,7 @@
 {%- comment -%}
   SEYM Hero — Cinematic scroll-reveal stage.
-  Acts as the homepage opener. Pin the canvas while the user scrolls,
-  rotate / zoom / cross-fade the object, and animate eyebrow + headline
-  + caption layers in sequence. Designed for Midnight Gallery.
+  Adds: (2) 3D perspective on object, (4) per-word text reveal,
+        (6) drifting luminous particles.
 {%- endcomment -%}
 
 {%- liquid
@@ -31,21 +30,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--seym-hero-bg);
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(27, 54, 93, 0.55), transparent 55%),
+      radial-gradient(ellipse at 50% 110%, rgba(27, 54, 93, 0.4), transparent 55%),
+      var(--seym-hero-bg);
+    /* (2) 3D perspective */
+    perspective: 1600px;
+    perspective-origin: 50% 50%;
   }
 
-  /* Subtle vignette — soft edge fade */
+  /* Vignette */
   .seym-hero-stage-{{ section.id }}::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(75% 100% at 50% 50%, transparent 40%, rgba(250, 250, 247, 0.4) 100%);
+      radial-gradient(75% 100% at 50% 50%, transparent 35%, rgba(10, 20, 36, 0.55) 100%);
     z-index: 1;
     pointer-events: none;
   }
 
-  /* Spotlight aperture behind object */
   .seym-hero-light-{{ section.id }} {
     position: absolute;
     width: 60vmin;
@@ -53,11 +57,38 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle at 50% 60%, rgba(201, 169, 110, 0.08), transparent 60%);
+    background: radial-gradient(circle at 50% 60%, rgba(239, 236, 236, 0.18), transparent 60%);
     pointer-events: none;
     z-index: 2;
     filter: blur(20px);
     will-change: transform, opacity;
+  }
+
+  /* (6) Drifting particles layer */
+  .seym-hero-particles-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .seym-hero-particles-{{ section.id }} .particle {
+    position: absolute;
+    bottom: -40px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(239, 236, 236, 0.7);
+    box-shadow: 0 0 6px rgba(239, 236, 236, 0.5);
+    animation: seym-particle-rise-{{ section.id }} linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes seym-particle-rise-{{ section.id }} {
+    0%   { transform: translate3d(0, 0, 0) scale(0.6); opacity: 0; }
+    10%  { opacity: 0.9; }
+    50%  { transform: translate3d(8px, -50vh, 0) scale(1); opacity: 0.7; }
+    90%  { opacity: 0.4; }
+    100% { transform: translate3d(-8px, -110vh, 0) scale(0.5); opacity: 0; }
   }
 
   .seym-hero-object-{{ section.id }} {
@@ -71,6 +102,9 @@
     align-items: center;
     justify-content: center;
     will-change: transform;
+    /* (2) 3D depth */
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
   }
 
   .seym-hero-object-{{ section.id }} img,
@@ -96,7 +130,6 @@
     opacity: 0;
   }
 
-  /* Eyebrow — small caps, small, top center */
   .seym-hero-eyebrow-{{ section.id }} {
     position: absolute;
     top: 12vh;
@@ -114,7 +147,6 @@
     white-space: nowrap;
   }
 
-  /* Tagline / step text */
   .seym-hero-step-{{ section.id }} {
     position: absolute;
     inset: 0;
@@ -163,6 +195,24 @@
     opacity: 0.85;
   }
 
+  /* (4) Per-word text reveal */
+  .seym-hero-step-{{ section.id }} .step-headline .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(10px);
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform, filter;
+  }
+  .seym-hero-step-{{ section.id }}.is-active .step-headline .word {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
   .seym-hero-step-{{ section.id }} .step-body {
     font-family: 'Inter', sans-serif;
     font-weight: 300;
@@ -174,7 +224,6 @@
     margin: 0 auto;
   }
 
-  /* Bottom scroll cue */
   .seym-hero-cue-{{ section.id }} {
     position: absolute;
     bottom: 4vh;
@@ -197,7 +246,7 @@
     width: 60px;
     height: 1px;
     background: currentColor;
-    animation: seym-cue-drop 2.4s var(--seym-ease, cubic-bezier(0.22,1,0.36,1)) infinite;
+    animation: seym-cue-drop 2.4s cubic-bezier(0.22,1,0.36,1) infinite;
     transform-origin: top;
   }
   @keyframes seym-cue-drop {
@@ -213,15 +262,38 @@
       margin: 0 -2.4rem;
       height: calc({{ section.blocks.size | at_least: 1 }} * 90vh + 90vh);
     }
-    .seym-hero-stage-{{ section.id }} { height: 100vh; }
+    .seym-hero-stage-{{ section.id }} { height: 100vh; perspective: 1000px; }
     .seym-hero-object-{{ section.id }} { width: 78vmin; height: 78vmin; }
     .seym-hero-step-{{ section.id }} { padding: 0 6vw 10vh; }
     .seym-hero-step-{{ section.id }} .step-headline { font-size: clamp(2.6rem, 8vw, 4rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seym-hero-particles-{{ section.id }} .particle { animation: none; opacity: 0; }
+    .seym-hero-step-{{ section.id }} .step-headline .word {
+      opacity: 1; transform: none; filter: none; transition: none;
+    }
   }
 {%- endstyle -%}
 
 <section class="seym-hero-{{ section.id }}" id="seym-hero-{{ section.id }}">
   <div class="seym-hero-stage-{{ section.id }}" id="seym-hero-stage-{{ section.id }}">
+
+    {%- comment -%} (6) Drifting particles {%- endcomment -%}
+    <div class="seym-hero-particles-{{ section.id }}" aria-hidden="true">
+      {%- assign particle_count = 14 -%}
+      {%- for i in (1..particle_count) -%}
+        {%- assign delay_seed = i | times: 1.317 | modulo: 8 -%}
+        {%- assign duration = i | modulo: 5 | plus: 9 -%}
+        {%- assign left_pos = i | times: 7 | modulo: 100 -%}
+        {%- assign size = i | modulo: 3 | plus: 2 -%}
+        <span class="particle"
+              style="left:{{ left_pos }}%;
+                     width:{{ size }}px;height:{{ size }}px;
+                     animation-duration:{{ duration }}s;
+                     animation-delay:-{{ delay_seed }}s;"></span>
+      {%- endfor -%}
+    </div>
 
     <div class="seym-hero-light-{{ section.id }}" id="seym-hero-light-{{ section.id }}"></div>
 
@@ -233,7 +305,6 @@
       {% if section.settings.image != blank %}
         {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', class: 'seym-hero-img-primary' }}
       {% else %}
-        {%- comment -%} Default cinematic SVG: a luminous glass orb {%- endcomment -%}
         <svg
           class="seym-hero-img-primary seym-hero-svg"
           viewBox="0 0 600 800"
@@ -263,17 +334,12 @@
               <stop offset="100%" stop-color="#efecec" stop-opacity="0.45"/>
             </linearGradient>
           </defs>
-          {%- comment -%} Cast shadow {%- endcomment -%}
           <ellipse cx="300" cy="700" rx="180" ry="22" fill="url(#seym-orb-shadow-{{ section.id }})"/>
-          {%- comment -%} Glass orb body {%- endcomment -%}
           <circle cx="300" cy="380" r="240" fill="url(#seym-orb-{{ section.id }})" stroke="url(#seym-orb-rim-{{ section.id }})" stroke-width="1"/>
-          {%- comment -%} Inner refraction {%- endcomment -%}
           <ellipse cx="300" cy="400" rx="170" ry="180" fill="none" stroke="rgba(239,236,236,0.18)" stroke-width="0.5"/>
           <ellipse cx="300" cy="400" rx="120" ry="130" fill="none" stroke="rgba(239,236,236,0.14)" stroke-width="0.5"/>
-          {%- comment -%} Highlight specular {%- endcomment -%}
           <ellipse cx="240" cy="290" rx="80" ry="55" fill="url(#seym-orb-glow-{{ section.id }})"/>
           <ellipse cx="220" cy="270" rx="22" ry="14" fill="rgba(255,255,255,0.85)"/>
-          {%- comment -%} Tiny floating spark {%- endcomment -%}
           <circle cx="380" cy="320" r="2" fill="rgba(255,255,255,0.7)"/>
           <circle cx="350" cy="450" r="1.4" fill="rgba(255,255,255,0.5)"/>
           <circle cx="260" cy="500" r="1" fill="rgba(255,255,255,0.4)"/>
@@ -295,7 +361,13 @@
             <span class="step-eyebrow">{{ block.settings.eyebrow }}</span>
           {% endif %}
           {% if block.settings.headline != blank %}
-            <h2 class="step-headline">{{ block.settings.headline }}</h2>
+            {%- comment -%} (4) Wrap each word in <span class="word"> for staggered reveal {%- endcomment -%}
+            <h2 class="step-headline">
+              {%- assign words = block.settings.headline | split: ' ' -%}
+              {%- for w in words -%}
+                <span class="word" style="transition-delay: {{ forloop.index0 | times: 60 }}ms">{{ w }}</span>{% unless forloop.last %} {% endunless %}
+              {%- endfor -%}
+            </h2>
           {% endif %}
           {% if block.settings.body != blank %}
             <div class="step-body">{{ block.settings.body }}</div>
@@ -326,7 +398,7 @@
   if (!container || !obj || steps.length === 0) return;
 
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    steps.forEach((s) => { s.style.opacity = 1; s.style.transform = 'none'; });
+    steps.forEach((s) => { s.style.opacity = 1; s.style.transform = 'none'; s.classList.add('is-active'); });
     return;
   }
 
@@ -346,15 +418,20 @@
     if (scrolled > 0.02) container.classList.add('scrolled-active-' + sectionId);
     else container.classList.remove('scrolled-active-' + sectionId);
 
-    const progress = scrolled * totalSteps;
-
     const baseScale = 0.92;
     const scaleAdd = 0.18 * easeInOut(scrolled);
-    const rotation = (Math.sin(scrolled * Math.PI * (totalSteps + 1)) * 14) - 4;
+    /* (2) Subtle 3D rotation tied to scroll progress */
+    const rotateZ = (Math.sin(scrolled * Math.PI * (totalSteps + 1)) * 14) - 4;
+    const rotateY = Math.sin(scrolled * Math.PI * 2) * 18;     // sway left-right
+    const rotateX = -6 + Math.cos(scrolled * Math.PI) * 10;    // tilt forward/back
     const yShift = -20 * easeInOut(scrolled);
 
     obj.style.transform =
-      'translate3d(0, ' + yShift + 'px, 0) rotate(' + rotation.toFixed(2) + 'deg) scale(' + (baseScale + scaleAdd).toFixed(3) + ')';
+      'translate3d(0,' + yShift + 'px, 0) ' +
+      'rotateX(' + rotateX.toFixed(2) + 'deg) ' +
+      'rotateY(' + rotateY.toFixed(2) + 'deg) ' +
+      'rotateZ(' + rotateZ.toFixed(2) + 'deg) ' +
+      'scale(' + (baseScale + scaleAdd).toFixed(3) + ')';
 
     if (light) {
       const lightScale = 0.9 + 0.6 * easeInOut(scrolled);
@@ -377,14 +454,17 @@
       let local = (scrolled - stepStart) / stepRange;
       let opacity = 0;
       let translate = 30;
+      let isActive = false;
 
       if (local < 0.25) {
         const t = clamp01(local / 0.25);
         opacity = t;
         translate = lerp(30, 0, t);
+        if (t > 0.25) isActive = true;
       } else if (local < 0.75) {
         opacity = 1;
         translate = 0;
+        isActive = true;
       } else if (local <= 1.05) {
         const t = clamp01((local - 0.75) / 0.3);
         opacity = 1 - t;
@@ -393,6 +473,9 @@
 
       step.style.opacity = opacity.toFixed(3);
       step.style.transform = 'translate3d(0, ' + translate.toFixed(2) + 'px, 0)';
+      /* (4) Toggle is-active so per-word reveal animates in/out */
+      if (isActive) step.classList.add('is-active');
+      else step.classList.remove('is-active');
     });
 
     ticking = false;
@@ -417,10 +500,7 @@
   "tag": "section",
   "class": "section seym-hero-section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Stage"
-    },
+    { "type": "header", "content": "Stage" },
     {
       "type": "image_picker",
       "id": "image",
@@ -432,22 +512,9 @@
       "id": "image_secondary",
       "label": "Secondary object (optional, cross-fades near the end)"
     },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background",
-      "default": "#0a1424"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text colour",
-      "default": "#efecec"
-    },
-    {
-      "type": "header",
-      "content": "Labels"
-    },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0a1424" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#efecec" },
+    { "type": "header", "content": "Labels" },
     {
       "type": "text",
       "id": "eyebrow",
@@ -466,12 +533,7 @@
       "type": "step",
       "name": "Scroll step",
       "settings": [
-        {
-          "type": "text",
-          "id": "eyebrow",
-          "label": "Eyebrow",
-          "default": "Chapter I"
-        },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Chapter I" },
         {
           "type": "text",
           "id": "headline",

@@ -221,13 +221,7 @@
   {%- if section.blocks.size > 0 -%}
     <div class="seym-spin__grid">
       {%- for block in section.blocks -%}
-        {%- assign _bprod = block.settings.product | strip -%}
-        {%- if _bprod != blank -%}
-          {%- assign product = all_products[_bprod] -%}
-        {%- endif -%}
-        {%- if product == blank and block.settings.collection != blank -%}
-          {%- assign product = collections[block.settings.collection].products.first -%}
-        {%- endif -%}
+        {%- assign product = all_products[block.settings.product] -%}
         {%- if product != blank -%}
           <div class="seym-spin__item" {{ block.shopify_attributes }}>
             <a href="{{ product.url }}" class="seym-spin__card-link" aria-label="{{ product.title }}">
@@ -313,12 +307,7 @@
         {
           "type": "product",
           "id": "product",
-          "label": "Product (specific)"
-        },
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection (uses first product)"
+          "label": "Product"
         }
       ]
     }
