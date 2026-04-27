@@ -1792,3 +1792,77 @@ body:has(.seym-hd) .main-content-wrapper {
   padding-top: 0 !important;
 }
 
+/* ── CUSTOM CURSOR ──────────────────────────────────────────────────────
+   cursor: none only activates when JS adds .seym-cursor-ready to body.
+   If JS fails to load, the native cursor stays visible.
+   ─────────────────────────────────────────────────────────────────────── */
+body.seym-cursor-ready *,
+body.seym-cursor-ready *::before,
+body.seym-cursor-ready *::after {
+  cursor: none !important;
+}
+
+.seym-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  display: none;
+}
+body.seym-cursor-ready .seym-cursor {
+  display: block;
+}
+
+.seym-cursor__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9a96e;
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  transition: transform 80ms ease, opacity 200ms ease;
+  box-shadow: 0 0 8px 2px rgba(201, 169, 110, 0.6);
+}
+.seym-cursor__ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201, 169, 110, 0.6);
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  transition:
+    width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms ease,
+    border-color 300ms ease;
+}
+.seym-cursor--hover .seym-cursor__dot {
+  transform: scale(0);
+  opacity: 0;
+}
+.seym-cursor--hover .seym-cursor__ring {
+  width: 56px;
+  height: 56px;
+  top: -28px;
+  left: -28px;
+  border-color: rgba(201, 169, 110, 0.9);
+}
+.seym-cursor--click .seym-cursor__dot {
+  transform: scale(2.5);
+}
+.seym-cursor--click .seym-cursor__ring {
+  width: 20px;
+  height: 20px;
+  top: -10px;
+  left: -10px;
+}
+.seym-cursor--hidden .seym-cursor__dot,
+.seym-cursor--hidden .seym-cursor__ring {
+  opacity: 0;
+}
+
