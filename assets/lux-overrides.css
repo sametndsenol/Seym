@@ -1529,3 +1529,50 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 body:has(.seym-hd) .main-content-wrapper {
   padding-top: 0 !important;
 }
+
+/* ============================================================
+   28. GLOBAL SPACING REDUCTION
+   ============================================================ */
+
+/* Rich-text sections — cut padding by ~40% */
+.rich-text__wrapper,
+.rich-text,
+.shopify-section .rich-text__wrapper--full-width {
+  padding-top: 6rem !important;
+  padding-bottom: 6rem !important;
+}
+
+/* Dawn inline padding overrides — override the json padding_top/bottom */
+[class*="section-"][class*="-padding"] {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+/* Collection list tighter */
+.collection-list-wrapper {
+  padding-top: 2rem !important;
+  padding-bottom: 5rem !important;
+}
+
+/* Featured collection grid */
+.collection-list {
+  margin-top: 0 !important;
+  gap: 1.6rem !important;
+}
+
+/* Seym custom sections */
+.seym-spin-section { padding: 5rem 0 6rem !important; }
+.seym-tiles { padding: 5rem 0 6rem !important; }
+.seym-pvid { padding: 4rem 0 !important; }
+.seym-3d { padding: 6rem 0 8rem !important; }
+
+/* Reduce page-width top/bottom padding on any section */
+.shopify-section > .page-width,
+.shopify-section > .collection-list-wrapper {
+  padding-top: 0 !important;
+}
+
+/* Inter-section gap (no double whitespace between sections) */
+.shopify-section + .shopify-section {
+  margin-top: 0 !important;
+}

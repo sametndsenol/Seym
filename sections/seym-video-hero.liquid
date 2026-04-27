@@ -15,26 +15,15 @@
   .seym-vh__sticky {
     position: sticky;
     top: 0;
-    height: 100vh;
+    height: 80vh;
     overflow: hidden;
-    /* Contained video — white page shows as a frame around it */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fafaf7;
-    padding: 3vh 5vw;
   }
 
-  /* Video wrapper — contained with slight rounded corners */
   .seym-vh__video-wrap {
     position: relative;
     width: 100%;
-    max-width: 96rem;
     height: 100%;
-    max-height: 82vh;
     overflow: hidden;
-    border-radius: 4px;
-    flex-shrink: 0;
   }
 
   .seym-vh__video {
@@ -232,8 +221,7 @@
 
   @media (max-width: 749px) {
     .seym-vh { height: calc({{ section.settings.scroll_height | default: 4 }} * 100svh); }
-    .seym-vh__sticky { height: 100svh; padding: 2vh 4vw; }
-    .seym-vh__video-wrap { max-height: 78svh; border-radius: 3px; }
+    .seym-vh__sticky { height: 72svh; }
     .seym-vh__chapter { padding: 3rem 5%; }
     .seym-vh__headline { font-size: clamp(2.4rem, 7vw, 4rem); }
     .seym-vh__body { font-size: 1.15rem; }
