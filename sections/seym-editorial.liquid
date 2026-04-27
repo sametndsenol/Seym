@@ -1,0 +1,619 @@
+{%- comment -%}
+  Seym Editorial Showcase
+  A pinned-scroll narrative for a single product.
+  Left: sticky product image with subtle spotlight.
+  Right: 4 scrolling chapters — each answers a question the buyer has.
+  Closes with price + CTA.
+{%- endcomment -%}
+
+<style>
+  /* ── Layout ──────────────────────────────────────────────────── */
+  .seym-ed {
+    background: #fafaf7;
+    overflow: hidden;
+  }
+
+  .seym-ed__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    max-width: 180rem;
+    margin: 0 auto;
+  }
+
+  /* ── Left: sticky visual ─────────────────────────────────────── */
+  .seym-ed__visual {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f0ede8;
+  }
+
+  .seym-ed__img-wrap {
+    position: relative;
+    width: 78%;
+    aspect-ratio: 3 / 4;
+  }
+
+  .seym-ed__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Gold spotlight behind the object — barely visible but present */
+  .seym-ed__img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(50% 50% at 50% 45%, rgba(201,169,110,0.12), transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Annotation pins ─────────────────────────────────────────── */
+  .seym-ed__pin {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 600ms ease, transform 600ms ease;
+  }
+  .seym-ed__pin.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .seym-ed__pin--right {
+    flex-direction: row-reverse;
+    transform: translateX(6px);
+  }
+  .seym-ed__pin--right.visible {
+    transform: translateX(0);
+  }
+
+  .seym-ed__pin-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #c9a96e;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.2);
+  }
+
+  .seym-ed__pin-line {
+    width: 3.6rem;
+    height: 1px;
+    background: rgba(201,169,110,0.5);
+    flex-shrink: 0;
+  }
+
+  .seym-ed__pin-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.55);
+    white-space: nowrap;
+  }
+
+  /* ── Right: scrolling story ──────────────────────────────────── */
+  .seym-ed__story {
+    padding: 12rem 7rem 12rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Chapter ─────────────────────────────────────────────────── */
+  .seym-ed__chapter {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 0;
+    border-top: 1px solid rgba(13,13,13,0.07);
+    opacity: 0.28;
+    transform: translateY(20px);
+    transition: opacity 800ms cubic-bezier(0.22,1,0.36,1),
+                transform 800ms cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-ed__chapter.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .seym-ed__chapter:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .seym-ed__chapter-num {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 1.6rem;
+  }
+
+  .seym-ed__eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.38);
+    margin-bottom: 2.4rem;
+  }
+
+  .seym-ed__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 3.8vw, 5.4rem);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+    color: #0d0d0d;
+    margin: 0 0 2.8rem 0;
+    max-width: 22ch;
+  }
+
+  .seym-ed__body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 300;
+    line-height: 1.78;
+    letter-spacing: 0.005em;
+    color: rgba(13,13,13,0.6);
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  .seym-ed__detail {
+    margin-top: 3.2rem;
+    padding: 2.4rem;
+    background: #f0ede8;
+    border-left: 2px solid #c9a96e;
+  }
+
+  .seym-ed__detail p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.9rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(13,13,13,0.75);
+    margin: 0;
+    letter-spacing: 0;
+  }
+
+  /* ── Acquire block ────────────────────────────────────────────── */
+  .seym-ed__acquire {
+    padding: 7rem 0 0 0;
+    border-top: 1px solid rgba(13,13,13,0.07);
+  }
+
+  .seym-ed__acquire-eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.38);
+    margin-bottom: 1.4rem;
+  }
+
+  .seym-ed__acquire-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 3.2vw, 4.4rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.015em;
+    color: #0d0d0d;
+    margin: 0 0 0.8rem 0;
+    line-height: 1.1;
+  }
+
+  .seym-ed__acquire-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.45);
+    margin: 0 0 3.6rem 0;
+  }
+
+  .seym-ed__acquire-btn {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #fafaf7;
+    background: #0d0d0d;
+    text-decoration: none;
+    padding: 1.8rem 4rem;
+    border: 1px solid #0d0d0d;
+    transition: background 600ms cubic-bezier(0.22,1,0.36,1),
+                color 600ms cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-ed__acquire-btn:hover {
+    background: transparent;
+    color: #0d0d0d;
+  }
+
+  .seym-ed__acquire-note {
+    display: block;
+    margin-top: 1.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.18em;
+    color: rgba(13,13,13,0.35);
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────── */
+  @media (max-width: 989px) {
+    .seym-ed__inner {
+      grid-template-columns: 1fr;
+    }
+    .seym-ed__visual {
+      position: relative;
+      height: 65vw;
+      min-height: 32rem;
+    }
+    .seym-ed__img-wrap {
+      width: 64%;
+      aspect-ratio: 3 / 4;
+    }
+    .seym-ed__story {
+      padding: 6rem 2.4rem 8rem;
+    }
+    .seym-ed__chapter {
+      min-height: auto;
+      padding: 4rem 0;
+      opacity: 1;
+      transform: none;
+    }
+    .seym-ed__pin { display: none; }
+  }
+
+  @media (max-width: 749px) {
+    .seym-ed__heading { font-size: clamp(3rem, 8vw, 4.4rem); }
+    .seym-ed__visual { height: 80vw; }
+  }
+</style>
+
+{%- assign product = all_products[section.settings.product] -%}
+
+<section class="seym-ed" id="SeymEd-{{ section.id }}">
+  <div class="seym-ed__inner">
+
+    <!-- LEFT: Sticky product visual -->
+    <div class="seym-ed__visual">
+      <div class="seym-ed__img-wrap">
+        {%- if product != blank and product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            loading="eager"
+            width="900"
+            height="1200"
+          />
+        {%- elsif section.settings.fallback_image -%}
+          <img
+            src="{{ section.settings.fallback_image | image_url: width: 1200 }}"
+            alt="{{ section.settings.fallback_image.alt | escape }}"
+            loading="eager"
+            width="900"
+            height="1200"
+          />
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'pin' and block.settings.label != blank -%}
+            <div
+              class="seym-ed__pin{% if block.settings.side == 'right' %} seym-ed__pin--right{% endif %}"
+              style="top:{{ block.settings.top }}%;left:{{ block.settings.left }}%;"
+              data-pin="{{ forloop.index }}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="seym-ed__pin-dot"></span>
+              <span class="seym-ed__pin-line"></span>
+              <span class="seym-ed__pin-label">{{ block.settings.label }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- RIGHT: Scrolling story -->
+    <div class="seym-ed__story">
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'chapter' -%}
+          <div class="seym-ed__chapter" data-chapter="{{ forloop.index }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.chapter_num != blank -%}
+              <span class="seym-ed__chapter-num">{{ block.settings.chapter_num }}</span>
+            {%- endif -%}
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="seym-ed__eyebrow">{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="seym-ed__heading">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+            {%- if block.settings.body != blank -%}
+              <p class="seym-ed__body">{{ block.settings.body }}</p>
+            {%- endif -%}
+            {%- if block.settings.pullquote != blank -%}
+              <div class="seym-ed__detail">
+                <p>{{ block.settings.pullquote }}</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      <!-- Acquire -->
+      <div class="seym-ed__acquire">
+        <span class="seym-ed__acquire-eyebrow">{{ section.settings.acquire_eyebrow | default: 'Add to your collection' }}</span>
+        {%- if product != blank -%}
+          <h3 class="seym-ed__acquire-name">{{ product.title }}</h3>
+          <p class="seym-ed__acquire-price">{{ product.price | money }}</p>
+          <a href="{{ product.url }}" class="seym-ed__acquire-btn">{{ section.settings.cta_label | default: 'Acquire this piece' }}</a>
+          {%- if section.settings.acquire_note != blank -%}
+            <span class="seym-ed__acquire-note">{{ section.settings.acquire_note }}</span>
+          {%- endif -%}
+        {%- elsif section.settings.cta_link != blank -%}
+          <a href="{{ section.settings.cta_link }}" class="seym-ed__acquire-btn">{{ section.settings.cta_label | default: 'Explore the collection' }}</a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var section = document.getElementById('SeymEd-{{ section.id }}');
+  if (!section) return;
+
+  var chapters = section.querySelectorAll('.seym-ed__chapter');
+  var pins = section.querySelectorAll('.seym-ed__pin');
+
+  if (window.matchMedia('(max-width: 989px)').matches) return;
+
+  // Activate first chapter immediately
+  if (chapters[0]) chapters[0].classList.add('active');
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+
+  chapters.forEach(function (ch) { obs.observe(ch); });
+
+  // Pins appear after a short delay once the section is in view
+  var pinObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setTimeout(function () {
+          pins.forEach(function (p, i) {
+            setTimeout(function () { p.classList.add('visible'); }, i * 200);
+          });
+        }, 400);
+        pinObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  if (section) pinObs.observe(section);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial Showcase",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image (if no product selected)"
+    },
+    {
+      "type": "text",
+      "id": "acquire_eyebrow",
+      "label": "Acquire eyebrow",
+      "default": "Add to your collection"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button text",
+      "default": "Acquire this piece"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link (if no product)"
+    },
+    {
+      "type": "text",
+      "id": "acquire_note",
+      "label": "Note below button",
+      "default": "Complimentary insured delivery within Türkiye"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "chapter_num",
+          "label": "Chapter number (e.g. I, II, III)",
+          "default": "I"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Origin"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Born from breath and fire."
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body text",
+          "default": "Each piece begins as raw silica — sand, flux, lime — fed into a furnace at 1,200°C. A master glassblower gathers it on the end of an iron pipe and gives it the one thing a machine never can: breath."
+        },
+        {
+          "type": "textarea",
+          "id": "pullquote",
+          "label": "Pull quote (optional)",
+          "info": "A shorter, more poetic line shown in a highlighted block"
+        }
+      ]
+    },
+    {
+      "type": "pin",
+      "name": "Annotation Pin",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Pin label",
+          "default": "Mouth-blown"
+        },
+        {
+          "type": "range",
+          "id": "top",
+          "label": "Vertical position (%)",
+          "min": 5,
+          "max": 90,
+          "step": 1,
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "left",
+          "label": "Horizontal position (%)",
+          "min": 5,
+          "max": 90,
+          "step": 1,
+          "default": 15
+        },
+        {
+          "type": "select",
+          "id": "side",
+          "label": "Label side",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Showcase",
+      "blocks": [
+        {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "I",
+            "eyebrow": "Origin",
+            "heading": "Born from breath and fire.",
+            "body": "Each piece begins as raw silica — sand, flux, lime — fed into a furnace at 1,200°C. A master glassblower gathers it on the end of an iron pipe and gives it the one thing a machine never can: breath.",
+            "pullquote": "No mould. No template. Only the lung capacity of a craftsman and thirty years of muscle memory."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "II",
+            "eyebrow": "Craft",
+            "heading": "Our Çengelköy atelier has one rule: never the same twice.",
+            "body": "Each object is shaped by hand in our Istanbul workshop. Temperature, gravity, the angle of the pipe — every variable is a decision. Imperfections are not corrected. They are the signature.",
+            "pullquote": ""
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "III",
+            "eyebrow": "Light",
+            "heading": "Glass does not hold light. It transforms it.",
+            "body": "At dawn, amber. At noon, crystalline. By candlelight, the colour deepens into something you cannot name. Seym pieces are designed to read differently in every hour of the day — they are not objects, they are instruments.",
+            "pullquote": "Place it near a window. Watch it change the room."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "IV",
+            "eyebrow": "Presence",
+            "heading": "This exact piece will never be made again.",
+            "body": "We produce in limited editions of twelve — named, numbered, documented. When this series closes, it closes. What you acquire is not a product. It is a timestamp in molten glass.",
+            "pullquote": ""
+          }
+        },
+        {
+          "type": "pin",
+          "settings": {
+            "label": "Mouth-blown",
+            "top": 28,
+            "left": 12,
+            "side": "left"
+          }
+        },
+        {
+          "type": "pin",
+          "settings": {
+            "label": "Unique air inclusions",
+            "top": 52,
+            "left": 18,
+            "side": "left"
+          }
+        },
+        {
+          "type": "pin",
+          "settings": {
+            "label": "Hand-finished rim",
+            "top": 72,
+            "left": 22,
+            "side": "left"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

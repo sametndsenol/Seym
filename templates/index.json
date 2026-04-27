@@ -11,6 +11,12 @@
   "sections": {
     "seym_hero": {
       "type": "lux-scroll-showcase",
+      "settings": {
+        "bg_color": "#fafaf7",
+        "text_color": "#0d0d0d",
+        "eyebrow": "Seym Glass Studio · Istanbul",
+        "scroll_label": "Scroll"
+      },
       "blocks": {
         "step_1": {
           "type": "step",
@@ -41,14 +47,7 @@
         "step_1",
         "step_2",
         "step_3"
-      ],
-      "settings": {
-        "image": "shopify://shop_images/1_9062ce90-921e-4e2c-aaad-3dd308023202.png",
-        "bg_color": "#fafaf7",
-        "text_color": "#0d0d0d",
-        "eyebrow": "Seym Glass Studio · Istanbul",
-        "scroll_label": "Scroll"
-      }
+      ]
     },
     "intro": {
       "type": "rich-text",
@@ -97,8 +96,8 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 60,
-        "padding_bottom": 76
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "collections_intro": {
@@ -136,7 +135,7 @@
         "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 44,
+        "padding_top": 80,
         "padding_bottom": 40
       }
     },
@@ -201,8 +200,101 @@
         "padding_bottom": 100
       }
     },
+    "editorial": {
+      "type": "seym-editorial",
+      "settings": {
+        "product": "",
+        "acquire_eyebrow": "Add to your collection",
+        "cta_label": "Acquire this piece",
+        "acquire_note": "Complimentary insured delivery within Türkiye"
+      },
+      "blocks": {
+        "ch1": {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "I",
+            "eyebrow": "Origin",
+            "heading": "Born from breath and fire.",
+            "body": "Each piece begins as raw silica — sand, flux, lime — fed into a furnace at 1,200°C. A master glassblower gathers it on the end of an iron pipe and gives it the one thing a machine never can: breath.",
+            "pullquote": "No mould. No template. Only the lung capacity of a craftsman and thirty years of muscle memory."
+          }
+        },
+        "ch2": {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "II",
+            "eyebrow": "Craft",
+            "heading": "Our Çengelköy atelier has one rule: never the same twice.",
+            "body": "Each object is shaped by hand in our Istanbul workshop. Temperature, gravity, the angle of the pipe — every variable is a decision. Imperfections are not corrected. They are the signature.",
+            "pullquote": ""
+          }
+        },
+        "ch3": {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "III",
+            "eyebrow": "Light",
+            "heading": "Glass does not hold light. It transforms it.",
+            "body": "At dawn, amber. At noon, crystalline. By candlelight, the colour deepens into something you cannot name. Seym pieces read differently in every hour of the day — they are not objects, they are instruments.",
+            "pullquote": "Place it near a window. Watch it change the room."
+          }
+        },
+        "ch4": {
+          "type": "chapter",
+          "settings": {
+            "chapter_num": "IV",
+            "eyebrow": "Presence",
+            "heading": "This exact piece will never be made again.",
+            "body": "We produce in limited editions of twelve — named, numbered, documented. When this series closes, it closes. What you acquire is not a product. It is a timestamp in molten glass.",
+            "pullquote": ""
+          }
+        },
+        "pin1": {
+          "type": "pin",
+          "settings": {
+            "label": "Mouth-blown",
+            "top": 28,
+            "left": 12,
+            "side": "left"
+          }
+        },
+        "pin2": {
+          "type": "pin",
+          "settings": {
+            "label": "Unique air inclusions",
+            "top": 52,
+            "left": 18,
+            "side": "left"
+          }
+        },
+        "pin3": {
+          "type": "pin",
+          "settings": {
+            "label": "Hand-finished rim",
+            "top": 72,
+            "left": 22,
+            "side": "left"
+          }
+        }
+      },
+      "block_order": [
+        "ch1",
+        "ch2",
+        "ch3",
+        "ch4",
+        "pin1",
+        "pin2",
+        "pin3"
+      ]
+    },
     "spin_showcase": {
       "type": "seym-spin-showcase",
+      "settings": {
+        "eyebrow": "Selected Pieces",
+        "heading": "Crafted for those who notice.",
+        "cta_label": "Explore the full collection",
+        "cta_link": "/collections"
+      },
       "blocks": {
         "sp1": {
           "type": "product_item",
@@ -220,13 +312,7 @@
       "block_order": [
         "sp1",
         "sp2"
-      ],
-      "settings": {
-        "eyebrow": "Selected Pieces",
-        "heading": "Crafted for those who notice.",
-        "cta_label": "Explore the full collection",
-        "cta_link": "/collections"
-      }
+      ]
     },
     "manifesto": {
       "type": "rich-text",
@@ -330,6 +416,7 @@
   "order": [
     "seym_hero",
     "intro",
+    "editorial",
     "collections_intro",
     "collections",
     "spin_showcase",
