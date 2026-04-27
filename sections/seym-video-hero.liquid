@@ -1,0 +1,445 @@
+{%- comment -%}
+  Seym Video Hero — scroll-scrubbed video with pinned text chapters.
+  Section height = scroll_height setting × 100vh.
+  As user scrolls, video.currentTime advances from 0 → end.
+  Three text chapters fade in at scroll 0%, 33%, 66%.
+{%- endcomment -%}
+
+<style>
+  .seym-vh {
+    position: relative;
+    height: calc({{ section.settings.scroll_height | default: 4 }} * 100vh);
+    background: #0d0d0d;
+  }
+
+  .seym-vh__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .seym-vh__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Gradient overlay — darkens edges for text legibility */
+  .seym-vh__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.52) 0%,
+        rgba(0,0,0,0.08) 40%,
+        rgba(0,0,0,0.08) 60%,
+        rgba(0,0,0,0.60) 100%
+      );
+    z-index: 1;
+  }
+
+  /* Text chapters — centered over video */
+  .seym-vh__chapter {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 8rem;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 700ms cubic-bezier(0.22,1,0.36,1),
+                transform 700ms cubic-bezier(0.22,1,0.36,1);
+    pointer-events: none;
+  }
+
+  .seym-vh__chapter--active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .seym-vh__eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 2.4rem;
+  }
+
+  .seym-vh__headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 6.5vw, 9rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 0.97;
+    color: #fafaf7;
+    margin: 0 0 2.4rem;
+    max-width: 20ch;
+  }
+
+  .seym-vh__headline em {
+    font-style: italic;
+    color: rgba(250,250,247,0.82);
+  }
+
+  .seym-vh__body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 300;
+    line-height: 1.72;
+    letter-spacing: 0.02em;
+    color: rgba(250,250,247,0.62);
+    max-width: 44ch;
+    margin: 0 auto;
+  }
+
+  .seym-vh__body p { margin: 0; color: inherit; font-size: inherit; font-family: inherit; }
+
+  /* Bottom: eyebrow of store + scroll hint */
+  .seym-vh__brand {
+    position: absolute;
+    top: 3.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: rgba(250,250,247,0.45);
+    white-space: nowrap;
+  }
+
+  /* Scroll hint — bottom center */
+  .seym-vh__scroll-hint {
+    position: absolute;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    transition: opacity 500ms ease;
+  }
+
+  .seym-vh__scroll-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(250,250,247,0.4);
+  }
+
+  .seym-vh__scroll-line {
+    width: 1px;
+    height: 3.6rem;
+    background: rgba(250,250,247,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .seym-vh__scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(250,250,247,0.7);
+    animation: seymScrollDrop 1.8s ease-in-out infinite;
+  }
+
+  @keyframes seymScrollDrop {
+    0%   { top: -100%; }
+    100% { top: 100%; }
+  }
+
+  /* Progress bar — thin line at bottom */
+  .seym-vh__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(250,250,247,0.08);
+    z-index: 4;
+  }
+
+  .seym-vh__progress-fill {
+    height: 100%;
+    background: #c9a96e;
+    width: 0%;
+    transition: width 50ms linear;
+  }
+
+  /* Chapter dots — right edge */
+  .seym-vh__dots {
+    position: absolute;
+    right: 3.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .seym-vh__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(250,250,247,0.25);
+    transition: background 400ms ease, transform 400ms ease;
+  }
+
+  .seym-vh__dot--active {
+    background: #c9a96e;
+    transform: scale(1.4);
+  }
+
+  @media (max-width: 749px) {
+    .seym-vh { height: calc({{ section.settings.scroll_height | default: 4 }} * 100svh); }
+    .seym-vh__sticky { height: 100svh; }
+    .seym-vh__chapter { padding: 4rem 2.4rem; }
+    .seym-vh__headline { font-size: clamp(3.4rem, 9vw, 6rem); }
+    .seym-vh__dots { display: none; }
+    .seym-vh__brand { font-size: 0.68rem; letter-spacing: 0.3em; }
+  }
+</style>
+
+<div class="seym-vh" id="SeymVH-{{ section.id }}">
+  <div class="seym-vh__sticky">
+
+    <video
+      class="seym-vh__video"
+      id="SeymVHVideo-{{ section.id }}"
+      muted
+      playsinline
+      preload="auto"
+      webkit-playsinline
+    >
+      <source src="{{ section.settings.video_asset | default: 'product-showcase.mp4' | asset_url }}" type="video/mp4">
+    </video>
+
+    <div class="seym-vh__overlay"></div>
+
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="seym-vh__brand">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'step' -%}
+        <div
+          class="seym-vh__chapter{% if forloop.first %} seym-vh__chapter--active{% endif %}"
+          data-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.eyebrow != blank -%}
+            <span class="seym-vh__eyebrow">{{ block.settings.eyebrow }}</span>
+          {%- endif -%}
+          {%- if block.settings.headline != blank -%}
+            <h2 class="seym-vh__headline">{{ block.settings.headline }}</h2>
+          {%- endif -%}
+          {%- if block.settings.body != blank -%}
+            <div class="seym-vh__body">{{ block.settings.body }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="seym-vh__scroll-hint" id="SeymVHHint-{{ section.id }}">
+      <span class="seym-vh__scroll-label">{{ section.settings.scroll_label | default: 'Scroll' }}</span>
+      <div class="seym-vh__scroll-line"></div>
+    </div>
+
+    {%- assign step_count = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'step' -%}{%- assign step_count = step_count | plus: 1 -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if step_count > 1 -%}
+      <div class="seym-vh__dots" id="SeymVHDots-{{ section.id }}">
+        {%- for i in (1..step_count) -%}
+          <div class="seym-vh__dot{% if forloop.first %} seym-vh__dot--active{% endif %}"></div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="seym-vh__progress">
+      <div class="seym-vh__progress-fill" id="SeymVHProg-{{ section.id }}"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var section   = document.getElementById('SeymVH-{{ section.id }}');
+  var video     = document.getElementById('SeymVHVideo-{{ section.id }}');
+  var hint      = document.getElementById('SeymVHHint-{{ section.id }}');
+  var progFill  = document.getElementById('SeymVHProg-{{ section.id }}');
+  var dotsWrap  = document.getElementById('SeymVHDots-{{ section.id }}');
+  var chapters  = section.querySelectorAll('.seym-vh__chapter');
+  var dots      = dotsWrap ? dotsWrap.querySelectorAll('.seym-vh__dot') : [];
+  var n         = chapters.length;
+  var ready     = false;
+  var hintGone  = false;
+
+  if (!section || !video || n === 0) return;
+
+  video.load();
+  ['loadeddata','canplaythrough'].forEach(function(e) {
+    video.addEventListener(e, function() { ready = true; });
+  });
+
+  function setChapter(idx) {
+    chapters.forEach(function(ch, i) {
+      ch.classList.toggle('seym-vh__chapter--active', i === idx);
+    });
+    dots.forEach(function(d, i) {
+      d.classList.toggle('seym-vh__dot--active', i === idx);
+    });
+  }
+
+  var lastIdx = 0;
+
+  function onScroll() {
+    var sectionTop    = section.getBoundingClientRect().top + window.scrollY;
+    var scrollable    = section.offsetHeight - window.innerHeight;
+    var scrolled      = window.scrollY - sectionTop;
+    var progress      = Math.max(0, Math.min(1, scrolled / scrollable));
+
+    /* Scrub video */
+    if (ready && video.duration && isFinite(video.duration)) {
+      video.currentTime = progress * video.duration;
+    }
+
+    /* Progress bar */
+    if (progFill) progFill.style.width = (progress * 100) + '%';
+
+    /* Chapter — even slices */
+    var rawIdx  = Math.floor(progress * n);
+    var chapIdx = Math.min(rawIdx, n - 1);
+    if (chapIdx !== lastIdx) { setChapter(chapIdx); lastIdx = chapIdx; }
+
+    /* Hide scroll hint after first nudge */
+    if (!hintGone && progress > 0.015 && hint) {
+      hint.style.opacity = '0';
+      hintGone = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Video Hero",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "video_asset",
+      "label": "Video filename (in assets/)",
+      "default": "product-showcase.mp4",
+      "info": "Upload .mp4 to theme assets. This video is scrubbed by scroll — no audio."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Brand eyebrow (top center)",
+      "default": "Seym Glass Studio · Istanbul"
+    },
+    {
+      "type": "text",
+      "id": "scroll_label",
+      "label": "Scroll hint text",
+      "default": "Scroll"
+    },
+    {
+      "type": "range",
+      "id": "scroll_height",
+      "label": "Scroll height (× viewport)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "info": "How many viewport-heights of scroll this section occupies. 4 = 4× screen height."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Video Hero",
+      "settings": {
+        "video_asset": "product-showcase.mp4",
+        "eyebrow": "Seym Glass Studio · Istanbul",
+        "scroll_height": 4
+      },
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Chapter I — Origin",
+            "headline": "Glass that carries the silence of nature.",
+            "body": "<p>Mouth-blown in Istanbul. Inspired by mythology and the living world.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Chapter II — Craft",
+            "headline": "Each piece begins as breath, becomes <em>memory</em>.",
+            "body": "<p>Shaped by master hands in our Çengelköy atelier. Never repeated.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Chapter III — Presence",
+            "headline": "Not glass as you know it. This is <em>Seym</em>.",
+            "body": "<p>Story-driven, sculptural, designed to endure.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

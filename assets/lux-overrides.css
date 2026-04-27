@@ -1,19 +1,20 @@
 /* ========================================================================
-   SEYM — MIDNIGHT GALLERY
-   A nocturnal aesthetic system for Seym Glass Studio.
-   Inspired by James Turrell light installations and Prada Marfa.
+   SEYM — WHITE GALLERY
+   A luminous aesthetic system for Seym Glass Studio.
+   Inspired by Hermès, Bottega Veneta, and museum white cubes.
 
    Concept:
-     • The screen is a dark gallery room.
-     • Glass objects appear illuminated from within.
-     • Typography is whispered, never shouted.
-     • Motion is slow, deliberate, cinematic.
+     • The screen is a bright gallery room — white walls, precise light.
+     • Glass objects appear suspended in air, fully visible.
+     • Typography is controlled, never decorative.
+     • White space is the luxury.
 
    Palette:
-     • #0a1424  Void       — primary background (deeper than midnight)
-     • #1b365d  Midnight   — secondary surfaces, hover states
-     • #efecec  Cream      — primary typography
-     • #c9a578  Lumen      — rare luxury accent (gold, used sparingly)
+     • #fafaf7  Chalk      — primary background (warm white)
+     • #f0ede8  Parchment  — secondary surfaces, card backgrounds
+     • #0d0d0d  Ink        — primary typography (near-black)
+     • #c9a96e  Lumen      — gold accent (rare, precious)
+     • #0d0d0d  Deep       — footer, drawers (dark anchor at base)
    ======================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@200;300;400;500;600&display=swap');
@@ -21,24 +22,24 @@
 /* ---------- 0. BRAND TOKENS ---------- */
 :root,
 body {
-  --color-foreground: 239, 236, 236 !important;
-  --color-background: 10, 20, 36 !important;
-  --color-base-text: 239, 236, 236 !important;
-  --color-base-background-1: 10, 20, 36 !important;
-  --color-base-background-2: 27, 54, 93 !important;
+  --color-foreground: 13, 13, 13 !important;
+  --color-background: 250, 250, 247 !important;
+  --color-base-text: 13, 13, 13 !important;
+  --color-base-background-1: 250, 250, 247 !important;
+  --color-base-background-2: 240, 237, 232 !important;
   --color-shadow: 0, 0, 0 !important;
 
-  --seym-void: #0a1424;
-  --seym-void-soft: #0f1c30;
-  --seym-midnight: #1b365d;
-  --seym-midnight-deep: #122749;
-  --seym-cream: #efecec;
-  --seym-cream-soft: rgba(239, 236, 236, 0.78);
-  --seym-cream-dim: rgba(239, 236, 236, 0.55);
-  --seym-cream-faint: rgba(239, 236, 236, 0.18);
-  --seym-lumen: #c9a578;
-  --seym-line: rgba(239, 236, 236, 0.14);
-  --seym-line-soft: rgba(239, 236, 236, 0.08);
+  --seym-void: #fafaf7;
+  --seym-void-soft: #f2efe9;
+  --seym-midnight: #e8e4dd;
+  --seym-midnight-deep: #0d0d0d;
+  --seym-cream: #0d0d0d;
+  --seym-cream-soft: rgba(13, 13, 13, 0.65);
+  --seym-cream-dim: rgba(13, 13, 13, 0.42);
+  --seym-cream-faint: rgba(13, 13, 13, 0.12);
+  --seym-lumen: #c9a96e;
+  --seym-line: rgba(13, 13, 13, 0.1);
+  --seym-line-soft: rgba(13, 13, 13, 0.07);
 
   --buttons-radius: 0px !important;
   --buttons-radius-outset: 0px !important;
@@ -77,7 +78,7 @@ body {
   --font-body-weight: 300 !important;
 }
 
-/* Force every Dawn color scheme into the midnight gallery */
+/* Force every Dawn color scheme into the white gallery */
 .color-background-1,
 .color-background-2,
 .color-accent-1,
@@ -88,26 +89,34 @@ body {
 .color-scheme-3,
 .color-scheme-4,
 .color-scheme-5 {
-  --color-background: 10, 20, 36 !important;
-  --color-foreground: 239, 236, 236 !important;
-  --color-button: 239, 236, 236 !important;
-  --color-button-text: 10, 20, 36 !important;
-  --color-secondary-button: 10, 20, 36 !important;
-  --color-secondary-button-text: 239, 236, 236 !important;
-  --color-link: 239, 236, 236 !important;
-  --color-badge-foreground: 239, 236, 236 !important;
+  --color-background: 250, 250, 247 !important;
+  --color-foreground: 13, 13, 13 !important;
+  --color-button: 13, 13, 13 !important;
+  --color-button-text: 250, 250, 247 !important;
+  --color-secondary-button: 250, 250, 247 !important;
+  --color-secondary-button-text: 13, 13, 13 !important;
+  --color-link: 13, 13, 13 !important;
+  --color-badge-foreground: 13, 13, 13 !important;
   --color-badge-background: transparent !important;
-  --color-badge-border: 239, 236, 236 !important;
-  --gradient-background: rgb(10, 20, 36) !important;
+  --color-badge-border: 13, 13, 13 !important;
+  --gradient-background: rgb(250, 250, 247) !important;
 }
 
-/* Day-mode reverse for any accidental light section (rare) */
-.color-inverse.seym-day,
-.seym-day {
-  --color-background: 239, 236, 236 !important;
-  --color-foreground: 18, 18, 18 !important;
-  background: rgb(239, 236, 236) !important;
-  color: rgb(18, 18, 18) !important;
+/* Dark sections re-scope tokens so their content stays legible */
+.footer,
+.footer-wrapper,
+.footer-wrapper *,
+cart-drawer .drawer__inner,
+.menu-drawer,
+.menu-drawer__inner-container,
+.seym-drawer {
+  --seym-cream: #fafaf7;
+  --seym-cream-soft: rgba(250, 250, 247, 0.72);
+  --seym-cream-dim: rgba(250, 250, 247, 0.46);
+  --seym-cream-faint: rgba(250, 250, 247, 0.14);
+  --seym-line: rgba(250, 250, 247, 0.12);
+  --seym-line-soft: rgba(250, 250, 247, 0.07);
+  --seym-void: #0d0d0d;
 }
 
 html { scroll-behavior: smooth; background: var(--seym-void); }
@@ -117,14 +126,10 @@ html { scroll-behavior: smooth; background: var(--seym-void); }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-/* ---------- ATMOSPHERIC BACKGROUND ---------- */
+/* ---------- BACKGROUND ---------- */
 body {
-  background:
-    radial-gradient(ellipse at 20% 10%, rgba(27, 54, 93, 0.55), transparent 55%),
-    radial-gradient(ellipse at 85% 90%, rgba(27, 54, 93, 0.45), transparent 60%),
-    var(--seym-void) !important;
-  background-attachment: fixed;
-  color: var(--seym-cream) !important;
+  background: #fafaf7 !important;
+  color: #0d0d0d !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 300 !important;
   font-size: 1.55rem;
@@ -135,23 +140,23 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Film grain overlay for luminous-textures feel */
+/* Subtle paper grain — barely-there texture */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.06;
-  mix-blend-mode: overlay;
+  opacity: 0.02;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='9'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 320px 320px;
 }
 .shopify-design-mode body::before { display: none; }
 
-::selection { background: var(--seym-cream); color: var(--seym-void); }
+::selection { background: #0d0d0d; color: #fafaf7; }
 
-/* ---------- 1. TYPOGRAPHY — whispered headlines ---------- */
+/* ---------- 1. TYPOGRAPHY ---------- */
 h1, h2, h3, h4, h5, h6,
 .h0, .h1, .h2, .h3, .h4, .h5,
 .card__heading,
@@ -189,7 +194,6 @@ h2, .h1, .title-wrapper-with-link h2 {
 
 h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; font-weight: 400 !important; }
 
-/* Eyebrow / caption — small caps gold-on-black */
 .subtitle,
 .caption-with-letter-spacing,
 .caption,
@@ -205,7 +209,6 @@ h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; font-weight: 400 !im
   opacity: 1;
 }
 
-/* Body */
 .rte p, .rich-text__text p, p {
   font-family: 'Inter', sans-serif !important;
   font-weight: 300 !important;
@@ -215,7 +218,6 @@ h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; font-weight: 400 !im
   color: var(--seym-cream-soft);
 }
 
-/* Italic accent — magical voice */
 .rte em, .rich-text em, .rich-text__text em,
 .banner__text em, blockquote {
   font-family: 'Cormorant Garamond', serif !important;
@@ -239,15 +241,15 @@ h3, .h2 { font-size: clamp(2.6rem, 3.4vw, 4rem) !important; font-weight: 400 !im
 
 main .shopify-section { margin: 0; }
 
-/* ---------- 3. HEADER — solid midnight bar, always legible ---------- */
+/* ---------- 3. HEADER (Dawn fallback) ---------- */
 .shopify-section-header,
 .shopify-section-header-sticky,
 sticky-header {
-  background: var(--seym-void) !important;
+  background: #fafaf7 !important;
 }
 
 .header-wrapper {
-  background: var(--seym-void) !important;
+  background: #fafaf7 !important;
   border-bottom: 1px solid var(--seym-line-soft) !important;
   padding: 1.4rem 0 !important;
   transition: background var(--seym-mid) var(--seym-ease),
@@ -256,7 +258,7 @@ sticky-header {
 
 .scrolled-past-header .header-wrapper,
 sticky-header.shopify-section-header-sticky .header-wrapper {
-  background: rgba(10, 20, 36, 0.92) !important;
+  background: rgba(250, 250, 247, 0.95) !important;
   -webkit-backdrop-filter: saturate(160%) blur(20px);
   backdrop-filter: saturate(160%) blur(20px);
   border-bottom: 1px solid var(--seym-line-soft) !important;
@@ -269,10 +271,10 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
 
 .header__heading-link img,
 .header__heading img {
-  filter: brightness(0) invert(1) !important;
+  filter: brightness(0) !important;
   transition: opacity var(--seym-fast) var(--seym-ease);
 }
-.header__heading-link:hover img { opacity: 0.78; }
+.header__heading-link:hover img { opacity: 0.6; }
 
 .header__heading-link,
 .header__heading {
@@ -329,7 +331,7 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
   fill: currentColor !important;
   transition: opacity var(--seym-fast) var(--seym-ease);
 }
-.header__icon:hover { opacity: 0.7; }
+.header__icon:hover { opacity: 0.6; }
 
 .cart-count-bubble {
   background: var(--seym-cream) !important;
@@ -343,7 +345,6 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
   border: none !important;
 }
 
-/* Announcement bar */
 .announcement-bar,
 .utility-bar {
   background: transparent !important;
@@ -359,7 +360,7 @@ sticky-header.shopify-section-header-sticky .header-wrapper {
   padding: 0.9rem 0 !important;
 }
 
-/* ---------- 4. BUTTONS — cream on void with slow fill ---------- */
+/* ---------- 4. BUTTONS ---------- */
 .button,
 .shopify-payment-button__button,
 button.button {
@@ -434,22 +435,10 @@ button.button {
   cursor: not-allowed;
 }
 
-/* ---------- 5. HERO SLIDESHOW — luminous void ---------- */
+/* ---------- 5. HERO / SLIDESHOW ---------- */
 .banner, .slideshow {
-  background: var(--seym-void) !important;
+  background: #f0ede8 !important;
   position: relative;
-}
-
-.slideshow::after,
-.banner::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(60% 80% at 50% 100%, rgba(10, 20, 36, 0.85), transparent 70%),
-    radial-gradient(80% 60% at 50% 0%, rgba(10, 20, 36, 0.6), transparent 65%);
-  z-index: 1;
 }
 
 .banner__content,
@@ -458,7 +447,7 @@ button.button {
 .banner__media,
 .slideshow__media {
   overflow: hidden;
-  background: var(--seym-void);
+  background: #f0ede8;
 }
 
 .banner__media img,
@@ -466,7 +455,7 @@ button.button {
 .slideshow__slide img {
   transition: transform 16s linear !important;
   will-change: transform;
-  filter: brightness(0.92) contrast(1.05);
+  filter: brightness(0.97) contrast(1.02);
 }
 
 .slideshow__slide.is-selected .banner__media img,
@@ -502,7 +491,7 @@ button.button {
   backdrop-filter: none !important;
 }
 
-/* ---------- 6. PRODUCT CARDS — illuminated artifacts ---------- */
+/* ---------- 6. PRODUCT CARDS ---------- */
 .card-wrapper, .product-card-wrapper { background: transparent !important; }
 
 .card,
@@ -526,16 +515,15 @@ button.button {
   position: relative;
 }
 
-/* Spotlight under each object — Turrell aperture */
 .card__media::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(239, 236, 236, 0.08), transparent 60%);
+  background: radial-gradient(60% 60% at 50% 50%, rgba(201, 169, 110, 0.07), transparent 60%);
   pointer-events: none;
   z-index: 1;
   transition: opacity var(--seym-slow) var(--seym-ease);
-  opacity: 0.5;
+  opacity: 0;
 }
 .card-wrapper:hover .card__media::before { opacity: 1; }
 
@@ -545,9 +533,7 @@ button.button {
 .card .media {
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  background:
-    radial-gradient(70% 70% at 50% 60%, rgba(27, 54, 93, 0.55), transparent 70%),
-    var(--seym-void) !important;
+  background: #f0ede8 !important;
 }
 
 .card.gradient::before,
@@ -560,13 +546,13 @@ button.button {
     transform 1.8s var(--seym-ease),
     opacity var(--seym-mid) var(--seym-ease),
     filter 1s var(--seym-ease) !important;
-  filter: brightness(0.95);
+  filter: brightness(1.0);
 }
 .card-wrapper:hover .media > img:first-child {
-  transform: scale(1.06);
-  filter: brightness(1.05);
+  transform: scale(1.04);
+  filter: brightness(1.02);
 }
-.card-wrapper:hover .media > img + img { opacity: 1 !important; transform: scale(1.06); }
+.card-wrapper:hover .media > img + img { opacity: 1 !important; transform: scale(1.04); }
 
 .card__content,
 .card__information,
@@ -624,11 +610,11 @@ button.button {
 }
 
 .quick-add__submit {
-  background: rgba(10, 20, 36, 0.85) !important;
+  background: rgba(250, 250, 247, 0.92) !important;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  color: var(--seym-cream) !important;
-  border: 1px solid var(--seym-cream) !important;
+  color: #0d0d0d !important;
+  border: 1px solid rgba(13, 13, 13, 0.2) !important;
   border-radius: 0 !important;
   font-size: 1rem !important;
   letter-spacing: 0.3em !important;
@@ -639,14 +625,12 @@ button.button {
   width: auto !important;
   white-space: nowrap;
 }
-.quick-add__submit::after { background: var(--seym-cream); }
-.quick-add__submit:hover { color: var(--seym-void) !important; }
+.quick-add__submit::after { background: #0d0d0d; }
+.quick-add__submit:hover { color: #fafaf7 !important; }
 
 .card__badge { top: 1.2rem; left: 1.2rem; bottom: auto; right: auto; }
 .badge {
-  background: rgba(10, 20, 36, 0.7) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: rgba(250, 250, 247, 0.88) !important;
   border: 1px solid var(--seym-cream-faint) !important;
   color: var(--seym-cream) !important;
   font-family: 'Inter', sans-serif !important;
@@ -667,7 +651,7 @@ button.button {
   .product-grid, .grid--product { column-gap: 1.6rem !important; row-gap: 5rem !important; }
 }
 
-/* ---------- 7. SECTION DIVIDERS — gallery wall ---------- */
+/* ---------- 7. SECTION DIVIDERS ---------- */
 .title-wrapper-with-link,
 .collection__title,
 .title-wrapper {
@@ -709,7 +693,7 @@ button.button {
 
 .center .title { text-align: center; width: 100%; }
 
-/* ---------- 8. RICH-TEXT — luminous manifesto ---------- */
+/* ---------- 8. RICH-TEXT ---------- */
 .rich-text__wrapper,
 .rich-text { padding: 14rem 0 !important; position: relative; }
 
@@ -737,7 +721,7 @@ button.button {
 
 .rich-text__buttons { margin-top: 4rem; }
 
-/* ---------- 9. PRODUCT PAGE — gallery monograph ---------- */
+/* ---------- 9. PRODUCT PAGE ---------- */
 .product { padding-top: 4rem !important; }
 
 .product__title h1,
@@ -847,12 +831,10 @@ fieldset.product-form__input--pill label {
 
 .product__media-wrapper,
 .product__media-list {
-  background:
-    radial-gradient(70% 50% at 50% 50%, rgba(27, 54, 93, 0.4), transparent 70%),
-    var(--seym-void);
+  background: #f0ede8;
 }
 .product__media-item {
-  background: transparent !important;
+  background: #f0ede8 !important;
   overflow: hidden;
   position: relative;
 }
@@ -860,16 +842,16 @@ fieldset.product-form__input--pill label {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(239, 236, 236, 0.08), transparent 70%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(201, 169, 110, 0.06), transparent 70%);
   z-index: 1;
   pointer-events: none;
 }
 .product__media-item img {
   transition: transform 1.8s var(--seym-ease) !important;
   position: relative; z-index: 2;
-  filter: brightness(0.96);
+  filter: brightness(1.0);
 }
-.product__media-item:hover img { transform: scale(1.025); filter: brightness(1.04); }
+.product__media-item:hover img { transform: scale(1.02); filter: brightness(1.02); }
 .product__media-list { gap: 1px !important; }
 
 .thumbnail { border-radius: 0 !important; overflow: hidden; }
@@ -929,17 +911,73 @@ fieldset.product-form__input--pill label {
   color: var(--seym-cream) !important;
 }
 
-/* ---------- 11. FOOTER — atelier colophon (deep midnight) ---------- */
+/* ---------- 11. FOOTER — dark anchor ---------- */
+
+/* Entire footer section group (includes newsletter above footer) */
+.shopify-section-group-footer-group,
+.shopify-section-group-footer-group > div,
+.shopify-section-group-footer-group section,
+.shopify-section-group-footer-group .newsletter,
+.shopify-section-group-footer-group .color-accent-1,
+.shopify-section-group-footer-group .gradient,
+.shopify-section-group-footer-group [class*="color-"] {
+  background: #0d0d0d !important;
+  background-color: #0d0d0d !important;
+  --color-background: 13, 13, 13 !important;
+  --color-foreground: 250, 250, 247 !important;
+  --gradient-background: #0d0d0d !important;
+  color: rgba(250, 250, 247, 0.72) !important;
+}
+
+.shopify-section-group-footer-group h1,
+.shopify-section-group-footer-group h2,
+.shopify-section-group-footer-group h3,
+.shopify-section-group-footer-group p,
+.shopify-section-group-footer-group a,
+.shopify-section-group-footer-group span,
+.shopify-section-group-footer-group label {
+  color: rgba(250, 250, 247, 0.72) !important;
+}
+
+.shopify-section-group-footer-group h1,
+.shopify-section-group-footer-group h2 {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-weight: 300 !important;
+  color: #fafaf7 !important;
+}
+
+/* Newsletter input field */
+.shopify-section-group-footer-group .field__input,
+.shopify-section-group-footer-group input[type="email"],
+.shopify-section-group-footer-group input {
+  background: transparent !important;
+  color: #fafaf7 !important;
+  border-color: rgba(250, 250, 247, 0.2) !important;
+}
+
+.shopify-section-group-footer-group .field {
+  border-bottom: 1px solid rgba(250, 250, 247, 0.18) !important;
+  background: transparent !important;
+}
+
+/* Newsletter button */
+.shopify-section-group-footer-group .button,
+.shopify-section-group-footer-group button[type="submit"] {
+  background: #fafaf7 !important;
+  color: #0d0d0d !important;
+  border-color: #fafaf7 !important;
+}
+
 .footer {
-  background: var(--seym-midnight-deep) !important;
-  color: var(--seym-cream) !important;
-  border-top: 1px solid var(--seym-line-soft) !important;
+  background: #0d0d0d !important;
+  color: #fafaf7 !important;
+  border-top: 1px solid rgba(250, 250, 247, 0.06) !important;
   padding-top: 9rem !important;
   padding-bottom: 4rem !important;
   margin-top: 0;
 }
 
-.footer * { color: var(--seym-cream-soft) !important; }
+.footer * { color: rgba(250, 250, 247, 0.72) !important; }
 
 .footer__content-top { padding-bottom: 6rem !important; }
 
@@ -952,7 +990,7 @@ fieldset.product-form__input--pill label {
   font-weight: 500 !important;
   margin-bottom: 2.4rem !important;
   border: none !important;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
   opacity: 1;
 }
 
@@ -964,7 +1002,7 @@ fieldset.product-form__input--pill label {
   font-size: 1.3rem !important;
   font-weight: 300 !important;
   letter-spacing: 0.04em;
-  color: var(--seym-cream-soft) !important;
+  color: rgba(250, 250, 247, 0.65) !important;
   text-decoration: none !important;
   display: inline-block;
   padding: 0.4rem 0 !important;
@@ -973,7 +1011,7 @@ fieldset.product-form__input--pill label {
 }
 .footer-block__details-content a:hover,
 .footer__list-social a:hover {
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
   transform: translateX(2px);
 }
 
@@ -986,55 +1024,54 @@ fieldset.product-form__input--pill label {
   font-size: 1rem !important;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  opacity: 0.55;
-  border-top: 1px solid var(--seym-line-soft);
+  opacity: 0.5;
+  border-top: 1px solid rgba(250, 250, 247, 0.07);
   padding-top: 3rem !important;
   margin-top: 3rem;
-  color: var(--seym-cream-dim) !important;
+  color: rgba(250, 250, 247, 0.45) !important;
 }
 
 .newsletter-form__field-wrapper .field {
   border: none !important;
-  border-bottom: 1px solid var(--seym-cream-faint) !important;
+  border-bottom: 1px solid rgba(250, 250, 247, 0.14) !important;
   background: transparent !important;
 }
 .newsletter-form__field-wrapper .field__input {
   background: transparent !important;
   border: none !important;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 300;
   letter-spacing: 0.04em;
   padding: 1.6rem 0 !important;
 }
 .newsletter-form__field-wrapper .field__label {
-  color: var(--seym-cream-dim) !important;
+  color: rgba(250, 250, 247, 0.45) !important;
   letter-spacing: 0.24em !important;
 }
 .newsletter-form__button {
   background: transparent !important;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
 }
-.newsletter-form__button svg path { stroke: var(--seym-cream); }
+.newsletter-form__button svg path { stroke: #fafaf7; }
 
-/* Payment icons */
 .list-payment__item svg {
   filter: brightness(0) invert(1);
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-/* ---------- 12. CART DRAWER ---------- */
+/* ---------- 12. CART DRAWER — dark ---------- */
 cart-drawer .drawer__inner {
-  background: var(--seym-midnight-deep) !important;
-  border-left: 1px solid var(--seym-line-soft);
+  background: #0d0d0d !important;
+  border-left: 1px solid rgba(250, 250, 247, 0.08);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
 }
-cart-drawer * { color: var(--seym-cream-soft); }
+cart-drawer * { color: rgba(250, 250, 247, 0.7); }
 
 cart-drawer .drawer__header {
-  border-bottom: 1px solid var(--seym-line-soft);
+  border-bottom: 1px solid rgba(250, 250, 247, 0.07);
   padding: 2.4rem !important;
 }
 cart-drawer .drawer__heading {
@@ -1043,10 +1080,10 @@ cart-drawer .drawer__heading {
   font-size: 2.6rem !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
 }
 cart-drawer .drawer__close,
-cart-drawer .drawer__close svg { color: var(--seym-cream) !important; fill: currentColor !important; }
+cart-drawer .drawer__close svg { color: #fafaf7 !important; fill: currentColor !important; }
 
 .cart-item__name {
   font-family: 'Cormorant Garamond', serif !important;
@@ -1054,7 +1091,7 @@ cart-drawer .drawer__close svg { color: var(--seym-cream) !important; fill: curr
   font-weight: 400 !important;
   font-size: 1.8rem !important;
   letter-spacing: 0;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
 }
 
 cart-drawer .totals__total-value,
@@ -1064,7 +1101,7 @@ cart-drawer .totals__subtotal-value {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 1.3rem !important;
-  color: var(--seym-cream) !important;
+  color: #fafaf7 !important;
 }
 
 /* ---------- 13. FORMS / INPUTS ---------- */
@@ -1133,10 +1170,10 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 
 /* ---------- 16. SCROLLBAR ---------- */
 @media (min-width: 990px) {
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--seym-void); }
-  ::-webkit-scrollbar-thumb { background: rgba(239, 236, 236, 0.18); border-radius: 0; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(239, 236, 236, 0.4); }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #fafaf7; }
+  ::-webkit-scrollbar-thumb { background: rgba(13, 13, 13, 0.14); border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(13, 13, 13, 0.3); }
 }
 
 /* ---------- 17. FOCUS OUTLINE ---------- */
@@ -1159,7 +1196,7 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   color: var(--seym-cream-dim) !important;
 }
 
-/* ---------- 20. NEWSLETTER & EMAIL SECTIONS ---------- */
+/* ---------- 20. NEWSLETTER ---------- */
 .email-signup-banner__heading,
 .newsletter__heading {
   font-family: 'Cormorant Garamond', serif !important;
@@ -1206,10 +1243,10 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 /* ---------- 23. MENU DRAWER (mobile menu) ---------- */
 .menu-drawer,
 .menu-drawer__inner-container {
-  background: var(--seym-midnight-deep) !important;
-  color: var(--seym-cream) !important;
+  background: #0d0d0d !important;
+  color: #fafaf7 !important;
 }
-.menu-drawer * { color: var(--seym-cream) !important; }
+.menu-drawer * { color: #fafaf7 !important; }
 
 .menu-drawer__menu-item {
   font-family: 'Cormorant Garamond', serif !important;
@@ -1217,7 +1254,7 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   font-size: 2.6rem !important;
   letter-spacing: -0.01em !important;
   text-transform: none !important;
-  border-bottom: 1px solid var(--seym-line-soft) !important;
+  border-bottom: 1px solid rgba(250, 250, 247, 0.07) !important;
   padding: 2rem 2.4rem !important;
 }
 
@@ -1239,15 +1276,12 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   margin: 4rem 0;
 }
 
-/* Sale badge / sold-out badge */
 .badge--bottom-left { color: var(--seym-cream) !important; }
 
 /* ============================================================
-   25. SCREEN-FIX OVERRIDES — corrections for the live build
+   25. SCREEN-FIX OVERRIDES
    ============================================================ */
 
-/* Hide Dawn's slideshow number/dot indicator that appears
-   between the hero and the next section ("1 2" pagination). */
 .slideshow__controls,
 .slideshow__control-wrapper,
 .slider-counter--dots,
@@ -1264,28 +1298,11 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   padding: 0 !important;
 }
 
-/* Remove any persistent slider control rail */
 .slideshow .slideshow__controls,
 .slideshow__text--bottom .slideshow__controls {
   display: none !important;
 }
 
-/* Slideshow auto-overlay — make the white-background JPG hero
-   feel more cinematic by overlaying a bottom-up midnight gradient. */
-.slideshow .banner__media::after,
-.banner.slideshow__slide .banner__media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, transparent 40%, rgba(10, 20, 36, 0.45) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Footer — kill the colourful third-party trust-badge banner
-   (Essential Trust Badges app block) and any random app blocks
-   that pollute the footer rhythm. */
 .footer .shopify-app-block,
 .footer .essential-trust-badges,
 .footer [data-app-block-id*="trust-badges"],
@@ -1294,8 +1311,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   display: none !important;
 }
 
-/* Language selector inside the footer block looks like an orphan;
-   compact it into a small inline pill rather than a giant header. */
 .footer .localization-form,
 .footer .localization-selector {
   margin-top: 1.6rem;
@@ -1308,8 +1323,8 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 .footer .localization-form__select,
 .footer .disclosure__button {
   background: transparent !important;
-  border: 1px solid var(--seym-line-soft) !important;
-  color: var(--seym-cream-soft) !important;
+  border: 1px solid rgba(250, 250, 247, 0.1) !important;
+  color: rgba(250, 250, 247, 0.6) !important;
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -1318,8 +1333,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   border-radius: 0 !important;
 }
 
-/* Hide the giant "Language" / "Country" footer headings
-   (these pages literally read "Language" as a heading). */
 .footer h2.h4,
 .footer .footer__localization > h2,
 .footer__column.footer__localization > h2 {
@@ -1332,7 +1345,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   font-style: normal !important;
 }
 
-/* Footer columns — proper alignment & spacing */
 .footer__content-top.page-width,
 .footer .footer__content-top {
   max-width: 144rem !important;
@@ -1360,7 +1372,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   }
 }
 
-/* Footer block wrappers — kill the cramped column behavior */
 .footer-block,
 .footer-block__brand-info,
 .footer-block--menu,
@@ -1378,7 +1389,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   overflow-wrap: normal !important;
 }
 
-/* Brand info column — let copy breathe horizontally */
 .footer-block__brand-info,
 .footer-block.footer-block--brand-information {
   max-width: 38rem;
@@ -1402,7 +1412,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   white-space: nowrap;
 }
 
-/* Menu / link list columns — proper text flow, no per-letter wrapping */
 .footer-block--menu,
 .footer-block .footer__list-menu,
 .footer__list-menu {
@@ -1430,7 +1439,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   padding: 0.4rem 0 !important;
 }
 
-/* Quick links / menu items list — remove inline crushed look */
 .footer-block__details-content > ul,
 .footer__list-menu,
 .footer-block ul.list-unstyled {
@@ -1442,7 +1450,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   list-style: none;
 }
 
-/* Atelier text block — clean line breaks */
 .footer-block--text,
 .footer-block.footer-block--text {
   max-width: 28rem;
@@ -1455,7 +1462,6 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   word-break: normal !important;
 }
 
-/* Social icons — crisp size, even spacing */
 .footer__list-social {
   display: flex !important;
   gap: 2rem;
@@ -1468,328 +1474,58 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4.4rem;
-  height: 4.4rem;
-  border: 1px solid var(--seym-line-soft);
-  color: var(--seym-cream) !important;
-  transition: background var(--seym-fast) var(--seym-ease), color var(--seym-fast) var(--seym-ease);
-}
-.footer__list-social .list-social__item a:hover {
-  background: var(--seym-cream);
-  color: var(--seym-void) !important;
-}
-.footer__list-social svg { width: 1.6rem; height: 1.6rem; }
-
-/* Stop the "single Instagram icon" loneliness at the very bottom
-   and the duplicate social row outside the footer__content-top grid */
-.copyright .footer__list-social,
-.footer__copyright .footer__list-social,
-.footer__content-bottom .footer__list-social,
-.footer .list-social:not(.footer-block .list-social),
-.footer__content-top + * .footer__list-social {
-  display: none !important;
 }
 
-/* Force-show only one social row, inside the brand block */
-.footer-block.footer-block--brand-information .list-social,
-.footer-block__brand-info ~ .list-social,
-.footer-block__brand-info .list-social,
-.footer-block--brand-information .footer__list-social {
-  display: flex !important;
-  margin-top: 2rem;
-}
-
-/* Newsletter — remove the rectangular outline + tighten layout */
-.footer .newsletter-form__field-wrapper {
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-/* Remove the colourful inline app cards if they sneak into newsletter section */
-.shopify-section-group-footer-group .shopify-app-block + .shopify-app-block,
-.newsletter .shopify-app-block,
-.shopify-section .shopify-app-block:has(img[src*="cdn.shopify.com/extensions"]) {
-  display: none !important;
-}
-
-/* Video section — never let it become a giant black box.
-   Add visible aspect ratio + subtle frame. */
-.video-section,
-.shopify-section[class*="video"],
-deferred-media {
-  background: var(--seym-void) !important;
-}
-.video-section .video-section__media,
-.video-section video,
-deferred-media video {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  height: auto !important;
-  max-height: 80vh;
-  object-fit: cover;
-  display: block;
-}
-deferred-media .deferred-media__poster {
-  background: var(--seym-void);
-}
-deferred-media .deferred-media__poster-button {
-  background: rgba(239, 236, 236, 0.95) !important;
-  color: var(--seym-void) !important;
-  width: 7rem;
-  height: 7rem;
-  border-radius: 999px !important;
-  border: none !important;
-}
-deferred-media .deferred-media__poster-button svg { fill: currentColor; width: 2.4rem; height: 2.4rem; }
-
-/* Featured-collection / collection-list — compact "View All" button */
-.collection-list-wrapper .button,
-.collection-list .button,
-.title-wrapper-with-link + * .button {
-  display: inline-flex;
-  width: auto !important;
-  margin: 4rem auto 0 auto;
-}
-
-/* When collection cards have empty thumbnails (no image),
-   render a soft luminous tile instead of a giant void hole. */
-.card--collection .card__inner:not(:has(img)),
-.card--collection.card--text {
-  min-height: 0;
-}
-.card--collection.card--text {
-  padding: 4rem 2rem !important;
-}
-
-/* "View all" button container needs breathing room */
-.collection-list .center,
-.collection-list-wrapper .center {
-  margin-top: 4rem;
-  padding-top: 0;
-}
-
-/* Center "View all" button on its own row */
-.collection-list-wrapper .button--secondary,
-.collection-list-wrapper .button--full-width {
-  width: auto !important;
-  margin: 4rem auto 0 !important;
-}
-
-/* About Us section — when it's still using legacy rich-text,
-   make sure heading & body align with our editorial scale */
-.shopify-section [class*="rich-text"] .rich-text__heading {
-  font-size: clamp(3.4rem, 5vw, 6rem) !important;
+/* ============================================================
+   26. COLLECTION PAGE OVERRIDES
+   ============================================================ */
+.collection-hero__title,
+.main-collection-banner .title,
+.banner.banner--small .banner__heading {
+  font-size: clamp(3.4rem, 4vw, 5.8rem) !important;
   font-weight: 300 !important;
-  letter-spacing: -0.025em !important;
 }
 
-/* Buttons inside legacy rich-text: standardize sizing */
-.rich-text__buttons .button {
-  min-width: 220px;
+.collection-hero__title + *,
+.main-collection-banner .banner__content .subtitle,
+.collection-hero .rte {
+  font-size: 1.05rem !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  color: var(--seym-cream-dim) !important;
 }
 
-/* ----------- 26. CART ICON BUBBLE — drop-in fix ----------- */
-.cart-count-bubble {
-  position: absolute;
-  top: -4px;
-  right: -8px;
-}
-
-/* ----------- 27. UTILITY BAR (top mini-nav) ----------- */
-.utility-bar {
-  background: var(--seym-void) !important;
-  border-bottom: 1px solid var(--seym-line-soft) !important;
-}
-.utility-bar .localization-form__select,
-.utility-bar .disclosure__button {
-  color: var(--seym-cream) !important;
-  background: transparent !important;
+.facets__summary,
+.facets__label,
+.active-facets__button,
+.active-facets__button-inner {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase !important;
   letter-spacing: 0.22em !important;
   font-size: 1rem !important;
-}
-
-/* =============================================================
-   28. COLLECTION PAGE — complete fix
-   ============================================================= */
-
-/* Kill Dawn's header section when seym-header is present */
-.shopify-section-group-header-group .shopify-section:has(sticky-header) {
-  display: none !important;
-}
-
-/* Collection hero — controlled editorial heading */
-.collection-hero { padding: 0 !important; }
-.collection-hero__inner { padding: 7rem 5rem 5rem !important; }
-.collection-hero__title {
-  font-family: 'Cormorant Garamond', serif !important;
-  font-size: clamp(3.4rem, 4vw, 5.8rem) !important;
-  font-weight: 300 !important;
-  letter-spacing: -0.025em !important;
-  line-height: 1.06 !important;
-  color: var(--seym-cream) !important;
-  margin-bottom: 1.6rem !important;
-}
-.collection-hero__description,
-.collection-hero__description p {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.4rem !important;
-  font-weight: 300 !important;
-  line-height: 1.75 !important;
-  color: var(--seym-cream-soft) !important;
-  max-width: 58ch;
-}
-
-/* Collection image — dark overlay if ever shown */
-.collection-hero__image-container::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: rgba(10,20,36,0.72);
-  z-index: 1; pointer-events: none;
-}
-
-/* Product count — small, discrete */
-.product-count-vertical,
-.product-count,
-h2.product-count__text,
-.product-count__text {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1rem !important;
   font-weight: 400 !important;
+  color: var(--seym-cream) !important;
+  border-color: var(--seym-cream-faint) !important;
+}
+
+.facets__disclosure-vertical summary { padding: 1.8rem 0; border-top: 1px solid var(--seym-line-soft); }
+.facets__disclosure-vertical[open] summary { border-color: var(--seym-cream); }
+
+.filter-and-sort-form__collection-count,
+.product-count__text,
+.product-count {
+  font-size: 1rem !important;
   letter-spacing: 0.28em !important;
   text-transform: uppercase !important;
   color: var(--seym-cream-dim) !important;
-  line-height: 1 !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
-/* Filter/Sort */
-.facet-filters__label,
-h2.facet-filters__label,
-.facets__heading {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1rem !important; font-weight: 500 !important;
-  letter-spacing: 0.28em !important; text-transform: uppercase !important;
-  color: var(--seym-cream) !important;
-}
-.facets__summary,
-.mobile-facets__summary {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1rem !important; font-weight: 400 !important;
-  letter-spacing: 0.2em !important; text-transform: uppercase !important;
-  color: var(--seym-cream-soft) !important;
-  border-top: 1px solid var(--seym-line-soft) !important;
-  padding: 1.6rem 0 !important;
-}
-.facets label, .facets .label-text {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.2rem !important; font-weight: 300 !important;
-  color: var(--seym-cream-soft) !important;
-}
-.facet-filters__sort {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.1rem !important; color: var(--seym-cream) !important;
-  background: transparent !important;
-  border: 1px solid var(--seym-cream-faint) !important;
-  border-radius: 0 !important; padding: 0.8rem 1.4rem !important;
-}
-.active-facets__button {
-  border-radius: 0 !important; background: transparent !important;
-  border: 1px solid var(--seym-cream-faint) !important;
-  color: var(--seym-cream-soft) !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1rem !important; letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
-  padding: 0.5rem 1rem !important; min-height: 0 !important;
-}
-
-/* =============================================================
-   29. PRODUCT PAGE — luxury trust signals
-   ============================================================= */
-
-/* After the price — a small "handcrafted" guarantee line */
-.product__info-container::before {
-  display: none; /* handled below per selector */
-}
-
-/* Craft badge above add to cart */
-.product-form__buttons {
-  border-top: 1px solid var(--seym-line-soft);
-  padding-top: 2.4rem; margin-top: 2.4rem;
-}
-
-/* Variant pills more premium */
-.product-form__input--pill input[type='radio'] + label {
-  min-width: 6rem;
-}
-
-/* Related products section heading */
-.related-products .title-wrapper h2,
-.related-products__heading {
-  font-size: clamp(2.4rem, 3.2vw, 4rem) !important;
-}
-
-/* =============================================================
-   30. GLOBAL POLISH
-   ============================================================= */
-
-/* Hover card — gold shadow whisper */
-.card-wrapper:hover .card__media {
-  box-shadow: 0 0 0 1px rgba(201,165,120,0.15) !important;
-}
-
-/* Section padding breathing room */
-.shopify-section { margin-bottom: 0 !important; }
-
-/* 404 page — editorial treatment */
-.main-404 .button { margin-top: 4rem; }
-.main-404 h1 {
-  font-size: clamp(4rem, 8vw, 10rem) !important;
-  font-weight: 300 !important;
-  letter-spacing: -0.03em !important;
-}
-
-/* Predictive search — luxury */
-.predictive-search__result-group-heading {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.9rem !important; letter-spacing: 0.3em !important;
-  text-transform: uppercase !important; color: var(--seym-cream-dim) !important;
-}
-
-/* Cart drawer title */
-cart-drawer .drawer__heading {
-  font-family: 'Cormorant Garamond', serif !important;
-  font-size: 2.8rem !important; font-weight: 300 !important;
-  font-style: italic !important; letter-spacing: 0 !important;
-  color: var(--seym-cream) !important;
-}
-
-/* Scrollbar — refined */
-@media (min-width: 990px) {
-  ::-webkit-scrollbar { width: 6px !important; }
-  ::-webkit-scrollbar-thumb { border-radius: 0 !important; }
-}
-
-/* Gold line utility */
-.seym-line-gold {
-  display: block; width: 4.8rem; height: 1px;
-  background: linear-gradient(90deg, transparent, #c9a578 50%, transparent);
-  margin: 3.2rem auto; opacity: 0.65;
-}
-
-/* =============================================================
-   31. SEYM HEADER overrides when custom header active
-   ============================================================= */
-/* Prevent double header when both header.liquid and seym-header.liquid render */
+/* ============================================================
+   27. HEADER PROTECTION (stops double header)
+   ============================================================ */
 .shopify-section:has(.header-wrapper):has(sticky-header) {
   display: none !important;
 }
-/* If seym-hd exists, remove Dawn's header padding compensation */
 body:has(.seym-hd) .main-content-wrapper {
   padding-top: 0 !important;
 }
-
-

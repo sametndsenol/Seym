@@ -10,13 +10,13 @@
 {
   "sections": {
 
-    "seym_hero": {
-      "type": "lux-scroll-showcase",
+    "video_hero": {
+      "type": "seym-video-hero",
       "settings": {
-        "bg_color": "#fafaf7",
-        "text_color": "#0d0d0d",
+        "video_asset": "product-showcase.mp4",
         "eyebrow": "Seym Glass Studio · Istanbul",
-        "scroll_label": "Scroll"
+        "scroll_label": "Scroll",
+        "scroll_height": 4
       },
       "blocks": {
         "step_1": {
@@ -94,72 +94,6 @@
       }
     },
 
-    "editorial": {
-      "type": "seym-editorial",
-      "settings": {
-        "product": "flos-mor",
-        "collection": "flos-koleksi̇yonu",
-        "acquire_eyebrow": "Add to your collection",
-        "cta_label": "Acquire this piece",
-        "acquire_note": "Complimentary insured delivery within Türkiye"
-      },
-      "blocks": {
-        "ch1": {
-          "type": "chapter",
-          "settings": {
-            "chapter_num": "I",
-            "eyebrow": "Origin",
-            "heading": "Born from breath and fire.",
-            "body": "Each piece begins as raw silica — sand, flux, lime — fed into a furnace at 1,200°C. A master glassblower gathers it on the end of an iron pipe and gives it the one thing a machine never can: breath.",
-            "pullquote": "No mould. No template. Only the lung capacity of a craftsman and thirty years of muscle memory."
-          }
-        },
-        "ch2": {
-          "type": "chapter",
-          "settings": {
-            "chapter_num": "II",
-            "eyebrow": "Craft",
-            "heading": "Our Çengelköy atelier has one rule: never the same twice.",
-            "body": "Each object is shaped by hand in our Istanbul workshop. Temperature, gravity, the angle of the pipe — every variable is a decision. Imperfections are not corrected. They are the signature.",
-            "pullquote": ""
-          }
-        },
-        "ch3": {
-          "type": "chapter",
-          "settings": {
-            "chapter_num": "III",
-            "eyebrow": "Light",
-            "heading": "Glass does not hold light. It transforms it.",
-            "body": "At dawn, amber. At noon, crystalline. By candlelight, the colour deepens into something you cannot name. Seym pieces read differently in every hour of the day — they are not objects, they are instruments.",
-            "pullquote": "Place it near a window. Watch it change the room."
-          }
-        },
-        "ch4": {
-          "type": "chapter",
-          "settings": {
-            "chapter_num": "IV",
-            "eyebrow": "Presence",
-            "heading": "This exact piece will never be made again.",
-            "body": "We produce in limited editions of twelve — named, numbered, documented. When this series closes, it closes. What you acquire is not a product. It is a timestamp in molten glass.",
-            "pullquote": ""
-          }
-        },
-        "pin1": {
-          "type": "pin",
-          "settings": { "label": "Mouth-blown", "top": 22, "left": 10, "side": "left" }
-        },
-        "pin2": {
-          "type": "pin",
-          "settings": { "label": "Unique air inclusions", "top": 48, "left": 14, "side": "left" }
-        },
-        "pin3": {
-          "type": "pin",
-          "settings": { "label": "Hand-finished rim", "top": 74, "left": 18, "side": "left" }
-        }
-      },
-      "block_order": ["ch1", "ch2", "ch3", "ch4", "pin1", "pin2", "pin3"]
-    },
-
     "feature_tiles": {
       "type": "seym-feature-tiles",
       "settings": {
@@ -203,7 +137,7 @@
     "model_viewer": {
       "type": "seym-3d-viewer",
       "settings": {
-        "model_file": "KHcshJYfvUsxoFGRrpAKO_model.glb",
+        "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
         "model_alt": "Seym Glass Studio — interactive 3D model",
         "eyebrow": "Examine Up Close",
         "heading": "Turn it. Study it. Own it.",
@@ -277,20 +211,6 @@
         "swipe_on_mobile": false,
         "padding_top": 24,
         "padding_bottom": 100
-      }
-    },
-
-    "product_video": {
-      "type": "seym-product-video",
-      "settings": {
-        "video_asset": "product-showcase.mp4",
-        "eyebrow": "In Motion",
-        "caption": "Hand-blown in Istanbul.",
-        "aspect_ratio": "16:9",
-        "max_width": 120,
-        "bg_color": "#fafaf7",
-        "padding_top": 80,
-        "padding_bottom": 80
       }
     },
 
@@ -374,14 +294,12 @@
   },
 
   "order": [
-    "seym_hero",
+    "video_hero",
     "intro",
-    "editorial",
     "feature_tiles",
     "model_viewer",
     "collections_intro",
     "collections",
-    "product_video",
     "manifesto",
     "closing"
   ]
