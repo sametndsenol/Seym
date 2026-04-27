@@ -221,7 +221,10 @@
   {%- if section.blocks.size > 0 -%}
     <div class="seym-spin__grid">
       {%- for block in section.blocks -%}
-        {%- assign product = all_products[block.settings.product] -%}
+        {%- assign _bprod = block.settings.product | strip -%}
+        {%- if _bprod != blank -%}
+          {%- assign product = all_products[_bprod] -%}
+        {%- endif -%}
         {%- if product == blank and block.settings.collection != blank -%}
           {%- assign product = collections[block.settings.collection].products.first -%}
         {%- endif -%}

@@ -291,7 +291,10 @@
   }
 </style>
 
-{%- assign product = all_products[section.settings.product] -%}
+{%- assign _prod_handle = section.settings.product | strip -%}
+{%- if _prod_handle != blank -%}
+  {%- assign product = all_products[_prod_handle] -%}
+{%- endif -%}
 {%- if product == blank and section.settings.collection != blank -%}
   {%- assign product = collections[section.settings.collection].products.first -%}
 {%- endif -%}
