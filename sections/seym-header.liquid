@@ -1,14 +1,14 @@
 {%- comment -%}
-  Seym Header — single-row luxury.
+  Seym Header — White Gallery edition.
   Logo left · Nav center (absolute) · Icons right.
-  Hermès/Bottega pattern. Sticky + blur on scroll.
+  White background, dark ink, gold accent on hover.
 {%- endcomment -%}
 
 <style>
   /* — Announcement bar — */
   .seym-bar {
-    background: #0a1424;
-    border-bottom: 1px solid rgba(239,236,236,0.07);
+    background: #0d0d0d;
+    border-bottom: none;
     text-align: center;
     padding: 1rem 2rem;
     position: relative; z-index: 60;
@@ -18,7 +18,7 @@
     font-size: 0.9rem;
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: rgba(239,236,236,0.58);
+    color: rgba(250,250,247,0.55);
     margin: 0;
   }
   .seym-bar a { color: inherit; text-decoration: none; }
@@ -26,14 +26,16 @@
   /* — Header shell — */
   .seym-hd {
     position: sticky; top: 0; z-index: 50;
-    background: #0a1424;
-    border-bottom: 1px solid rgba(239,236,236,0.07);
-    transition: background 600ms cubic-bezier(0.22,1,0.36,1);
+    background: #fafaf7;
+    border-bottom: 1px solid rgba(13,13,13,0.08);
+    transition: background 600ms cubic-bezier(0.22,1,0.36,1),
+                box-shadow 600ms cubic-bezier(0.22,1,0.36,1);
   }
   .seym-hd.scrolled {
-    background: rgba(10,20,36,0.92);
+    background: rgba(250,250,247,0.96);
     -webkit-backdrop-filter: saturate(160%) blur(24px);
     backdrop-filter: saturate(160%) blur(24px);
+    box-shadow: 0 1px 0 rgba(13,13,13,0.06);
   }
 
   /* — Single row — */
@@ -50,14 +52,14 @@
   /* — Logo — */
   .seym-hd__logo {
     display: flex; align-items: center;
-    text-decoration: none; color: #efecec;
+    text-decoration: none; color: #0d0d0d;
     flex-shrink: 0; z-index: 2;
     transition: opacity 300ms ease;
   }
-  .seym-hd__logo:hover { opacity: 0.75; }
+  .seym-hd__logo:hover { opacity: 0.6; }
   .seym-hd__logo img {
     max-height: 4.6rem; width: auto;
-    filter: brightness(0) invert(1);
+    filter: brightness(0);
     transition: max-height 400ms ease;
     display: block;
   }
@@ -66,7 +68,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400; font-size: 2.2rem;
     letter-spacing: 0.36em; text-transform: uppercase;
-    color: #efecec; line-height: 1;
+    color: #0d0d0d; line-height: 1;
   }
 
   /* — Nav (centered absolutely) — */
@@ -82,19 +84,19 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem; font-weight: 400;
     letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(239,236,236,0.7);
+    color: rgba(13,13,13,0.55);
     text-decoration: none; position: relative;
     transition: color 300ms ease;
   }
   .seym-hd__nav a::after {
     content: ''; position: absolute;
     bottom: 2px; left: 1.8rem; right: 1.8rem;
-    height: 1px; background: #efecec;
+    height: 1px; background: #0d0d0d;
     transform: scaleX(0); transform-origin: right center;
     transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
   }
   .seym-hd__nav a:hover,
-  .seym-hd__nav a[aria-current] { color: #efecec; }
+  .seym-hd__nav a[aria-current] { color: #0d0d0d; }
   .seym-hd__nav a:hover::after,
   .seym-hd__nav a[aria-current]::after {
     transform: scaleX(1); transform-origin: left center;
@@ -108,11 +110,11 @@
   .seym-hd__icon {
     display: inline-flex; align-items: center; justify-content: center;
     width: 4rem; height: 4rem;
-    color: #efecec; background: none; border: none;
+    color: #0d0d0d; background: none; border: none;
     cursor: pointer; text-decoration: none; position: relative;
     transition: opacity 300ms ease;
   }
-  .seym-hd__icon:hover { opacity: 0.6; }
+  .seym-hd__icon:hover { opacity: 0.5; }
   .seym-hd__icon svg {
     width: 1.9rem; height: 1.9rem;
     stroke: currentColor; fill: none;
@@ -120,7 +122,7 @@
   }
   .seym-hd__badge {
     position: absolute; top: 5px; right: 5px;
-    background: #efecec; color: #0a1424;
+    background: #0d0d0d; color: #fafaf7;
     width: 1.5rem; height: 1.5rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;
     font-family: 'Inter', sans-serif;
@@ -135,7 +137,7 @@
     background: none; border: none; cursor: pointer; padding: 1rem;
   }
   .seym-hd__burger span {
-    display: block; height: 1px; background: #efecec;
+    display: block; height: 1px; background: #0d0d0d;
     transition: all 300ms ease;
   }
   .seym-hd__burger span:nth-child(2) { width: 70%; margin-left: auto; }
@@ -143,7 +145,7 @@
   /* — Mobile drawer — */
   .seym-drawer {
     position: fixed; inset: 0;
-    background: #0a1424; z-index: 100;
+    background: #fafaf7; z-index: 100;
     transform: translateX(-100%);
     transition: transform 600ms cubic-bezier(0.22,1,0.36,1);
     overflow-y: auto;
@@ -153,11 +155,11 @@
   .seym-drawer__head {
     display: flex; align-items: center; justify-content: space-between;
     padding: 2rem 2.4rem;
-    border-bottom: 1px solid rgba(239,236,236,0.07);
+    border-bottom: 1px solid rgba(13,13,13,0.07);
     flex-shrink: 0;
   }
   .seym-drawer__close {
-    background: none; border: none; color: #efecec;
+    background: none; border: none; color: #0d0d0d;
     cursor: pointer; width: 4rem; height: 4rem;
     display: flex; align-items: center; justify-content: center;
   }
@@ -169,13 +171,13 @@
   .seym-drawer__links a {
     display: block;
     padding: 1.4rem 0;
-    border-bottom: 1px solid rgba(239,236,236,0.07);
+    border-bottom: 1px solid rgba(13,13,13,0.07);
     font-family: 'Cormorant Garamond', serif;
     font-size: 3.2rem; font-weight: 300; letter-spacing: -0.01em;
-    color: #efecec; text-decoration: none;
+    color: #0d0d0d; text-decoration: none;
     transition: opacity 300ms ease;
   }
-  .seym-drawer__links a:hover { opacity: 0.65; }
+  .seym-drawer__links a:hover { opacity: 0.5; }
   .seym-drawer__links li:last-child a { border-bottom: none; }
 
   /* — Responsive — */

@@ -12,8 +12,8 @@
     "seym_hero": {
       "type": "lux-scroll-showcase",
       "settings": {
-        "bg_color": "#0a1424",
-        "text_color": "#efecec",
+        "bg_color": "#fafaf7",
+        "text_color": "#0d0d0d",
         "eyebrow": "Seym Glass Studio · Istanbul",
         "scroll_label": "Scroll"
       },
@@ -200,6 +200,33 @@
         "padding_bottom": 100
       }
     },
+    "spin_showcase": {
+      "type": "seym-spin-showcase",
+      "settings": {
+        "eyebrow": "Selected Pieces",
+        "heading": "Crafted for those who notice.",
+        "cta_label": "Explore the full collection",
+        "cta_link": "/collections"
+      },
+      "blocks": {
+        "sp1": {
+          "type": "product_item",
+          "settings": {
+            "product": ""
+          }
+        },
+        "sp2": {
+          "type": "product_item",
+          "settings": {
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "sp1",
+        "sp2"
+      ]
+    },
     "manifesto": {
       "type": "rich-text",
       "blocks": {
@@ -304,6 +331,7 @@
     "intro",
     "collections_intro",
     "collections",
+    "spin_showcase",
     "manifesto",
     "video_section",
     "closing"
