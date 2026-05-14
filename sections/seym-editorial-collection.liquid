@@ -33,6 +33,56 @@
     padding: 0 4rem;
   }
 
+  /* Asimetrik editorial grid */
+.seym-coll__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  gap: 2rem 1.5rem;
+  align-items: start;
+}
+
+/* Her 5. grubun 1. kartı büyük (2 kolon, 2 sıra) */
+.seym-coll__item:nth-child(5n+1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Staggered offset — 3. kart aşağı kayar */
+.seym-coll__item:nth-child(5n+3) {
+  margin-top: 3rem;
+}
+
+/* 5. kart hafif yukarı çıkar */
+.seym-coll__item:nth-child(5n+5) {
+  margin-top: -1.5rem;
+}
+
+/* Mobilde düz tek kolon */
+@media (max-width: 989px) {
+  .seym-coll__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .seym-coll__item:nth-child(5n+1) {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  .seym-coll__item:nth-child(5n+3),
+  .seym-coll__item:nth-child(5n+5) {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 540px) {
+  .seym-coll__grid {
+    grid-template-columns: 1fr;
+  }
+  .seym-coll__item:nth-child(5n+1) {
+    grid-column: span 1;
+  }
+}
+
+
   /* --- Editorial intro (top) --- */
   .seym-coll__intro {
     max-width: 92rem;
