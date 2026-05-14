@@ -83,17 +83,62 @@
       "settings": {
         "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
         "model_alt": "Seym Glass Studio — interactive 3D model",
-        "eyebrow": "Examine Up Close",
-        "heading": "Turn it. Study it. Own it.",
-        "subheading": "Every facet. Every angle.",
-        "caption": "Hand-blown in Istanbul. This exact piece will never be made again.",
+        "eyebrow": "Maris · Series IV",
+        "heading": "Turn it. Study it. <em>Own it</em>.",
+        "subheading": "Every facet. Every angle. Every decision.",
+        "body": "<p>Mouth-blown by master hands in our Çengelköy atelier on the Bosphorus. The same water that named the Maris series. Each piece is finished one at a time and bears its maker's quiet signature.</p>",
+        "meta_left_label": "Collection",
+        "meta_left": "Maris",
+        "meta_right_label": "Edition",
+        "meta_right": "1 of 12",
+        "cta_label": "Acquire this piece",
+        "cta_link": "/collections/mari̇s",
         "shadow_intensity": 1,
         "exposure": 10,
         "enable_ar": true,
         "ar_label": "View in your space",
-        "hint_text": "Drag to rotate · Pinch to zoom",
-        "cta_label": "Acquire this piece",
-        "cta_link": "/collections"
+        "hint_text": "Drag · Pinch · Explore"
+      }
+    },
+
+    "lifestyle_trio": {
+      "type": "seym-lifestyle-trio",
+      "blocks": {
+        "t1": {
+          "type": "card",
+          "settings": {
+            "tag": "On The Table",
+            "label": "Vessels & vases",
+            "sub_label": "Hand-blown forms for everyday companionship.",
+            "cta_label": "Discover"
+          }
+        },
+        "t2": {
+          "type": "card",
+          "settings": {
+            "tag": "By The Window",
+            "label": "Light catchers",
+            "sub_label": "Pieces that read the sun. Different at every hour.",
+            "cta_label": "Discover"
+          }
+        },
+        "t3": {
+          "type": "card",
+          "settings": {
+            "tag": "Beside The Chair",
+            "label": "Sculptural objects",
+            "sub_label": "Quiet companions to contemporary living spaces.",
+            "cta_label": "Discover"
+          }
+        }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {
+        "eyebrow": "In Your Space",
+        "heading": "Lived with, <em>not displayed</em>.",
+        "subtitle": "Seym pieces are made for daily companionship. A bowl on the breakfast table. A vase by the window. A vessel beside your reading chair.",
+        "padding_top": 100,
+        "padding_bottom": 140
       }
     }
 
@@ -101,6 +146,7 @@
 
   "order": [
     "split_home",
-    "model_viewer"
+    "model_viewer",
+    "lifestyle_trio"
   ]
 }

@@ -1,80 +1,109 @@
 {%- comment -%}
-  Seym 3D Viewer — interactive model-viewer section.
-  Dark void background, auto-rotate, camera controls, AR on mobile.
+  Seym 3D Viewer — split layout.
+  Left: feature image + category info + CTA.
+  Right: interactive 3D model with AR.
 {%- endcomment -%}
 
 <link rel="stylesheet" href="{{ 'seym-3d-viewer.css' | asset_url }}" media="print" onload="this.media='all'">
 
 <section class="seym-3d" id="Seym3D-{{ section.id }}">
+  <div class="seym-3d__split">
 
-  <div class="seym-3d__intro">
-    {%- if section.settings.eyebrow != blank -%}
-      <span class="seym-3d__eyebrow">{{ section.settings.eyebrow }}</span>
-    {%- endif -%}
-    {%- if section.settings.heading != blank -%}
-      <h2 class="seym-3d__heading">{{ section.settings.heading }}</h2>
-    {%- endif -%}
-    {%- if section.settings.subheading != blank -%}
-      <p class="seym-3d__sub">{{ section.settings.subheading }}</p>
-    {%- endif -%}
-  </div>
-
-  <div class="seym-3d__stage">
-    <model-viewer
-      id="SeymModelViewer-{{ section.id }}"
-      src="{{ section.settings.model_file | default: 'kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb' | asset_url }}"
-      alt="{{ section.settings.model_alt | default: 'Seym Glass Studio — interactive 3D model' }}"
-      auto-rotate
-      auto-rotate-delay="800"
-      rotation-per-second="12deg"
-      camera-controls
-      camera-orbit="0deg 75deg 105%"
-      min-camera-orbit="auto auto 80%"
-      max-camera-orbit="auto auto 130%"
-      environment-image="neutral"
-      shadow-intensity="{{ section.settings.shadow_intensity | default: 1.2 }}"
-      exposure="{{ section.settings.exposure | default: 1.0 }}"
-      {% if section.settings.enable_ar %}ar ar-modes="webxr scene-viewer quick-look"{% endif %}
-      loading="eager"
-      reveal="auto"
-    >
-
-      {%- if section.settings.enable_ar -%}
-        <button slot="ar-button" class="seym-3d__ar-btn" aria-label="See in your room">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-          <span>{{ section.settings.ar_label | default: 'View in your space' }}</span>
-        </button>
+    <!-- LEFT: category info -->
+    <aside class="seym-3d__info">
+      {%- if section.settings.feature_image != blank -%}
+        <div class="seym-3d__image">
+          {{ section.settings.feature_image
+             | image_url: width: 1200
+             | image_tag:
+               loading: 'lazy',
+               widths: '400, 600, 900, 1200, 1500',
+               sizes: '(max-width: 989px) 88vw, 40vw',
+               alt: section.settings.feature_image.alt | default: section.settings.heading }}
+        </div>
       {%- endif -%}
 
-      <div class="seym-3d__progress" slot="progress-bar">
-        <div class="seym-3d__bar"></div>
+      <div class="seym-3d__info-body">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="seym-3d__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="seym-3d__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="seym-3d__sub">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+        {%- if section.settings.body != blank -%}
+          <div class="seym-3d__body rte">{{ section.settings.body }}</div>
+        {%- endif -%}
+
+        <div class="seym-3d__meta">
+          {%- if section.settings.meta_left != blank -%}
+            <div class="seym-3d__meta-block">
+              <span class="seym-3d__meta-key">{{ section.settings.meta_left_label | default: 'Collection' }}</span>
+              <span class="seym-3d__meta-val">{{ section.settings.meta_left }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.meta_right != blank -%}
+            <div class="seym-3d__meta-block">
+              <span class="seym-3d__meta-key">{{ section.settings.meta_right_label | default: 'Edition' }}</span>
+              <span class="seym-3d__meta-val">{{ section.settings.meta_right }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+          <div class="seym-3d__cta">
+            <a href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+          </div>
+        {%- endif -%}
       </div>
+    </aside>
 
-    </model-viewer>
+    <!-- RIGHT: 3D stage -->
+    <div class="seym-3d__stage">
+      <model-viewer
+        id="SeymModelViewer-{{ section.id }}"
+        src="{{ section.settings.model_file | default: 'kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb' | asset_url }}"
+        alt="{{ section.settings.model_alt | default: 'Seym Glass Studio — interactive 3D model' }}"
+        auto-rotate
+        auto-rotate-delay="800"
+        rotation-per-second="12deg"
+        camera-controls
+        camera-orbit="0deg 75deg 105%"
+        min-camera-orbit="auto auto 80%"
+        max-camera-orbit="auto auto 130%"
+        environment-image="neutral"
+        shadow-intensity="{{ section.settings.shadow_intensity | default: 1.2 }}"
+        exposure="{{ section.settings.exposure | default: 1.0 }}"
+        {% if section.settings.enable_ar %}ar ar-modes="webxr scene-viewer quick-look"{% endif %}
+        loading="eager"
+        reveal="auto"
+      >
+        {%- if section.settings.enable_ar -%}
+          <button slot="ar-button" class="seym-3d__ar-btn" aria-label="See in your room">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span>{{ section.settings.ar_label | default: 'View in your space' }}</span>
+          </button>
+        {%- endif -%}
 
-    <div class="seym-3d__hint" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-        <circle cx="12" cy="12" r="3" stroke-width="1"/>
-      </svg>
-      <span>{{ section.settings.hint_text | default: 'Drag to rotate · Pinch to zoom' }}</span>
+        <div class="seym-3d__progress" slot="progress-bar">
+          <div class="seym-3d__bar"></div>
+        </div>
+      </model-viewer>
+
+      <div class="seym-3d__hint" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          <circle cx="12" cy="12" r="3" stroke-width="1"/>
+        </svg>
+        <span>{{ section.settings.hint_text | default: 'Drag to rotate · Pinch to zoom' }}</span>
+      </div>
     </div>
+
   </div>
-
-  {%- if section.settings.caption != blank -%}
-    <div class="seym-3d__caption">
-      <p>{{ section.settings.caption }}</p>
-    </div>
-  {%- endif -%}
-
-  {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-    <div class="seym-3d__cta">
-      <a href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
-    </div>
-  {%- endif -%}
-
 </section>
 
 <script>
@@ -84,7 +113,6 @@
     s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
     document.head.appendChild(s);
 
-    /* Animate progress bar */
     var viewer = document.getElementById('SeymModelViewer-{{ section.id }}');
     if (viewer) {
       viewer.addEventListener('progress', function (e) {
@@ -111,23 +139,19 @@
   "class": "shopify-section",
   "settings": [
     {
-      "type": "text",
-      "id": "model_file",
-      "label": "GLB filename (in assets/)",
-      "default": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
-      "info": "Upload the .glb file to theme assets, then enter the filename here."
+      "type": "header",
+      "content": "Left column — category info"
     },
     {
-      "type": "text",
-      "id": "model_alt",
-      "label": "Model alt text (accessibility)",
-      "default": "Seym Glass Studio — interactive 3D model"
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Feature product photo"
     },
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Examine Up Close"
+      "default": "Maris · Series IV"
     },
     {
       "type": "text",
@@ -142,9 +166,61 @@
       "default": "Every facet. Every angle. Every decision."
     },
     {
-      "type": "textarea",
-      "id": "caption",
-      "label": "Caption below viewer"
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>Each piece in the Maris series is mouth-blown in our Çengelköy atelier and finished one at a time. Hold it to the light, and the story begins.</p>"
+    },
+    {
+      "type": "text",
+      "id": "meta_left_label",
+      "label": "Meta label (left)",
+      "default": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "meta_left",
+      "label": "Meta value (left)",
+      "default": "Maris"
+    },
+    {
+      "type": "text",
+      "id": "meta_right_label",
+      "label": "Meta label (right)",
+      "default": "Edition"
+    },
+    {
+      "type": "text",
+      "id": "meta_right",
+      "label": "Meta value (right)",
+      "default": "1 of 12"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA link text",
+      "default": "Acquire this piece"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link URL"
+    },
+    {
+      "type": "header",
+      "content": "Right column — 3D model"
+    },
+    {
+      "type": "text",
+      "id": "model_file",
+      "label": "GLB filename (in assets/)",
+      "default": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb"
+    },
+    {
+      "type": "text",
+      "id": "model_alt",
+      "label": "Model alt text",
+      "default": "Seym Glass Studio — interactive 3D model"
     },
     {
       "type": "range",
@@ -162,8 +238,7 @@
       "min": 5,
       "max": 20,
       "step": 1,
-      "default": 10,
-      "info": "Stored as tenths — 10 = 1.0 actual exposure"
+      "default": 10
     },
     {
       "type": "checkbox",
@@ -182,30 +257,16 @@
       "id": "hint_text",
       "label": "Interaction hint",
       "default": "Drag to rotate · Pinch to zoom"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "CTA link text",
-      "default": "Acquire this piece"
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "CTA link URL"
     }
   ],
   "presets": [
     {
-      "name": "3D Object Viewer",
+      "name": "3D Object Viewer (split)",
       "settings": {
-        "model_file": "KHcshJYfvUsxoFGRrpAKO_model.glb",
-        "eyebrow": "Examine Up Close",
+        "eyebrow": "Maris · Series IV",
         "heading": "Turn it. Study it. Own it.",
         "subheading": "Every facet. Every angle. Every decision.",
-        "enable_ar": true,
-        "ar_label": "View in your space",
-        "hint_text": "Drag to rotate · Pinch to zoom"
+        "enable_ar": true
       }
     }
   ]

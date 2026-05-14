@@ -34,13 +34,24 @@
   }
 
   .seym-sh__eyebrow {
-    display: block;
+    display: inline-block;
     font-family: 'Inter', sans-serif;
     font-size: 0.76rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.55);
+    color: var(--seym-wine, #8E2244);
     margin-bottom: 2rem;
+    padding-left: 2.6rem;
+    position: relative;
+  }
+  .seym-sh__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 2rem;
+    height: 1px;
+    background: var(--seym-wine, #8E2244);
   }
 
   .seym-sh__heading {
@@ -63,7 +74,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    border-top: 1px solid rgba(26,26,26,0.12);
+    border-top: 2px solid var(--seym-wine, #8E2244);
   }
 
   .seym-sh__row {
@@ -252,10 +263,12 @@
     left: 5rem;
     z-index: 2;
     font-family: 'Inter', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.4em;
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(245,241,234,0.55);
+    color: #F5F1EA;
+    background: var(--seym-wine, #8E2244);
+    padding: 0.5rem 1rem;
   }
 
   /* ---- Mobile: stack ---- */
