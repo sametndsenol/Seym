@@ -1,6 +1,7 @@
-/* Seym 3D viewer — split layout
-   Left: feature photo + category info + CTA
-   Right: 3D model viewer
+/* Seym 3D viewer — compact split layout
+   Left: photo slot + category info + CTA
+   Right: 3D model
+   Sizes kept bounded; lux-overrides tends to inflate them otherwise.
 */
 
 .seym-3d {
@@ -26,17 +27,18 @@
 .seym-3d__split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 72svh;
+  min-height: 50rem;
+  max-height: 64vh;
   align-items: stretch;
 }
 
 /* ---- LEFT ---- */
 .seym-3d__info {
-  padding: 4rem 4rem 3.6rem;
+  padding: 2.8rem 3rem 2.4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2.4rem;
+  gap: 1.6rem;
   background:
     linear-gradient(180deg,
       rgba(142, 34, 68, 0.03) 0%,
@@ -47,30 +49,11 @@
 .seym-3d__image {
   position: relative;
   width: 100%;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 3 / 2;
+  max-height: 22rem;
   overflow: hidden;
   background: rgba(26,26,26,0.04);
-}
-
-.seym-3d__image--placeholder {
-  background:
-    radial-gradient(70% 50% at 50% 40%, rgba(245,241,234,0.4), transparent 70%),
-    linear-gradient(160deg,
-      rgba(142,34,68,0.92) 0%,
-      rgba(110,26,53,0.95) 60%,
-      rgba(26,26,26,0.92) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.seym-3d__image-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(4rem, 6vw, 7rem);
-  letter-spacing: -0.012em;
-  color: rgba(245, 241, 234, 0.9);
-  text-shadow: 0 4px 32px rgba(0,0,0,0.3);
+  flex-shrink: 0;
 }
 .seym-3d__image::after {
   content: '';
@@ -92,29 +75,50 @@
   transform: scale(1.025);
 }
 
+.seym-3d__image--placeholder {
+  background:
+    radial-gradient(70% 50% at 50% 40%, rgba(245,241,234,0.4), transparent 70%),
+    linear-gradient(160deg,
+      rgba(142,34,68,0.92) 0%,
+      rgba(110,26,53,0.95) 60%,
+      rgba(26,26,26,0.92) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seym-3d__image-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.2rem, 3vw, 3.4rem);
+  letter-spacing: -0.012em;
+  color: rgba(245, 241, 234, 0.9);
+  text-shadow: 0 4px 32px rgba(0,0,0,0.3);
+}
+
 .seym-3d__info-body {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 0.9rem;
 }
 
 .seym-3d__eyebrow {
   display: inline-block;
   font-family: 'Inter', sans-serif;
-  font-size: 0.74rem;
-  letter-spacing: 0.32em;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--seym-wine, #8E2244);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.2rem;
   position: relative;
-  padding-left: 2.6rem;
+  padding-left: 2.2rem;
 }
 .seym-3d__eyebrow::before {
   content: '';
   position: absolute;
   left: 0;
   top: 50%;
-  width: 2rem;
+  width: 1.6rem;
   height: 1px;
   background: var(--seym-wine, #8E2244);
 }
@@ -122,9 +126,9 @@
 .seym-3d__heading {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 300;
-  font-size: clamp(2.8rem, 3.8vw, 5rem);
-  line-height: 1.04;
-  letter-spacing: -0.012em;
+  font-size: clamp(2rem, 2.4vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
   margin: 0;
   color: #1A1A1A;
 }
@@ -136,64 +140,64 @@
 .seym-3d__sub {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   letter-spacing: 0.02em;
-  color: rgba(26,26,26,0.65);
+  color: rgba(26,26,26,0.6);
   margin: 0;
 }
 
 .seym-3d__body {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
-  font-size: 1.4rem;
-  line-height: 1.7;
-  color: rgba(26,26,26,0.72);
-  max-width: 52ch;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: rgba(26,26,26,0.7);
+  max-width: 50ch;
 }
-.seym-3d__body p { margin: 0 0 1rem; color: inherit; font-size: inherit; }
+.seym-3d__body p { margin: 0 0 0.7rem; color: inherit; font-size: inherit; }
 .seym-3d__body em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--seym-wine, #8E2244); }
 
 .seym-3d__meta {
   display: flex;
-  gap: 4rem;
-  margin-top: 1rem;
-  padding: 2rem 0;
+  gap: 2.6rem;
+  margin-top: 0.4rem;
+  padding: 1.1rem 0;
   border-top: 1px solid rgba(142, 34, 68, 0.22);
   border-bottom: 1px solid rgba(142, 34, 68, 0.22);
 }
 .seym-3d__meta-block {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.25rem;
 }
 .seym-3d__meta-key {
   font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.28em;
+  font-size: 0.64rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: rgba(26,26,26,0.5);
 }
 .seym-3d__meta-val {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.7rem;
+  font-size: 1.35rem;
   color: var(--seym-wine, #8E2244);
   font-weight: 400;
 }
 
 .seym-3d__cta {
-  margin-top: 1.4rem;
+  margin-top: 0.4rem;
 }
 .seym-3d__cta a {
   display: inline-flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   background: var(--seym-wine, #8E2244);
   color: var(--seym-ivory, #F5F1EA);
   border: 1px solid var(--seym-wine, #8E2244);
-  padding: 1.5rem 2.8rem;
+  padding: 1rem 2rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.32em;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   text-decoration: none;
   transition: background 240ms ease, color 240ms ease, padding 240ms ease;
@@ -206,14 +210,14 @@
 .seym-3d__cta a:hover {
   background: #6E1A35;
   border-color: #6E1A35;
-  padding-right: 3.2rem;
+  padding-right: 2.4rem;
 }
 .seym-3d__cta a:hover::after { transform: translateX(4px); }
 
 /* ---- RIGHT ---- */
 .seym-3d__stage {
   position: relative;
-  padding: 2.4rem 3rem;
+  padding: 1.6rem 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,9 +228,9 @@
 
 .seym-3d__stage model-viewer {
   width: 100%;
-  height: 60svh;
-  min-height: 38rem;
-  max-height: 56rem;
+  height: 100%;
+  min-height: 28rem;
+  max-height: 44rem;
   display: block;
   background: transparent;
   --poster-color: transparent;
@@ -234,41 +238,41 @@
 
 .seym-3d__hint {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1.4rem;
   left: 50%;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.26em;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: rgba(26,26,26,0.55);
   pointer-events: none;
   background: rgba(245, 241, 234, 0.88);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border: 1px solid rgba(142, 34, 68, 0.18);
   transition: opacity 400ms ease;
 }
-.seym-3d__hint svg { stroke: var(--seym-wine, #8E2244); }
+.seym-3d__hint svg { stroke: var(--seym-wine, #8E2244); width: 14px; height: 14px; }
 
 .seym-3d__ar-btn {
   position: absolute;
-  top: 1.6rem;
-  right: 1.6rem;
+  top: 1.2rem;
+  right: 1.2rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.9rem 1.4rem;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
   background: rgba(245, 241, 234, 0.94);
   border: 1px solid var(--seym-wine, #8E2244);
   color: var(--seym-wine, #8E2244);
   font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.26em;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   cursor: pointer;
   -webkit-backdrop-filter: blur(8px);
@@ -279,6 +283,7 @@
   background: var(--seym-wine, #8E2244);
   color: var(--seym-ivory, #F5F1EA);
 }
+.seym-3d__ar-btn svg { width: 14px; height: 14px; }
 
 .seym-3d__progress {
   position: absolute;
@@ -300,25 +305,28 @@
   .seym-3d__split {
     grid-template-columns: 1fr;
     min-height: 0;
+    max-height: none;
   }
   .seym-3d::before { display: none; }
 
   .seym-3d__info {
-    padding: 3.6rem 2.4rem 3rem;
-    gap: 2rem;
+    padding: 2.4rem 2rem 2rem;
+    gap: 1.4rem;
   }
+  .seym-3d__image { max-height: 18rem; aspect-ratio: 16 / 9; }
   .seym-3d__stage {
-    padding: 1.6rem 1.6rem;
+    padding: 1rem 1.4rem;
   }
   .seym-3d__stage model-viewer {
-    height: 48svh;
-    min-height: 30rem;
+    min-height: 24rem;
+    max-height: 34rem;
+    height: 36svh;
   }
-  .seym-3d__meta { gap: 2.4rem; }
-  .seym-3d__ar-btn { font-size: 0.66rem; padding: 0.7rem 1.1rem; }
+  .seym-3d__meta { gap: 1.6rem; }
 }
 
 @media (max-width: 540px) {
-  .seym-3d__info { padding: 4rem 2rem 3rem; }
-  .seym-3d__cta a { padding: 1.2rem 2.2rem; font-size: 0.72rem; }
+  .seym-3d__info { padding: 2rem 1.6rem 1.6rem; }
+  .seym-3d__image { max-height: 14rem; }
+  .seym-3d__cta a { padding: 0.9rem 1.6rem; font-size: 0.66rem; }
 }

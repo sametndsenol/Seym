@@ -69,18 +69,21 @@
         src="{{ section.settings.model_file | default: 'kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb' | asset_url }}"
         alt="{{ section.settings.model_alt | default: 'Seym Glass Studio — interactive 3D model' }}"
         auto-rotate
-        auto-rotate-delay="800"
-        rotation-per-second="12deg"
+        auto-rotate-delay="1600"
+        rotation-per-second="6deg"
         camera-controls
+        interaction-prompt="none"
         camera-orbit="0deg 75deg 105%"
         min-camera-orbit="auto auto 80%"
         max-camera-orbit="auto auto 130%"
         environment-image="neutral"
-        shadow-intensity="{{ section.settings.shadow_intensity | default: 1.2 }}"
+        shadow-intensity="{{ section.settings.shadow_intensity | default: 0.6 }}"
+        shadow-softness="1"
         exposure="{{ section.settings.exposure | default: 1.0 }}"
         {% if section.settings.enable_ar %}ar ar-modes="webxr scene-viewer quick-look"{% endif %}
-        loading="eager"
+        loading="lazy"
         reveal="auto"
+        disable-zoom
       >
         {%- if section.settings.enable_ar -%}
           <button slot="ar-button" class="seym-3d__ar-btn" aria-label="See in your room">
@@ -110,10 +113,32 @@
 
 <script>
   (function () {
-    var s = document.createElement('script');
-    s.type = 'module';
-    s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
-    document.head.appendChild(s);
+    var section = document.getElementById('Seym3D-{{ section.id }}');
+    if (!section) return;
+
+    var loaded = false;
+    function injectViewerScript() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
+      document.head.appendChild(s);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            injectViewerScript();
+            obs.disconnect();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      obs.observe(section);
+    } else {
+      injectViewerScript();
+    }
 
     var viewer = document.getElementById('SeymModelViewer-{{ section.id }}');
     if (viewer) {
