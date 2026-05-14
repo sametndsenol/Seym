@@ -395,6 +395,97 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* ============================================================
+   FOOTER LAYOUT FIX
+   lux-overrides applies grid to .footer__content-top but the blocks
+   live inside .footer__blocks-wrapper one level deeper. Move the
+   grid to the right element and let .footer__content-top behave as
+   a normal block so it can hold the row of menus + below-row content.
+   ============================================================ */
+
+.footer .footer__content-top,
+.footer__content-top.page-width {
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+  max-width: 144rem !important;
+  margin: 0 auto !important;
+  padding-left: 4rem !important;
+  padding-right: 4rem !important;
+}
+
+.footer .footer__blocks-wrapper,
+.footer__content-top .footer__blocks-wrapper {
+  display: grid !important;
+  grid-template-columns: 2.4fr 1fr 1fr 1.4fr !important;
+  gap: 4.8rem !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.footer .footer-block.grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 1 auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Section-level social row (the duplicate Instagram) — hide it.
+   Social icons live inside the brand block. */
+.footer > .page-width > .footer__follow-on-shop,
+.footer > .footer__content-top > .footer__list-social,
+.footer__content-top > ul.footer__list-social {
+  display: none !important;
+}
+
+/* Atelier text block — make sure email/address paragraphs breathe */
+.footer-block--text p,
+.footer-block.footer-block--text p {
+  display: block !important;
+  margin: 0 0 0.6rem !important;
+}
+.footer-block--text p:last-child,
+.footer-block.footer-block--text p:last-child {
+  margin-bottom: 0 !important;
+}
+.footer-block--text a {
+  color: rgba(245, 241, 234, 0.86) !important;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.18);
+  padding-bottom: 1px;
+  transition: color 220ms ease, border-color 220ms ease;
+}
+.footer-block--text a:hover {
+  color: var(--seym-wine, #8E2244) !important;
+  border-color: var(--seym-wine, #8E2244) !important;
+}
+
+@media (max-width: 989px) {
+  .footer .footer__blocks-wrapper,
+  .footer__content-top .footer__blocks-wrapper {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 3.2rem 2.8rem !important;
+  }
+}
+@media (max-width: 540px) {
+  .footer .footer__blocks-wrapper,
+  .footer__content-top .footer__blocks-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: 2.8rem !important;
+  }
+}
+
+/* ============================================================
+   NEWSLETTER tighter
+   ============================================================ */
+.shopify-section-group-footer-group .newsletter,
+.shopify-section .newsletter {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+/* ============================================================
    SCROLLBAR (desktop)
    ============================================================ */
 
