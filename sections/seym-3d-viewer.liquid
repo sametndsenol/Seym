@@ -11,7 +11,10 @@
 
     <!-- LEFT: category info -->
     <aside class="seym-3d__info">
-      <div class="seym-3d__image{% if section.settings.feature_image == blank %} seym-3d__image--placeholder{% endif %}">
+      {%- assign image_url = section.settings.image_link -%}
+      {%- if image_url == blank -%}{%- assign image_url = section.settings.cta_link -%}{%- endif -%}
+      <a class="seym-3d__image{% if section.settings.feature_image == blank %} seym-3d__image--placeholder{% endif %}"
+         {% if image_url != blank %}href="{{ image_url }}"{% endif %}>
         {%- if section.settings.feature_image != blank -%}
           {{ section.settings.feature_image
              | image_url: width: 1200
@@ -20,10 +23,19 @@
                widths: '400, 600, 900, 1200, 1500',
                sizes: '(max-width: 989px) 88vw, 40vw',
                alt: section.settings.feature_image.alt | default: section.settings.heading }}
-        {%- else -%}
-          <span class="seym-3d__image-label">{{ section.settings.meta_left | default: 'Seym' }}</span>
         {%- endif -%}
-      </div>
+
+        <div class="seym-3d__image-content">
+          {%- if section.settings.image_tag != blank -%}
+            <span class="seym-3d__image-tag">{{ section.settings.image_tag }}</span>
+          {%- endif -%}
+          {%- if section.settings.image_label != blank -%}
+            <h3 class="seym-3d__image-headline">{{ section.settings.image_label }}</h3>
+          {%- elsif section.settings.feature_image == blank -%}
+            <h3 class="seym-3d__image-headline seym-3d__image-headline--placeholder">{{ section.settings.meta_left | default: 'Seym' }}</h3>
+          {%- endif -%}
+        </div>
+      </a>
 
       <div class="seym-3d__info-body">
         {%- if section.settings.eyebrow != blank -%}
@@ -68,22 +80,19 @@
         id="SeymModelViewer-{{ section.id }}"
         src="{{ section.settings.model_file | default: 'kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb' | asset_url }}"
         alt="{{ section.settings.model_alt | default: 'Seym Glass Studio — interactive 3D model' }}"
-        auto-rotate
-        auto-rotate-delay="1600"
-        rotation-per-second="6deg"
         camera-controls
         interaction-prompt="none"
         camera-orbit="0deg 75deg 105%"
         min-camera-orbit="auto auto 80%"
         max-camera-orbit="auto auto 130%"
         environment-image="neutral"
-        shadow-intensity="{{ section.settings.shadow_intensity | default: 0.6 }}"
-        shadow-softness="1"
+        shadow-intensity="0"
         exposure="{{ section.settings.exposure | default: 1.0 }}"
         {% if section.settings.enable_ar %}ar ar-modes="webxr scene-viewer quick-look"{% endif %}
         loading="lazy"
         reveal="auto"
         disable-zoom
+        disable-tap
       >
         {%- if section.settings.enable_ar -%}
           <button slot="ar-button" class="seym-3d__ar-btn" aria-label="See in your room">
@@ -155,6 +164,37 @@
           setTimeout(function() { hint.style.opacity = '0'; }, 4000);
         }
       });
+
+      /* Auto-rotate only on hover/touch — static the rest of the time
+         to keep CPU/GPU idle. */
+      var spinning = false;
+      function startSpin() {
+        if (spinning) return;
+        spinning = true;
+        viewer.setAttribute('auto-rotate', '');
+        viewer.setAttribute('rotation-per-second', '8deg');
+      }
+      function stopSpin() {
+        if (!spinning) return;
+        spinning = false;
+        viewer.removeAttribute('auto-rotate');
+      }
+      viewer.addEventListener('mouseenter', startSpin);
+      viewer.addEventListener('mouseleave', stopSpin);
+      viewer.addEventListener('touchstart', startSpin, { passive: true });
+      viewer.addEventListener('touchend', function () {
+        setTimeout(stopSpin, 2000);
+      }, { passive: true });
+
+      /* Pause renders entirely when the section leaves the viewport */
+      if ('IntersectionObserver' in window) {
+        var visObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) stopSpin();
+          });
+        }, { threshold: 0 });
+        visObs.observe(viewer);
+      }
     }
   })();
 </script>
@@ -167,12 +207,33 @@
   "settings": [
     {
       "type": "header",
-      "content": "Left column — category info"
+      "content": "Left column — lifestyle card"
     },
     {
       "type": "image_picker",
       "id": "feature_image",
-      "label": "Feature product photo"
+      "label": "Lifestyle / product photo"
+    },
+    {
+      "type": "text",
+      "id": "image_tag",
+      "label": "Photo small tag (all-caps)",
+      "default": "Maris · Series IV"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Photo large label (overlay)",
+      "default": "Maris"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Photo link (defaults to CTA link)"
+    },
+    {
+      "type": "header",
+      "content": "Left column — info text"
     },
     {
       "type": "text",

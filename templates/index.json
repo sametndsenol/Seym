@@ -83,6 +83,8 @@
       "settings": {
         "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
         "model_alt": "Seym Glass Studio — interactive 3D model",
+        "image_tag": "Maris · Series IV",
+        "image_label": "Maris",
         "eyebrow": "Maris · Series IV",
         "heading": "Turn it. Study it. <em>Own it</em>.",
         "subheading": "Every facet. Every angle. Every decision.",
@@ -93,11 +95,11 @@
         "meta_right": "1 of 12",
         "cta_label": "Acquire this piece",
         "cta_link": "/collections/mari̇s",
-        "shadow_intensity": 1,
+        "shadow_intensity": 0,
         "exposure": 10,
         "enable_ar": true,
         "ar_label": "View in your space",
-        "hint_text": "Drag · Pinch · Explore"
+        "hint_text": "Drag · Explore"
       }
     },
 
