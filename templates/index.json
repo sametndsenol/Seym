@@ -10,64 +10,8 @@
 {
   "sections": {
 
-    "video_hero": {
-      "type": "seym-video-hero",
-      "settings": {
-        "video_asset": "product-showcase.mp4",
-        "eyebrow": "Seym Glass Studio · Istanbul",
-        "scroll_label": "Scroll",
-        "scroll_height": 3
-      },
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "Chapter I — Origin",
-            "headline": "A unique aesthetic approach that combines glass art with a mysterious story.",
-            "body": "<p>Mouth-blown in Istanbul. Inspired by mythology and nature.</p>"
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "Chapter II — Craft",
-            "headline": "Each piece begins as breath, becomes <em>memory</em>.",
-            "body": "<p>Universal glass-art tradition shaped by master hands in our Çengelköy atelier.</p>"
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "Chapter III — Presence",
-            "headline": "Modern heritage, designed to <em>endure</em>.",
-            "body": "<p>Story-driven, sculptural, never repeated. A quiet companion to contemporary living spaces.</p>"
-          }
-        }
-      },
-      "block_order": ["step_1", "step_2", "step_3"]
-    },
-
-    "model_viewer": {
-      "type": "seym-3d-viewer",
-      "settings": {
-        "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
-        "model_alt": "Seym Glass Studio — interactive 3D model",
-        "eyebrow": "Examine Up Close",
-        "heading": "Turn it. Study it. Own it.",
-        "subheading": "Every facet. Every angle. Every decision.",
-        "caption": "Hand-blown in Istanbul. This exact piece will never be made again.",
-        "shadow_intensity": 1,
-        "exposure": 10,
-        "enable_ar": true,
-        "ar_label": "View in your space",
-        "hint_text": "Drag to rotate · Pinch to zoom",
-        "cta_label": "Acquire this piece",
-        "cta_link": "/collections"
-      }
-    },
-
-    "collections": {
-      "type": "seym-shop-by-category",
+    "split_home": {
+      "type": "seym-split-home",
       "blocks": {
         "c1": {
           "type": "category",
@@ -120,23 +64,43 @@
       },
       "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
       "settings": {
-        "eyebrow": "",
-        "heading": "",
-        "subtitle": "",
-        "columns_desktop": "3",
-        "image_ratio": "4 / 5",
+        "eyebrow": "Seym Glass Studio · Istanbul",
+        "heading": "Shop the <em>studio</em>.",
         "view_all_label": "View all pieces",
         "view_all_link": "shopify://collections",
-        "padding_top": 80,
-        "padding_bottom": 120
+        "footer_tag": "Edition of twelve",
+        "video_asset": "product-showcase.mp4",
+        "brand_tag": "Mouth-blown · Istanbul",
+        "media_eyebrow": "Modern Heritage",
+        "media_headline": "Designed to <em>endure</em>.",
+        "left_ratio": 1,
+        "right_ratio": 1
+      }
+    },
+
+    "model_viewer": {
+      "type": "seym-3d-viewer",
+      "settings": {
+        "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
+        "model_alt": "Seym Glass Studio — interactive 3D model",
+        "eyebrow": "Examine Up Close",
+        "heading": "Turn it. Study it. Own it.",
+        "subheading": "Every facet. Every angle.",
+        "caption": "Hand-blown in Istanbul. This exact piece will never be made again.",
+        "shadow_intensity": 1,
+        "exposure": 10,
+        "enable_ar": true,
+        "ar_label": "View in your space",
+        "hint_text": "Drag to rotate · Pinch to zoom",
+        "cta_label": "Acquire this piece",
+        "cta_link": "/collections"
       }
     }
 
   },
 
   "order": [
-    "video_hero",
-    "model_viewer",
-    "collections"
+    "split_home",
+    "model_viewer"
   ]
 }

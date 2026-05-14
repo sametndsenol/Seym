@@ -1,0 +1,175 @@
+/* Seym 3D viewer — compact editorial layout */
+
+.seym-3d {
+  background: var(--seym-ivory, #F5F1EA);
+  color: var(--seym-ink, #1A1A1A);
+  padding: 6rem 0 7rem !important;
+  position: relative;
+}
+
+.seym-3d__intro {
+  max-width: 78rem;
+  margin: 0 auto 4rem;
+  padding: 0 2.4rem;
+  text-align: center;
+}
+
+.seym-3d__eyebrow {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.55);
+  margin-bottom: 1.6rem;
+}
+
+.seym-3d__heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.8rem, 3.6vw, 4.6rem);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  margin: 0 0 1.2rem;
+  color: #1A1A1A;
+}
+
+.seym-3d__sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  color: rgba(26,26,26,0.6);
+  margin: 0;
+}
+
+.seym-3d__stage {
+  position: relative;
+  width: 100%;
+  max-width: 132rem;
+  margin: 0 auto;
+  padding: 0 2.4rem;
+}
+
+.seym-3d__stage model-viewer {
+  width: 100%;
+  height: 60vh;
+  min-height: 42rem;
+  max-height: 64rem;
+  display: block;
+  background: linear-gradient(180deg,
+    rgba(142, 34, 68, 0.04) 0%,
+    rgba(197, 71, 48, 0.03) 50%,
+    rgba(26, 26, 26, 0.02) 100%);
+  --poster-color: transparent;
+}
+
+.seym-3d__hint {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.45);
+  pointer-events: none;
+  background: rgba(245, 241, 234, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(26,26,26,0.08);
+}
+
+.seym-3d__hint svg { stroke: currentColor; }
+
+.seym-3d__ar-btn {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.4rem;
+  background: rgba(245, 241, 234, 0.92);
+  border: 1px solid rgba(26,26,26,0.1);
+  color: var(--seym-wine, #8E2244);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: background 220ms ease, color 220ms ease;
+}
+.seym-3d__ar-btn:hover {
+  background: var(--seym-wine, #8E2244);
+  color: var(--seym-ivory, #F5F1EA);
+}
+
+.seym-3d__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(26,26,26,0.06);
+}
+.seym-3d__bar {
+  height: 100%;
+  width: 0;
+  background: var(--seym-wine, #8E2244);
+  transition: width 200ms ease;
+}
+
+.seym-3d__caption {
+  max-width: 56rem;
+  margin: 3rem auto 0;
+  padding: 0 2.4rem;
+  text-align: center;
+}
+.seym-3d__caption p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.55;
+  color: rgba(26,26,26,0.7);
+  margin: 0;
+}
+
+.seym-3d__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.4rem;
+}
+.seym-3d__cta a {
+  display: inline-block;
+  background: var(--seym-wine, #8E2244);
+  color: var(--seym-ivory, #F5F1EA);
+  border: 1px solid var(--seym-wine, #8E2244);
+  padding: 1.4rem 3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 240ms ease, color 240ms ease;
+}
+.seym-3d__cta a:hover {
+  background: transparent;
+  color: var(--seym-wine, #8E2244);
+}
+
+@media (max-width: 749px) {
+  .seym-3d { padding: 4rem 0 5rem !important; }
+  .seym-3d__intro { margin-bottom: 2.6rem; }
+  .seym-3d__stage model-viewer { height: 50svh; min-height: 32rem; }
+  .seym-3d__ar-btn { font-size: 0.66rem; padding: 0.7rem 1.1rem; }
+  .seym-3d__hint { font-size: 0.66rem; }
+}

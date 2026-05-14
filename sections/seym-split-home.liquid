@@ -1,0 +1,546 @@
+{%- comment -%}
+  Seym Split Home
+  Asymmetric homepage: collections list on the left, sticky video on the right.
+  One viewport tall on desktop. No scroll-scrubbing, no chapter scrubbing —
+  the video just loops. Mobile stacks (video first, collections under).
+{%- endcomment -%}
+
+<style>
+  .seym-sh {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    position: relative;
+  }
+
+  .seym-sh__inner {
+    display: grid;
+    grid-template-columns: {{ section.settings.left_ratio }}fr {{ section.settings.right_ratio }}fr;
+    align-items: stretch;
+    min-height: 100svh;
+  }
+
+  /* ---- LEFT: collections list ---- */
+  .seym-sh__left {
+    padding: 8rem 5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    border-right: 1px solid rgba(26,26,26,0.08);
+  }
+
+  .seym-sh__lead {
+    margin: 0 0 4rem;
+  }
+
+  .seym-sh__eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.76rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+    margin-bottom: 2rem;
+  }
+
+  .seym-sh__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.6rem, 4.4vw, 6rem);
+    line-height: 1.04;
+    letter-spacing: -0.012em;
+    color: #1A1A1A;
+    margin: 0;
+    max-width: 14ch;
+  }
+
+  .seym-sh__heading em {
+    font-style: italic;
+    color: var(--seym-wine, #8E2244);
+  }
+
+  .seym-sh__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(26,26,26,0.12);
+  }
+
+  .seym-sh__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr auto;
+    align-items: center;
+    gap: 2.4rem;
+    padding: 2rem 0.6rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+    text-decoration: none;
+    color: inherit;
+    transition: background 240ms ease, padding-left 280ms cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .seym-sh__row:hover {
+    background: rgba(142, 34, 68, 0.04);
+    padding-left: 1.4rem;
+  }
+
+  .seym-sh__thumb {
+    width: 7rem;
+    height: 5.6rem;
+    overflow: hidden;
+    background: rgba(26,26,26,0.05);
+    flex-shrink: 0;
+  }
+  .seym-sh__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 800ms cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-sh__row:hover .seym-sh__thumb img {
+    transform: scale(1.06);
+  }
+
+  .seym-sh__thumb--placeholder {
+    background: linear-gradient(135deg,
+      rgba(142,34,68,0.1),
+      rgba(197,71,48,0.08) 60%,
+      rgba(26,26,26,0.04));
+  }
+
+  .seym-sh__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 2vw, 2.4rem);
+    line-height: 1.1;
+    margin: 0;
+    color: #1A1A1A;
+    transition: color 220ms ease;
+  }
+  .seym-sh__caption {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.5);
+  }
+
+  .seym-sh__row:hover .seym-sh__name {
+    color: var(--seym-wine, #8E2244);
+  }
+
+  .seym-sh__arrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.45);
+    transition: transform 280ms cubic-bezier(0.22,1,0.36,1), color 220ms ease;
+    white-space: nowrap;
+  }
+  .seym-sh__row:hover .seym-sh__arrow {
+    transform: translateX(6px);
+    color: var(--seym-wine, #8E2244);
+  }
+
+  .seym-sh__footer {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  .seym-sh__view-all {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #1A1A1A;
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+  .seym-sh__view-all:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+
+  .seym-sh__brand {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.4);
+  }
+
+  /* ---- RIGHT: sticky media ---- */
+  .seym-sh__right {
+    position: relative;
+  }
+
+  .seym-sh__media {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    background: #1A1A1A;
+  }
+
+  .seym-sh__video,
+  .seym-sh__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.05) brightness(1.0);
+  }
+
+  .seym-sh__media-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.45) 0%,
+        rgba(0,0,0,0.10) 35%,
+        rgba(0,0,0,0.10) 65%,
+        rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .seym-sh__caption-block {
+    position: absolute;
+    z-index: 2;
+    inset: auto 5rem 6rem 5rem;
+    color: #F5F1EA;
+  }
+
+  .seym-sh__caption-eyebrow {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.7);
+    margin-bottom: 1.4rem;
+  }
+
+  .seym-sh__caption-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 3.2vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    margin: 0;
+    color: #F5F1EA;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.4);
+    max-width: 18ch;
+  }
+  .seym-sh__caption-headline em {
+    font-style: italic;
+    color: rgba(245,241,234,0.92);
+  }
+
+  .seym-sh__brand-tag {
+    position: absolute;
+    top: 3rem;
+    left: 5rem;
+    z-index: 2;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.55);
+  }
+
+  /* ---- Mobile: stack ---- */
+  @media (max-width: 989px) {
+    .seym-sh__inner {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+    .seym-sh__left {
+      order: 2;
+      padding: 5rem 2.4rem 5rem;
+      min-height: 0;
+      border-right: none;
+    }
+    .seym-sh__right { order: 1; }
+    .seym-sh__media {
+      position: relative;
+      height: 70svh;
+    }
+    .seym-sh__caption-block { inset: auto 2.4rem 3rem 2.4rem; }
+    .seym-sh__brand-tag { top: 1.6rem; left: 2.4rem; }
+    .seym-sh__heading { font-size: clamp(3rem, 8vw, 4rem); }
+    .seym-sh__footer { flex-direction: column; align-items: flex-start; gap: 1.4rem; }
+  }
+
+  @media (max-width: 540px) {
+    .seym-sh__row { grid-template-columns: 6rem 1fr auto; gap: 1.6rem; padding: 1.6rem 0.4rem; }
+    .seym-sh__thumb { width: 6rem; height: 4.6rem; }
+    .seym-sh__name { font-size: 1.7rem; }
+    .seym-sh__arrow { font-size: 0.66rem; letter-spacing: 0.24em; }
+  }
+</style>
+
+<section class="seym-sh" id="SeymSH-{{ section.id }}">
+  <div class="seym-sh__inner">
+
+    <!-- LEFT -->
+    <div class="seym-sh__left">
+      <div class="seym-sh__lead">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="seym-sh__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h1 class="seym-sh__heading">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+      </div>
+
+      <ul class="seym-sh__list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            {%- assign cat = block.settings.collection -%}
+            {%- assign tile_label = block.settings.label | default: cat.title -%}
+            {%- assign tile_url = block.settings.link | default: cat.url -%}
+            {%- if tile_url == blank -%}{%- assign tile_url = '#' -%}{%- endif -%}
+
+            <li>
+              <a class="seym-sh__row" href="{{ tile_url }}" {{ block.shopify_attributes }}>
+                <span class="seym-sh__thumb{% if block.settings.image == blank and cat.image == blank and cat.products.first.featured_image == blank %} seym-sh__thumb--placeholder{% endif %}">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 240 | image_tag:
+                       loading: 'lazy', widths: '120, 200, 320',
+                       sizes: '7rem', alt: tile_label }}
+                  {%- elsif cat.image != blank -%}
+                    {{ cat.image | image_url: width: 240 | image_tag:
+                       loading: 'lazy', widths: '120, 200, 320',
+                       sizes: '7rem', alt: tile_label }}
+                  {%- elsif cat.products.first.featured_image != blank -%}
+                    {{ cat.products.first.featured_image | image_url: width: 240 | image_tag:
+                       loading: 'lazy', widths: '120, 200, 320',
+                       sizes: '7rem', alt: tile_label }}
+                  {%- endif -%}
+                </span>
+                <span>
+                  <h3 class="seym-sh__name">{{ tile_label }}</h3>
+                  {%- if block.settings.caption != blank -%}
+                    <span class="seym-sh__caption">{{ block.settings.caption }}</span>
+                  {%- endif -%}
+                </span>
+                <span class="seym-sh__arrow">Explore →</span>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      <div class="seym-sh__footer">
+        {%- if section.settings.view_all_label != blank and section.settings.view_all_link != blank -%}
+          <a class="seym-sh__view-all" href="{{ section.settings.view_all_link }}">
+            {{ section.settings.view_all_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.footer_tag != blank -%}
+          <span class="seym-sh__brand">{{ section.settings.footer_tag }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <aside class="seym-sh__right">
+      <div class="seym-sh__media">
+        {%- if section.settings.brand_tag != blank -%}
+          <span class="seym-sh__brand-tag">{{ section.settings.brand_tag }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.video_asset != blank -%}
+          <video class="seym-sh__video"
+                 autoplay muted loop playsinline webkit-playsinline preload="auto"
+                 {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
+            <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 1600 | image_tag:
+             class: 'seym-sh__image',
+             loading: 'eager',
+             widths: '600, 900, 1200, 1600, 2000',
+             sizes: '40vw',
+             alt: section.settings.media_alt }}
+        {%- endif -%}
+
+        <div class="seym-sh__media-overlay"></div>
+
+        {%- if section.settings.media_eyebrow != blank or section.settings.media_headline != blank -%}
+          <div class="seym-sh__caption-block">
+            {%- if section.settings.media_eyebrow != blank -%}
+              <span class="seym-sh__caption-eyebrow">{{ section.settings.media_eyebrow }}</span>
+            {%- endif -%}
+            {%- if section.settings.media_headline != blank -%}
+              <h2 class="seym-sh__caption-headline">{{ section.settings.media_headline }}</h2>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split Home",
+  "tag": "section",
+  "class": "shopify-section seym-sh-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left column — collections list"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Seym Glass Studio · Istanbul"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop the <em>studio</em>."
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View-all link label",
+      "default": "View all pieces"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View-all link URL"
+    },
+    {
+      "type": "text",
+      "id": "footer_tag",
+      "label": "Footer tag (small caps)",
+      "default": "Edition of twelve"
+    },
+    {
+      "type": "header",
+      "content": "Right column — media"
+    },
+    {
+      "type": "text",
+      "id": "video_asset",
+      "label": "Video asset filename (mp4 in /assets)",
+      "default": "product-showcase.mp4",
+      "info": "Leave blank to use only the poster image."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Poster / fallback image"
+    },
+    {
+      "type": "text",
+      "id": "media_alt",
+      "label": "Image alt",
+      "default": "Seym Glass Studio — hand-blown piece"
+    },
+    {
+      "type": "text",
+      "id": "brand_tag",
+      "label": "Top-left brand tag",
+      "default": "Mouth-blown · Istanbul"
+    },
+    {
+      "type": "text",
+      "id": "media_eyebrow",
+      "label": "Media eyebrow",
+      "default": "Modern Heritage"
+    },
+    {
+      "type": "text",
+      "id": "media_headline",
+      "label": "Media headline (em allowed)",
+      "default": "Designed to <em>endure</em>."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "left_ratio",
+      "label": "Left column ratio",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "right_ratio",
+      "label": "Right column ratio",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Collection row",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label override (optional)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Small caption (all-caps)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumb image override (optional)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link override (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Split Home",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
