@@ -15,7 +15,7 @@
   .seym-trio__intro {
     text-align: center;
     max-width: 78rem;
-    margin: 0 auto 5.5rem;
+    margin: 0 auto 3.4rem;
     padding: 0 2.4rem;
   }
 
@@ -70,11 +70,11 @@
 
   .seym-trio__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.4rem;
-    max-width: 168rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
+    max-width: 174rem;
     margin: 0 auto;
-    padding: 0 4rem;
+    padding: 0 3rem;
   }
 
   .seym-trio__card {
@@ -92,8 +92,9 @@
                 transform 800ms cubic-bezier(0.22,1,0.36,1);
   }
   .seym-trio__card.visible { opacity: 1; transform: none; }
-  .seym-trio__card:nth-child(2) { transition-delay: 120ms; }
-  .seym-trio__card:nth-child(3) { transition-delay: 240ms; }
+  .seym-trio__card:nth-child(2) { transition-delay: 100ms; }
+  .seym-trio__card:nth-child(3) { transition-delay: 200ms; }
+  .seym-trio__card:nth-child(4) { transition-delay: 300ms; }
 
   .seym-trio__card img,
   .seym-trio__placeholder {
@@ -216,19 +217,27 @@
   }
 
   /* ---- Tablet / mobile ---- */
-  @media (max-width: 989px) {
-    .seym-trio { padding: {{ section.settings.padding_top | divided_by: 1.3 | floor }}px 0 {{ section.settings.padding_bottom | divided_by: 1.3 | floor }}px; }
+  @media (max-width: 1200px) {
     .seym-trio__grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.6rem;
+    }
+    .seym-trio__card { aspect-ratio: 3 / 4; }
+  }
+  @media (max-width: 989px) {
+    .seym-trio { padding: {{ section.settings.padding_top | divided_by: 1.4 | floor }}px 0 {{ section.settings.padding_bottom | divided_by: 1.4 | floor }}px; }
+    .seym-trio__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.4rem;
       padding: 0 2.4rem;
     }
-    .seym-trio__card { aspect-ratio: 4 / 3; }
-    .seym-trio__intro { margin-bottom: 4rem; }
+    .seym-trio__card { aspect-ratio: 3 / 4; }
+    .seym-trio__intro { margin-bottom: 3rem; }
   }
 
   @media (max-width: 540px) {
-    .seym-trio__card { aspect-ratio: 1 / 1; }
+    .seym-trio__grid { grid-template-columns: 1fr; gap: 1.6rem; }
+    .seym-trio__card { aspect-ratio: 4 / 3; }
     .seym-trio__content { inset: auto 2rem 2rem 2rem; }
     .seym-trio__label { font-size: 2.2rem; }
   }
@@ -342,7 +351,7 @@
       "max": 200,
       "step": 4,
       "unit": "px",
-      "default": 120
+      "default": 64
     },
     {
       "type": "range",
@@ -352,7 +361,7 @@
       "max": 200,
       "step": 4,
       "unit": "px",
-      "default": 140
+      "default": 80
     }
   ],
   "blocks": [
@@ -402,7 +411,7 @@
       ]
     }
   ],
-  "max_blocks": 3,
+  "max_blocks": 4,
   "presets": [
     {
       "name": "Lifestyle Trio",
@@ -431,6 +440,15 @@
             "tag": "Beside The Chair",
             "label": "Sculptural objects",
             "sub_label": "Quiet companions to contemporary living spaces.",
+            "cta_label": "Discover"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "tag": "Gifted",
+            "label": "Limited editions",
+            "sub_label": "Edition of twelve. Once gone, never repeated.",
             "cta_label": "Discover"
           }
         }

@@ -11,8 +11,8 @@
 
     <!-- LEFT: category info -->
     <aside class="seym-3d__info">
-      {%- if section.settings.feature_image != blank -%}
-        <div class="seym-3d__image">
+      <div class="seym-3d__image{% if section.settings.feature_image == blank %} seym-3d__image--placeholder{% endif %}">
+        {%- if section.settings.feature_image != blank -%}
           {{ section.settings.feature_image
              | image_url: width: 1200
              | image_tag:
@@ -20,8 +20,10 @@
                widths: '400, 600, 900, 1200, 1500',
                sizes: '(max-width: 989px) 88vw, 40vw',
                alt: section.settings.feature_image.alt | default: section.settings.heading }}
-        </div>
-      {%- endif -%}
+        {%- else -%}
+          <span class="seym-3d__image-label">{{ section.settings.meta_left | default: 'Seym' }}</span>
+        {%- endif -%}
+      </div>
 
       <div class="seym-3d__info-body">
         {%- if section.settings.eyebrow != blank -%}

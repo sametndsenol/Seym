@@ -26,17 +26,17 @@
 .seym-3d__split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 88svh;
+  min-height: 72svh;
   align-items: stretch;
 }
 
 /* ---- LEFT ---- */
 .seym-3d__info {
-  padding: 6rem 5rem;
+  padding: 4rem 4rem 3.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 4rem;
+  gap: 2.4rem;
   background:
     linear-gradient(180deg,
       rgba(142, 34, 68, 0.03) 0%,
@@ -47,9 +47,30 @@
 .seym-3d__image {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 5 / 4;
   overflow: hidden;
   background: rgba(26,26,26,0.04);
+}
+
+.seym-3d__image--placeholder {
+  background:
+    radial-gradient(70% 50% at 50% 40%, rgba(245,241,234,0.4), transparent 70%),
+    linear-gradient(160deg,
+      rgba(142,34,68,0.92) 0%,
+      rgba(110,26,53,0.95) 60%,
+      rgba(26,26,26,0.92) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seym-3d__image-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(4rem, 6vw, 7rem);
+  letter-spacing: -0.012em;
+  color: rgba(245, 241, 234, 0.9);
+  text-shadow: 0 4px 32px rgba(0,0,0,0.3);
 }
 .seym-3d__image::after {
   content: '';
@@ -192,7 +213,7 @@
 /* ---- RIGHT ---- */
 .seym-3d__stage {
   position: relative;
-  padding: 4rem;
+  padding: 2.4rem 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,9 +224,9 @@
 
 .seym-3d__stage model-viewer {
   width: 100%;
-  height: 80svh;
-  min-height: 48rem;
-  max-height: 72rem;
+  height: 60svh;
+  min-height: 38rem;
+  max-height: 56rem;
   display: block;
   background: transparent;
   --poster-color: transparent;
@@ -283,15 +304,15 @@
   .seym-3d::before { display: none; }
 
   .seym-3d__info {
-    padding: 5rem 2.4rem 4rem;
-    gap: 3rem;
+    padding: 3.6rem 2.4rem 3rem;
+    gap: 2rem;
   }
   .seym-3d__stage {
-    padding: 2rem 1.6rem;
+    padding: 1.6rem 1.6rem;
   }
   .seym-3d__stage model-viewer {
-    height: 56svh;
-    min-height: 36rem;
+    height: 48svh;
+    min-height: 30rem;
   }
   .seym-3d__meta { gap: 2.4rem; }
   .seym-3d__ar-btn { font-size: 0.66rem; padding: 0.7rem 1.1rem; }

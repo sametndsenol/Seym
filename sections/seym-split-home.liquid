@@ -21,7 +21,7 @@
 
   /* ---- LEFT: collections list ---- */
   .seym-sh__left {
-    padding: 8rem 5rem 6rem;
+    padding: 5rem 4rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -30,7 +30,7 @@
   }
 
   .seym-sh__lead {
-    margin: 0 0 4rem;
+    margin: 0 0 2.4rem;
   }
 
   .seym-sh__eyebrow {
@@ -79,10 +79,10 @@
 
   .seym-sh__row {
     display: grid;
-    grid-template-columns: 7rem 1fr auto;
+    grid-template-columns: 6rem 1fr auto;
     align-items: center;
-    gap: 2.4rem;
-    padding: 2rem 0.6rem;
+    gap: 2rem;
+    padding: 1.4rem 0.6rem;
     border-bottom: 1px solid rgba(26,26,26,0.1);
     text-decoration: none;
     color: inherit;
@@ -95,8 +95,8 @@
   }
 
   .seym-sh__thumb {
-    width: 7rem;
-    height: 5.6rem;
+    width: 6rem;
+    height: 4.8rem;
     overflow: hidden;
     background: rgba(26,26,26,0.05);
     flex-shrink: 0;
@@ -157,7 +157,7 @@
   }
 
   .seym-sh__footer {
-    margin-top: 4rem;
+    margin-top: 2.4rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -375,10 +375,21 @@
 
         {%- if section.settings.video_asset != blank -%}
           <video class="seym-sh__video"
-                 autoplay muted loop playsinline webkit-playsinline preload="auto"
+                 id="SeymSHVideo-{{ section.id }}"
+                 autoplay muted playsinline webkit-playsinline preload="auto"
                  {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
             <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
           </video>
+          <script>
+            (function () {
+              var v = document.getElementById('SeymSHVideo-{{ section.id }}');
+              if (!v) return;
+              v.addEventListener('ended', function () {
+                v.pause();
+                /* Keep last frame visible: do not rewind */
+              });
+            })();
+          </script>
         {%- elsif section.settings.poster != blank -%}
           {{ section.settings.poster | image_url: width: 1600 | image_tag:
              class: 'seym-sh__image',

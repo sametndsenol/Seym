@@ -130,15 +130,24 @@
             "sub_label": "Quiet companions to contemporary living spaces.",
             "cta_label": "Discover"
           }
+        },
+        "t4": {
+          "type": "card",
+          "settings": {
+            "tag": "Gifted",
+            "label": "Limited editions",
+            "sub_label": "Edition of twelve. Once gone, never repeated.",
+            "cta_label": "Discover"
+          }
         }
       },
-      "block_order": ["t1", "t2", "t3"],
+      "block_order": ["t1", "t2", "t3", "t4"],
       "settings": {
         "eyebrow": "In Your Space",
         "heading": "Lived with, <em>not displayed</em>.",
         "subtitle": "Seym pieces are made for daily companionship. A bowl on the breakfast table. A vase by the window. A vessel beside your reading chair.",
-        "padding_top": 100,
-        "padding_bottom": 140
+        "padding_top": 64,
+        "padding_bottom": 80
       }
     }
 
