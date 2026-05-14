@@ -1,71 +1,405 @@
-/* Seym brand tokens & global tweaks
-   Wine #8E2244 (primary) · Terracotta #C54730 · Orange #FD4401
-   Ivory #F5F1EA · Ink #1A1A1A
-*/
+/* ============================================================
+   SEYM BRAND PALETTE — hard override
+   Loads AFTER lux-overrides.css. !important here beats !important
+   there because of source-order specificity.
 
-:root {
+   Wine        #8E2244  → primary CTA, active states, key punctuation
+   Terracotta  #C54730  → hover, secondary accent, sold-out
+   Orange      #FD4401  → sale punctuation, rare alerts only
+   Ivory       #F5F1EA  → all surfaces / backgrounds
+   Ink         #1A1A1A  → text
+   ============================================================ */
+
+:root,
+body,
+.color-background-1,
+.color-background-2,
+.color-accent-1,
+.color-accent-2,
+.color-inverse,
+.color-scheme-1,
+.color-scheme-2,
+.color-scheme-3,
+.color-scheme-4,
+.color-scheme-5 {
   --seym-wine: #8E2244;
+  --seym-wine-deep: #6E1A35;
   --seym-terracotta: #C54730;
   --seym-orange: #FD4401;
   --seym-ivory: #F5F1EA;
   --seym-ivory-2: #FAF7F2;
   --seym-ink: #1A1A1A;
-  --seym-rule: rgba(26, 26, 26, 0.12);
-  --seym-rule-strong: rgba(26, 26, 26, 0.28);
-  --seym-serif: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif;
-  --seym-sans: 'Inter', 'Quattrocento Sans', system-ui, -apple-system, sans-serif;
+
+  /* Re-skin lux-overrides tokens onto the new palette ------------- */
+  --seym-void: #F5F1EA !important;            /* main background */
+  --seym-void-soft: #EFEBE3 !important;
+  --seym-cream: #1A1A1A !important;            /* primary text/dark */
+  --seym-cream-soft: rgba(26, 26, 26, 0.72) !important;
+  --seym-cream-dim: rgba(26, 26, 26, 0.5) !important;
+  --seym-cream-faint: rgba(26, 26, 26, 0.14) !important;
+  --seym-lumen: #8E2244 !important;            /* was gold; now wine */
+  --seym-line: rgba(26, 26, 26, 0.12) !important;
+  --seym-line-soft: rgba(26, 26, 26, 0.08) !important;
+
+  /* Dawn schemes — wine primary button across the board ---------- */
+  --color-background: 245, 241, 234 !important;
+  --color-foreground: 26, 26, 26 !important;
+  --color-button: 142, 34, 68 !important;             /* wine */
+  --color-button-text: 245, 241, 234 !important;       /* ivory */
+  --color-secondary-button: 245, 241, 234 !important;
+  --color-secondary-button-text: 142, 34, 68 !important;
+  --color-link: 26, 26, 26 !important;
+  --color-badge-foreground: 26, 26, 26 !important;
+  --color-badge-background: transparent !important;
+  --color-badge-border: 26, 26, 26 !important;
+  --gradient-background: #F5F1EA !important;
 }
 
-/* Subtle wine accent on link hover throughout the site */
-a:not(.button):not(.card__link):hover {
-  color: var(--seym-terracotta);
-  transition: color 180ms ease;
+/* Dark sections keep ivory text, wine accents */
+.footer,
+.footer-wrapper,
+.footer-wrapper *,
+cart-drawer .drawer__inner,
+.menu-drawer,
+.menu-drawer__inner-container,
+.shopify-section-group-footer-group,
+.shopify-section-group-footer-group * {
+  --seym-cream: #F5F1EA !important;
+  --seym-cream-soft: rgba(245, 241, 234, 0.72) !important;
+  --seym-cream-dim: rgba(245, 241, 234, 0.5) !important;
+  --seym-cream-faint: rgba(245, 241, 234, 0.18) !important;
+  --seym-line: rgba(245, 241, 234, 0.14) !important;
+  --seym-line-soft: rgba(245, 241, 234, 0.08) !important;
+  --seym-void: #1A1A1A !important;
 }
 
-/* Primary buttons sit a touch tighter; wine palette already from scheme */
+/* ============================================================
+   BACKGROUND + TEXT
+   ============================================================ */
+
+html, body {
+  background: var(--seym-ivory) !important;
+  color: var(--seym-ink) !important;
+}
+
+::selection { background: var(--seym-wine) !important; color: var(--seym-ivory) !important; }
+
+/* ============================================================
+   HEADER — ivory background, wine hover accents
+   ============================================================ */
+
+.shopify-section-header,
+.shopify-section-header-sticky,
+sticky-header,
+.header-wrapper {
+  background: var(--seym-ivory) !important;
+}
+.scrolled-past-header .header-wrapper,
+sticky-header.shopify-section-header-sticky .header-wrapper {
+  background: rgba(245, 241, 234, 0.95) !important;
+}
+
+.header__menu-item:hover,
+.list-menu__item--link:hover {
+  color: var(--seym-wine) !important;
+}
+.header__menu-item span::after,
+.list-menu__item--link span::after {
+  background: var(--seym-wine) !important;
+}
+
+.header__icon:hover,
+.header__icon:hover svg { color: var(--seym-wine) !important; }
+
+.cart-count-bubble {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+}
+
+/* Announcement bar — wine pinstripe option */
+.announcement-bar,
+.utility-bar { border-bottom-color: var(--seym-wine) !important; }
+
+/* ============================================================
+   BUTTONS — wine primary, ink secondary, orange hot
+   ============================================================ */
+
+.button,
+button.button,
+.shopify-payment-button__button {
+  background: transparent !important;
+  color: var(--seym-ink) !important;
+  border: 1px solid var(--seym-ink) !important;
+}
+
+.button::after { background: var(--seym-wine) !important; }
+.button:not([disabled]):hover {
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+
 .button--primary,
-.shopify-payment-button__button--unbranded {
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-size: 0.78rem;
-  font-weight: 500;
+.product-form__submit,
+button.button--primary {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+  border: 1px solid var(--seym-wine) !important;
+}
+.button--primary::after,
+.product-form__submit::after {
+  background: var(--seym-wine-deep) !important;
+}
+.button--primary:not([disabled]):hover,
+.product-form__submit:not([disabled]):hover {
+  background: var(--seym-wine-deep) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine-deep) !important;
 }
 
-/* Eyebrow / caption helper used across editorial sections */
-.seym-eyebrow {
-  font-family: var(--seym-sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--seym-ink);
-  opacity: 0.72;
-  margin: 0 0 1.25rem;
+.button--secondary {
+  background: transparent !important;
+  color: var(--seym-wine) !important;
+  border: 1px solid var(--seym-wine) !important;
+}
+.button--secondary::after { background: var(--seym-wine) !important; }
+.button--secondary:not([disabled]):hover {
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
 }
 
-.seym-display {
-  font-family: var(--seym-serif);
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 1.06;
-  color: var(--seym-ink);
+.button--tertiary {
+  color: var(--seym-wine) !important;
+  border-bottom: 1px solid var(--seym-wine) !important;
+}
+.button--tertiary:hover {
+  color: var(--seym-terracotta) !important;
+  border-color: var(--seym-terracotta) !important;
 }
 
-.seym-rule {
-  display: block;
-  height: 1px;
-  background: var(--seym-rule);
-  border: 0;
-  margin: 0;
+/* ============================================================
+   LINKS — terracotta hover throughout
+   ============================================================ */
+
+a:not(.button):not(.card__link):not(.header__heading-link):not(.header__menu-item):not(.list-menu__item--link):not(.footer-block__details-content a):not(.footer .list-menu__item--link) {
+  transition: color 200ms ease;
+}
+a:not(.button):not(.card__link):hover {
+  color: var(--seym-terracotta) !important;
 }
 
-/* Sale badge override — orange punctuation */
-.badge--bottom-left[data-type="sale"],
-.badge.price__badge-sale {
+/* ============================================================
+   PRODUCT CARDS — wine on heading hover, orange sale
+   ============================================================ */
+
+.card__heading a:hover,
+.card-information .card__heading a:hover {
+  color: var(--seym-wine) !important;
+}
+
+.price__sale .price-item--sale,
+.price--on-sale .price-item--sale,
+.price-item--last.price-item--sale {
+  color: var(--seym-orange) !important;
+  font-weight: 500 !important;
+}
+.price__sale .price-item--regular {
+  color: rgba(26, 26, 26, 0.4) !important;
+  text-decoration: line-through;
+}
+
+/* ============================================================
+   BADGES — terracotta sold-out, orange sale
+   ============================================================ */
+
+.badge {
+  background: rgba(245, 241, 234, 0.92) !important;
+  border: 1px solid var(--seym-ink) !important;
+  color: var(--seym-ink) !important;
+}
+
+/* Sold-out / sold scheme = accent-1 → terracotta */
+.badge.color-accent-1 {
+  background: var(--seym-terracotta) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-terracotta) !important;
+}
+/* Sale scheme = accent-2 → orange */
+.badge.color-accent-2,
+.badge[data-type="sale"],
+.badge--sale {
   background: var(--seym-orange) !important;
-  color: #fff !important;
+  color: #FFFFFF !important;
   border-color: var(--seym-orange) !important;
-  font-family: var(--seym-sans);
-  font-size: 0.66rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+}
+
+/* ============================================================
+   PRODUCT FORM PILLS — wine when selected
+   ============================================================ */
+
+.product-form__input--pill input[type='radio']:checked + label {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+.product-form__input--pill input[type='radio'] + label:hover {
+  border-color: var(--seym-wine) !important;
+  color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   QUICK ADD — wine on hover
+   ============================================================ */
+
+.quick-add__submit {
+  background: rgba(245, 241, 234, 0.94) !important;
+  color: var(--seym-ink) !important;
+  border: 1px solid var(--seym-ink) !important;
+}
+.quick-add__submit::after { background: var(--seym-wine) !important; }
+.quick-add__submit:hover {
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   FORMS — wine focus
+   ============================================================ */
+
+.field:focus-within .field__input,
+input:focus, textarea:focus, select:focus {
+  border-color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   PAGINATION — wine current
+   ============================================================ */
+
+.pagination__list .pagination__item--current,
+.pagination__list a[aria-current='page'] {
+  border-bottom-color: var(--seym-wine) !important;
+  color: var(--seym-wine) !important;
+}
+.pagination__list a:hover { color: var(--seym-wine) !important; }
+
+/* ============================================================
+   FOOTER — keep dark background but use wine on hover
+   ============================================================ */
+
+.shopify-section-group-footer-group,
+.shopify-section-group-footer-group > div,
+.shopify-section-group-footer-group section,
+.shopify-section-group-footer-group .newsletter,
+.shopify-section-group-footer-group [class*="color-"],
+.footer {
+  background: var(--seym-ink) !important;
+  background-color: var(--seym-ink) !important;
+  color: rgba(245, 241, 234, 0.72) !important;
+}
+
+.shopify-section-group-footer-group a:hover,
+.footer-block__details-content a:hover,
+.footer__list-social a:hover {
+  color: var(--seym-wine) !important;
+}
+
+.shopify-section-group-footer-group .button,
+.shopify-section-group-footer-group button[type="submit"],
+.newsletter-form__button {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+.newsletter-form__button:hover {
+  background: var(--seym-wine-deep) !important;
+  border-color: var(--seym-wine-deep) !important;
+}
+.newsletter-form__button svg path { stroke: var(--seym-ivory) !important; }
+
+/* ============================================================
+   MENU DRAWER — wine hover
+   ============================================================ */
+
+.menu-drawer__menu-item:hover,
+.menu-drawer__menu-item--active {
+  color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   SLIDER BUTTONS
+   ============================================================ */
+
+.slider-button:hover {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   FOCUS RING
+   ============================================================ */
+
+:focus-visible {
+  outline: 1px solid var(--seym-wine) !important;
+  outline-offset: 4px !important;
+}
+
+/* ============================================================
+   SECTION DIVIDERS
+   ============================================================ */
+
+.title-wrapper-with-link .link:hover {
+  color: var(--seym-wine) !important;
+  border-color: var(--seym-wine) !important;
+}
+
+/* ============================================================
+   SEYM SECTIONS — internal accent helpers
+   ============================================================ */
+
+.seym-eyebrow { color: rgba(26,26,26,0.55) !important; }
+
+/* Buttons inside seym custom sections (3D viewer, hero, etc.) */
+.seym-3d__cta,
+.seym-hero__cta,
+.seym-cta-primary {
+  background: var(--seym-wine) !important;
+  color: var(--seym-ivory) !important;
+  border-color: var(--seym-wine) !important;
+}
+.seym-3d__cta:hover,
+.seym-hero__cta:hover {
+  background: var(--seym-wine-deep) !important;
+  border-color: var(--seym-wine-deep) !important;
+}
+
+/* ============================================================
+   CARD MEDIA — soft ivory backdrop, wine glow on hover
+   ============================================================ */
+
+.card__media .media,
+.card .media,
+.banner,
+.slideshow,
+.banner__media,
+.slideshow__media,
+.product__media-wrapper,
+.product__media-list,
+.product__media-item {
+  background: var(--seym-ivory-2) !important;
+}
+.card__media::before {
+  background: radial-gradient(60% 60% at 50% 50%, rgba(142, 34, 68, 0.08), transparent 60%) !important;
+}
+.product__media-item::before {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(142, 34, 68, 0.06), transparent 70%) !important;
+}
+
+/* ============================================================
+   SCROLLBAR (desktop)
+   ============================================================ */
+
+@media (min-width: 990px) {
+  ::-webkit-scrollbar-track { background: var(--seym-ivory) !important; }
+  ::-webkit-scrollbar-thumb { background: rgba(142, 34, 68, 0.24) !important; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--seym-wine) !important; }
 }

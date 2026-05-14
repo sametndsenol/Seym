@@ -47,93 +47,6 @@
       "block_order": ["step_1", "step_2", "step_3"]
     },
 
-    "intro": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "The Atelier",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "An Istanbul workshop where glass becomes story.",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Founded in 2022, Seym Glass Studio creates handcrafted, mouth-blown glass objects inspired by mythology and nature. We blend universal glass-art tradition with a singular aesthetic — story-driven, artistic pieces that carry the beauty of the universe into modern living spaces.</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Discover Our Story",
-            "button_link": "shopify://pages/about-us",
-            "button_style_secondary": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": ["caption", "heading", "text", "button"],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-
-    "feature_tiles": {
-      "type": "seym-feature-tiles",
-      "settings": {
-        "eyebrow": "Why Seym"
-      },
-      "blocks": {
-        "t1": {
-          "type": "tile",
-          "settings": {
-            "number": "01",
-            "heading": "Hand-blown, never cast.",
-            "body": "Every Seym piece is shaped by lung and hand — not a mould, not a machine. The variation you see is not a flaw. It is proof.",
-            "link_label": "Our craft",
-            "link_url": "shopify://pages/about-us"
-          }
-        },
-        "t2": {
-          "type": "tile",
-          "settings": {
-            "number": "02",
-            "heading": "Istanbul. Since 2022.",
-            "body": "Our Çengelköy atelier sits on the Bosphorus. The same water that inspired the myths that name each piece. Place and story are inseparable.",
-            "link_label": "The atelier",
-            "link_url": "shopify://pages/about-us"
-          }
-        },
-        "t3": {
-          "type": "tile",
-          "settings": {
-            "number": "03",
-            "heading": "Edition of twelve.",
-            "body": "We do not repeat. Each series closes permanently. Ownership is not just possession — it is position within a finite story.",
-            "link_label": "The collection",
-            "link_url": "shopify://collections"
-          }
-        }
-      },
-      "block_order": ["t1", "t2", "t3"]
-    },
-
     "model_viewer": {
       "type": "seym-3d-viewer",
       "settings": {
@@ -149,43 +62,7 @@
         "ar_label": "View in your space",
         "hint_text": "Drag to rotate · Pinch to zoom",
         "cta_label": "Acquire this piece",
-        "cta_link": "\/collections"
-      }
-    },
-
-    "collections_intro": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "Elemenduo Collection",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Twelve characters, born of earth and sky.",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Our first collection draws from a story full of mythological elements. Each piece carries a name — <em>Flos, Solis, Glacies, Luminis, Maris, Luna</em> — fragments of nature reshaped as living objects.</p>"
-          }
-        }
-      },
-      "block_order": ["caption", "heading", "text"],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 20
+        "cta_link": "/collections"
       }
     },
 
@@ -248,87 +125,10 @@
         "subtitle": "",
         "columns_desktop": "3",
         "image_ratio": "4 / 5",
-        "view_all_label": "View all collections",
+        "view_all_label": "View all pieces",
         "view_all_link": "shopify://collections",
-        "padding_top": 24,
-        "padding_bottom": 140
-      }
-    },
-
-    "manifesto": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "Manifesto",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "We choose character over perfection.",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We honour the heritage of glassblowing — every object shaped not to impress, but to <em>express</em>. Crafted by master hands in Istanbul, our creations carry the silence of nature and the depth of myth, balanced with quiet nobility.</p><p>Identity over trend. Each piece carries its own presence — never shouting, yet never ignored.</p><p><strong>This is not glass as you know it. This is Seym.</strong></p>"
-          }
-        }
-      },
-      "block_order": ["caption", "heading", "text"],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-
-    "closing": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "Begin",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Step inside the gallery.",
-            "heading_size": "h1"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Explore All Pieces",
-            "button_link": "shopify://collections",
-            "button_style_secondary": false,
-            "button_label_2": "Read the Journal",
-            "button_link_2": "shopify://blogs/news",
-            "button_style_secondary_2": true
-          }
-        }
-      },
-      "block_order": ["caption", "heading", "button"],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 40
+        "padding_top": 80,
+        "padding_bottom": 120
       }
     }
 
@@ -336,12 +136,7 @@
 
   "order": [
     "video_hero",
-    "intro",
-    "feature_tiles",
     "model_viewer",
-    "collections_intro",
-    "collections",
-    "manifesto",
-    "closing"
+    "collections"
   ]
 }
