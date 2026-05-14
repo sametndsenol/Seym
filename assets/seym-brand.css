@@ -1,0 +1,71 @@
+/* Seym brand tokens & global tweaks
+   Wine #8E2244 (primary) · Terracotta #C54730 · Orange #FD4401
+   Ivory #F5F1EA · Ink #1A1A1A
+*/
+
+:root {
+  --seym-wine: #8E2244;
+  --seym-terracotta: #C54730;
+  --seym-orange: #FD4401;
+  --seym-ivory: #F5F1EA;
+  --seym-ivory-2: #FAF7F2;
+  --seym-ink: #1A1A1A;
+  --seym-rule: rgba(26, 26, 26, 0.12);
+  --seym-rule-strong: rgba(26, 26, 26, 0.28);
+  --seym-serif: 'Cormorant Garamond', 'Libre Baskerville', Georgia, serif;
+  --seym-sans: 'Inter', 'Quattrocento Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Subtle wine accent on link hover throughout the site */
+a:not(.button):not(.card__link):hover {
+  color: var(--seym-terracotta);
+  transition: color 180ms ease;
+}
+
+/* Primary buttons sit a touch tighter; wine palette already from scheme */
+.button--primary,
+.shopify-payment-button__button--unbranded {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Eyebrow / caption helper used across editorial sections */
+.seym-eyebrow {
+  font-family: var(--seym-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--seym-ink);
+  opacity: 0.72;
+  margin: 0 0 1.25rem;
+}
+
+.seym-display {
+  font-family: var(--seym-serif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.06;
+  color: var(--seym-ink);
+}
+
+.seym-rule {
+  display: block;
+  height: 1px;
+  background: var(--seym-rule);
+  border: 0;
+  margin: 0;
+}
+
+/* Sale badge override — orange punctuation */
+.badge--bottom-left[data-type="sale"],
+.badge.price__badge-sale {
+  background: var(--seym-orange) !important;
+  color: #fff !important;
+  border-color: var(--seym-orange) !important;
+  font-family: var(--seym-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}

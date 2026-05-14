@@ -1,31 +1,19 @@
 {
   "sections": {
-    "main-collection-banner": {
-      "type": "main-collection-banner",
+    "seym-editorial-collection": {
+      "type": "seym-editorial-collection",
       "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "background-1"
-      }
-    },
-    "main-collection-product-grid": {
-      "type": "main-collection-product-grid",
-      "settings": {
+        "fallback_eyebrow": "Seym Glass Studio · Istanbul",
+        "fallback_intro": "<p>Each Seym piece is mouth-blown by master hands in our Çengelköy atelier. The variation you see between objects is not a flaw — it is proof of breath, of pressure, of decision. Each piece carries a name and a story, none repeated.</p>",
+        "intro_alignment": "center",
+        "fallback_passage_1": "<p>We choose character over perfection. Identity over trend. Each piece carries its own presence — never shouting, yet never ignored.</p>",
+        "fallback_passage_1_after": 4,
+        "fallback_passage_2": "<p>Edition of twelve. We do not repeat. Each series closes permanently — ownership is not just possession, it is position within a finite story.</p>",
+        "fallback_passage_2_after": 12,
         "products_per_page": 16,
-        "columns_desktop": 3,
-        "columns_mobile": "2",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "enable_filtering": true,
         "enable_sorting": true,
-        "filter_type": "vertical",
-        "enable_quick_add": true,
-        "color_scheme": "",
-        "padding_top": 80,
-        "padding_bottom": 80
+        "padding_top": 100,
+        "padding_bottom": 120
       }
     },
     "story": {
@@ -105,8 +93,7 @@
     }
   },
   "order": [
-    "main-collection-banner",
-    "main-collection-product-grid",
+    "seym-editorial-collection",
     "story",
     "closing"
   ]

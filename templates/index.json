@@ -190,27 +190,68 @@
     },
 
     "collections": {
-      "type": "collection-list",
+      "type": "seym-shop-by-category",
       "blocks": {
-        "c1": { "type": "featured_collection", "settings": { "collection": "flos-koleksi̇yonu" } },
-        "c2": { "type": "featured_collection", "settings": { "collection": "soli̇s" } },
-        "c3": { "type": "featured_collection", "settings": { "collection": "glacies" } },
-        "c4": { "type": "featured_collection", "settings": { "collection": "luminis" } },
-        "c5": { "type": "featured_collection", "settings": { "collection": "mari̇s" } },
-        "c6": { "type": "featured_collection", "settings": { "collection": "luna" } }
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "flos-koleksi̇yonu",
+            "label": "Flos",
+            "caption": "Çiçeklerin sessiz mevsimi"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "soli̇s",
+            "label": "Solis",
+            "caption": "Güneşin işaretleri"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "glacies",
+            "label": "Glacies",
+            "caption": "Buzun mimarisi"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "luminis",
+            "label": "Luminis",
+            "caption": "Işığın anatomisi"
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "collection": "mari̇s",
+            "label": "Maris",
+            "caption": "Denizin hafızası"
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "collection": "luna",
+            "label": "Luna",
+            "caption": "Ayın yansıması"
+          }
+        }
       },
       "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
       "settings": {
-        "title": "",
-        "heading_size": "h2",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "color_scheme": "",
-        "show_view_all": true,
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
+        "eyebrow": "",
+        "heading": "",
+        "subtitle": "",
+        "columns_desktop": "3",
+        "image_ratio": "4 / 5",
+        "view_all_label": "View all collections",
+        "view_all_link": "shopify://collections",
         "padding_top": 24,
-        "padding_bottom": 100
+        "padding_bottom": 140
       }
     },
 
