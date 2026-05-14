@@ -11,46 +11,13 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Be the first to step inside.",
-            "heading_size": "h2"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Receive private invitations to new collection openings and atelier releases. Not frequent. Just meaningful.</p>"
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email_form"
-      ],
-      "settings": {
-        "color_scheme": "accent-1",
-        "full_width": true,
-        "padding_top": 56,
-        "padding_bottom": 56
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
         "brand": {
           "type": "brand_information",
           "settings": {
-            "show_social": true
+            "show_social": false
           }
         },
         "link_explore": {
@@ -71,7 +38,7 @@
           "type": "text",
           "settings": {
             "heading": "Atelier",
-            "subtext": "<p>Çengelköy<br>Istanbul, Türkiye</p><p><a href=\"mailto:info@seym.com.tr\">info@seym.com.tr</a></p>"
+            "subtext": "<p>Çengelköy<br/>Istanbul, Türkiye</p><p><a href=\"mailto:info@seym.com.tr\">info@seym.com.tr</a></p>"
           }
         }
       },
@@ -82,23 +49,22 @@
         "contact"
       ],
       "settings": {
-        "color_scheme": "accent-1",
+        "color_scheme": "background-2",
         "newsletter_enable": false,
         "newsletter_heading": "",
         "enable_follow_on_shop": false,
         "show_social": false,
         "enable_country_selector": false,
         "enable_language_selector": false,
-        "payment_enable": true,
-        "show_policy": true,
+        "payment_enable": false,
+        "show_policy": false,
         "margin_top": 0,
         "padding_top": 56,
-        "padding_bottom": 36
+        "padding_bottom": 0
       }
     }
   },
   "order": [
-    "newsletter",
     "footer"
   ]
 }
