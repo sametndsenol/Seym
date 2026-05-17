@@ -212,10 +212,24 @@
 
     <nav aria-label="Main">
       <ul class="seym-hd__nav">
+        {%- comment -%}
+          Curated nav — only the four essential links are surfaced
+          (Koleksiyon · Mağaza · Hakkımızda · İletişim). Anything else
+          in the admin menu (Ev, Dijital Katalog, Basın, Başarılarımız…)
+          is hidden so the bar stays calm.
+        {%- endcomment -%}
         {%- for link in linklists[section.settings.menu].links -%}
-          <li>
-            <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
-          </li>
+          {%- assign t = link.title | downcase | strip -%}
+          {%- assign show = false -%}
+          {%- if t contains 'koleksiyon' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'mağaza' or t contains 'magaza' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'hakkımızda' or t contains 'hakkimizda' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if show -%}
+            <li>
+              <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+            </li>
+          {%- endif -%}
         {%- endfor -%}
       </ul>
     </nav>
@@ -259,7 +273,15 @@
   <nav>
     <ul class="seym-drawer__links">
       {%- for link in linklists[section.settings.menu].links -%}
-        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- assign t = link.title | downcase | strip -%}
+        {%- assign show = false -%}
+        {%- if t contains 'koleksiyon' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'mağaza' or t contains 'magaza' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'hakkımızda' or t contains 'hakkimizda' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if show -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endif -%}
       {%- endfor -%}
     </ul>
   </nav>
@@ -304,7 +326,7 @@
   "settings": [
     { "type": "checkbox", "id": "show_bar", "label": "Show announcement bar", "default": true },
     { "type": "text", "id": "bar_text", "label": "Announcement text",
-      "default": "Complimentary insured shipping within Türkiye · International orders by appointment — info@seym.com.tr" },
+      "default": "Complimentary shipping within Türkiye · Hand-blown in Istanbul" },
     { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" }
   ],
   "presets": [{ "name": "Seym Header" }]
