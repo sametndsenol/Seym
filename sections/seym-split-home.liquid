@@ -201,7 +201,7 @@
     min-height: 52rem;
     max-height: 80vh;
     overflow: hidden;
-    background: #1A1A1A;
+    background: var(--seym-ivory, #F5F1EA);
   }
 
   .seym-sh__video,
@@ -213,6 +213,9 @@
     object-fit: cover;
     display: block;
     filter: saturate(1.05) brightness(1.0);
+    /* Push the video's bright/white background toward the ivory canvas
+       so the left and right halves read as one continuous surface. */
+    mix-blend-mode: multiply;
   }
 
   .seym-sh__media-overlay {
