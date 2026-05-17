@@ -1,138 +1,17 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "slideshow_GhPj3k": {
-      "type": "slideshow",
-      "custom_css": [
-        "@media screen and (min-width: 1024px) {.slider-mobile-gutter {position: absolute; top: 0; left: 0; width: 100%; z-index: 1; }}"
-      ],
+    "seym_collections_grid": {
+      "type": "seym-collections-grid",
       "settings": {
-        "layout": "full_bleed",
-        "slide_height": "adapt_image",
-        "slider_visual": "dots",
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "image_behavior": "none",
-        "show_text_below": true,
-        "accessibility_info": "Slideshow about our brand"
-      }
-    },
-    "rich_text_g4JU9L": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_3ULJEB": {
-          "type": "heading",
-          "settings": {
-            "heading": "ELEMENDUO COLLECTION",
-            "heading_size": "h1"
-          }
-        },
-        "text_jKxpBa": {
-          "type": "text",
-          "settings": {
-            "text": "<p><strong>The first collection of Seym Glass Studio, the \"Elemenduo Collection,\" takes its inspiration from a story filled with mythological elements. Twelve main characters born from the union of Earth and Sky give their names to the pieces in the \"Elemenduo Collection.\" Seym Glass Studio products bring the unique elements of these characters into living spaces, reminding us of the beauty of nature.</strong></p>"
-          }
-        },
-        "button_NwrXt6": {
-          "type": "button",
-          "disabled": true,
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_3ULJEB",
-        "text_jKxpBa",
-        "button_NwrXt6"
-      ],
-      "custom_css": [
-        "@media screen and (min-width: 1024px) {{position: relative; margin-top: 70vh; }}"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
-    },
-    "main": {
-      "type": "main-list-collections",
-      "custom_css": [
-        ".collection-list__item:nth-of-type(13) {display: none !important;}"
-      ],
-      "settings": {
-        "title": "",
-        "sort": "date",
-        "image_ratio": "portrait",
-        "columns_desktop": 4,
-        "columns_mobile": "2"
-      }
-    },
-    "rich_text_wTejBe": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_hxWMCm": {
-          "type": "heading",
-          "disabled": true,
-          "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text_WngX8Y": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
-          }
-        },
-        "button_DHDTqt": {
-          "type": "button",
-          "settings": {
-            "button_label": "See All Products",
-            "button_link": "shopify://collections/all",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_hxWMCm",
-        "text_WngX8Y",
-        "button_DHDTqt"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
+        "eyebrow": "The Atelier",
+        "heading": "All <em>collections</em>.",
+        "cta_label": "Discover",
+        "padding_top": 56,
+        "padding_bottom": 80
       }
     }
   },
   "order": [
-    "slideshow_GhPj3k",
-    "rich_text_g4JU9L",
-    "main",
-    "rich_text_wTejBe"
+    "seym_collections_grid"
   ]
 }
