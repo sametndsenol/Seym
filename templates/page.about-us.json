@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "seym-about-us",
+      "settings": {
+        "eyebrow": "About Seym",
+        "title": "Mouth-blown in Istanbul, since <em>2022</em>.",
+        "lead": "Seym Glass Studio is a contemporary atelier shaping glass by breath and hand, in the historical Çengelköy district. Every piece carries the trace of its making — and the silence of a small studio that refuses to scale.",
+        "atelier_heading": "A quieter way of <em>making</em>.",
+        "atelier_text": "<p>Founded in 2022, Seym is the work of a small team of glassblowers committed to one principle: character over perfection. We choose the slower path — mouth-blown crystal, finished by master hands, refused if it does not carry presence.</p><p>Each piece is named, never numbered. Each series is closed at twelve. Nothing returns.</p>",
+        "catalog_handle": "digital-catalog",
+        "press_handle": "press",
+        "achievements_handle": "our-achievements",
+        "cta_eyebrow": "Step inside",
+        "cta_heading": "The gallery is open.",
+        "cta_primary_label": "Explore Collections",
+        "cta_primary_link": "/collections",
+        "cta_secondary_label": "Get in Touch",
+        "cta_secondary_link": "/pages/contact",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": ["main"]
+}

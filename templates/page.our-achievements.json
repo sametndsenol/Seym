@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "seym-page",
+      "settings": {
+        "eyebrow": "Achievements",
+        "title_override": "",
+        "lead": "Milestones of a young atelier — measured in pieces shaped, in recognitions earned, in homes entered.",
+        "back_label": "About Seym",
+        "back_link": "/pages/about-us",
+        "cta_label": "Catalog",
+        "cta_link": "/pages/digital-catalog",
+        "padding_top": 64,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": ["main"]
+}

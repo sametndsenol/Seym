@@ -1,0 +1,387 @@
+{%- comment -%}
+  Seym About Us — hub page that gathers the studio's three story
+  strands (Atelier · Catalog · Press · Achievements) into one
+  editorial flow. Pulls live content from the standalone pages
+  (handles: digital-catalog, press, our-achievements) so admin
+  updates propagate without touching this template.
+
+  Layout: hero → alternating asymmetric chapters → CTA footer.
+{%- endcomment -%}
+
+<style>
+  .seym-au {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .seym-au__wrap {
+    max-width: 132rem;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  /* --- Hero --- */
+  .seym-au__hero {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 6rem;
+    align-items: end;
+    padding-bottom: 3.2rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+    margin-bottom: 8rem;
+  }
+  .seym-au__eyebrow {
+    display: inline-block;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+  .seym-au__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  .seym-au__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(4rem, 6vw, 8.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: #1A1A1A;
+    margin: 0;
+  }
+  .seym-au__title em { font-style: italic; color: var(--seym-wine, #8E2244); }
+
+  .seym-au__lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 1.8vw, 2.05rem);
+    line-height: 1.55;
+    color: rgba(26,26,26,0.78);
+    margin: 0;
+  }
+
+  /* --- Chapters --- */
+  .seym-au__chapter {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 6rem;
+    align-items: start;
+    padding: 6rem 0;
+    border-top: 1px solid rgba(26,26,26,0.08);
+  }
+  .seym-au__chapter:first-of-type { border-top: 0; padding-top: 0; }
+  .seym-au__chapter--flip { grid-template-columns: 7fr 5fr; }
+  .seym-au__chapter--flip .seym-au__chapter-lead { order: 2; }
+  .seym-au__chapter--flip .seym-au__chapter-body { order: 1; }
+
+  .seym-au__chapter-lead { position: sticky; top: 12rem; }
+  .seym-au__chapter-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+  }
+  .seym-au__chapter-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 3.4vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    color: #1A1A1A;
+    margin: 0 0 1.8rem;
+  }
+  .seym-au__chapter-heading em { font-style: italic; color: var(--seym-wine, #8E2244); }
+
+  .seym-au__chapter-meta {
+    display: block;
+    margin-top: 2.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #1A1A1A;
+    transition: padding-right 280ms ease, color 220ms ease, border-color 220ms ease;
+  }
+  .seym-au__chapter-meta::after {
+    content: '→';
+    display: inline-block;
+    margin-left: 0.6rem;
+    transition: transform 280ms ease;
+  }
+  .seym-au__chapter-meta:hover {
+    padding-right: 0.6rem;
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+  .seym-au__chapter-meta:hover::after { transform: translateX(4px); }
+
+  .seym-au__chapter-body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.85);
+  }
+  .seym-au__chapter-body p { margin: 0 0 1.4rem; }
+  .seym-au__chapter-body p:last-child { margin-bottom: 0; }
+  .seym-au__chapter-body strong { color: #1A1A1A; font-weight: 500; }
+  .seym-au__chapter-body em { font-style: italic; color: rgba(26,26,26,0.78); }
+  .seym-au__chapter-body a {
+    color: var(--seym-wine, #8E2244);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(142, 34, 68, 0.35);
+  }
+  .seym-au__chapter-body a:hover { border-color: var(--seym-wine, #8E2244); }
+  .seym-au__chapter-body ul,
+  .seym-au__chapter-body ol { margin: 0 0 1.6rem; padding-left: 2rem; }
+  .seym-au__chapter-body li { margin-bottom: 0.6rem; }
+  .seym-au__chapter-body h2,
+  .seym-au__chapter-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin: 3rem 0 1rem;
+  }
+  .seym-au__chapter-body h2 { font-size: clamp(2rem, 2.2vw, 2.6rem); }
+  .seym-au__chapter-body h3 { font-size: 1.8rem; }
+  .seym-au__chapter-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+  }
+
+  /* Empty fallback when a page handle doesn't exist */
+  .seym-au__chapter-body--placeholder {
+    font-style: italic;
+    color: rgba(26,26,26,0.55);
+  }
+
+  /* --- CTA footer --- */
+  .seym-au__cta {
+    margin-top: 8rem;
+    padding: 6rem 0 2rem;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    text-align: center;
+  }
+  .seym-au__cta-eyebrow {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+  }
+  .seym-au__cta-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(2.6rem, 3.4vw, 4rem);
+    line-height: 1.1;
+    color: #1A1A1A;
+    margin: 0 0 3rem;
+  }
+  .seym-au__cta-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .seym-au__btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.2rem 2.2rem;
+    transition: background 220ms ease, color 220ms ease, border-color 220ms ease;
+  }
+  .seym-au__btn--primary {
+    background: var(--seym-wine, #8E2244);
+    color: var(--seym-ivory, #F5F1EA);
+    border: 1px solid var(--seym-wine, #8E2244);
+  }
+  .seym-au__btn--primary:hover { background: transparent; color: var(--seym-wine, #8E2244); }
+  .seym-au__btn--ghost {
+    background: transparent;
+    color: #1A1A1A;
+    border: 1px solid rgba(26,26,26,0.4);
+  }
+  .seym-au__btn--ghost:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+
+  @media (max-width: 989px) {
+    .seym-au__wrap { padding: 0 2.4rem; }
+    .seym-au__hero,
+    .seym-au__chapter,
+    .seym-au__chapter--flip {
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
+    }
+    .seym-au__chapter { padding: 4rem 0; }
+    .seym-au__chapter--flip .seym-au__chapter-lead { order: 1; }
+    .seym-au__chapter--flip .seym-au__chapter-body { order: 2; }
+    .seym-au__chapter-lead { position: static; }
+    .seym-au__hero { margin-bottom: 5rem; }
+    .seym-au__cta { margin-top: 5rem; padding: 4rem 0 2rem; }
+  }
+</style>
+
+{%- liquid
+  assign p_catalog = pages[section.settings.catalog_handle]
+  assign p_press   = pages[section.settings.press_handle]
+  assign p_awards  = pages[section.settings.achievements_handle]
+-%}
+
+<section class="seym-au" id="SeymAU-{{ section.id }}">
+  <div class="seym-au__wrap">
+
+    <header class="seym-au__hero">
+      <div>
+        <span class="seym-au__eyebrow">{{ section.settings.eyebrow | default: 'About Seym' }}</span>
+        <h1 class="seym-au__title">{{ section.settings.title }}</h1>
+      </div>
+      {%- if section.settings.lead != blank -%}
+        <p class="seym-au__lead">{{ section.settings.lead }}</p>
+      {%- endif -%}
+    </header>
+
+    <!-- Chapter 1: Atelier (always present, custom copy) -->
+    <article class="seym-au__chapter">
+      <div class="seym-au__chapter-lead">
+        <span class="seym-au__chapter-tag">01 · The Atelier</span>
+        <h2 class="seym-au__chapter-heading">{{ section.settings.atelier_heading }}</h2>
+      </div>
+      <div class="seym-au__chapter-body rte">
+        {{ section.settings.atelier_text }}
+      </div>
+    </article>
+
+    <!-- Chapter 2: Digital Catalog (live page content) -->
+    <article class="seym-au__chapter seym-au__chapter--flip">
+      <div class="seym-au__chapter-lead">
+        <span class="seym-au__chapter-tag">02 · The Catalog</span>
+        <h2 class="seym-au__chapter-heading">{{ p_catalog.title | default: 'Digital Catalog' }}</h2>
+        {%- if p_catalog != empty -%}
+          <a class="seym-au__chapter-meta" href="{{ p_catalog.url }}">Open the catalog</a>
+        {%- endif -%}
+      </div>
+      <div class="seym-au__chapter-body rte {% if p_catalog.content == blank %}seym-au__chapter-body--placeholder{% endif %}">
+        {%- if p_catalog.content != blank -%}
+          {{ p_catalog.content }}
+        {%- else -%}
+          The full collection in print and pixels — every piece released from the atelier, archived for slow study.
+        {%- endif -%}
+      </div>
+    </article>
+
+    <!-- Chapter 3: Press (live page content) -->
+    <article class="seym-au__chapter">
+      <div class="seym-au__chapter-lead">
+        <span class="seym-au__chapter-tag">03 · Press</span>
+        <h2 class="seym-au__chapter-heading">{{ p_press.title | default: 'Press' }}</h2>
+        {%- if p_press != empty -%}
+          <a class="seym-au__chapter-meta" href="{{ p_press.url }}">Read coverage</a>
+        {%- endif -%}
+      </div>
+      <div class="seym-au__chapter-body rte {% if p_press.content == blank %}seym-au__chapter-body--placeholder{% endif %}">
+        {%- if p_press.content != blank -%}
+          {{ p_press.content }}
+        {%- else -%}
+          Voices and viewpoints from the world looking in.
+        {%- endif -%}
+      </div>
+    </article>
+
+    <!-- Chapter 4: Achievements (live page content) -->
+    <article class="seym-au__chapter seym-au__chapter--flip">
+      <div class="seym-au__chapter-lead">
+        <span class="seym-au__chapter-tag">04 · Achievements</span>
+        <h2 class="seym-au__chapter-heading">{{ p_awards.title | default: 'Our Achievements' }}</h2>
+        {%- if p_awards != empty -%}
+          <a class="seym-au__chapter-meta" href="{{ p_awards.url }}">Full record</a>
+        {%- endif -%}
+      </div>
+      <div class="seym-au__chapter-body rte {% if p_awards.content == blank %}seym-au__chapter-body--placeholder{% endif %}">
+        {%- if p_awards.content != blank -%}
+          {{ p_awards.content }}
+        {%- else -%}
+          Milestones of a young atelier — measured in pieces shaped, in recognitions earned, in homes entered.
+        {%- endif -%}
+      </div>
+    </article>
+
+    <footer class="seym-au__cta">
+      {%- if section.settings.cta_eyebrow != blank -%}
+        <span class="seym-au__cta-eyebrow">{{ section.settings.cta_eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.cta_heading != blank -%}
+        <p class="seym-au__cta-heading">{{ section.settings.cta_heading }}</p>
+      {%- endif -%}
+      <div class="seym-au__cta-row">
+        {%- if section.settings.cta_primary_label != blank and section.settings.cta_primary_link != blank -%}
+          <a class="seym-au__btn seym-au__btn--primary" href="{{ section.settings.cta_primary_link }}">{{ section.settings.cta_primary_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta_secondary_label != blank and section.settings.cta_secondary_link != blank -%}
+          <a class="seym-au__btn seym-au__btn--ghost" href="{{ section.settings.cta_secondary_link }}">{{ section.settings.cta_secondary_label }}</a>
+        {%- endif -%}
+      </div>
+    </footer>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Seym",
+  "tag": "section",
+  "class": "shopify-section seym-au-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About Seym" },
+    { "type": "text", "id": "title",   "label": "Title (em allowed)", "default": "Mouth-blown in Istanbul, since <em>2022</em>." },
+    { "type": "textarea", "id": "lead", "label": "Lead paragraph", "default": "Seym Glass Studio is a contemporary atelier shaping glass by breath and hand, in the historical Çengelköy district. Every piece carries the trace of its making — and the silence of a small studio that refuses to scale." },
+
+    { "type": "header", "content": "Chapter 01 · The Atelier" },
+    { "type": "text", "id": "atelier_heading", "label": "Heading", "default": "A quieter way of <em>making</em>." },
+    { "type": "richtext", "id": "atelier_text", "label": "Body",
+      "default": "<p>Founded in 2022, Seym is the work of a small team of glassblowers committed to one principle: character over perfection. We choose the slower path — mouth-blown crystal, finished by master hands, refused if it does not carry presence.</p><p>Each piece is named, never numbered. Each series is closed at twelve. Nothing returns.</p>" },
+
+    { "type": "header", "content": "Live page sources" },
+    { "type": "text", "id": "catalog_handle",      "label": "Catalog page handle",      "default": "digital-catalog" },
+    { "type": "text", "id": "press_handle",        "label": "Press page handle",        "default": "press" },
+    { "type": "text", "id": "achievements_handle", "label": "Achievements page handle", "default": "our-achievements" },
+
+    { "type": "header", "content": "Closing CTA" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow",  "default": "Step inside" },
+    { "type": "text", "id": "cta_heading", "label": "Heading",  "default": "The gallery is open." },
+    { "type": "text", "id": "cta_primary_label", "label": "Primary button label", "default": "Explore Collections" },
+    { "type": "url",  "id": "cta_primary_link",  "label": "Primary button link" },
+    { "type": "text", "id": "cta_secondary_label", "label": "Secondary button label", "default": "Get in Touch" },
+    { "type": "url",  "id": "cta_secondary_link",  "label": "Secondary button link" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top",    "label": "Padding top",    "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 96 }
+  ],
+  "presets": [
+    { "name": "About Seym" }
+  ]
+}
+{% endschema %}
