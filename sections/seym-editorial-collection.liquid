@@ -28,7 +28,7 @@
   }
 
   .seym-coll__wrap {
-    max-width: 144rem;
+    max-width: 132rem;
     margin: 0 auto;
     padding: 0 4rem;
   }
@@ -109,12 +109,18 @@
   }
   .seym-coll__sort:focus { outline: none; border-bottom-color: #1A1A1A; }
 
-  /* --- Grid --- */
+  /* --- Grid: 3-column asymmetric cascade ---
+     Each row stacks three smaller cards.
+     The middle and right columns are pushed down so the
+     row reads as a soft waterfall instead of a flat grid.
+     Aspect ratios vary by column to break the visual rhythm
+     (portrait / square / tall) — editorial, not catalog. */
   .seym-coll__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 6rem;
-    row-gap: 9rem;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 3.6rem;
+    row-gap: 6.4rem;
+    align-items: start;
   }
 
   .seym-coll__item {
@@ -125,6 +131,11 @@
   }
   .seym-coll__item.visible { opacity: 1; transform: none; }
 
+  /* Asymmetric vertical cascade — margin keeps stagger
+     independent from the fade-in transform. */
+  .seym-coll__item:nth-child(3n + 2) { margin-top: 6.4rem; }
+  .seym-coll__item:nth-child(3n + 3) { margin-top: 3.2rem; }
+
   .seym-coll__media {
     position: relative;
     display: block;
@@ -133,6 +144,9 @@
     overflow: hidden;
     background: #F8F5F0;
   }
+  /* Aspect variation: 4/5 default, 1/1 middle, 3/4 right */
+  .seym-coll__item:nth-child(3n + 2) .seym-coll__media { aspect-ratio: 1 / 1; }
+  .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 3 / 4; }
   .seym-coll__media img {
     position: absolute;
     inset: 0;
@@ -262,8 +276,16 @@
     .seym-coll__grid {
       grid-template-columns: repeat(2, 1fr);
       column-gap: 2rem;
-      row-gap: 5rem;
+      row-gap: 4.8rem;
     }
+    /* Reset the 3-col cascade rules on tablet/mobile, then apply
+       a softer 2-col stagger so the asymmetric feel survives. */
+    .seym-coll__item:nth-child(3n + 2),
+    .seym-coll__item:nth-child(3n + 3) { margin-top: 0; }
+    .seym-coll__item:nth-child(3n + 2) .seym-coll__media,
+    .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 4 / 5; }
+    .seym-coll__item:nth-child(2n) { margin-top: 4rem; }
+    .seym-coll__item:nth-child(2n) .seym-coll__media { aspect-ratio: 1 / 1; }
     .seym-coll__name { font-size: 1.55rem; }
     .seym-coll__info { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
     .seym-coll__passage { padding: 3rem 0; margin: 1rem auto; }
@@ -276,8 +298,10 @@
     }
     .seym-coll__grid {
       grid-template-columns: 1fr;
-      row-gap: 5rem;
+      row-gap: 4rem;
     }
+    .seym-coll__item:nth-child(2n) { margin-top: 0; }
+    .seym-coll__item:nth-child(2n) .seym-coll__media { aspect-ratio: 4 / 5; }
     .seym-coll__toolbar { margin-bottom: 3.6rem; }
   }
 </style>
@@ -370,7 +394,7 @@
                        class: 'seym-coll__img--primary',
                        loading: 'lazy',
                        widths: '300, 450, 600, 800, 1100, 1400',
-                       sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 38vw',
+                       sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 28vw',
                        alt: product.title | escape }}
                 {%- endif -%}
                 {%- if secondary != blank -%}
@@ -380,7 +404,7 @@
                        class: 'seym-coll__img--secondary',
                        loading: 'lazy',
                        widths: '300, 450, 600, 800, 1100, 1400',
-                       sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 38vw',
+                       sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 28vw',
                        alt: product.title | escape }}
                 {%- endif -%}
                 {%- unless product.available -%}
