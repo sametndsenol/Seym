@@ -284,15 +284,10 @@
     {%- else -%}
       <div class="seym-cg__grid">
         {%- for collection in collections -%}
-          {%- comment -%} Prefer the collection's own image; else the first
-            product's 2nd media (lifestyle); else its primary image. {%- endcomment -%}
-          {%- assign lifestyle = collection.products.first.media[1] -%}
-          {%- if lifestyle != blank -%}
-            {%- assign lifestyle_img = lifestyle.preview_image -%}
-          {%- else -%}
-            {%- assign lifestyle_img = blank -%}
-          {%- endif -%}
-          {%- assign card_img = collection.image | default: lifestyle_img | default: collection.products.first.featured_image -%}
+          {%- comment -%} Use the collection's own image set in admin
+            (Collections → [name] → Image). No product fallback —
+            if blank, the placeholder watermark shows instead. {%- endcomment -%}
+          {%- assign card_img = collection.image -%}
           <a class="seym-cg__card{% if card_img == blank %} seym-cg__card--placeholder{% endif %}"
              href="{{ collection.url }}"
              aria-label="{{ collection.title | escape }}">
