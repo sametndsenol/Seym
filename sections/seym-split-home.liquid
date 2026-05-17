@@ -28,7 +28,6 @@
     justify-content: space-between;
     min-height: 52rem;
     max-height: 80vh;
-    border-right: 1px solid rgba(26,26,26,0.08);
   }
 
   .seym-sh__lead {
@@ -212,10 +211,24 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: saturate(1.05) brightness(1.0);
-    /* Push the video's bright/white background toward the ivory canvas
-       so the left and right halves read as one continuous surface. */
+    /* sepia warms the video's whites toward ivory, saturate keeps glass
+       colors readable, multiply collapses anything still near-white into
+       the ivory canvas so the right half tonally matches the left. */
+    filter: sepia(0.18) saturate(1.18) brightness(1.0);
     mix-blend-mode: multiply;
+  }
+
+  /* Soft ivory feather along the seam, hides any remaining tonal step
+     between the left ivory column and the video tile. */
+  .seym-sh__media::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0;
+    width: 8rem;
+    background: linear-gradient(to right, #F5F1EA 0%, rgba(245,241,234,0) 100%);
+    pointer-events: none;
+    z-index: 2;
   }
 
   .seym-sh__media-overlay {
