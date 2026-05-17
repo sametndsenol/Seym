@@ -62,17 +62,21 @@
 
   /* — Nav (centered absolutely) — */
   .seym-hd__nav {
-    position: absolute; left: 50%; transform: translateX(-50%);
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    transform: translateX(-50%);
     display: flex; align-items: center;
     list-style: none; margin: 0; padding: 0;
     white-space: nowrap; gap: 0;
+    height: 100%;
   }
   .seym-hd__nav li {
     display: flex; align-items: center;
+    height: 100%;
   }
   .seym-hd__nav a {
-    display: flex; align-items: center;
-    padding: 0.6rem 1.8rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 100%;
+    padding: 0 1.8rem;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem; font-weight: 400;
     line-height: 1;
@@ -295,6 +299,66 @@
   if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
   drawer && drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
+
+  /* ------------------------------------------------------------
+     Nuke any app-injected country/currency pill.
+     The Shopify Markets / Geolocation apps render this widget
+     with unpredictable class names, so we match by content
+     (flag emoji + 3-letter currency code) and hide the closest
+     pill-shaped ancestor. Runs once on load, again after app
+     scripts run, and continuously via MutationObserver.
+     ------------------------------------------------------------ */
+  var FLAGS = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
+  var CCY   = /\b(TRY|USD|EUR|GBP|CAD|AUD|JPY|CHF|SEK|NOK|DKK|AED)\b/;
+  var SELF = document.getElementById('SeymHd');
+
+  function nukePill(root) {
+    var scope = root || document.body;
+    if (!scope || !scope.querySelectorAll) return;
+    var candidates = scope.querySelectorAll(
+      'button, details, summary, [role="combobox"], [role="button"],' +
+      '[class*="flag" i], [class*="country" i], [class*="currency" i],' +
+      '[class*="locale" i], [class*="market" i], [class*="region" i],' +
+      '[class*="picker" i], [class*="selector" i], [class*="pill" i]'
+    );
+    candidates.forEach(function (el) {
+      if (SELF && SELF.contains(el)) return; /* never touch our own header */
+      var txt = (el.textContent || '').trim();
+      if (txt.length > 40) return;
+      if (!FLAGS.test(txt) && !CCY.test(txt)) return;
+      /* climb to a pill-shaped wrapper */
+      var target = el;
+      for (var i = 0; i < 4 && target.parentElement; i++) {
+        var tag = target.tagName;
+        if (tag === 'BUTTON' || tag === 'DETAILS' || tag === 'FORM') break;
+        var p = target.parentElement;
+        if (p === document.body || p === document.documentElement) break;
+        var pcs = getComputedStyle(p);
+        if (pcs.position === 'fixed' || pcs.position === 'absolute') { target = p; break; }
+        target = p;
+      }
+      target.style.setProperty('display', 'none', 'important');
+      target.setAttribute('data-seym-nuked', '1');
+    });
+  }
+
+  function sweep(){ nukePill(document); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sweep);
+  } else { sweep(); }
+  setTimeout(sweep, 400);
+  setTimeout(sweep, 1500);
+  setTimeout(sweep, 4000);
+
+  if ('MutationObserver' in window) {
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        m.addedNodes && m.addedNodes.forEach(function (n) {
+          if (n.nodeType === 1) nukePill(n);
+        });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
 })();
 </script>
 
