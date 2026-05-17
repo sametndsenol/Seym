@@ -302,62 +302,87 @@
 
   /* ------------------------------------------------------------
      Nuke any app-injected country/currency pill.
-     The Shopify Markets / Geolocation apps render this widget
-     with unpredictable class names, so we match by content
-     (flag emoji + 3-letter currency code) and hide the closest
-     pill-shaped ancestor. Runs once on load, again after app
-     scripts run, and continuously via MutationObserver.
+     The widget may live in shadow DOM (Web Components) or be
+     re-injected late by an app script, so this hunter:
+       1. Walks light DOM AND every shadow root recursively
+       2. Matches by short text content: a 3-letter currency
+          code (TRY/USD/EUR…) OR a flag emoji
+       3. Also matches <img alt="Turkey"> / src*="tr.svg"
+       4. Hides the closest pill-shaped ancestor
+       5. Re-runs on a 1s interval indefinitely as a safety net
      ------------------------------------------------------------ */
-  var FLAGS = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
-  var CCY   = /\b(TRY|USD|EUR|GBP|CAD|AUD|JPY|CHF|SEK|NOK|DKK|AED)\b/;
+  var CCY  = /^(TRY|USD|EUR|GBP|CAD|AUD|JPY|CHF|SEK|NOK|DKK|AED|RUB|CNY|HKD|SGD|NZD|MXN|BRL|INR|ZAR|PLN|HUF|CZK|ILS|KRW|THB|MYR|IDR|PHP|VND|RON|BGN|HRK|ISK)$/;
+  var FLAG = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
   var SELF = document.getElementById('SeymHd');
 
-  function nukePill(root) {
-    var scope = root || document.body;
-    if (!scope || !scope.querySelectorAll) return;
-    var candidates = scope.querySelectorAll(
-      'button, details, summary, [role="combobox"], [role="button"],' +
-      '[class*="flag" i], [class*="country" i], [class*="currency" i],' +
-      '[class*="locale" i], [class*="market" i], [class*="region" i],' +
-      '[class*="picker" i], [class*="selector" i], [class*="pill" i]'
-    );
-    candidates.forEach(function (el) {
-      if (SELF && SELF.contains(el)) return; /* never touch our own header */
-      var txt = (el.textContent || '').trim();
-      if (txt.length > 40) return;
-      if (!FLAGS.test(txt) && !CCY.test(txt)) return;
-      /* climb to a pill-shaped wrapper */
-      var target = el;
-      for (var i = 0; i < 4 && target.parentElement; i++) {
-        var tag = target.tagName;
-        if (tag === 'BUTTON' || tag === 'DETAILS' || tag === 'FORM') break;
-        var p = target.parentElement;
-        if (p === document.body || p === document.documentElement) break;
-        var pcs = getComputedStyle(p);
-        if (pcs.position === 'fixed' || pcs.position === 'absolute') { target = p; break; }
-        target = p;
+  function allRoots(node, out) {
+    out = out || [document];
+    var walker = (node || document).querySelectorAll('*');
+    for (var i = 0; i < walker.length; i++) {
+      var el = walker[i];
+      if (el.shadowRoot) { out.push(el.shadowRoot); allRoots(el.shadowRoot, out); }
+    }
+    return out;
+  }
+
+  function nuke(el) {
+    if (!el || (SELF && SELF.contains(el))) return;
+    /* climb to a pill-shaped wrapper */
+    var target = el;
+    for (var i = 0; i < 5 && target.parentElement; i++) {
+      var p = target.parentElement;
+      if (p.tagName === 'BODY' || p.tagName === 'HTML') break;
+      var tag = target.tagName;
+      if (tag === 'BUTTON' || tag === 'DETAILS' || tag === 'FORM') break;
+      var pcs;
+      try { pcs = getComputedStyle(p); } catch (e) { break; }
+      if (pcs && (pcs.position === 'fixed' || pcs.position === 'absolute')) { target = p; break; }
+      target = p;
+    }
+    if (SELF && SELF.contains(target)) return;
+    target.style.setProperty('display', 'none', 'important');
+    target.style.setProperty('visibility', 'hidden', 'important');
+    target.setAttribute('data-seym-nuked', '1');
+  }
+
+  function sweep() {
+    var roots = allRoots(document);
+    roots.forEach(function (root) {
+      /* short-text candidates */
+      var els;
+      try {
+        els = root.querySelectorAll('button, details, summary, a, span, div');
+      } catch (e) { return; }
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.hasAttribute && el.hasAttribute('data-seym-nuked')) continue;
+        var txt = (el.textContent || '').trim();
+        if (!txt || txt.length > 6) continue;
+        if (CCY.test(txt) || FLAG.test(txt)) { nuke(el); }
       }
-      target.style.setProperty('display', 'none', 'important');
-      target.setAttribute('data-seym-nuked', '1');
+      /* flag image candidates */
+      var imgs;
+      try { imgs = root.querySelectorAll('img'); } catch (e) { imgs = []; }
+      for (var j = 0; j < imgs.length; j++) {
+        var img = imgs[j];
+        var src = (img.getAttribute('src') || '').toLowerCase();
+        var alt = (img.getAttribute('alt') || '').toLowerCase();
+        if (
+          /flag|country|tr\.svg|turkey|türk/i.test(src) ||
+          /turkey|türk|flag/i.test(alt)
+        ) { nuke(img); }
+      }
     });
   }
 
-  function sweep(){ nukePill(document); }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', sweep);
   } else { sweep(); }
-  setTimeout(sweep, 400);
-  setTimeout(sweep, 1500);
-  setTimeout(sweep, 4000);
+  [200, 600, 1500, 3000, 6000].forEach(function (t) { setTimeout(sweep, t); });
+  setInterval(sweep, 1500);
 
   if ('MutationObserver' in window) {
-    new MutationObserver(function (muts) {
-      muts.forEach(function (m) {
-        m.addedNodes && m.addedNodes.forEach(function (n) {
-          if (n.nodeType === 1) nukePill(n);
-        });
-      });
-    }).observe(document.documentElement, { childList: true, subtree: true });
+    new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true });
   }
 })();
 </script>
