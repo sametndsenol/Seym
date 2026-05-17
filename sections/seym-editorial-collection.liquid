@@ -159,29 +159,89 @@
     aspect-ratio: 4 / 5;
     overflow: hidden;
     background: transparent;
+    isolation: isolate;
+    color: inherit;
+    text-decoration: none;
   }
   /* Aspect variation: 4/5 default, 1/1 middle, 3/4 right */
   .seym-coll__item:nth-child(3n + 2) .seym-coll__media { aspect-ratio: 1 / 1; }
   .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 3 / 4; }
+
+  /* Primary = cutout product, floats on ivory.
+     Secondary = lifestyle, fills the card. */
   .seym-coll__media img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    transition: opacity 600ms ease, transform 1400ms cubic-bezier(0.22,1,0.36,1);
+    transition: opacity 700ms cubic-bezier(0.22,1,0.36,1),
+                transform 1600ms cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-coll__media:hover .seym-coll__img--primary,
-  .seym-coll__media:hover .seym-coll__img--secondary { transform: scale(1.03); }
-  .seym-coll__media .seym-coll__img--secondary {
+  .seym-coll__img--primary   { object-fit: contain; }
+  .seym-coll__img--secondary { object-fit: cover; opacity: 0; }
+  .seym-coll__media:hover .seym-coll__img--primary  { opacity: 0; transform: scale(1.02); }
+  .seym-coll__media:hover .seym-coll__img--secondary { opacity: 1; transform: scale(1.04); }
+
+  /* Wine veil + overlay only appear when lifestyle is showing,
+     so the default catalog state stays clean. */
+  .seym-coll__media--has-lifestyle::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg,
+        rgba(26,26,26,0) 0%,
+        rgba(26,26,26,0.18) 50%,
+        rgba(142, 34, 68, 0.88) 100%);
+    z-index: 1;
     opacity: 0;
+    transition: opacity 500ms ease;
+    pointer-events: none;
   }
-  .seym-coll__media:hover .seym-coll__img--primary {
+  .seym-coll__media--has-lifestyle:hover::after { opacity: 1; }
+
+  .seym-coll__overlay {
+    position: absolute;
+    z-index: 2;
+    inset: auto 1.8rem 1.8rem 1.8rem;
+    color: #F5F1EA;
+    pointer-events: none;
     opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 380ms ease 80ms, transform 500ms cubic-bezier(0.22,1,0.36,1) 80ms;
   }
-  .seym-coll__media:hover .seym-coll__img--secondary {
+  .seym-coll__media--has-lifestyle:hover .seym-coll__overlay {
     opacity: 1;
-    transform: scale(1.02);
+    transform: none;
+  }
+  .seym-coll__overlay-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.82);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(245,241,234,0.45);
+  }
+  .seym-coll__overlay-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 2vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.008em;
+    color: #F5F1EA;
+    margin: 0;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+  }
+  .seym-coll__overlay-price {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    color: rgba(245,241,234,0.92);
   }
 
   .seym-coll__sold {
@@ -399,9 +459,10 @@
             {%- assign idx = forloop.index -%}
 
             <article class="seym-coll__item">
-              <a class="seym-coll__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-                {%- assign primary = product.featured_media -%}
-                {%- assign secondary = product.media[1] -%}
+              {%- assign primary = product.featured_media -%}
+              {%- assign secondary = product.media[1] -%}
+              <a class="seym-coll__media{% if secondary != blank %} seym-coll__media--has-lifestyle{% endif %}"
+                 href="{{ product.url }}" aria-label="{{ product.title | escape }}">
                 {%- if primary != blank -%}
                   {{ primary
                      | image_url: width: 1200
@@ -414,13 +475,24 @@
                 {%- endif -%}
                 {%- if secondary != blank -%}
                   {{ secondary
-                     | image_url: width: 1200
+                     | image_url: width: 1400
                      | image_tag:
                        class: 'seym-coll__img--secondary',
                        loading: 'lazy',
-                       widths: '300, 450, 600, 800, 1100, 1400',
+                       widths: '400, 600, 800, 1100, 1400, 1800',
                        sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 28vw',
                        alt: product.title | escape }}
+                  <div class="seym-coll__overlay">
+                    <span class="seym-coll__overlay-tag">In your space</span>
+                    <span class="seym-coll__overlay-name">{{ product.title }}</span>
+                    <span class="seym-coll__overlay-price">
+                      {%- if product.compare_at_price > product.price -%}
+                        {{ product.price | money }}
+                      {%- else -%}
+                        {{ product.price | money }}
+                      {%- endif -%}
+                    </span>
+                  </div>
                 {%- endif -%}
                 {%- unless product.available -%}
                   <span class="seym-coll__sold">Sold</span>
