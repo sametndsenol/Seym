@@ -32,61 +32,77 @@
     margin: 0 auto;
     padding: 0 4rem;
   }
-  /* --- Editorial intro (top) --- */
-  .seym-coll__intro {
-    max-width: 92rem;
-    margin: 0 auto 8rem;
-    text-align: left;
+  /* --- Hero strip (chic, minimal) ---
+     Eyebrow on top, giant serif collection name underneath,
+     a thin wine rule, and the meta toolbar tucked under it.
+     No long copy — the products do the talking. */
+  .seym-coll__hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 4rem;
+    margin: 0 0 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
   }
-  .seym-coll__intro--center { text-align: center; }
+
+  .seym-coll__hero-lead { min-width: 0; }
 
   .seym-coll__eyebrow {
-    display: block;
+    display: inline-block;
+    position: relative;
     font-family: 'Inter', sans-serif;
-    font-size: 0.76rem;
-    letter-spacing: 0.32em;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.55);
-    margin-bottom: 2.4rem;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.4rem;
+    padding-left: 2.6rem;
+  }
+  .seym-coll__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
   }
 
   .seym-coll__heading {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: clamp(3.4rem, 4.6vw, 6.4rem);
-    line-height: 1.04;
-    letter-spacing: -0.012em;
+    font-size: clamp(3.6rem, 5.4vw, 7.2rem);
+    line-height: 1;
+    letter-spacing: -0.018em;
     color: #1A1A1A;
-    margin: 0 0 2.6rem;
-  }
-
-  .seym-coll__intro-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-style: italic;
-    font-size: clamp(1.7rem, 1.7vw, 2.05rem);
-    line-height: 1.55;
-    color: rgba(26,26,26,0.78);
-    max-width: 68ch;
     margin: 0;
   }
-  .seym-coll__intro--center .seym-coll__intro-text { margin: 0 auto; }
 
-  /* --- Toolbar --- */
+  .seym-coll__hero-meta {
+    flex-shrink: 0;
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.5);
+    line-height: 1.6;
+  }
+  .seym-coll__hero-count em {
+    font-style: normal;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    letter-spacing: 0;
+    color: #1A1A1A;
+    margin-right: 0.4rem;
+    vertical-align: -0.05em;
+  }
+
+  /* --- Toolbar (slim, sits right under the hero rule) --- */
   .seym-coll__toolbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    padding-bottom: 2.4rem;
-    border-bottom: 1px solid rgba(26,26,26,0.1);
-    margin-bottom: 5rem;
-  }
-  .seym-coll__count {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.82rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(26,26,26,0.55);
+    margin-bottom: 3.6rem;
   }
   .seym-coll__sort {
     font-family: 'Inter', sans-serif;
@@ -337,32 +353,29 @@
 <section class="seym-coll" id="SeymColl-{{ section.id }}">
   <div class="seym-coll__wrap">
 
-    {%- if eyebrow_text != blank or heading_text != blank or intro_text != blank -%}
-      <header class="seym-coll__intro{% if section.settings.intro_alignment == 'center' %} seym-coll__intro--center{% endif %}">
-        {%- if eyebrow_text != blank -%}
-          <span class="seym-coll__eyebrow">{{ eyebrow_text }}</span>
-        {%- endif -%}
-        {%- if heading_text != blank -%}
-          <h1 class="seym-coll__heading">{{ heading_text }}</h1>
-        {%- endif -%}
-        {%- if intro_text != blank -%}
-          <div class="seym-coll__intro-text rte">{{ intro_text }}</div>
-        {%- endif -%}
-      </header>
-    {%- endif -%}
-
     {%- paginate collection.products by section.settings.products_per_page -%}
 
-      <div class="seym-coll__toolbar">
-        <span class="seym-coll__count">
-          {%- if collection.products_count == collection.all_products_count -%}
-            {{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}
-          {%- else -%}
-            {{ collection.products_count }} of {{ collection.all_products_count }}
-          {%- endif -%}
-        </span>
+      {%- if eyebrow_text != blank or heading_text != blank -%}
+        <header class="seym-coll__hero">
+          <div class="seym-coll__hero-lead">
+            {%- if eyebrow_text != blank -%}
+              <span class="seym-coll__eyebrow">{{ eyebrow_text }}</span>
+            {%- endif -%}
+            {%- if heading_text != blank -%}
+              <h1 class="seym-coll__heading">{{ heading_text }}</h1>
+            {%- endif -%}
+          </div>
+          <div class="seym-coll__hero-meta">
+            <div class="seym-coll__hero-count">
+              <em>{{ collection.products_count }}</em>
+              {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}
+            </div>
+          </div>
+        </header>
+      {%- endif -%}
 
-        {%- if section.settings.enable_sorting -%}
+      {%- if section.settings.enable_sorting -%}
+        <div class="seym-coll__toolbar">
           <form method="get" class="seym-coll__sort-form">
             {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
             <select name="sort_by" class="seym-coll__sort" onchange="this.form.submit()">
@@ -373,8 +386,8 @@
               {%- endfor -%}
             </select>
           </form>
-        {%- endif -%}
-      </div>
+        </div>
+      {%- endif -%}
 
       {%- if collection.products.size == 0 -%}
         <div class="seym-coll__empty">No pieces in this collection — yet.</div>
