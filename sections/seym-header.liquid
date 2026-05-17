@@ -23,52 +23,41 @@
   }
   .seym-bar a { color: inherit; text-decoration: none; }
 
-  /* — Header shell — */
+  /* — Header shell — static height, no shrink on scroll. — */
   .seym-hd {
     position: sticky; top: 0; z-index: 50;
-    background: #fafaf7;
-    border-bottom: 1px solid rgba(13,13,13,0.08);
-    transition: background 600ms cubic-bezier(0.22,1,0.36,1),
-                box-shadow 600ms cubic-bezier(0.22,1,0.36,1);
-  }
-  .seym-hd.scrolled {
-    background: rgba(250,250,247,0.96);
-    -webkit-backdrop-filter: saturate(160%) blur(24px);
-    backdrop-filter: saturate(160%) blur(24px);
-    box-shadow: 0 1px 0 rgba(13,13,13,0.06);
+    background: var(--seym-ivory, #F5F1EA);
+    border-bottom: 1px solid rgba(13,13,13,0.07);
   }
 
   /* — Single row — */
   .seym-hd__row {
     max-width: 160rem; margin: 0 auto;
     padding: 0 4.8rem;
-    height: 7rem;
+    height: 6.4rem;
     display: flex; align-items: center; justify-content: space-between;
     position: relative;
-    transition: height 400ms cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-hd.scrolled .seym-hd__row { height: 5.4rem; }
 
-  /* — Logo — */
+  /* — Logo: text wordmark only (image is intentionally hidden so the
+     mark always reads as a clean serif) — */
   .seym-hd__logo {
     display: flex; align-items: center;
-    text-decoration: none; color: #0d0d0d;
+    text-decoration: none; color: #1A1A1A;
     flex-shrink: 0; z-index: 2;
     transition: opacity 300ms ease;
   }
-  .seym-hd__logo:hover { opacity: 0.6; }
-  .seym-hd__logo img {
-    max-height: 4.6rem; width: auto;
-    filter: brightness(0);
-    transition: max-height 400ms ease;
-    display: block;
-  }
-  .seym-hd.scrolled .seym-hd__logo img { max-height: 3.4rem; }
+  .seym-hd__logo:hover { opacity: 0.55; }
+  .seym-hd__logo img { display: none; }
   .seym-hd__logo-text {
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 400; font-size: 2.2rem;
-    letter-spacing: 0.36em; text-transform: uppercase;
-    color: #0d0d0d; line-height: 1;
+    font-weight: 400;
+    font-size: 2.4rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    line-height: 1;
+    padding-left: 0.4em;
   }
 
   /* — Nav (centered absolutely) — */
@@ -203,11 +192,7 @@
   <div class="seym-hd__row">
 
     <a href="{{ routes.root_url }}" class="seym-hd__logo" aria-label="{{ shop.name }}">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 540 | image_tag: loading: 'eager', width: settings.logo.width, height: settings.logo.height, alt: shop.name }}
-      {%- else -%}
-        <span class="seym-hd__logo-text">{{ shop.name }}</span>
-      {%- endif -%}
+      <span class="seym-hd__logo-text">Seym</span>
     </a>
 
     <nav aria-label="Main">
@@ -260,11 +245,7 @@
 <div class="seym-drawer" id="SeymDrawer" role="dialog" aria-label="Menu" aria-hidden="true">
   <div class="seym-drawer__head">
     <a href="{{ routes.root_url }}" class="seym-hd__logo" tabindex="-1">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 320 | image_tag: alt: shop.name, width: settings.logo.width, height: settings.logo.height }}
-      {%- else -%}
-        <span class="seym-hd__logo-text" style="font-size:1.8rem">{{ shop.name }}</span>
-      {%- endif -%}
+      <span class="seym-hd__logo-text" style="font-size:1.9rem">Seym</span>
     </a>
     <button class="seym-drawer__close" id="SeymDrawerClose" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
@@ -293,11 +274,6 @@
   const drawer = document.getElementById('SeymDrawer');
   const burger = document.getElementById('SeymBurger');
   const closeBtn = document.getElementById('SeymDrawerClose');
-
-  window.addEventListener('scroll', function(){
-    hd.classList.toggle('scrolled', window.scrollY > 12);
-  }, {passive: true});
-  hd.classList.toggle('scrolled', window.scrollY > 12);
 
   function openDrawer(){
     drawer.classList.add('open');

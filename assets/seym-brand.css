@@ -494,3 +494,34 @@ input:focus, textarea:focus, select:focus {
   ::-webkit-scrollbar-thumb { background: rgba(142, 34, 68, 0.24) !important; }
   ::-webkit-scrollbar-thumb:hover { background: var(--seym-wine) !important; }
 }
+
+/* ============================================================
+   HIDE Shopify-app injected country/currency/locale pickers.
+   The Geolocation / Shop / Markets apps each render their own
+   selector outside the theme; none of them belongs in the
+   minimal Seym header. Hidden site-wide.
+   ============================================================ */
+.shopify-section-geolocation-form,
+.shopify-section-geolocation,
+#shopify-section-geolocation,
+.localization-wrapper,
+.country-selector,
+.country-selector__shop-pay-mobile-button,
+.country-selector-mobile-dropdown,
+shop-currency-picker,
+.shop-currency-picker,
+.shopify-currency-picker,
+disclosure-button.localization-selector,
+localization-form,
+.localization-form,
+[data-country-selector],
+[data-shopify-localization-form],
+[id^="HeaderCountry"],
+[id^="HeaderLanguage"],
+[id^="FooterCountry"],
+[id^="FooterLanguage"],
+.shopify-section-header .localization-selector,
+.seym-hd .shopify-section-geolocation,
+.seym-hd ~ .shopify-section-geolocation-form {
+  display: none !important;
+}
