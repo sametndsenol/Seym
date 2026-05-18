@@ -1,1 +1,9 @@
-{"sections":{"main":{"type":"main-page","settings":{"padding_top":36,"padding_bottom":36}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "seym-page-router",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

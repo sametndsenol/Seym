@@ -1,0 +1,209 @@
+{%- comment -%}
+  Renders a chic standalone page (Press, Catalog, Achievements, …)
+  Accepts via render parameters or falls back to page object.
+    eyebrow, title_html, lead, back_label, back_link, cta_label, cta_link,
+    padding_top, padding_bottom
+{%- endcomment -%}
+
+{%- liquid
+  assign _eyebrow = eyebrow
+  if _eyebrow == blank
+    case page.handle
+      when 'digital-catalog'
+        assign _eyebrow = 'The Catalog'
+      when 'press'
+        assign _eyebrow = 'Press'
+      when 'our-achievements'
+        assign _eyebrow = 'Achievements'
+      else
+        assign _eyebrow = 'Seym'
+    endcase
+  endif
+
+  assign _title = title_html | default: page.title
+  assign _lead = lead
+  if _lead == blank
+    case page.handle
+      when 'digital-catalog'
+        assign _lead = 'The full collection in print and pixels — a quiet record of every piece released from the atelier.'
+      when 'press'
+        assign _lead = 'Voices and viewpoints from the world looking in.'
+      when 'our-achievements'
+        assign _lead = 'Milestones of a young atelier — measured in pieces shaped, in recognitions earned, in homes entered.'
+    endcase
+  endif
+
+  assign _back_label = back_label | default: 'About Seym'
+  assign _back_link  = back_link  | default: '/pages/about-us'
+  assign _cta_label  = cta_label
+  assign _cta_link   = cta_link
+  if _cta_label == blank and _cta_link == blank
+    case page.handle
+      when 'digital-catalog'
+        assign _cta_label = 'Press'
+        assign _cta_link  = '/pages/press'
+      when 'press'
+        assign _cta_label = 'Achievements'
+        assign _cta_link  = '/pages/our-achievements'
+      when 'our-achievements'
+        assign _cta_label = 'Catalog'
+        assign _cta_link  = '/pages/digital-catalog'
+    endcase
+  endif
+
+  assign _pt = padding_top | default: 64
+  assign _pb = padding_bottom | default: 80
+-%}
+
+<style>
+  .seym-pg {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    padding: {{ _pt }}px 0 {{ _pb }}px;
+  }
+  .seym-pg__wrap { max-width: 96rem; margin: 0 auto; padding: 0 4rem; }
+  .seym-pg__hero {
+    margin: 0 0 5rem;
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+  }
+  .seym-pg__eyebrow {
+    display: inline-block;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+  .seym-pg__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  .seym-pg__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.6rem, 5.6vw, 7.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+    color: #1A1A1A;
+    margin: 0;
+  }
+  .seym-pg__title em { font-style: italic; color: var(--seym-wine, #8E2244); }
+  .seym-pg__lead {
+    margin: 2.4rem 0 0;
+    max-width: 64ch;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 1.7vw, 2.05rem);
+    line-height: 1.55;
+    color: rgba(26,26,26,0.75);
+  }
+  .seym-pg__body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.85);
+    max-width: 72ch;
+  }
+  .seym-pg__body p { margin: 0 0 1.6rem; }
+  .seym-pg__body p:last-child { margin-bottom: 0; }
+  .seym-pg__body h2,
+  .seym-pg__body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin: 4rem 0 1.6rem;
+    letter-spacing: -0.01em;
+  }
+  .seym-pg__body h2 { font-size: clamp(2.4rem, 2.6vw, 3.2rem); line-height: 1.15; }
+  .seym-pg__body h3 { font-size: clamp(1.9rem, 2vw, 2.4rem); line-height: 1.2; }
+  .seym-pg__body a {
+    color: var(--seym-wine, #8E2244);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(142, 34, 68, 0.35);
+    transition: border-color 220ms ease;
+  }
+  .seym-pg__body a:hover { border-color: var(--seym-wine, #8E2244); }
+  .seym-pg__body strong { color: #1A1A1A; font-weight: 500; }
+  .seym-pg__body em { font-style: italic; color: rgba(26,26,26,0.78); }
+  .seym-pg__body img,
+  .seym-pg__body iframe,
+  .seym-pg__body video {
+    display: block; width: 100%; height: auto; margin: 2.8rem 0;
+  }
+  .seym-pg__body ul,
+  .seym-pg__body ol { margin: 0 0 1.6rem; padding-left: 2.2rem; }
+  .seym-pg__body li { margin-bottom: 0.6rem; }
+  .seym-pg__body blockquote {
+    margin: 2.8rem 0;
+    padding: 0 0 0 2.4rem;
+    border-left: 2px solid var(--seym-wine, #8E2244);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.8rem, 1.9vw, 2.2rem);
+    line-height: 1.5;
+    color: rgba(26,26,26,0.78);
+  }
+  .seym-pg__body hr { border: 0; border-top: 1px solid rgba(26,26,26,0.12); margin: 4rem 0; }
+  .seym-pg__back {
+    margin-top: 6rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .seym-pg__back a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(26,26,26,0.3);
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+  .seym-pg__back a:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+  @media (max-width: 749px) {
+    .seym-pg__wrap { padding: 0 2.4rem; }
+    .seym-pg__hero { margin-bottom: 3.6rem; }
+    .seym-pg__body { font-size: 1.4rem; line-height: 1.75; }
+  }
+</style>
+
+<section class="seym-pg">
+  <div class="seym-pg__wrap">
+    <header class="seym-pg__hero">
+      {%- if _eyebrow != blank -%}
+        <span class="seym-pg__eyebrow">{{ _eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="seym-pg__title">{{ _title }}</h1>
+      {%- if _lead != blank -%}
+        <p class="seym-pg__lead">{{ _lead }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="seym-pg__body rte">
+      {{ page.content }}
+    </div>
+
+    {%- if _back_label != blank and _back_link != blank -%}
+      <nav class="seym-pg__back" aria-label="Related">
+        <a href="{{ _back_link }}">← {{ _back_label }}</a>
+        {%- if _cta_label != blank and _cta_link != blank -%}
+          <a href="{{ _cta_link }}">{{ _cta_label }} →</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+</section>

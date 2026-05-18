@@ -1,0 +1,28 @@
+{%- comment -%}
+  Seym Page Router
+  Acts as the default page section (wired into templates/page.json).
+  Routes by page.handle:
+    about-us              → About-Seym hub
+    digital-catalog,
+    press,
+    our-achievements,
+    everything else       → Generic Seym Page (title + content + footer links)
+  This bypasses Shopify's per-page template assignment so admin
+  doesn't have to touch anything.
+{%- endcomment -%}
+
+{%- if page.handle == 'about-us' -%}
+  {%- render 'seym-about-us-body' -%}
+{%- else -%}
+  {%- render 'seym-page-body' -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Seym Page Router",
+  "tag": "section",
+  "class": "shopify-section seym-page-router",
+  "settings": [],
+  "presets": [{ "name": "Seym Page Router" }]
+}
+{% endschema %}
