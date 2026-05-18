@@ -1,18 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "seym-page",
-      "settings": {
-        "eyebrow": "Press",
-        "title_override": "",
-        "lead": "Voices and viewpoints from the world looking in.",
-        "back_label": "About Seym",
-        "back_link": "/pages/about-us",
-        "cta_label": "Achievements",
-        "cta_link": "/pages/our-achievements",
-        "padding_top": 64,
-        "padding_bottom": 80
-      }
+      "type": "seym-page-router",
+      "settings": {}
     }
   },
   "order": ["main"]

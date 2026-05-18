@@ -1,18 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "seym-page",
-      "settings": {
-        "eyebrow": "The Catalog",
-        "title_override": "",
-        "lead": "The full collection in print and pixels — a quiet record of every piece released from the atelier.",
-        "back_label": "About Seym",
-        "back_link": "/pages/about-us",
-        "cta_label": "Press",
-        "cta_link": "/pages/press",
-        "padding_top": 64,
-        "padding_bottom": 80
-      }
+      "type": "seym-page-router",
+      "settings": {}
     }
   },
   "order": ["main"]

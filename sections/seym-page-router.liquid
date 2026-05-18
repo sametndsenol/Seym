@@ -1,17 +1,22 @@
 {%- comment -%}
   Seym Page Router
-  Acts as the default page section (wired into templates/page.json).
-  Routes by page.handle:
-    about-us              → About-Seym hub
-    digital-catalog,
-    press,
-    our-achievements,
-    everything else       → Generic Seym Page (title + content + footer links)
-  This bypasses Shopify's per-page template assignment so admin
-  doesn't have to touch anything.
+  Routes by page.handle. Treats any handle containing "about" or
+  any Turkish "hakkımızda" variant as the hub; everything else
+  gets the generic chic page.
 {%- endcomment -%}
 
-{%- if page.handle == 'about-us' -%}
+{%- liquid
+  assign h = page.handle | downcase
+  assign is_hub = false
+  if h contains 'about'
+    assign is_hub = true
+  endif
+  if h contains 'hakkimizda' or h contains 'hakkımızda' or h == 'hakkimiz' or h == 'hakkımız'
+    assign is_hub = true
+  endif
+-%}
+
+{%- if is_hub -%}
   {%- render 'seym-about-us-body' -%}
 {%- else -%}
   {%- render 'seym-page-body' -%}
