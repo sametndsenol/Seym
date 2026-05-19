@@ -164,7 +164,7 @@
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
-        "color_scheme": "",
+        "color_scheme": "background-1",
         "full_width": true,
         "padding_top": 100,
         "padding_bottom": 100
@@ -184,8 +184,8 @@
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "link",
-        "enable_desktop_slider": true,
-        "color_scheme": "",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,

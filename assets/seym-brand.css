@@ -573,3 +573,19 @@ shop-currency-picker,
 .product__accordion summary {
   padding: 2rem 0 !important;
 }
+
+/* Featured-collection / related sections — always ivory, never blank white.
+   Also force a single 4-up row on desktop (no slider peek, no wrap). */
+.shopify-section .featured-collection,
+.shopify-section[id*="featured_collection"],
+.shopify-section[id*="related-products"] {
+  background: var(--seym-ivory) !important;
+}
+.shopify-section[id*="featured_collection"] .grid--4-col-desktop,
+.shopify-section[id*="related-products"] .grid--4-col-desktop {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+.shopify-section[id*="featured_collection"] .slider,
+.shopify-section[id*="related-products"] .slider {
+  overflow: visible !important;
+}
