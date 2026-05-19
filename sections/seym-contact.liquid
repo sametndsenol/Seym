@@ -289,6 +289,20 @@
     #seym-contact-{{ section.id }} .sc__form-card { padding: 3.2rem 2.4rem; }
     #seym-contact-{{ section.id }} .sc__row { grid-template-columns: 1fr; gap: 0; }
   }
+  @media (max-width: 749px) {
+    #seym-contact-{{ section.id }} .sc__wrap { padding: 0 1.8rem; }
+    #seym-contact-{{ section.id }} .sc__form-card { padding: 2.6rem 1.8rem; }
+    #seym-contact-{{ section.id }} .sc__submit {
+      width: 100%;
+      min-height: 4.6rem;
+      padding: 1.4rem 2rem;
+      text-align: center;
+    }
+    #seym-contact-{{ section.id }} .sc__input,
+    #seym-contact-{{ section.id }} .sc__textarea {
+      font-size: 1.6rem; /* prevents iOS auto-zoom on focus */
+    }
+  }
 </style>
 
 <section id="seym-contact-{{ section.id }}" class="seym-contact">

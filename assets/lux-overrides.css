@@ -1242,6 +1242,21 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
   .footer__content-top { padding-bottom: 2rem !important; }
   .title-wrapper-with-link { margin-top: 6rem !important; padding-top: 3rem !important; flex-direction: column; align-items: flex-start; }
   .button { font-size: 1rem !important; padding: 1.5rem 2.6rem !important; min-height: 4.4rem !important; }
+
+  /* iOS Safari zooms in on focus when input font-size < 16px. Force 16px on mobile. */
+  .field__input,
+  .select__select,
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select { font-size: 1.6rem !important; }
+
+  /* Keep page-width gutters consistent on phones */
+  .page-width { padding-left: 1.6rem !important; padding-right: 1.6rem !important; }
 }
 
 /* ---------- 23. MENU DRAWER (mobile menu) ---------- */

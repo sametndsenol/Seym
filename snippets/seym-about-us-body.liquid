@@ -94,8 +94,8 @@
   assign _cta_secondary_label = cta_secondary_label | default: _d_cta_secondary
   assign _cta_secondary_link  = cta_secondary_link  | default: '/pages/contact'
 
-  assign _pt = padding_top    | default: 56
-  assign _pb = padding_bottom | default: 64
+  assign _pt = padding_top    | default: 40
+  assign _pb = padding_bottom | default: 48
 -%}
 
 <style>
@@ -111,9 +111,9 @@
     grid-template-columns: 7fr 5fr;
     gap: 4.8rem;
     align-items: end;
-    padding-bottom: 2.4rem;
+    padding-bottom: 2rem;
     border-bottom: 1px solid rgba(26,26,26,0.1);
-    margin-bottom: 4rem;
+    margin-bottom: 2.4rem;
   }
   .seym-au__eyebrow {
     display: inline-block;
@@ -136,9 +136,9 @@
   .seym-au__title {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: clamp(4rem, 6vw, 8.4rem);
-    line-height: 0.98;
-    letter-spacing: -0.02em;
+    font-size: clamp(3.4rem, 4.6vw, 6.4rem);
+    line-height: 1;
+    letter-spacing: -0.018em;
     color: #1A1A1A;
     margin: 0;
   }
@@ -158,8 +158,8 @@
     grid-template-columns: 5fr 7fr;
     gap: 4.8rem;
     align-items: baseline;
-    padding: 0 0 2.8rem;
-    margin-bottom: 2rem;
+    padding: 0 0 1.8rem;
+    margin-bottom: 1.6rem;
     border-bottom: 1px solid rgba(26,26,26,0.08);
   }
   .seym-au__manifest-tag {
@@ -177,9 +177,9 @@
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
     font-style: normal;
-    font-size: clamp(1.8rem, 2.2vw, 2.8rem);
-    line-height: 1.35;
-    letter-spacing: 0.04em;
+    font-size: clamp(1.6rem, 1.7vw, 2.1rem);
+    line-height: 1.4;
+    letter-spacing: 0.03em;
     color: #1A1A1A;
     margin: 0;
   }
@@ -187,9 +187,9 @@
   .seym-au__chapter {
     display: grid;
     grid-template-columns: 5fr 7fr;
-    gap: 4.8rem;
+    gap: 4rem;
     align-items: start;
-    padding: 3.6rem 0;
+    padding: 2.4rem 0 2.8rem;
     border-top: 1px solid rgba(26,26,26,0.08);
   }
   .seym-au__chapter:first-of-type { border-top: 0; padding-top: 0; }
@@ -210,11 +210,11 @@
   .seym-au__chapter-heading {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: clamp(2.6rem, 3.4vw, 4.2rem);
-    line-height: 1.05;
+    font-size: clamp(2.2rem, 2.6vw, 3.2rem);
+    line-height: 1.08;
     letter-spacing: -0.012em;
     color: #1A1A1A;
-    margin: 0 0 1.8rem;
+    margin: 0 0 1.2rem;
   }
   .seym-au__chapter-heading em { font-style: italic; color: var(--seym-wine, #8E2244); }
 
@@ -277,7 +277,7 @@
   .seym-au__chapter-body--placeholder { font-style: italic; color: rgba(26,26,26,0.55); }
 
   .seym-au__rooms {
-    padding: 3.6rem 0 0;
+    padding: 2.4rem 0 0;
     border-top: 1px solid rgba(26,26,26,0.08);
   }
   .seym-au__rooms-head {
