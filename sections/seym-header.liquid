@@ -23,9 +23,9 @@
   }
   .seym-bar a { color: inherit; text-decoration: none; }
 
-  /* — Header shell — static height, no shrink on scroll. — */
+  /* — Header shell — fixed via parent .shopify-section in lux-overrides. — */
   .seym-hd {
-    position: sticky; top: 0; z-index: 50;
+    position: relative; z-index: 50;
     background: var(--seym-ivory, #F5F1EA);
     border-bottom: 1px solid rgba(13,13,13,0.07);
   }
@@ -371,6 +371,18 @@
           /flag|country|tr\.svg|turkey|türk/i.test(src) ||
           /turkey|türk|flag/i.test(alt)
         ) { nuke(img); }
+      }
+      /* currency-conversion banner (long-text, app-injected) */
+      var BANNER = /(exchange rates|exchange_rates|conversion rate|kurlar(?:i|ı)|d(?:ö|o)viz kuru|işlem(?:ler)? .* try|processed in (?:try|usd|eur|gbp))/i;
+      var banners;
+      try { banners = root.querySelectorAll('p, div, span, aside'); } catch (e) { banners = []; }
+      for (var k = 0; k < banners.length; k++) {
+        var b = banners[k];
+        if (SELF && SELF.contains(b)) continue;
+        if (b.hasAttribute && b.hasAttribute('data-seym-nuked')) continue;
+        var btxt = (b.textContent || '').trim();
+        if (!btxt || btxt.length > 200) continue;
+        if (BANNER.test(btxt)) { nuke(b); }
       }
     });
   }

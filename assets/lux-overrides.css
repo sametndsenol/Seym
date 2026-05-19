@@ -1536,14 +1536,26 @@ body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
 }
 
 /* ============================================================
-   27. HEADER PROTECTION (stops double header)
+   27. HEADER PROTECTION (stops double header + true sticky)
    ============================================================ */
 .shopify-section:has(.header-wrapper):has(sticky-header) {
   display: none !important;
 }
-body:has(.seym-hd) .main-content-wrapper {
-  padding-top: 0 !important;
+
+/* Seym header lives in a grid cell whose height = its own height,
+   so position:sticky has no room to stick. Promote the section
+   wrapper itself to fixed, and offset the body so content starts
+   below it. */
+.shopify-section:has(.seym-hd) {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
 }
+body:has(.seym-hd) { padding-top: 9.6rem; }
+@media (max-width: 749px) {
+  body:has(.seym-hd) { padding-top: 8.8rem; }
+}
+body:has(.seym-hd) .main-content-wrapper { padding-top: 0 !important; }
 
 /* ============================================================
    28. GLOBAL SPACING REDUCTION
