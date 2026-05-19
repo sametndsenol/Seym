@@ -535,3 +535,41 @@ shop-currency-picker,
   display: none !important;
   visibility: hidden !important;
 }
+
+/* ============================================================
+   PRODUCT PAGE — calmer media frame, readable accordion labels
+   Image was sitting in an oversized square frame and the accordion
+   summaries (h2.h4) were rendering at ~2.25rem in a narrow column,
+   wrapping "DIMENSIONS" to two lines. Cap both.
+   ============================================================ */
+
+@media (min-width: 990px) {
+  .product--medium:not(.product--no-media) .product__media-wrapper,
+  .product--large:not(.product--no-media) .product__media-wrapper {
+    max-width: 52rem;
+    margin-inline: auto 0;
+  }
+  .product__media-item,
+  .product__media-item .media,
+  .product__media-item img,
+  .product-media-container.constrain-height.media-fit-contain {
+    max-height: 56rem !important;
+  }
+}
+
+.product__accordion .accordion__title,
+.product__accordion summary .accordion__title,
+.product__accordion h2.accordion__title {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  color: var(--seym-ink) !important;
+}
+
+.product__accordion summary {
+  padding: 2rem 0 !important;
+}
