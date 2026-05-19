@@ -1,0 +1,561 @@
+{%- comment -%}
+  Seym Contact — themed contact page (ivory / wine / Cormorant)
+  Hero + two-column (showrooms list · contact form).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign _pt = s.padding_top | default: 80
+  assign _pb = s.padding_bottom | default: 96
+-%}
+
+<style>
+  #seym-contact-{{ section.id }} {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    padding: {{ _pt }}px 0 {{ _pb }}px;
+  }
+  #seym-contact-{{ section.id }} .sc__wrap {
+    max-width: 132rem;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  /* Hero */
+  #seym-contact-{{ section.id }} .sc__hero {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 6rem;
+    align-items: end;
+    padding-bottom: 3.2rem;
+    margin-bottom: 6.4rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+  }
+  #seym-contact-{{ section.id }} .sc__eyebrow {
+    display: inline-block;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+  #seym-contact-{{ section.id }} .sc__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  #seym-contact-{{ section.id }} .sc__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.6rem, 5.4vw, 7.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+    margin: 0;
+    color: #1A1A1A;
+  }
+  #seym-contact-{{ section.id }} .sc__title em {
+    font-style: italic;
+    color: var(--seym-wine, #8E2244);
+  }
+  #seym-contact-{{ section.id }} .sc__lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 1.7vw, 2.05rem);
+    line-height: 1.55;
+    color: rgba(26,26,26,0.78);
+    margin: 0;
+  }
+
+  /* Layout */
+  #seym-contact-{{ section.id }} .sc__grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  /* Showrooms column */
+  #seym-contact-{{ section.id }} .sc__col-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+  }
+  #seym-contact-{{ section.id }} .sc__col-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 3vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.012em;
+    color: #1A1A1A;
+    margin: 0 0 2.8rem;
+  }
+  #seym-contact-{{ section.id }} .sc__col-heading em {
+    font-style: italic;
+    color: var(--seym-wine, #8E2244);
+  }
+
+  #seym-contact-{{ section.id }} .sc__rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 2.6rem;
+  }
+  #seym-contact-{{ section.id }} .sc__room {
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid rgba(26,26,26,0.08);
+  }
+  #seym-contact-{{ section.id }} .sc__room:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  #seym-contact-{{ section.id }} .sc__room-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.9rem;
+    line-height: 1.25;
+    color: #1A1A1A;
+    margin: 0 0 0.6rem;
+  }
+  #seym-contact-{{ section.id }} .sc__room-addr,
+  #seym-contact-{{ section.id }} .sc__room-tel {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.35rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.78);
+    text-decoration: none;
+  }
+  #seym-contact-{{ section.id }} .sc__room-tel {
+    margin-top: 0.4rem;
+    color: #1A1A1A;
+    border-bottom: 1px solid transparent;
+    display: inline-block;
+    padding-bottom: 1px;
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+  #seym-contact-{{ section.id }} .sc__room-tel:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+
+  #seym-contact-{{ section.id }} .sc__direct {
+    margin-top: 3.6rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.78);
+  }
+  #seym-contact-{{ section.id }} .sc__direct a {
+    color: #1A1A1A;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(26,26,26,0.3);
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+  #seym-contact-{{ section.id }} .sc__direct a:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+  #seym-contact-{{ section.id }} .sc__direct-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 0.8rem;
+  }
+
+  /* Form column */
+  #seym-contact-{{ section.id }} .sc__form-card {
+    background: #FFFFFF;
+    padding: 4.4rem 4rem;
+    border: 1px solid rgba(26,26,26,0.08);
+  }
+  #seym-contact-{{ section.id }} .sc__success,
+  #seym-contact-{{ section.id }} .sc__error {
+    margin: 0 0 2.4rem;
+    padding: 1.6rem 1.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    line-height: 1.55;
+    border-left: 2px solid;
+  }
+  #seym-contact-{{ section.id }} .sc__success {
+    background: rgba(142,34,68,0.05);
+    border-color: var(--seym-wine, #8E2244);
+    color: #1A1A1A;
+  }
+  #seym-contact-{{ section.id }} .sc__error {
+    background: rgba(197,71,48,0.06);
+    border-color: var(--seym-terracotta, #C54730);
+    color: #1A1A1A;
+  }
+  #seym-contact-{{ section.id }} .sc__error ul {
+    margin: 0.6rem 0 0;
+    padding-left: 1.6rem;
+  }
+
+  #seym-contact-{{ section.id }} .sc__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  #seym-contact-{{ section.id }} .sc__field {
+    margin-bottom: 1.8rem;
+    position: relative;
+  }
+  #seym-contact-{{ section.id }} .sc__label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 0.8rem;
+  }
+  #seym-contact-{{ section.id }} .sc__input,
+  #seym-contact-{{ section.id }} .sc__textarea {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(26,26,26,0.25);
+    padding: 0.8rem 0 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.45rem;
+    line-height: 1.5;
+    color: #1A1A1A;
+    border-radius: 0;
+    transition: border-color 220ms ease;
+    box-shadow: none;
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  #seym-contact-{{ section.id }} .sc__textarea {
+    min-height: 14rem;
+    padding-top: 1.2rem;
+    resize: vertical;
+  }
+  #seym-contact-{{ section.id }} .sc__input:focus,
+  #seym-contact-{{ section.id }} .sc__textarea:focus {
+    outline: 0;
+    border-bottom-color: var(--seym-wine, #8E2244);
+  }
+  #seym-contact-{{ section.id }} .sc__input::placeholder,
+  #seym-contact-{{ section.id }} .sc__textarea::placeholder {
+    color: rgba(26,26,26,0.35);
+    font-style: italic;
+  }
+
+  #seym-contact-{{ section.id }} .sc__submit {
+    display: inline-block;
+    margin-top: 1.2rem;
+    background: var(--seym-wine, #8E2244);
+    color: var(--seym-ivory, #F5F1EA);
+    border: 1px solid var(--seym-wine, #8E2244);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    padding: 1.3rem 2.6rem;
+    cursor: pointer;
+    transition: background 220ms ease, color 220ms ease;
+  }
+  #seym-contact-{{ section.id }} .sc__submit:hover {
+    background: transparent;
+    color: var(--seym-wine, #8E2244);
+  }
+
+  @media (max-width: 989px) {
+    #seym-contact-{{ section.id }} .sc__wrap { padding: 0 2.4rem; }
+    #seym-contact-{{ section.id }} .sc__hero,
+    #seym-contact-{{ section.id }} .sc__grid {
+      grid-template-columns: 1fr;
+      gap: 2.8rem;
+    }
+    #seym-contact-{{ section.id }} .sc__hero { margin-bottom: 4rem; }
+    #seym-contact-{{ section.id }} .sc__form-card { padding: 3.2rem 2.4rem; }
+    #seym-contact-{{ section.id }} .sc__row { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+
+<section id="seym-contact-{{ section.id }}" class="seym-contact">
+  <div class="sc__wrap">
+
+    <header class="sc__hero">
+      <div>
+        {%- if s.eyebrow != blank -%}
+          <span class="sc__eyebrow">{{ s.eyebrow }}</span>
+        {%- endif -%}
+        <h1 class="sc__title">{{ s.title }}</h1>
+      </div>
+      {%- if s.lead != blank -%}
+        <p class="sc__lead">{{ s.lead }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="sc__grid">
+
+      {%- comment -%} Showrooms column {%- endcomment -%}
+      <aside>
+        {%- if s.rooms_tag != blank -%}
+          <span class="sc__col-tag">{{ s.rooms_tag }}</span>
+        {%- endif -%}
+        <h2 class="sc__col-heading">{{ s.rooms_heading }}</h2>
+
+        <div class="sc__rooms">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'showroom' -%}
+              <div class="sc__room" {{ block.shopify_attributes }}>
+                {%- if block.settings.name != blank -%}
+                  <span class="sc__room-name">{{ block.settings.name }}</span>
+                {%- endif -%}
+                {%- if block.settings.address != blank -%}
+                  <span class="sc__room-addr">{{ block.settings.address }}</span>
+                {%- endif -%}
+                {%- if block.settings.phone != blank -%}
+                  {%- assign tel_href = block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' -%}
+                  <a class="sc__room-tel" href="tel:{{ tel_href }}">{{ block.settings.phone }}</a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if s.direct_email != blank or s.direct_phone != blank -%}
+          <div class="sc__direct">
+            <span class="sc__direct-label">{{ s.direct_label | default: 'Direct' }}</span>
+            {%- if s.direct_email != blank -%}
+              <a href="mailto:{{ s.direct_email }}">{{ s.direct_email }}</a><br>
+            {%- endif -%}
+            {%- if s.direct_phone != blank -%}
+              {%- assign d_tel = s.direct_phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' -%}
+              <a href="tel:{{ d_tel }}">{{ s.direct_phone }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </aside>
+
+      {%- comment -%} Form column {%- endcomment -%}
+      <div class="sc__form-card">
+        {%- form 'contact', id: 'SeymContactForm' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="sc__success" tabindex="-1" autofocus>
+              {{ 'templates.contact.form.post_success' | t }}
+            </p>
+          {%- elsif form.errors -%}
+            <div class="sc__error" role="alert" tabindex="-1" autofocus>
+              <strong>{{ 'templates.contact.form.error_heading' | t }}</strong>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>
+                    {{ form.errors.translated_fields[field] | capitalize }}
+                    {{ form.errors.messages[field] }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="sc__row">
+            <div class="sc__field">
+              <label class="sc__label" for="SeymContact-name">{{ 'templates.contact.form.name' | t }}</label>
+              <input
+                class="sc__input"
+                type="text"
+                id="SeymContact-name"
+                name="contact[{{ 'templates.contact.form.name' | t }}]"
+                autocomplete="name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              >
+            </div>
+            <div class="sc__field">
+              <label class="sc__label" for="SeymContact-email">{{ 'templates.contact.form.email' | t }} *</label>
+              <input
+                class="sc__input"
+                type="email"
+                id="SeymContact-email"
+                name="contact[email]"
+                autocomplete="email"
+                spellcheck="false"
+                autocapitalize="off"
+                aria-required="true"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              >
+            </div>
+          </div>
+
+          <div class="sc__field">
+            <label class="sc__label" for="SeymContact-phone">{{ 'templates.contact.form.phone' | t }}</label>
+            <input
+              class="sc__input"
+              type="tel"
+              id="SeymContact-phone"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              autocomplete="tel"
+              pattern="[0-9\-\+\s\(\)]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            >
+          </div>
+
+          <div class="sc__field">
+            <label class="sc__label" for="SeymContact-body">{{ 'templates.contact.form.comment' | t }}</label>
+            <textarea
+              class="sc__textarea"
+              id="SeymContact-body"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              rows="6"
+            >{{ form.body }}</textarea>
+          </div>
+
+          <button type="submit" class="sc__submit">{{ 'templates.contact.form.send' | t }}</button>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Seym Contact",
+  "tag": "section",
+  "class": "shopify-section seym-contact-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "İletişim"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Atölyemizle <em>bağlantı</em> kurun."
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead",
+      "default": "Tasarımlarımızı yakından görmek, özel bir sipariş ya da işbirliği için yazın — küçük bir ekibiz, her mesaj bizzat okunur."
+    },
+    {
+      "type": "header",
+      "content": "Showrooms column"
+    },
+    {
+      "type": "text",
+      "id": "rooms_tag",
+      "label": "Column tag",
+      "default": "Bizi Ziyaret Edin"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "rooms_heading",
+      "label": "Column heading",
+      "default": "Tasarımlarımızı keşfedebileceğiniz <em>adresler</em>."
+    },
+    {
+      "type": "header",
+      "content": "Direct contact"
+    },
+    {
+      "type": "text",
+      "id": "direct_label",
+      "label": "Direct label",
+      "default": "Doğrudan"
+    },
+    {
+      "type": "text",
+      "id": "direct_email",
+      "label": "Email",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "direct_phone",
+      "label": "Phone",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "showroom",
+      "name": "Showroom",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "textarea", "id": "address", "label": "Address" },
+        { "type": "text", "id": "phone", "label": "Phone" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Seym Contact",
+      "blocks": [
+        {
+          "type": "showroom",
+          "settings": {
+            "name": "Mandarin Oriental Bosphorus, İstanbul",
+            "address": "Kuruçeşme, Muallim Naci Cd. No:62, 34345 Beşiktaş / İstanbul",
+            "phone": "(0212) 349 88 88"
+          }
+        },
+        {
+          "type": "showroom",
+          "settings": {
+            "name": "Mandarin Oriental, Bodrum",
+            "address": "Gölköy, 314 Sokak No.10, 48483 Muğla",
+            "phone": "(0252) 311 18 88"
+          }
+        },
+        {
+          "type": "showroom",
+          "settings": {
+            "name": "JW Marriott Hotel İstanbul Marmara Sea",
+            "address": "Ataköy 2-5-6. Kısım, Kısım Mah. Rauf Orbay Cd. 2/1 L B, 34158 Bakırköy / İstanbul",
+            "phone": "(0212) 413 01 01"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
