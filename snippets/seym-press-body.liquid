@@ -1,0 +1,203 @@
+{%- liquid
+  assign lang = localization.language.iso_code
+  assign is_tr = false
+  if lang == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
+<style>
+  .seym-press {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    padding: 48px 0 64px;
+  }
+  .seym-press__wrap { max-width: 96rem; margin: 0 auto; padding: 0 4rem; }
+
+  .seym-press__hero {
+    margin: 0 0 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+  }
+  .seym-press__eyebrow {
+    display: inline-block;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+  .seym-press__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  .seym-press__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.2rem, 5vw, 6.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+    color: #1A1A1A;
+    margin: 0;
+  }
+  .seym-press__title em { font-style: italic; color: var(--seym-wine, #8E2244); }
+  .seym-press__lead {
+    margin: 1.6rem 0 0;
+    max-width: 56ch;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 1.6vw, 1.9rem);
+    line-height: 1.55;
+    color: rgba(26,26,26,0.72);
+  }
+
+  .seym-press__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.4rem;
+  }
+  .seym-press__card {
+    border-left: 2px solid var(--seym-wine, #8E2244);
+    padding: 2.4rem 0 2.4rem 2.4rem;
+  }
+  .seym-press__pub {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 1.8vw, 2.2rem);
+    line-height: 1.15;
+    color: var(--seym-wine, #8E2244);
+    margin: 0 0 1rem;
+  }
+  .seym-press__quote {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.72);
+    margin: 0;
+  }
+
+  .seym-press__content {
+    margin-top: 3.6rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.82);
+    max-width: 72ch;
+  }
+  .seym-press__content p { margin: 0 0 1.4rem; }
+  .seym-press__content p:last-child { margin-bottom: 0; }
+  .seym-press__content a {
+    color: var(--seym-wine, #8E2244);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(142,34,68,0.35);
+  }
+  .seym-press__content a:hover { border-color: var(--seym-wine, #8E2244); }
+
+  .seym-press__back {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .seym-press__back a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(26,26,26,0.3);
+    transition: color 220ms ease, border-color 220ms ease;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .seym-press__back a:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+
+  @media (max-width: 749px) {
+    .seym-press__wrap { padding: 0 2.4rem; }
+    .seym-press__grid { grid-template-columns: 1fr; }
+    .seym-press__card { padding: 2rem 0 2rem 2rem; }
+  }
+</style>
+
+<section class="seym-press">
+  <div class="seym-press__wrap">
+    <header class="seym-press__hero">
+      <span class="seym-press__eyebrow">
+        {%- if is_tr -%}Basın{%- else -%}Press{%- endif -%}
+      </span>
+      <h1 class="seym-press__title">
+        {%- if is_tr -%}Dışarıdan <em>Bakışlar</em>{%- else -%}Voices <em>Looking In</em>{%- endif -%}
+      </h1>
+      <p class="seym-press__lead">
+        {%- if is_tr -%}
+          Dünyanın Seym'e yönelttiği bakışlar ve sesler.
+        {%- else -%}
+          Voices and viewpoints from the world looking in.
+        {%- endif -%}
+      </p>
+    </header>
+
+    <div class="seym-press__grid">
+      <div class="seym-press__card">
+        <h3 class="seym-press__pub">Homeart</h3>
+        <p class="seym-press__quote">
+          {%- if is_tr -%}
+            Seym'in cam sanatı, modern dekorasyon trendleriyle buluşarak mekânlara zarafet katıyor.
+          {%- else -%}
+            Seym's glass art meets modern decoration trends, bringing elegance to living spaces.
+          {%- endif -%}
+        </p>
+      </div>
+      <div class="seym-press__card">
+        <h3 class="seym-press__pub">Design Turkey</h3>
+        <p class="seym-press__quote">
+          {%- if is_tr -%}
+            İstanbul'dan dünyaya uzanan bir cam sanatı hikâyesi — gelenek ile çağdaş tasarımın buluşma noktası.
+          {%- else -%}
+            A glass art story reaching from Istanbul to the world — where tradition meets contemporary design.
+          {%- endif -%}
+        </p>
+      </div>
+      <div class="seym-press__card">
+        <h3 class="seym-press__pub">A' Design Award</h3>
+        <p class="seym-press__quote">
+          {%- if is_tr -%}
+            Uluslararası arenada gümüş ödülle taçlanan tasarım — Stella koleksiyonu ile.
+          {%- else -%}
+            Design crowned with a silver award on the international stage — with the Stella collection.
+          {%- endif -%}
+        </p>
+      </div>
+    </div>
+
+    {%- if page.content != blank -%}
+      <div class="seym-press__content rte">
+        {{ page.content }}
+      </div>
+    {%- endif -%}
+
+    <nav class="seym-press__back" aria-label="Related">
+      <a href="/pages/about-us">
+        ← {%- if is_tr -%}Hakkımızda{%- else -%}About Seym{%- endif -%}
+      </a>
+      <a href="/pages/our-achievements">
+        {%- if is_tr -%}Başarılarımız{%- else -%}Achievements{%- endif -%} →
+      </a>
+    </nav>
+  </div>
+</section>

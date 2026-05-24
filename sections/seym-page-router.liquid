@@ -8,16 +8,29 @@
 {%- liquid
   assign h = page.handle | downcase
   assign is_hub = false
-  if h contains 'about'
+  assign is_catalog = false
+  assign is_press = false
+  assign is_achievements = false
+
+  if h contains 'about' or h contains 'hakkimizda' or h contains 'hakkımızda' or h == 'hakkimiz' or h == 'hakkımız'
     assign is_hub = true
-  endif
-  if h contains 'hakkimizda' or h contains 'hakkımızda' or h == 'hakkimiz' or h == 'hakkımız'
-    assign is_hub = true
+  elsif h contains 'digital-catalog' or h contains 'katalog'
+    assign is_catalog = true
+  elsif h == 'press' or h contains 'basin'
+    assign is_press = true
+  elsif h == 'our-achievements' or h contains 'basari'
+    assign is_achievements = true
   endif
 -%}
 
 {%- if is_hub -%}
   {%- render 'seym-about-us-body' -%}
+{%- elsif is_catalog -%}
+  {%- render 'seym-catalog-body' -%}
+{%- elsif is_press -%}
+  {%- render 'seym-press-body' -%}
+{%- elsif is_achievements -%}
+  {%- render 'seym-achievements-body' -%}
 {%- else -%}
   {%- render 'seym-page-body' -%}
 {%- endif -%}

@@ -1,0 +1,233 @@
+{%- comment -%}
+  Seym Locale Picker — minimal language & currency selector.
+  Accepts: context ('desktop' | 'mobile'), id_prefix (string for unique IDs)
+{%- endcomment -%}
+
+{%- liquid
+  assign _ctx = context | default: 'desktop'
+  assign _pfx = id_prefix | default: 'SeymLocale'
+-%}
+
+<style>
+  .seym-lp {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .seym-lp--mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+    padding: 2rem 0 0;
+    margin-top: 1.6rem;
+    border-top: 1px solid rgba(26,26,26,0.08);
+  }
+  .seym-lp__group {
+    position: relative;
+  }
+  .seym-lp__sep {
+    width: 1px;
+    height: 1.2rem;
+    background: rgba(26,26,26,0.18);
+  }
+  .seym-lp--mobile .seym-lp__sep { display: none; }
+
+  .seym-lp__trigger {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem 0.2rem;
+    transition: color 220ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 44px;
+  }
+  .seym-lp__trigger:hover,
+  .seym-lp__trigger[aria-expanded="true"] {
+    color: var(--seym-wine, #8E2244);
+  }
+  .seym-lp__trigger svg {
+    width: 0.6rem;
+    height: 0.6rem;
+    transition: transform 200ms ease;
+  }
+  .seym-lp__trigger[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+
+  .seym-lp__dropdown {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    background: #fff;
+    border: 1px solid rgba(26,26,26,0.08);
+    box-shadow: 0 4px 20px rgba(26,26,26,0.08);
+    padding: 0.6rem 0;
+    min-width: 10rem;
+    z-index: 100;
+    display: none;
+  }
+  .seym-lp--mobile .seym-lp__dropdown {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0.4rem 0 0;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .seym-lp__group[open] .seym-lp__dropdown { display: block; }
+  .seym-lp--mobile .seym-lp__group[open] .seym-lp__dropdown { display: flex; }
+
+  .seym-lp__option {
+    display: block;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.6);
+    background: none;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+    text-align: left;
+    transition: color 180ms ease, background 180ms ease;
+    text-decoration: none;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .seym-lp--mobile .seym-lp__option {
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(26,26,26,0.12);
+  }
+  .seym-lp__option:hover { color: var(--seym-wine, #8E2244); background: rgba(142,34,68,0.03); }
+  .seym-lp__option[aria-current="true"] { color: var(--seym-wine, #8E2244); font-weight: 500; }
+  .seym-lp--mobile .seym-lp__option[aria-current="true"] {
+    border-color: var(--seym-wine, #8E2244);
+    background: rgba(142,34,68,0.04);
+  }
+
+  .seym-lp__label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.4);
+    margin-bottom: 0.6rem;
+  }
+</style>
+
+<div class="seym-lp{% if _ctx == 'mobile' %} seym-lp--mobile{% endif %}">
+
+  {%- if localization.available_languages.size > 1 -%}
+    <div class="seym-lp__group">
+      {%- if _ctx == 'mobile' -%}
+        <span class="seym-lp__label">{%- if localization.language.iso_code == 'tr' -%}Dil{%- else -%}Language{%- endif -%}</span>
+        <div class="seym-lp__dropdown">
+          {%- for language in localization.available_languages -%}
+            {%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index -%}
+              <input type="hidden" name="locale_code" value="{{ language.iso_code }}">
+              <button type="submit" class="seym-lp__option"
+                {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
+                {{ language.iso_code | upcase }}
+              </button>
+            {%- endform -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <details id="{{ _pfx }}-LangDetails">
+          <summary class="seym-lp__trigger" aria-expanded="false">
+            {{ localization.language.iso_code | upcase }}
+            <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.2"/></svg>
+          </summary>
+          <div class="seym-lp__dropdown">
+            {%- for language in localization.available_languages -%}
+              {%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index -%}
+                <input type="hidden" name="locale_code" value="{{ language.iso_code }}">
+                <button type="submit" class="seym-lp__option"
+                  {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
+                  {{ language.endonym_name | capitalize }}
+                </button>
+              {%- endform -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      {%- endif -%}
+    </div>
+
+    {%- if localization.available_countries.size > 1 -%}
+      <span class="seym-lp__sep"></span>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if localization.available_countries.size > 1 -%}
+    <div class="seym-lp__group">
+      {%- if _ctx == 'mobile' -%}
+        <span class="seym-lp__label">{%- if localization.language.iso_code == 'tr' -%}Para Birimi{%- else -%}Currency{%- endif -%}</span>
+        <div class="seym-lp__dropdown">
+          {%- for country in localization.available_countries -%}
+            {%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index -%}
+              <input type="hidden" name="country_code" value="{{ country.iso_code }}">
+              <button type="submit" class="seym-lp__option"
+                {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+                {{ country.currency.iso_code }} {{ country.currency.symbol }}
+              </button>
+            {%- endform -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <details id="{{ _pfx }}-CountryDetails">
+          <summary class="seym-lp__trigger" aria-expanded="false">
+            {{ localization.country.currency.iso_code }}
+            <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.2"/></svg>
+          </summary>
+          <div class="seym-lp__dropdown">
+            {%- for country in localization.available_countries -%}
+              {%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index -%}
+                <input type="hidden" name="country_code" value="{{ country.iso_code }}">
+                <button type="submit" class="seym-lp__option"
+                  {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+                  {{ country.name }} · {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                </button>
+              {%- endform -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('.seym-lp__group > details').forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        var s = d.querySelector('summary');
+        if (s) s.setAttribute('aria-expanded', d.open);
+        if (d.open) {
+          document.querySelectorAll('.seym-lp__group > details').forEach(function (other) {
+            if (other !== d) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.seym-lp__group')) {
+        document.querySelectorAll('.seym-lp__group > details[open]').forEach(function (d) {
+          d.removeAttribute('open');
+        });
+      }
+    });
+  })();
+</script>

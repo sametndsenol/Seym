@@ -147,10 +147,9 @@
   }
   .seym-coll__item.visible { opacity: 1; transform: none; }
 
-  /* Asymmetric vertical cascade — margin keeps stagger
-     independent from the fade-in transform. */
-  .seym-coll__item:nth-child(3n + 2) { margin-top: 6.4rem; }
-  .seym-coll__item:nth-child(3n + 3) { margin-top: 3.2rem; }
+  /* Symmetric stagger — columns 1 & 3 match, middle offset */
+  .seym-coll__item:nth-child(3n + 2) { margin-top: 4.8rem; }
+  .seym-coll__item:nth-child(3n + 3) { margin-top: 0; }
 
   .seym-coll__media {
     position: relative;
@@ -163,9 +162,9 @@
     color: inherit;
     text-decoration: none;
   }
-  /* Aspect variation: 4/5 default, 1/1 middle, 3/4 right */
+  /* Aspect: columns 1 & 3 match (4/5), middle square */
   .seym-coll__item:nth-child(3n + 2) .seym-coll__media { aspect-ratio: 1 / 1; }
-  .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 3 / 4; }
+  .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 4 / 5; }
 
   /* Primary = cutout product, floats on ivory.
      Secondary = lifestyle, fills the card. */

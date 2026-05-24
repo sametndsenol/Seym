@@ -1,0 +1,244 @@
+{%- liquid
+  assign lang = localization.language.iso_code
+  assign is_tr = false
+  if lang == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
+<style>
+  .seym-cat {
+    background: var(--seym-ivory, #F5F1EA);
+    color: var(--seym-ink, #1A1A1A);
+    padding: 48px 0 64px;
+  }
+  .seym-cat__wrap { max-width: 72rem; margin: 0 auto; padding: 0 4rem; }
+
+  .seym-cat__hero {
+    margin: 0 0 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(26,26,26,0.1);
+  }
+  .seym-cat__eyebrow {
+    display: inline-block;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+  .seym-cat__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  .seym-cat__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.2rem, 5vw, 6.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+    color: #1A1A1A;
+    margin: 0;
+  }
+  .seym-cat__title em { font-style: italic; color: var(--seym-wine, #8E2244); }
+  .seym-cat__lead {
+    margin: 1.6rem 0 0;
+    max-width: 56ch;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 1.6vw, 1.9rem);
+    line-height: 1.55;
+    color: rgba(26,26,26,0.72);
+  }
+
+  .seym-cat__card {
+    max-width: 52rem;
+    border: 1px solid rgba(142,34,68,0.18);
+    padding: 3.6rem 4rem;
+    display: flex;
+    gap: 3.6rem;
+    align-items: center;
+  }
+  .seym-cat__card-icon {
+    flex-shrink: 0;
+    width: 6.4rem;
+    height: 8rem;
+    background: linear-gradient(145deg, rgba(142,34,68,0.08) 0%, rgba(197,71,48,0.06) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .seym-cat__card-icon svg {
+    width: 2.8rem;
+    height: 3.4rem;
+    color: var(--seym-wine, #8E2244);
+  }
+  .seym-cat__card-body { flex: 1; min-width: 0; }
+  .seym-cat__card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 2vw, 2.4rem);
+    line-height: 1.15;
+    color: #1A1A1A;
+    margin: 0 0 0.6rem;
+  }
+  .seym-cat__card-desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(26,26,26,0.7);
+    margin: 0 0 0.4rem;
+  }
+  .seym-cat__card-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.42);
+    margin: 0 0 2rem;
+  }
+  .seym-cat__ctas {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .seym-cat__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2.2rem;
+    transition: background 220ms ease, color 220ms ease, border-color 220ms ease;
+    min-height: 44px;
+  }
+  .seym-cat__btn--primary {
+    background: var(--seym-wine, #8E2244);
+    color: #F5F1EA;
+    border: 1px solid var(--seym-wine, #8E2244);
+  }
+  .seym-cat__btn--primary:hover {
+    background: #6E1A35;
+    border-color: #6E1A35;
+  }
+  .seym-cat__btn--secondary {
+    background: transparent;
+    color: var(--seym-wine, #8E2244);
+    border: 1px solid rgba(142,34,68,0.4);
+  }
+  .seym-cat__btn--secondary:hover {
+    border-color: var(--seym-wine, #8E2244);
+    background: rgba(142,34,68,0.04);
+  }
+
+  .seym-cat__back {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .seym-cat__back a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(26,26,26,0.3);
+    transition: color 220ms ease, border-color 220ms ease;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .seym-cat__back a:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+
+  @media (max-width: 749px) {
+    .seym-cat__wrap { padding: 0 2.4rem; }
+    .seym-cat__card {
+      flex-direction: column;
+      padding: 2.8rem 2.4rem;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .seym-cat__ctas { flex-direction: column; }
+    .seym-cat__btn { justify-content: center; width: 100%; }
+  }
+</style>
+
+<section class="seym-cat">
+  <div class="seym-cat__wrap">
+    <header class="seym-cat__hero">
+      <span class="seym-cat__eyebrow">
+        {%- if is_tr -%}Katalog{%- else -%}The Catalog{%- endif -%}
+      </span>
+      <h1 class="seym-cat__title">
+        {%- if is_tr -%}Dijital <em>Katalog</em>{%- else -%}Digital <em>Catalog</em>{%- endif -%}
+      </h1>
+      <p class="seym-cat__lead">
+        {%- if is_tr -%}
+          Atölyeden çıkan her parçanın sessiz kaydı — baskıda ve pikselde.
+        {%- else -%}
+          The full collection in print and pixels — a quiet record of every piece released from the atelier.
+        {%- endif -%}
+      </p>
+    </header>
+
+    <div class="seym-cat__card">
+      <div class="seym-cat__card-icon">
+        <svg viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 4C2 2.89543 2.89543 2 4 2H15.172C15.702 2 16.211 2.211 16.586 2.586L21.414 7.414C21.789 7.789 22 8.298 22 8.828V28C22 29.105 21.105 30 20 30H4C2.895 30 2 29.105 2 28V4Z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M15 2V8C15 8.552 15.448 9 16 9H22" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M7 17H17M7 21H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="seym-cat__card-body">
+        <h2 class="seym-cat__card-title">
+          {%- if is_tr -%}Seym Dijital Katalog 2025{%- else -%}Seym Digital Catalog 2025{%- endif -%}
+        </h2>
+        <p class="seym-cat__card-desc">
+          {%- if is_tr -%}
+            Tüm koleksiyonlar, teknik detaylar ve atölye hikâyesi — tek bir belgede.
+          {%- else -%}
+            Every collection, technical detail, and atelier story — in a single document.
+          {%- endif -%}
+        </p>
+        <p class="seym-cat__card-meta">PDF · 296 MB</p>
+        <div class="seym-cat__ctas">
+          <a href="https://drive.google.com/file/d/1PXWxAydV-W5tIVbMLgNOH7bJoOzUNYbF/view"
+             target="_blank" rel="noopener"
+             class="seym-cat__btn seym-cat__btn--primary">
+            {%- if is_tr -%}Görüntüle{%- else -%}View Catalog{%- endif -%}
+          </a>
+          <a href="https://drive.usercontent.google.com/download?id=1PXWxAydV-W5tIVbMLgNOH7bJoOzUNYbF&export=download"
+             class="seym-cat__btn seym-cat__btn--secondary">
+            {%- if is_tr -%}İndir{%- else -%}Download{%- endif -%}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="seym-cat__back" aria-label="Related">
+      <a href="/pages/about-us">
+        ← {%- if is_tr -%}Hakkımızda{%- else -%}About Seym{%- endif -%}
+      </a>
+      <a href="/pages/press">
+        {%- if is_tr -%}Basın{%- else -%}Press{%- endif -%} →
+      </a>
+    </nav>
+  </div>
+</section>
