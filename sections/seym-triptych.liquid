@@ -121,7 +121,7 @@
     {%- for block in section.blocks -%}
       {%- if forloop.index == 2 -%}
         {%- comment -%} CENTER CARD {%- endcomment -%}
-        <a class="sdt__card sdt__card--center" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+        <a class="sdt__card sdt__card--center" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 1000 | image_tag:
                loading: 'lazy', widths: '400,600,800,1000',
@@ -135,7 +135,7 @@
         </a>
       {%- else -%}
         {%- comment -%} SIDE CARDS {%- endcomment -%}
-        <a class="sdt__card sdt__card--side" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+        <a class="sdt__card sdt__card--side" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 1000 | image_tag:
                loading: 'lazy', widths: '400,600,800,1000',

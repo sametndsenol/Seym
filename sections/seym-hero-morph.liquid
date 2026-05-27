@@ -7,7 +7,7 @@
 
 <style>
   .shm {
-    height: 300vh;
+    height: 250vh;
     position: relative;
     background: #0a0a0a;
   }
@@ -19,7 +19,8 @@
     overflow: hidden;
     display: flex;
     align-items: stretch;
-    background: #fff;
+    background: #0a0a0a;
+    transition: background 0.6s ease;
   }
 
   /* --- Side cards --- */
@@ -50,7 +51,7 @@
     transition: none;
   }
   .shm__side-ey {
-    font: 300 0.6rem/1 'Inter', sans-serif;
+    font: 300 0.65rem/1 'Inter', sans-serif;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.55);
@@ -63,11 +64,11 @@
 
   /* --- Center (video) card --- */
   .shm__center {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    flex: 0 0 100%;
     z-index: 2;
     overflow: hidden;
-    will-change: transform;
+    will-change: flex-basis;
   }
   .shm__center video,
   .shm__center img {
@@ -210,7 +211,7 @@
     <div class="shm__side shm__side--l" id="shm-sideL-{{ section.id }}">
       {%- if left.settings.image != blank -%}
         {{ left.settings.image | image_url: width: 1000 | image_tag:
-           loading: 'eager', widths: '400,600,800,1000',
+           loading: 'lazy', widths: '400,600,800,1000',
            sizes: '(max-width:749px) 100vw, 33vw' }}
       {%- endif -%}
       <div class="shm__side-txt" id="shm-capL-{{ section.id }}">
@@ -257,7 +258,7 @@
     <div class="shm__side shm__side--r" id="shm-sideR-{{ section.id }}">
       {%- if right.settings.image != blank -%}
         {{ right.settings.image | image_url: width: 1000 | image_tag:
-           loading: 'eager', widths: '400,600,800,1000',
+           loading: 'lazy', widths: '400,600,800,1000',
            sizes: '(max-width:749px) 100vw, 33vw' }}
       {%- endif -%}
       <div class="shm__side-txt" id="shm-capR-{{ section.id }}">
@@ -305,17 +306,8 @@
       var p = clamp(scrolled / scrollable);
       var ep = ease(p);
 
-      // Center card: from absolute full-screen to relative ~33%
-      if (p < 0.02) {
-        center.style.position = 'absolute';
-        center.style.inset = '0';
-        center.style.flex = 'none';
-        center.style.width = '';
-      } else {
-        center.style.position = 'relative';
-        center.style.inset = 'auto';
-        center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
-      }
+      // Center card: shrink from 100% to 33% (stay relative, no position jump)
+      center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
 
       // Side cards: grow from 0% to 33%
       var sideP = clamp((p - 0.15) / 0.85);
@@ -350,8 +342,9 @@
       capL.style.opacity = capOp;
       capR.style.opacity = capOp;
 
-      // Background: black to white
-      stage.style.background = p < 0.1 ? '#0a0a0a' : '#fff';
+      // Background: smooth black to white
+      var bgVal = Math.round(lerp(10, 255, ease(clamp(p / 0.5))));
+      stage.style.background = 'rgb(' + bgVal + ',' + bgVal + ',' + bgVal + ')';
 
       ticking = false;
     });

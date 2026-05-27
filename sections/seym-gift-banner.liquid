@@ -1,25 +1,32 @@
 {%- comment -%}
-  Daum Gift Banner — full-width image, text overlay left-aligned.
+  Gift Banner — fixed-height image with strong readable text overlay.
 {%- endcomment -%}
 
 <style>
   .sgb {
     position: relative;
     width: 100%;
+    height: clamp(28rem, 50vh, 44rem);
     overflow: hidden;
   }
-  .sgb__media { width: 100%; }
+  .sgb__media {
+    position: absolute;
+    inset: 0;
+  }
   .sgb__media img {
-    width: 100%; height: auto;
-    display: block;
+    width: 100%; height: 100%;
     object-fit: cover;
-    max-height: 36rem;
+    display: block;
   }
   .sgb__scrim {
     position: absolute; inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 40%, transparent 65%);
+    background:
+      linear-gradient(to right,
+        rgba(245,241,234,0.92) 0%,
+        rgba(245,241,234,0.7) 30%,
+        rgba(245,241,234,0.2) 55%,
+        transparent 75%);
     z-index: 1;
-    pointer-events: none;
   }
   .sgb__txt {
     position: absolute;
@@ -28,41 +35,57 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3rem 5rem;
-    max-width: 36rem;
+    padding: 4rem 6rem;
+    max-width: 40rem;
   }
   .sgb__ey {
-    font: 300 0.64rem/1 'Inter', sans-serif;
+    font: 300 0.7rem/1 'Inter', sans-serif;
     letter-spacing: 0.34em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
-    margin: 0 0 0.8rem;
+    color: rgba(26,26,26,0.5);
+    margin: 0 0 1rem;
   }
   .sgb__h {
-    font: 300 clamp(4rem,8vw,7rem)/0.9 'Cormorant Garamond', serif;
+    font: 300 clamp(5rem, 10vw, 9rem)/0.88 'Cormorant Garamond', serif;
     font-style: italic;
     color: #1A1A1A;
-    margin: 0 0 1.6rem;
+    margin: 0 0 1.8rem;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
   }
   .sgb__cta {
-    font: 300 0.68rem/1 'Inter', sans-serif;
+    font: 400 0.72rem/1 'Inter', sans-serif;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: #1A1A1A;
     text-decoration: none;
-    border-bottom: 1px solid rgba(26,26,26,0.35);
-    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(26,26,26,0.4);
+    padding-bottom: 0.4rem;
     align-self: flex-start;
     transition: color .2s, border-color .2s;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
   }
-  .sgb__cta:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+  .sgb__cta:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
 
-  @media(max-width:749px){
-    .sgb__txt { padding: 2rem; max-width: none; }
-    .sgb__media img { max-height: 28rem; }
+  @media(max-width:749px) {
+    .sgb { height: clamp(24rem, 60vh, 36rem); }
+    .sgb__txt { padding: 2.4rem; max-width: none; }
+    .sgb__scrim {
+      background:
+        linear-gradient(to bottom,
+          rgba(245,241,234,0.9) 0%,
+          rgba(245,241,234,0.6) 50%,
+          transparent 100%);
+    }
+    .sgb__txt {
+      top: 0; bottom: auto; left: 0; right: 0;
+      justify-content: flex-start;
+      padding-top: 3rem;
+    }
   }
 </style>
 
