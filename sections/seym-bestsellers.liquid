@@ -1,200 +1,141 @@
 {%- comment -%}
-  Seym Best Sellers — horizontal scroll carousel, second-image hover, clean white cards.
+  Daum Bestsellers — clean white grid, products float on light bg.
+  Eyebrow + italic heading centered. 4 products. Nav arrows at sides.
 {%- endcomment -%}
 
 <style>
-  .seym-bs {
-    background: #FAFAF7;
-    padding: 80px 0 96px;
+  .sbs {
+    background: #fff;
+    padding: 72px 0 80px;
   }
-  .seym-bs__wrap { max-width: 132rem; margin: 0 auto; padding: 0 4rem; }
-  .seym-bs__header { text-align: center; margin-bottom: 4.8rem; }
-  .seym-bs__eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.36em;
+  .sbs__wrap { max-width: 128rem; margin: 0 auto; padding: 0 4rem; }
+  .sbs__hd { text-align: center; margin-bottom: 4.4rem; }
+  .sbs__ey {
+    font: 300 0.68rem/1 'Inter', sans-serif;
+    letter-spacing: 0.38em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
-    margin: 0 0 1rem;
+    color: rgba(26,26,26,0.4);
+    margin: 0 0 0.8rem;
   }
-  .seym-bs__heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.8rem, 4vw, 4.8rem);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
+  .sbs__h {
+    font: 300 clamp(2.4rem,3.6vw,3.8rem)/1.05 'Cormorant Garamond', serif;
+    font-style: italic;
+    letter-spacing: -0.01em;
     color: #1A1A1A;
     margin: 0;
-    font-style: italic;
   }
 
-  .seym-bs__track {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    scroll-behavior: smooth;
-    padding-bottom: 0.4rem;
+  .sbs__row {
+    position: relative;
   }
-  .seym-bs__track::-webkit-scrollbar { display: none; }
-
-  .seym-bs__item {
+  .sbs__track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.4rem;
+  }
+  .sbs__item {
     text-decoration: none;
     color: inherit;
-    display: block;
-    flex: 0 0 calc(25% - 1.5rem);
-    min-width: 22rem;
-    scroll-snap-align: start;
   }
-  .seym-bs__img {
-    position: relative;
+  .sbs__img {
     aspect-ratio: 4 / 5;
-    background: #f2f2ef;
+    background: #f5f5f3;
     overflow: hidden;
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.4rem;
+    position: relative;
   }
-  .seym-bs__img img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+  .sbs__img img {
+    width: 100%; height: 100%;
     object-fit: contain;
-    padding: 8%;
-    transition: opacity 700ms ease, transform 800ms cubic-bezier(0.22,1,0.36,1);
+    padding: 10%;
+    transition: transform .8s cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-bs__img-secondary {
-    opacity: 0;
-    object-fit: cover !important;
-    padding: 0 !important;
-  }
-  .seym-bs__item:hover .seym-bs__img-primary { opacity: 0; transform: scale(1.02); }
-  .seym-bs__item:hover .seym-bs__img-secondary { opacity: 1; transform: scale(1.04); }
-  .seym-bs__quickview {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    text-align: center;
-    background: rgba(26,26,26,0.85);
-    color: #F5F1EA;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.66rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    padding: 0.8rem;
-    transform: translateY(100%);
-    transition: transform 320ms cubic-bezier(0.22,1,0.36,1);
-  }
-  .seym-bs__item:hover .seym-bs__quickview { transform: translateY(0); }
-
-  .seym-bs__tag {
+  .sbs__item:hover .sbs__img img { transform: scale(1.06); }
+  .sbs__tag {
     display: block;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.66rem;
+    font: 400 0.6rem/1 'Inter', sans-serif;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--seym-wine, #8E2244);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
   }
-  .seym-bs__name {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-size: 1.5rem;
-    line-height: 1.2;
+  .sbs__name {
+    font: 400 1.3rem/1.25 'Cormorant Garamond', serif;
     color: #1A1A1A;
-    margin: 0 0 0.4rem;
-    transition: color 220ms ease;
+    margin: 0 0 0.3rem;
   }
-  .seym-bs__item:hover .seym-bs__name { color: var(--seym-wine, #8E2244); }
-  .seym-bs__price {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    color: rgba(26,26,26,0.6);
+  .sbs__price {
+    font: 300 0.85rem/1 'Inter', sans-serif;
+    color: rgba(26,26,26,0.5);
   }
 
-  .seym-bs__nav {
+  .sbs__nav {
+    position: absolute;
+    top: 35%;
+    width: 100%;
     display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 4rem;
+    justify-content: space-between;
+    pointer-events: none;
+    padding: 0;
   }
-  .seym-bs__nav-btn {
-    width: 48px;
-    height: 48px;
+  .sbs__arr {
+    pointer-events: auto;
+    width: 40px; height: 40px;
     border: 1px solid rgba(26,26,26,0.15);
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    transition: border-color 220ms ease, background 220ms ease;
+    transition: border-color .2s;
     color: #1A1A1A;
   }
-  .seym-bs__nav-btn:hover { border-color: #1A1A1A; background: rgba(26,26,26,0.03); }
-  .seym-bs__nav-btn svg { width: 1.2rem; height: 1.2rem; }
+  .sbs__arr:hover { border-color: #1A1A1A; }
+  .sbs__arr svg { width: 1rem; height: 1rem; }
+  .sbs__arr--l { margin-left: -20px; }
+  .sbs__arr--r { margin-right: -20px; }
 
-  @media (max-width: 989px) {
-    .seym-bs__item { flex: 0 0 calc(50% - 1rem); min-width: 18rem; }
-    .seym-bs { padding: 56px 0 64px; }
+  @media(max-width:989px){
+    .sbs__track { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+    .sbs { padding: 56px 0 64px; }
+    .sbs__nav { display: none; }
   }
-  @media (max-width: 749px) {
-    .seym-bs__wrap { padding: 0 2rem; }
-    .seym-bs__item { flex: 0 0 72%; min-width: 0; }
-    .seym-bs__quickview { display: none; }
+  @media(max-width:749px){
+    .sbs__wrap { padding: 0 2rem; }
+    .sbs__track { gap: 1.2rem; }
   }
 </style>
 
-<section class="seym-bs" data-reveal>
-  <div class="seym-bs__wrap">
-    <header class="seym-bs__header" data-reveal>
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="seym-bs__eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="seym-bs__heading">{{ section.settings.heading }}</h2>
-      {%- endif -%}
+<section class="sbs" data-reveal>
+  <div class="sbs__wrap">
+    <header class="sbs__hd">
+      {%- if section.settings.eyebrow != blank -%}<p class="sbs__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{{ section.settings.heading }}</h2>{%- endif -%}
     </header>
 
     {%- if section.settings.collection != blank -%}
-      <div class="seym-bs__track" id="SeymBsTrack-{{ section.id }}">
-        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-          <a class="seym-bs__item" href="{{ product.url }}">
-            <div class="seym-bs__img">
-              {%- if product.featured_image != blank -%}
-                {{ product.featured_image | image_url: width: 800 | image_tag:
-                   class: 'seym-bs__img-primary',
-                   loading: 'lazy', widths: '300,500,700,900',
-                   sizes: '(max-width: 749px) 72vw, 25vw',
-                   alt: product.title }}
+      <div class="sbs__row">
+        <div class="sbs__track" data-reveal-child>
+          {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+            <a class="sbs__item" href="{{ product.url }}">
+              <div class="sbs__img">
+                {%- if product.featured_image != blank -%}
+                  {{ product.featured_image | image_url: width: 800 | image_tag:
+                     loading: 'lazy', widths: '300,500,700',
+                     sizes: '(max-width:749px) 50vw, 25vw',
+                     alt: product.title }}
+                {%- endif -%}
+              </div>
+              {%- if product.collections.first != blank -%}
+                <span class="sbs__tag">{{ product.collections.first.title }}</span>
               {%- endif -%}
-              {%- if product.media.size > 1 and product.media[1].media_type == 'image' -%}
-                {{ product.media[1] | image_url: width: 800 | image_tag:
-                   class: 'seym-bs__img-secondary',
-                   loading: 'lazy', widths: '300,500,700,900',
-                   sizes: '(max-width: 749px) 72vw, 25vw',
-                   alt: product.title }}
-              {%- endif -%}
-              <span class="seym-bs__quickview">Quick View</span>
-            </div>
-            {%- if product.collections.first != blank -%}
-              <span class="seym-bs__tag">{{ product.collections.first.title }}</span>
-            {%- endif -%}
-            <h3 class="seym-bs__name">{{ product.title }}</h3>
-            <span class="seym-bs__price">{{ product.price | money }}</span>
-          </a>
-        {%- endfor -%}
-      </div>
-
-      <div class="seym-bs__nav">
-        <button class="seym-bs__nav-btn" aria-label="Previous" onclick="document.getElementById('SeymBsTrack-{{ section.id }}').scrollBy({left:-320,behavior:'smooth'})">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="1.5"/></svg>
-        </button>
-        <button class="seym-bs__nav-btn" aria-label="Next" onclick="document.getElementById('SeymBsTrack-{{ section.id }}').scrollBy({left:320,behavior:'smooth'})">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.5"/></svg>
-        </button>
+              <h3 class="sbs__name">{{ product.title }}</h3>
+              <span class="sbs__price">{{ product.price | money }}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+        <div class="sbs__nav">
+          <button class="sbs__arr sbs__arr--l" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none"><path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <button class="sbs__arr sbs__arr--r" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        </div>
       </div>
     {%- endif -%}
   </div>
@@ -205,10 +146,10 @@
   "name": "Best Sellers",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Selection" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Notre Sélection" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "OUR BESTSELLERS" },
     { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 16, "step": 1, "default": 8 }
+    { "type": "range", "id": "products_to_show", "label": "Products", "min": 2, "max": 12, "step": 1, "default": 4 }
   ],
   "presets": [{ "name": "Best Sellers" }]
 }

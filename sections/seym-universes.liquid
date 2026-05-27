@@ -1,137 +1,88 @@
 {%- comment -%}
-  Seym Universes — immersive collection grid with overlay labels.
+  Daum Universes — collection thumbnails with label below, simple and clean.
 {%- endcomment -%}
 
 <style>
-  .seym-uni {
+  .sun {
     background: #fff;
-    padding: 64px 0 80px;
+    padding: 56px 0 72px;
   }
-  .seym-uni__wrap { max-width: 132rem; margin: 0 auto; padding: 0 4rem; }
-  .seym-uni__header { text-align: center; margin-bottom: 4rem; }
-  .seym-uni__eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.36em;
+  .sun__wrap { max-width: 128rem; margin: 0 auto; padding: 0 4rem; }
+  .sun__hd { text-align: center; margin-bottom: 3.6rem; }
+  .sun__ey {
+    font: 300 0.68rem/1 'Inter', sans-serif;
+    letter-spacing: 0.38em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
-    margin: 0 0 1rem;
+    color: rgba(26,26,26,0.4);
+    margin: 0 0 0.8rem;
   }
-  .seym-uni__heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.8rem, 4vw, 4.8rem);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
+  .sun__h {
+    font: 300 clamp(2.4rem,3.6vw,3.8rem)/1.05 'Cormorant Garamond', serif;
+    font-style: italic;
+    letter-spacing: -0.01em;
     color: #1A1A1A;
     margin: 0;
-    font-style: italic;
   }
-  .seym-uni__grid {
+  .sun__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 2rem;
   }
-  .seym-uni__card {
+  .sun__card {
     text-decoration: none;
     color: inherit;
-    display: block;
-    position: relative;
-    overflow: hidden;
   }
-  .seym-uni__img {
+  .sun__img {
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    margin-bottom: 1rem;
   }
-  .seym-uni__img img {
-    width: 100%;
-    height: 100%;
+  .sun__img img {
+    width: 100%; height: 100%;
     object-fit: cover;
-    transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
+    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-uni__card:hover .seym-uni__img img { transform: scale(1.08); }
-  .seym-uni__label-wrap {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    padding: 1.4rem 1.8rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-  .seym-uni__label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.3em;
+  .sun__card:hover .sun__img img { transform: scale(1.06); }
+  .sun__label {
+    display: block;
+    text-align: center;
+    font: 300 0.66rem/1 'Inter', sans-serif;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: #F5F1EA;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    background: rgba(26,26,26,0.25);
-    padding: 0.5rem 1.2rem;
+    color: rgba(26,26,26,0.55);
+    transition: color .2s;
   }
-  .seym-uni__arrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.66rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: rgba(245,241,234,0.7);
-    transition: transform 280ms ease, color 220ms ease;
-  }
-  .seym-uni__card:hover .seym-uni__arrow {
-    transform: translateX(4px);
-    color: #F5F1EA;
-  }
+  .sun__card:hover .sun__label { color: #1A1A1A; }
 
-  @media (max-width: 749px) {
-    .seym-uni__wrap { padding: 0 2rem; }
-    .seym-uni__grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-    .seym-uni { padding: 48px 0 56px; }
+  @media(max-width:749px){
+    .sun__wrap { padding: 0 2rem; }
+    .sun__grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .sun { padding: 40px 0 48px; }
   }
 </style>
 
-<section class="seym-uni" data-reveal>
-  <div class="seym-uni__wrap">
-    <header class="seym-uni__header" data-reveal>
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="seym-uni__eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="seym-uni__heading">{{ section.settings.heading }}</h2>
-      {%- endif -%}
+<section class="sun" data-reveal>
+  <div class="sun__wrap">
+    <header class="sun__hd">
+      {%- if section.settings.eyebrow != blank -%}<p class="sun__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="sun__h">{{ section.settings.heading }}</h2>{%- endif -%}
     </header>
-
-    <div class="seym-uni__grid" data-reveal-child>
+    <div class="sun__grid" data-reveal-child>
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
         {%- assign card_url = block.settings.link | default: col.url | default: '#' -%}
         {%- assign card_label = block.settings.label | default: col.title -%}
-        <a class="seym-uni__card" href="{{ card_url }}" {{ block.shopify_attributes }}>
-          <div class="seym-uni__img">
+        <a class="sun__card" href="{{ card_url }}" {{ block.shopify_attributes }}>
+          <div class="sun__img">
             {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 800 | image_tag:
-                 loading: 'lazy', widths: '300,500,700,900',
-                 sizes: '(max-width: 749px) 50vw, 33vw',
-                 alt: card_label }}
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(max-width:749px) 50vw, 20vw', alt: card_label }}
             {%- elsif col.image != blank -%}
-              {{ col.image | image_url: width: 800 | image_tag:
-                 loading: 'lazy', widths: '300,500,700,900',
-                 sizes: '(max-width: 749px) 50vw, 33vw',
-                 alt: card_label }}
+              {{ col.image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(max-width:749px) 50vw, 20vw', alt: card_label }}
             {%- elsif col.products.first.featured_image != blank -%}
-              {{ col.products.first.featured_image | image_url: width: 800 | image_tag:
-                 loading: 'lazy', widths: '300,500,700,900',
-                 sizes: '(max-width: 749px) 50vw, 33vw',
-                 alt: card_label }}
+              {{ col.products.first.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(max-width:749px) 50vw, 20vw', alt: card_label }}
             {%- endif -%}
           </div>
-          <div class="seym-uni__label-wrap">
-            <span class="seym-uni__label">{{ card_label }}</span>
-            <span class="seym-uni__arrow">→</span>
-          </div>
+          <span class="sun__label">{{ card_label }}</span>
         </a>
       {%- endfor -%}
     </div>
@@ -143,8 +94,8 @@
   "name": "Universes",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Explore" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "OUR COLLECTIONS" }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Travel through" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "OUR UNIVERSES" }
   ],
   "blocks": [
     {
@@ -163,8 +114,6 @@
     "blocks": [
       { "type": "universe", "settings": { "label": "Flos" } },
       { "type": "universe", "settings": { "label": "Solis" } },
-      { "type": "universe", "settings": { "label": "Glacies" } },
-      { "type": "universe", "settings": { "label": "Luminis" } },
       { "type": "universe", "settings": { "label": "Maris" } },
       { "type": "universe", "settings": { "label": "Luna" } }
     ]
