@@ -15,6 +15,12 @@
     object-fit: cover;
     max-height: 36rem;
   }
+  .sgb__scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 40%, transparent 65%);
+    z-index: 1;
+    pointer-events: none;
+  }
   .sgb__txt {
     position: absolute;
     z-index: 2;
@@ -67,6 +73,7 @@
          loading: 'lazy', widths: '600,1000,1400,2000', sizes: '100vw' }}
     {%- endif -%}
   </div>
+  <div class="sgb__scrim"></div>
   <div class="sgb__txt">
     {%- if section.settings.eyebrow != blank -%}<p class="sgb__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
     {%- if section.settings.heading != blank -%}<h2 class="sgb__h">{{ section.settings.heading }}</h2>{%- endif -%}

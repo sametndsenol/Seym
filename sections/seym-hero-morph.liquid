@@ -1,0 +1,396 @@
+{%- comment -%}
+  Seym Hero Morph — full-screen video that morphs into the center card
+  of a triptych as the user scrolls. 300vh scroll runway, sticky stage.
+  Side cards slide in from left/right. Hero text fades, triptych captions appear.
+  Mobile: no morph — hero stacks above triptych cards.
+{%- endcomment -%}
+
+<style>
+  .shm {
+    height: 300vh;
+    position: relative;
+    background: #0a0a0a;
+  }
+  .shm__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+  }
+
+  /* --- Side cards --- */
+  .shm__side {
+    position: relative;
+    flex: 0 0 0%;
+    overflow: hidden;
+    opacity: 0;
+    will-change: flex-basis, opacity, transform;
+    transition: none;
+  }
+  .shm__side img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .shm__side::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.45) 100%);
+    z-index: 1;
+  }
+  .shm__side-txt {
+    position: absolute;
+    z-index: 2;
+    bottom: 2.4rem; left: 2.4rem; right: 2.4rem;
+    opacity: 0;
+    transition: none;
+  }
+  .shm__side-ey {
+    font: 300 0.6rem/1 'Inter', sans-serif;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 0.5rem;
+  }
+  .shm__side-name {
+    font: 400 1.4rem/1.2 'Cormorant Garamond', serif;
+    color: #fff; margin: 0;
+  }
+
+  /* --- Center (video) card --- */
+  .shm__center {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    will-change: transform;
+  }
+  .shm__center video,
+  .shm__center img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .shm__center-grad {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.08) 30%,
+      rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.50) 100%);
+    z-index: 1;
+  }
+
+  /* Hero text — centered, fades out on scroll */
+  .shm__hero-txt {
+    position: absolute;
+    z-index: 3;
+    bottom: 10vh;
+    left: 0; right: 0;
+    text-align: center;
+    color: #fff;
+    will-change: opacity;
+  }
+  .shm__hero-ey {
+    font: 300 0.7rem/1 'Inter', sans-serif;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 1.4rem;
+  }
+  .shm__hero-h {
+    font: 300 clamp(3.2rem,6vw,6rem)/0.95 'Cormorant Garamond', serif;
+    letter-spacing: 0.06em;
+    margin: 0 0 2.6rem; color: #fff;
+  }
+  .shm__hero-cta {
+    display: inline-block;
+    font: 400 0.68rem/1 'Inter', sans-serif;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: #fff; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 1.05rem 2.8rem;
+    transition: background .25s, border-color .25s;
+    min-height: 44px;
+  }
+  .shm__hero-cta:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+  /* Triptych center caption — hidden initially, fades in */
+  .shm__trip-txt {
+    position: absolute; inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem;
+    opacity: 0;
+    will-change: opacity;
+  }
+  .shm__trip-txt::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.32);
+    z-index: -1;
+  }
+  .shm__trip-ey {
+    font: 300 0.65rem/1 'Inter', sans-serif;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 1.2rem;
+  }
+  .shm__trip-h {
+    font: 300 clamp(2.4rem,4vw,4.4rem)/0.95 'Cormorant Garamond', serif;
+    letter-spacing: 0.06em;
+    color: #fff;
+    margin: 0 0 2.2rem;
+  }
+  .shm__trip-cta {
+    font: 400 0.64rem/1 'Inter', sans-serif;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 0.95rem 2.4rem;
+    min-height: 44px;
+    display: inline-flex; align-items: center;
+  }
+
+  /* --- Gaps (animated via JS) --- */
+  .shm__gap {
+    flex: 0 0 0;
+    will-change: flex-basis;
+  }
+  .shm__pad {
+    flex: 0 0 0;
+    will-change: flex-basis;
+  }
+
+  /* --- Mobile: no morph, stack --- */
+  @media(max-width:749px){
+    .shm { height: auto; background: #fff; }
+    .shm__stage {
+      position: relative;
+      height: auto;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0 0 0.5rem;
+    }
+    .shm__center {
+      position: relative;
+      inset: auto;
+      aspect-ratio: 9 / 16;
+      max-height: 80vh;
+      z-index: 1;
+    }
+    .shm__side {
+      flex: 0 0 auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+      aspect-ratio: 3 / 4;
+    }
+    .shm__side-txt { opacity: 1 !important; }
+    .shm__hero-txt { bottom: 6vh; padding: 0 2rem; }
+    .shm__trip-txt { display: none; }
+    .shm__gap, .shm__pad { display: none; }
+  }
+</style>
+
+<section class="shm" id="SeymHM-{{ section.id }}">
+  <div class="shm__stage" id="SeymHMStage-{{ section.id }}">
+    <div class="shm__pad" id="shm-padL-{{ section.id }}"></div>
+
+    {%- comment -%} Left side card {%- endcomment -%}
+    {%- assign left = section.blocks[0] -%}
+    <div class="shm__side shm__side--l" id="shm-sideL-{{ section.id }}">
+      {%- if left.settings.image != blank -%}
+        {{ left.settings.image | image_url: width: 1000 | image_tag:
+           loading: 'eager', widths: '400,600,800,1000',
+           sizes: '(max-width:749px) 100vw, 33vw' }}
+      {%- endif -%}
+      <div class="shm__side-txt" id="shm-capL-{{ section.id }}">
+        {%- if left.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ left.settings.eyebrow }}</span>{%- endif -%}
+        {%- if left.settings.title != blank -%}<h3 class="shm__side-name">{{ left.settings.title }}</h3>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="shm__gap" id="shm-gapL-{{ section.id }}"></div>
+
+    {%- comment -%} Center — video {%- endcomment -%}
+    {%- assign center = section.blocks[1] -%}
+    <div class="shm__center" id="shm-center-{{ section.id }}">
+      {%- if section.settings.video_asset != blank -%}
+        <video autoplay muted loop playsinline preload="auto"
+          {%- if center.settings.image != blank %} poster="{{ center.settings.image | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
+        </video>
+      {%- elsif center.settings.image != blank -%}
+        {{ center.settings.image | image_url: width: 2000 | image_tag:
+           loading: 'eager', widths: '800,1200,1600,2000', sizes: '100vw' }}
+      {%- endif -%}
+      <div class="shm__center-grad"></div>
+
+      <div class="shm__hero-txt" id="shm-heroTxt-{{ section.id }}">
+        {%- if section.settings.hero_eyebrow != blank -%}<p class="shm__hero-ey">{{ section.settings.hero_eyebrow }}</p>{%- endif -%}
+        {%- if section.settings.hero_heading != blank -%}<h1 class="shm__hero-h">{{ section.settings.hero_heading }}</h1>{%- endif -%}
+        {%- if section.settings.hero_cta != blank and section.settings.hero_link != blank -%}
+          <a href="{{ section.settings.hero_link }}" class="shm__hero-cta">{{ section.settings.hero_cta }}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="shm__trip-txt" id="shm-tripTxt-{{ section.id }}">
+        {%- if center.settings.eyebrow != blank -%}<span class="shm__trip-ey">{{ center.settings.eyebrow }}</span>{%- endif -%}
+        {%- if center.settings.title != blank -%}<h2 class="shm__trip-h">{{ center.settings.title }}</h2>{%- endif -%}
+        {%- if center.settings.cta_label != blank -%}<span class="shm__trip-cta">{{ center.settings.cta_label }}</span>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="shm__gap" id="shm-gapR-{{ section.id }}"></div>
+
+    {%- comment -%} Right side card {%- endcomment -%}
+    {%- assign right = section.blocks[2] -%}
+    <div class="shm__side shm__side--r" id="shm-sideR-{{ section.id }}">
+      {%- if right.settings.image != blank -%}
+        {{ right.settings.image | image_url: width: 1000 | image_tag:
+           loading: 'eager', widths: '400,600,800,1000',
+           sizes: '(max-width:749px) 100vw, 33vw' }}
+      {%- endif -%}
+      <div class="shm__side-txt" id="shm-capR-{{ section.id }}">
+        {%- if right.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ right.settings.eyebrow }}</span>{%- endif -%}
+        {%- if right.settings.title != blank -%}<h3 class="shm__side-name">{{ right.settings.title }}</h3>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="shm__pad" id="shm-padR-{{ section.id }}"></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  if (window.innerWidth < 750) return;
+
+  var sec    = document.getElementById('SeymHM-{{ section.id }}');
+  var stage  = document.getElementById('SeymHMStage-{{ section.id }}');
+  var center = document.getElementById('shm-center-{{ section.id }}');
+  var sideL  = document.getElementById('shm-sideL-{{ section.id }}');
+  var sideR  = document.getElementById('shm-sideR-{{ section.id }}');
+  var gapL   = document.getElementById('shm-gapL-{{ section.id }}');
+  var gapR   = document.getElementById('shm-gapR-{{ section.id }}');
+  var padL   = document.getElementById('shm-padL-{{ section.id }}');
+  var padR   = document.getElementById('shm-padR-{{ section.id }}');
+  var heroT  = document.getElementById('shm-heroTxt-{{ section.id }}');
+  var tripT  = document.getElementById('shm-tripTxt-{{ section.id }}');
+  var capL   = document.getElementById('shm-capL-{{ section.id }}');
+  var capR   = document.getElementById('shm-capR-{{ section.id }}');
+
+  if (!sec || !center) return;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function() {
+      var rect = sec.getBoundingClientRect();
+      var scrollable = sec.offsetHeight - window.innerHeight;
+      var scrolled = -rect.top;
+      var p = clamp(scrolled / scrollable);
+      var ep = ease(p);
+
+      // Center card: from absolute full-screen to relative ~33%
+      if (p < 0.02) {
+        center.style.position = 'absolute';
+        center.style.inset = '0';
+        center.style.flex = 'none';
+        center.style.width = '';
+      } else {
+        center.style.position = 'relative';
+        center.style.inset = 'auto';
+        center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
+      }
+
+      // Side cards: grow from 0% to 33%
+      var sideP = clamp((p - 0.15) / 0.85);
+      var sideEp = ease(sideP);
+      var sideBasis = lerp(0, 33.33, sideEp);
+      var sideOp = lerp(0, 1, ease(clamp((p - 0.2) / 0.6)));
+      sideL.style.flex = '0 0 ' + sideBasis + '%';
+      sideR.style.flex = '0 0 ' + sideBasis + '%';
+      sideL.style.opacity = sideOp;
+      sideR.style.opacity = sideOp;
+
+      // Gaps: 0 to 1rem
+      var gapVal = lerp(0, 1, ep) + 'rem';
+      gapL.style.flex = '0 0 ' + gapVal;
+      gapR.style.flex = '0 0 ' + gapVal;
+
+      // Padding: 0 to 1.2rem
+      var padVal = lerp(0, 1.2, ep) + 'rem';
+      padL.style.flex = '0 0 ' + padVal;
+      padR.style.flex = '0 0 ' + padVal;
+      stage.style.paddingTop = padVal;
+      stage.style.paddingBottom = padVal;
+
+      // Hero text: fade out first 40%
+      heroT.style.opacity = lerp(1, 0, clamp(p / 0.35));
+
+      // Triptych center caption: fade in last 30%
+      tripT.style.opacity = lerp(0, 1, clamp((p - 0.65) / 0.35));
+
+      // Side captions: fade in last 25%
+      var capOp = lerp(0, 1, clamp((p - 0.7) / 0.3));
+      capL.style.opacity = capOp;
+      capR.style.opacity = capOp;
+
+      // Background: black to white
+      stage.style.background = p < 0.1 ? '#0a0a0a' : '#fff';
+
+      ticking = false;
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Morph",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "video_asset", "label": "Video filename", "default": "product-showcase.mp4" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "Art de la Table" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "SEYM" },
+    { "type": "text", "id": "hero_cta", "label": "Hero CTA", "default": "Discover the collection" },
+    { "type": "url", "id": "hero_link", "label": "Hero CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "cta_label", "label": "CTA (center card)" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Hero Morph",
+    "blocks": [
+      { "type": "card", "settings": { "eyebrow": "Collection", "title": "Flos" } },
+      { "type": "card", "settings": { "eyebrow": "Seym Glass Studio", "title": "SEYM", "cta_label": "Discover" } },
+      { "type": "card", "settings": { "eyebrow": "Featured", "title": "Maris" } }
+    ]
+  }]
+}
+{% endschema %}
