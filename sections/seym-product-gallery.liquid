@@ -1,0 +1,150 @@
+{%- comment -%}
+  Seym Product Gallery — editorial alternating grid below main product info.
+  Pulls product.media and lays them out in: full → 3-up → full → 1-1-1 pattern.
+{%- endcomment -%}
+
+<style>
+  .seym-pgal {
+    background: #fff;
+    padding: 0 0 80px;
+  }
+  .seym-pgal__wrap {
+    max-width: 140rem;
+    margin: 0 auto;
+  }
+  .seym-pgal__row {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .seym-pgal__row--full {
+    grid-template-columns: 1fr;
+  }
+  .seym-pgal__row--trio {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .seym-pgal__row + .seym-pgal__row {
+    margin-top: 0.4rem;
+  }
+  .seym-pgal__cell {
+    overflow: hidden;
+    position: relative;
+  }
+  .seym-pgal__row--full .seym-pgal__cell {
+    aspect-ratio: 21 / 9;
+  }
+  .seym-pgal__row--trio .seym-pgal__cell {
+    aspect-ratio: 1 / 1;
+  }
+  .seym-pgal__cell img,
+  .seym-pgal__cell video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-pgal__cell:hover img,
+  .seym-pgal__cell:hover video {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 749px) {
+    .seym-pgal__row--trio { grid-template-columns: 1fr; }
+    .seym-pgal__row--full .seym-pgal__cell { aspect-ratio: 16 / 9; }
+    .seym-pgal__row--trio .seym-pgal__cell { aspect-ratio: 4 / 5; }
+    .seym-pgal { padding-bottom: 48px; }
+  }
+</style>
+
+<section class="seym-pgal">
+  <div class="seym-pgal__wrap">
+    {%- assign media_list = product.media -%}
+    {%- assign media_count = media_list.size -%}
+    {%- assign idx = 0 -%}
+
+    {%- comment -%} Row 1: Full-width (1 image) {%- endcomment -%}
+    {%- if idx < media_count -%}
+      <div class="seym-pgal__row seym-pgal__row--full">
+        <div class="seym-pgal__cell">
+          {%- assign m = media_list[idx] -%}
+          {%- if m.media_type == 'image' -%}
+            {{ m | image_url: width: 2400 | image_tag:
+               loading: 'lazy', widths: '600,1000,1400,1800,2400',
+               sizes: '100vw', alt: m.alt | default: product.title }}
+          {%- elsif m.media_type == 'video' -%}
+            <video autoplay muted loop playsinline>
+              {%- for source in m.sources -%}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {%- endfor -%}
+            </video>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- assign idx = idx | plus: 1 -%}
+    {%- endif -%}
+
+    {%- comment -%} Row 2: 3-up (3 images) {%- endcomment -%}
+    {%- if idx < media_count -%}
+      <div class="seym-pgal__row seym-pgal__row--trio">
+        {%- for i in (0..2) -%}
+          {%- assign pos = idx | plus: i -%}
+          {%- if pos < media_count -%}
+            <div class="seym-pgal__cell">
+              {%- assign m = media_list[pos] -%}
+              {%- if m.media_type == 'image' -%}
+                {{ m | image_url: width: 1000 | image_tag:
+                   loading: 'lazy', widths: '300,500,700,1000',
+                   sizes: '(max-width: 749px) 100vw, 33vw',
+                   alt: m.alt | default: product.title }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- assign idx = idx | plus: 3 -%}
+    {%- endif -%}
+
+    {%- comment -%} Row 3: Full-width (1 image) {%- endcomment -%}
+    {%- if idx < media_count -%}
+      <div class="seym-pgal__row seym-pgal__row--full">
+        <div class="seym-pgal__cell">
+          {%- assign m = media_list[idx] -%}
+          {%- if m.media_type == 'image' -%}
+            {{ m | image_url: width: 2400 | image_tag:
+               loading: 'lazy', widths: '600,1000,1400,1800,2400',
+               sizes: '100vw', alt: m.alt | default: product.title }}
+          {%- endif -%}
+        </div>
+      </div>
+      {%- assign idx = idx | plus: 1 -%}
+    {%- endif -%}
+
+    {%- comment -%} Row 4: 1-1-1 (remaining images, 3 per row) {%- endcomment -%}
+    {%- if idx < media_count -%}
+      <div class="seym-pgal__row seym-pgal__row--trio">
+        {%- for i in (idx..media_count) -%}
+          {%- if i < media_count -%}
+            <div class="seym-pgal__cell">
+              {%- assign m = media_list[i] -%}
+              {%- if m.media_type == 'image' -%}
+                {{ m | image_url: width: 1000 | image_tag:
+                   loading: 'lazy', widths: '300,500,700,1000',
+                   sizes: '(max-width: 749px) 100vw, 33vw',
+                   alt: m.alt | default: product.title }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Gallery",
+  "tag": "div",
+  "settings": [],
+  "presets": [{ "name": "Product Gallery" }]
+}
+{% endschema %}

@@ -1,0 +1,163 @@
+{%- comment -%}
+  Seym Press Strip — featured magazine/publication banner on homepage.
+{%- endcomment -%}
+
+<style>
+  .seym-ps {
+    background: var(--seym-ivory, #F5F1EA);
+    padding: 64px 0;
+  }
+  .seym-ps__wrap {
+    max-width: 132rem;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .seym-ps__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .seym-ps__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-ps__media:hover img { transform: scale(1.03); }
+  .seym-ps__body {}
+  .seym-ps__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.45);
+    margin: 0 0 1rem;
+  }
+  .seym-ps__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 4vw, 5.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: #1A1A1A;
+    margin: 0 0 1.6rem;
+    font-style: italic;
+  }
+  .seym-ps__desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(26,26,26,0.65);
+    max-width: 44ch;
+    margin: 0 0 2.4rem;
+  }
+  .seym-ps__cta {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    border-bottom: 1px solid #1A1A1A;
+    padding-bottom: 0.4rem;
+    transition: color 220ms ease, border-color 220ms ease;
+    min-height: 44px;
+  }
+  .seym-ps__cta:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+  .seym-ps__logos {
+    display: flex;
+    gap: 3.2rem;
+    align-items: center;
+    margin-top: 3.6rem;
+    flex-wrap: wrap;
+  }
+  .seym-ps__logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: rgba(26,26,26,0.35);
+    font-style: italic;
+  }
+
+  @media (max-width: 989px) {
+    .seym-ps__wrap { grid-template-columns: 1fr; gap: 2.8rem; }
+  }
+  @media (max-width: 749px) {
+    .seym-ps__wrap { padding: 0 2rem; }
+    .seym-ps { padding: 48px 0; }
+  }
+</style>
+
+<section class="seym-ps">
+  <div class="seym-ps__wrap">
+    <div class="seym-ps__media">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1200 | image_tag:
+           loading: 'lazy', widths: '400,700,1000,1400',
+           sizes: '(max-width: 989px) 100vw, 50vw' }}
+      {%- endif -%}
+    </div>
+    <div class="seym-ps__body">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="seym-ps__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="seym-ps__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p class="seym-ps__desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">{{ section.settings.cta_label }} →</a>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="seym-ps__logos">
+          {%- for block in section.blocks -%}
+            <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Press Strip",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Feature image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "As featured in" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "In the Press" },
+    { "type": "textarea", "id": "description", "label": "Description" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Read more" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "publication",
+      "name": "Publication",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Publication name" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Press Strip",
+    "blocks": [
+      { "type": "publication", "settings": { "name": "Homeart" } },
+      { "type": "publication", "settings": { "name": "Design Turkey" } },
+      { "type": "publication", "settings": { "name": "A' Design Award" } }
+    ]
+  }]
+}
+{% endschema %}

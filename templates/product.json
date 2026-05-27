@@ -126,6 +126,10 @@
         "padding_bottom": 44
       }
     },
+    "editorial_gallery": {
+      "type": "seym-product-gallery",
+      "settings": {}
+    },
     "story": {
       "type": "rich-text",
       "blocks": {
@@ -196,6 +200,7 @@
   },
   "order": [
     "main",
+    "editorial_gallery",
     "story",
     "featured_collection_parent"
   ]

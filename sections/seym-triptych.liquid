@@ -1,0 +1,178 @@
+{%- comment -%}
+  Seym Triptych — three tall portrait banner cards side by side.
+  Middle card = collection CTA, sides = product/lifestyle images.
+{%- endcomment -%}
+
+<style>
+  .seym-tri {
+    background: #fff;
+    padding: 0;
+  }
+  .seym-tri__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+  .seym-tri__card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    color: #F5F1EA;
+  }
+  .seym-tri__card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .seym-tri__card:hover img { transform: scale(1.04); }
+  .seym-tri__card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.08) 0%,
+      rgba(0,0,0,0.12) 50%,
+      rgba(0,0,0,0.52) 100%
+    );
+    z-index: 1;
+  }
+  .seym-tri__card-content {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.8rem;
+  }
+  .seym-tri__card--center .seym-tri__card-content {
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3.6rem 2.4rem;
+  }
+  .seym-tri__card--center .seym-tri__card-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.2) 0%,
+      rgba(0,0,0,0.35) 100%
+    );
+  }
+  .seym-tri__card-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.65);
+    margin-bottom: 0.6rem;
+  }
+  .seym-tri__card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 2vw, 2.4rem);
+    line-height: 1.1;
+    margin: 0;
+    color: #F5F1EA;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.3);
+  }
+  .seym-tri__card--center .seym-tri__card-eyebrow {
+    font-size: 0.72rem;
+    margin-bottom: 1rem;
+  }
+  .seym-tri__card--center .seym-tri__card-title {
+    font-size: clamp(3.2rem, 5vw, 5.6rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 2.4rem;
+  }
+  .seym-tri__card-cta {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #F5F1EA;
+    border: 1px solid rgba(245,241,234,0.45);
+    padding: 0.9rem 2.4rem;
+    transition: background 220ms ease, border-color 220ms ease;
+    min-height: 44px;
+  }
+  .seym-tri__card:hover .seym-tri__card-cta {
+    background: rgba(245,241,234,0.12);
+    border-color: #F5F1EA;
+  }
+
+  @media (max-width: 749px) {
+    .seym-tri__grid {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding: 0.4rem;
+    }
+    .seym-tri__card { aspect-ratio: 4 / 5; }
+    .seym-tri__card--center .seym-tri__card-title { font-size: clamp(2.6rem, 10vw, 4rem); }
+  }
+</style>
+
+<section class="seym-tri">
+  <div class="seym-tri__grid">
+    {%- for block in section.blocks -%}
+      <a class="seym-tri__card{% if forloop.index == 2 %} seym-tri__card--center{% endif %}"
+         href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 1200 | image_tag:
+             loading: 'lazy', widths: '400,600,800,1000,1200',
+             sizes: '(max-width: 749px) 100vw, 33vw' }}
+        {%- endif -%}
+        <div class="seym-tri__card-overlay"></div>
+        <div class="seym-tri__card-content">
+          {%- if block.settings.eyebrow != blank -%}
+            <span class="seym-tri__card-eyebrow">{{ block.settings.eyebrow }}</span>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <h2 class="seym-tri__card-title">{{ block.settings.title }}</h2>
+          {%- endif -%}
+          {%- if forloop.index == 2 and block.settings.cta_label != blank -%}
+            <span class="seym-tri__card-cta">{{ block.settings.cta_label }}</span>
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Triptych Banners",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Banner Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "cta_label", "label": "CTA label (center card only)" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Triptych Banners",
+    "blocks": [
+      { "type": "card", "settings": { "eyebrow": "In Collection", "title": "Flos" } },
+      { "type": "card", "settings": { "eyebrow": "Seym Glass Studio", "title": "SEYM", "cta_label": "Discover the collection" } },
+      { "type": "card", "settings": { "eyebrow": "Featured", "title": "Maris Vase" } }
+    ]
+  }]
+}
+{% endschema %}

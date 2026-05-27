@@ -1,183 +1,160 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "split_home": {
-      "type": "seym-split-home",
-      "blocks": {
-        "c1": {
-          "type": "category",
-          "settings": {
-            "collection": "flos-koleksi̇yonu",
-            "label": "Flos",
-            "caption": "Çiçeklerin sessiz mevsimi",
-            "link": ""
-          }
-        },
-        "c2": {
-          "type": "category",
-          "settings": {
-            "collection": "soli̇s",
-            "label": "Solis",
-            "caption": "Güneşin işaretleri",
-            "link": ""
-          }
-        },
-        "c3": {
-          "type": "category",
-          "settings": {
-            "collection": "glacies",
-            "label": "Glacies",
-            "caption": "Buzun mimarisi",
-            "link": ""
-          }
-        },
-        "c4": {
-          "type": "category",
-          "settings": {
-            "collection": "luminis",
-            "label": "Luminis",
-            "caption": "Işığın anatomisi",
-            "link": ""
-          }
-        },
-        "c5": {
-          "type": "category",
-          "settings": {
-            "collection": "mari̇s",
-            "label": "Maris",
-            "caption": "Denizin hafızası",
-            "link": ""
-          }
-        },
-        "c6": {
-          "type": "category",
-          "settings": {
-            "collection": "luna",
-            "label": "Luna",
-            "caption": "Ayın yansıması",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5",
-        "c6"
-      ],
+    "daum_hero": {
+      "type": "seym-daum-hero",
       "settings": {
-        "eyebrow": "Seym Glass Studio · Istanbul",
-        "heading": "Shop the studio.",
-        "view_all_label": "View all pieces",
-        "view_all_link": "shopify://collections",
-        "footer_tag": "Edition of twelve",
         "video_asset": "product-showcase.mp4",
-        "media_alt": "Seym Glass Studio — hand-blown piece",
-        "brand_tag": "Mouth-blown · Istanbul",
-        "media_eyebrow": "Modern Heritage",
-        "media_headline": "Designed to endure.",
-        "left_ratio": 1,
-        "right_ratio": 1
+        "poster": "",
+        "eyebrow": "Seym Glass Studio · Istanbul",
+        "heading": "SEYM",
+        "cta_label": "Discover the collection",
+        "cta_link": "shopify://collections"
       }
     },
-    "model_viewer": {
-      "type": "seym-3d-viewer",
-      "settings": {
-        "feature_image": "shopify://shop_images/We_re_Overjoyed_Our_Passion_for_Design_has_Earned_Us_an_Award_Hey_everyone_We_ve_got_fantastic_news_to_share_with_you_In_the_prestigious_A_Design_Award_competition_our_product__Stella.jpg",
-        "image_tag": "Maris · Series IV",
-        "image_label": "Maris",
-        "image_sub": "Hand-blown forms shaped one at a time, in Istanbul.",
-        "image_cta": "Discover",
-        "image_link": "/collections/mari̇s",
-        "model_file": "kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb",
-        "model_alt": "Seym Glass Studio — interactive 3D model",
-        "shadow_intensity": 0,
-        "exposure": 10,
-        "enable_ar": true,
-        "ar_label": "View in your space",
-        "hint_text": "Drag · Explore"
-      }
-    },
-    "lifestyle_trio": {
-      "type": "seym-lifestyle-trio",
+    "triptych": {
+      "type": "seym-triptych",
       "blocks": {
-        "t1": {
+        "tri_left": {
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Tasarimin_kalbi_renklerde_atiyor_Homeart_Evlilik_dergisinin_son_sayisi_icin_yapilan_ozel_cekimlerle_tasarimlarimiz_birbirinden_guzel_kompozisyonlar_icerisinde_modern_dekorasyon_trendl_854269d5-cc4b-48c7-934c-2269dddeec2b.jpg",
-            "collection": "",
-            "tag": "On The Table",
-            "label": "Vessels & vases",
-            "sub_label": "Hand-blown forms for everyday companionship.",
-            "cta_label": "Discover",
-            "link": ""
+            "eyebrow": "Collection",
+            "title": "Flos",
+            "cta_label": "",
+            "link": "/collections/flos-koleksi̇yonu"
           }
         },
-        "t2": {
+        "tri_center": {
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/d09c25dc984d99d2389a6f571f497b60.jpg",
-            "collection": "",
-            "tag": "By The Window",
-            "label": "Light catchers",
-            "sub_label": "Pieces that read the sun. Different at every hour.",
-            "cta_label": "Discover",
-            "link": ""
+            "eyebrow": "Seym Glass Studio",
+            "title": "SEYM",
+            "cta_label": "Discover the collection",
+            "link": "shopify://collections"
           }
         },
-        "t3": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Tasarimin_kalbi_renklerde_atiyor_Homeart_Evlilik_dergisinin_son_sayisi_icin_yapilan_ozel_cekimlerle_tasarimlarimiz_birbirinden_guzel_kompozisyonlar_icerisinde_modern_dekorasyon_trendl.jpg",
-            "collection": "",
-            "tag": "Beside The Chair",
-            "label": "Sculptural objects",
-            "sub_label": "Quiet companions to contemporary living spaces.",
-            "cta_label": "Discover",
-            "link": ""
-          }
-        },
-        "t4": {
+        "tri_right": {
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/The_captivating_blend_of_red_and_burgundy_in_Seym_Glass_Studio_s_designer_glass_accessories_adds_elegance_to_any_space__Design_GlassArt_Decor.jpg",
-            "collection": "",
-            "tag": "Gifted",
-            "label": "Limited editions",
-            "sub_label": "Edition of twelve. Once gone, never repeated.",
-            "cta_label": "Discover",
+            "eyebrow": "Featured",
+            "title": "Maris Vase",
+            "cta_label": "",
+            "link": "/collections/mari̇s"
+          }
+        }
+      },
+      "block_order": ["tri_left", "tri_center", "tri_right"],
+      "settings": {}
+    },
+    "bestsellers": {
+      "type": "seym-bestsellers",
+      "settings": {
+        "eyebrow": "Our Selection",
+        "heading": "OUR BESTSELLERS",
+        "collection": "",
+        "products_to_show": 4
+      }
+    },
+    "universes": {
+      "type": "seym-universes",
+      "blocks": {
+        "u1": {
+          "type": "universe",
+          "settings": {
+            "collection": "flos-koleksi̇yonu",
+            "image": "",
+            "label": "Flos",
+            "link": ""
+          }
+        },
+        "u2": {
+          "type": "universe",
+          "settings": {
+            "collection": "soli̇s",
+            "image": "",
+            "label": "Solis",
+            "link": ""
+          }
+        },
+        "u3": {
+          "type": "universe",
+          "settings": {
+            "collection": "glacies",
+            "image": "",
+            "label": "Glacies",
+            "link": ""
+          }
+        },
+        "u4": {
+          "type": "universe",
+          "settings": {
+            "collection": "luminis",
+            "image": "",
+            "label": "Luminis",
+            "link": ""
+          }
+        },
+        "u5": {
+          "type": "universe",
+          "settings": {
+            "collection": "mari̇s",
+            "image": "",
+            "label": "Maris",
+            "link": ""
+          }
+        },
+        "u6": {
+          "type": "universe",
+          "settings": {
+            "collection": "luna",
+            "image": "",
+            "label": "Luna",
             "link": ""
           }
         }
       },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
-      ],
+      "block_order": ["u1", "u2", "u3", "u4", "u5", "u6"],
       "settings": {
-        "eyebrow": "In Your Space",
-        "heading": "Lived with, <em>not displayed</em>.",
-        "subtitle": "Seym pieces are made for daily companionship. A bowl on the breakfast table. A vase by the window. A vessel beside your reading chair.",
-        "padding_top": 64,
-        "padding_bottom": 80
+        "eyebrow": "Explore",
+        "heading": "OUR COLLECTIONS"
+      }
+    },
+    "press_strip": {
+      "type": "seym-press-strip",
+      "blocks": {
+        "p1": { "type": "publication", "settings": { "name": "Homeart" } },
+        "p2": { "type": "publication", "settings": { "name": "Design Turkey" } },
+        "p3": { "type": "publication", "settings": { "name": "A' Design Award" } }
+      },
+      "block_order": ["p1", "p2", "p3"],
+      "settings": {
+        "image": "shopify://shop_images/Tasarimin_kalbi_renklerde_atiyor_Homeart_Evlilik_dergisinin_son_sayisi_icin_yapilan_ozel_cekimlerle_tasarimlarimiz_birbirinden_guzel_kompozisyonlar_icerisinde_modern_dekorasyon_trendl.jpg",
+        "eyebrow": "As featured in",
+        "heading": "In the Press",
+        "description": "Seym's hand-blown glass art has been featured in leading design and lifestyle publications.",
+        "cta_label": "Read more",
+        "cta_link": "/pages/press"
+      }
+    },
+    "gift_banner": {
+      "type": "seym-gift-banner",
+      "settings": {
+        "image": "shopify://shop_images/We_re_Overjoyed_Our_Passion_for_Design_has_Earned_Us_an_Award_Hey_everyone_We_ve_got_fantastic_news_to_share_with_you_In_the_prestigious_A_Design_Award_competition_our_product__Stella.jpg",
+        "eyebrow": "Find the ideal",
+        "heading": "GIFT",
+        "cta_label": "Discover the selection",
+        "cta_link": "shopify://collections"
       }
     }
   },
   "order": [
-    "split_home",
-    "model_viewer",
-    "lifestyle_trio"
+    "daum_hero",
+    "triptych",
+    "bestsellers",
+    "universes",
+    "press_strip",
+    "gift_banner"
   ]
 }
