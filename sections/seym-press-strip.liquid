@@ -47,13 +47,16 @@
     font-style: italic;
   }
   .seym-ps__desc {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 1rem;
-    line-height: 1.75;
-    color: rgba(26,26,26,0.65);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2vw, 2.4rem);
+    line-height: 1.45;
+    color: rgba(26,26,26,0.7);
     max-width: 44ch;
     margin: 0 0 2.4rem;
+    padding-left: 2.4rem;
+    border-left: 2px solid var(--seym-wine, #8E2244);
   }
   .seym-ps__cta {
     display: inline-block;
@@ -96,7 +99,7 @@
   }
 </style>
 
-<section class="seym-ps">
+<section class="seym-ps" data-reveal>
   <div class="seym-ps__wrap">
     <div class="seym-ps__media">
       {%- if section.settings.image != blank -%}

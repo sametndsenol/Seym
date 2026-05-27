@@ -90,6 +90,33 @@
     padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
   }
 
+  .seym-hd-transparent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: transparent !important;
+    border-bottom: none !important;
+    transition: background 400ms ease;
+  }
+  .seym-hd-transparent .header__heading-logo-wrapper img,
+  .seym-hd-transparent .header__heading .h2 { filter: brightness(10); }
+  .seym-hd-transparent .header__icon,
+  .seym-hd-transparent .list-menu__item,
+  .seym-hd-transparent .header__menu-item { color: #F5F1EA; }
+  .seym-hd-transparent .seym-lp__trigger { color: rgba(245,241,234,0.6); }
+  .seym-hd-transparent.seym-hd-scrolled {
+    background: var(--seym-ivory, #F5F1EA) !important;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.06);
+  }
+  .seym-hd-transparent.seym-hd-scrolled .header__heading-logo-wrapper img,
+  .seym-hd-transparent.seym-hd-scrolled .header__heading .h2 { filter: none; }
+  .seym-hd-transparent.seym-hd-scrolled .header__icon,
+  .seym-hd-transparent.seym-hd-scrolled .list-menu__item,
+  .seym-hd-transparent.seym-hd-scrolled .header__menu-item { color: #1A1A1A; }
+  .seym-hd-transparent.seym-hd-scrolled .seym-lp__trigger { color: rgba(26,26,26,0.55); }
+
   .section-header {
     position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
@@ -141,7 +168,7 @@
   endfor
 -%}
 
-<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
+<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if request.page_type == 'index' %} seym-hd-transparent{% endif %}">
   {%- liquid
     assign social_links = false
     assign localization_forms = false
@@ -440,6 +467,21 @@
     }
   </script>
 {%- endif -%}
+
+<script>
+  (function(){
+    var hw = document.querySelector('.seym-hd-transparent');
+    if (!hw) return;
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if(!ticking){ requestAnimationFrame(function(){
+        if(window.scrollY > 80) hw.classList.add('seym-hd-scrolled');
+        else hw.classList.remove('seym-hd-scrolled');
+        ticking = false;
+      }); ticking = true; }
+    });
+  })();
+</script>
 
 {% schema %}
 {

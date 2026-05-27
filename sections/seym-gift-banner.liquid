@@ -1,5 +1,5 @@
 {%- comment -%}
-  Seym Gift Banner — full-width lifestyle image with text overlay CTA.
+  Seym Gift Banner — full-width with parallax + gradient scrim.
 {%- endcomment -%}
 
 <style>
@@ -15,11 +15,18 @@
   }
   .seym-gb__media img {
     width: 100%;
-    height: 100%;
+    height: 120%;
     object-fit: cover;
-    transition: transform 1.4s cubic-bezier(0.22,1,0.36,1);
+    display: block;
+    will-change: transform;
   }
-  .seym-gb:hover .seym-gb__media img { transform: scale(1.03); }
+  .seym-gb__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(245,241,234,0.75) 0%, rgba(245,241,234,0.3) 35%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+  }
   .seym-gb__content {
     position: absolute;
     z-index: 2;
@@ -37,7 +44,7 @@
     font-size: 0.72rem;
     letter-spacing: 0.36em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
+    color: rgba(26,26,26,0.5);
     margin: 0 0 1rem;
   }
   .seym-gb__heading {
@@ -47,8 +54,17 @@
     line-height: 0.95;
     letter-spacing: -0.02em;
     color: #1A1A1A;
-    margin: 0 0 2rem;
+    margin: 0 0 1.2rem;
     font-style: italic;
+  }
+  .seym-gb__desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.55);
+    max-width: 32ch;
+    margin: 0 0 2.4rem;
   }
   .seym-gb__cta {
     display: inline-block;
@@ -77,17 +93,20 @@
     .seym-gb__media { aspect-ratio: 4 / 3; }
     .seym-gb__content { padding: 2.4rem; max-width: none; }
     .seym-gb__heading { font-size: clamp(3rem, 12vw, 5rem); }
+    .seym-gb__scrim { background: linear-gradient(to right, rgba(245,241,234,0.85) 0%, rgba(245,241,234,0.5) 50%, transparent 80%); }
   }
 </style>
 
-<section class="seym-gb">
+<section class="seym-gb" id="SeymGB-{{ section.id }}" data-reveal>
   <div class="seym-gb__media">
     {%- if section.settings.image != blank -%}
       {{ section.settings.image | image_url: width: 2400 | image_tag:
+         id: 'SeymGBImg-' | append: section.id,
          loading: 'lazy', widths: '600,1000,1400,1800,2400',
          sizes: '100vw' }}
     {%- endif -%}
   </div>
+  <div class="seym-gb__scrim"></div>
   <div class="seym-gb__content">
     {%- if section.settings.eyebrow != blank -%}
       <p class="seym-gb__eyebrow">{{ section.settings.eyebrow }}</p>
@@ -95,11 +114,32 @@
     {%- if section.settings.heading != blank -%}
       <h2 class="seym-gb__heading">{{ section.settings.heading }}</h2>
     {%- endif -%}
+    {%- if section.settings.description != blank -%}
+      <p class="seym-gb__desc">{{ section.settings.description }}</p>
+    {%- endif -%}
     {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
       <a href="{{ section.settings.cta_link }}" class="seym-gb__cta">{{ section.settings.cta_label }} →</a>
     {%- endif -%}
   </div>
 </section>
+
+<script>
+  (function(){
+    var sec = document.getElementById('SeymGB-{{ section.id }}');
+    var img = document.getElementById('SeymGBImg-{{ section.id }}');
+    if(!sec || !img) return;
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if(!ticking){ requestAnimationFrame(function(){
+        var r = sec.getBoundingClientRect();
+        var ratio = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        ratio = Math.max(0, Math.min(1, ratio));
+        img.style.transform = 'translateY(' + ((ratio - 0.5) * -8) + '%)';
+        ticking = false;
+      }); ticking = true; }
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -109,6 +149,7 @@
     { "type": "image_picker", "id": "image", "label": "Background image" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Find the ideal" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "GIFT" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Hand-blown glass pieces wrapped and delivered with care — the perfect gift for those who appreciate quiet luxury." },
     { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Discover the selection" },
     { "type": "url", "id": "cta_link", "label": "CTA link" }
   ],

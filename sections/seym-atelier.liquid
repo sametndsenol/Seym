@@ -1,0 +1,133 @@
+{%- comment -%}
+  Seym Atelier Strip — workshop story with split image + text.
+{%- endcomment -%}
+
+<style>
+  .seym-at {
+    background: var(--seym-ivory, #F5F1EA);
+    padding: 0;
+  }
+  .seym-at__wrap {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    min-height: 48rem;
+  }
+  .seym-at__media {
+    overflow: hidden;
+    position: relative;
+  }
+  .seym-at__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .seym-at__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 5rem;
+  }
+  .seym-at__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--seym-wine, #8E2244);
+    margin: 0 0 1.6rem;
+    position: relative;
+    padding-left: 2.6rem;
+  }
+  .seym-at__eyebrow::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 2rem; height: 1px;
+    background: var(--seym-wine, #8E2244);
+  }
+  .seym-at__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 4vw, 4.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: #1A1A1A;
+    margin: 0 0 2rem;
+  }
+  .seym-at__heading em { font-style: italic; color: var(--seym-wine, #8E2244); }
+  .seym-at__text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.65);
+    max-width: 44ch;
+    margin: 0 0 2.8rem;
+  }
+  .seym-at__cta {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    text-decoration: none;
+    border-bottom: 1px solid #1A1A1A;
+    padding-bottom: 0.4rem;
+    transition: color 220ms ease, border-color 220ms ease;
+    align-self: flex-start;
+    min-height: 44px;
+  }
+  .seym-at__cta:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+
+  @media (max-width: 989px) {
+    .seym-at__wrap { grid-template-columns: 1fr; }
+    .seym-at__media { aspect-ratio: 16 / 10; }
+    .seym-at__body { padding: 3.6rem 2.4rem; }
+  }
+</style>
+
+<section class="seym-at" data-reveal>
+  <div class="seym-at__wrap">
+    <div class="seym-at__media">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1600 | image_tag:
+           loading: 'lazy', widths: '600,1000,1400,1800',
+           sizes: '(max-width: 989px) 100vw, 60vw' }}
+      {%- endif -%}
+    </div>
+    <div class="seym-at__body">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="seym-at__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="seym-at__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="seym-at__text">{{ section.settings.text }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="seym-at__cta">{{ section.settings.cta_label }} →</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier Story",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Workshop image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Atelier" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Mouth-blown in <em>Istanbul</em>" },
+    { "type": "textarea", "id": "text", "label": "Description", "default": "Each piece is shaped one at a time by master glassblowers in our Çengelköy atelier — Czech crystal transformed by hand into forms that carry a quiet narrative of light and nature." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Discover our story" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [{ "name": "Atelier Story" }]
+}
+{% endschema %}

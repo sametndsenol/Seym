@@ -1,0 +1,111 @@
+{%- comment -%}
+  Seym Newsletter — ink background, ivory text, email subscribe.
+{%- endcomment -%}
+
+<style>
+  .seym-nl {
+    background: #1A1A1A;
+    color: #F5F1EA;
+    padding: 72px 0;
+  }
+  .seym-nl__wrap {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0 4rem;
+    text-align: center;
+  }
+  .seym-nl__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 4vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: #F5F1EA;
+    margin: 0 0 1rem;
+    font-style: italic;
+  }
+  .seym-nl__sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(245,241,234,0.55);
+    margin: 0 0 2.8rem;
+  }
+  .seym-nl__form {
+    display: flex;
+    gap: 0;
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .seym-nl__input {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    padding: 1rem 1.6rem;
+    border: 1px solid rgba(245,241,234,0.2);
+    border-right: none;
+    background: transparent;
+    color: #F5F1EA;
+    min-height: 48px;
+    outline: none;
+  }
+  .seym-nl__input::placeholder { color: rgba(245,241,234,0.35); }
+  .seym-nl__input:focus { border-color: rgba(245,241,234,0.5); }
+  .seym-nl__btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 1rem 2.4rem;
+    background: var(--seym-wine, #8E2244);
+    color: #F5F1EA;
+    border: 1px solid var(--seym-wine, #8E2244);
+    cursor: pointer;
+    transition: background 220ms ease;
+    min-height: 48px;
+    white-space: nowrap;
+  }
+  .seym-nl__btn:hover { background: #6E1A35; }
+
+  @media (max-width: 749px) {
+    .seym-nl__wrap { padding: 0 2rem; }
+    .seym-nl__form { flex-direction: column; gap: 0.8rem; }
+    .seym-nl__input { border-right: 1px solid rgba(245,241,234,0.2); }
+    .seym-nl__btn { width: 100%; }
+  }
+</style>
+
+<section class="seym-nl" data-reveal>
+  <div class="seym-nl__wrap">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="seym-nl__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="seym-nl__sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+    {%- form 'customer', id: 'SeymNewsletter' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="seym-nl__form">
+        <input class="seym-nl__input" type="email" name="contact[email]"
+          placeholder="{{ section.settings.placeholder | default: 'Your email address' }}" required>
+        <button class="seym-nl__btn" type="submit">{{ section.settings.btn_label | default: 'Subscribe' }}</button>
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the Atelier" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Be the first to discover new collections, studio stories, and limited editions." },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Your email address" },
+    { "type": "text", "id": "btn_label", "label": "Button label", "default": "Subscribe" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

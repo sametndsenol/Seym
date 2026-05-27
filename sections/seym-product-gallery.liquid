@@ -1,56 +1,77 @@
 {%- comment -%}
-  Seym Product Gallery — editorial alternating grid below main product info.
-  Pulls product.media and lays them out in: full → 3-up → full → 1-1-1 pattern.
+  Seym Product Gallery — editorial alternating grid with lightbox.
+  Pattern: full → asymmetric 2-up → trio → full → remaining trio
 {%- endcomment -%}
 
 <style>
-  .seym-pgal {
-    background: #fff;
-    padding: 0 0 80px;
-  }
-  .seym-pgal__wrap {
-    max-width: 140rem;
-    margin: 0 auto;
-  }
-  .seym-pgal__row {
-    display: grid;
-    gap: 0.4rem;
-  }
-  .seym-pgal__row--full {
-    grid-template-columns: 1fr;
-  }
-  .seym-pgal__row--trio {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .seym-pgal__row + .seym-pgal__row {
-    margin-top: 0.4rem;
-  }
+  .seym-pgal { background: #fff; padding: 0 0 80px; }
+  .seym-pgal__wrap { max-width: 140rem; margin: 0 auto; }
+  .seym-pgal__row { display: grid; gap: 0.4rem; }
+  .seym-pgal__row--full { grid-template-columns: 1fr; }
+  .seym-pgal__row--duo { grid-template-columns: 2fr 1fr; }
+  .seym-pgal__row--trio { grid-template-columns: repeat(3, 1fr); }
+  .seym-pgal__row + .seym-pgal__row { margin-top: 0.4rem; }
   .seym-pgal__cell {
     overflow: hidden;
     position: relative;
+    cursor: pointer;
   }
-  .seym-pgal__row--full .seym-pgal__cell {
-    aspect-ratio: 21 / 9;
-  }
-  .seym-pgal__row--trio .seym-pgal__cell {
-    aspect-ratio: 1 / 1;
-  }
-  .seym-pgal__cell img,
-  .seym-pgal__cell video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .seym-pgal__row--full .seym-pgal__cell { aspect-ratio: 21 / 9; }
+  .seym-pgal__row--duo .seym-pgal__cell { aspect-ratio: 16 / 10; }
+  .seym-pgal__row--trio .seym-pgal__cell { aspect-ratio: 1 / 1; }
+  .seym-pgal__cell img, .seym-pgal__cell video {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
     transition: transform 1s cubic-bezier(0.22,1,0.36,1);
   }
-  .seym-pgal__cell:hover img,
-  .seym-pgal__cell:hover video {
-    transform: scale(1.03);
+  .seym-pgal__cell:hover img, .seym-pgal__cell:hover video { transform: scale(1.03); }
+  .seym-pgal__caption {
+    position: absolute;
+    bottom: 1.2rem; left: 1.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: rgba(245,241,234,0.7);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    z-index: 2;
+  }
+  .seym-pgal__cell:hover .seym-pgal__caption { opacity: 1; }
+
+  .seym-pgal__lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(10,10,10,0.92);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .seym-pgal__lightbox.active { display: flex; }
+  .seym-pgal__lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+  .seym-pgal__lb-close {
+    position: absolute;
+    top: 2rem; right: 2.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.4rem;
+    color: #F5F1EA;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
   }
 
   @media (max-width: 749px) {
-    .seym-pgal__row--trio { grid-template-columns: 1fr; }
+    .seym-pgal__row--trio, .seym-pgal__row--duo { grid-template-columns: 1fr; }
     .seym-pgal__row--full .seym-pgal__cell { aspect-ratio: 16 / 9; }
+    .seym-pgal__row--duo .seym-pgal__cell,
     .seym-pgal__row--trio .seym-pgal__cell { aspect-ratio: 4 / 5; }
     .seym-pgal { padding-bottom: 48px; }
   }
@@ -58,87 +79,115 @@
 
 <section class="seym-pgal">
   <div class="seym-pgal__wrap">
-    {%- assign media_list = product.media -%}
-    {%- assign media_count = media_list.size -%}
-    {%- assign idx = 0 -%}
+    {%- assign ml = product.media -%}
+    {%- assign mc = ml.size -%}
+    {%- assign i = 0 -%}
 
-    {%- comment -%} Row 1: Full-width (1 image) {%- endcomment -%}
-    {%- if idx < media_count -%}
-      <div class="seym-pgal__row seym-pgal__row--full">
-        <div class="seym-pgal__cell">
-          {%- assign m = media_list[idx] -%}
+    {%- comment -%} Row 1: Full-width {%- endcomment -%}
+    {%- if i < mc -%}
+      <div class="seym-pgal__row seym-pgal__row--full" data-reveal>
+        <div class="seym-pgal__cell" onclick="seymLB(this)">
+          {%- assign m = ml[i] -%}
           {%- if m.media_type == 'image' -%}
-            {{ m | image_url: width: 2400 | image_tag:
-               loading: 'lazy', widths: '600,1000,1400,1800,2400',
-               sizes: '100vw', alt: m.alt | default: product.title }}
-          {%- elsif m.media_type == 'video' -%}
-            <video autoplay muted loop playsinline>
-              {%- for source in m.sources -%}
-                <source src="{{ source.url }}" type="{{ source.mime_type }}">
-              {%- endfor -%}
-            </video>
+            {{ m | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,1000,1400,1800,2400', sizes: '100vw', alt: m.alt | default: product.title }}
           {%- endif -%}
+          {%- if m.alt != blank -%}<span class="seym-pgal__caption">{{ m.alt }}</span>{%- endif -%}
         </div>
       </div>
-      {%- assign idx = idx | plus: 1 -%}
+      {%- assign i = 1 -%}
     {%- endif -%}
 
-    {%- comment -%} Row 2: 3-up (3 images) {%- endcomment -%}
-    {%- if idx < media_count -%}
-      <div class="seym-pgal__row seym-pgal__row--trio">
-        {%- for i in (0..2) -%}
-          {%- assign pos = idx | plus: i -%}
-          {%- if pos < media_count -%}
-            <div class="seym-pgal__cell">
-              {%- assign m = media_list[pos] -%}
+    {%- comment -%} Row 2: Asymmetric duo (2fr + 1fr) {%- endcomment -%}
+    {%- if i < mc -%}
+      <div class="seym-pgal__row seym-pgal__row--duo" data-reveal-child>
+        {%- for n in (0..1) -%}
+          {%- assign pos = i | plus: n -%}
+          {%- if pos < mc -%}
+            <div class="seym-pgal__cell" onclick="seymLB(this)">
+              {%- assign m = ml[pos] -%}
               {%- if m.media_type == 'image' -%}
-                {{ m | image_url: width: 1000 | image_tag:
-                   loading: 'lazy', widths: '300,500,700,1000',
-                   sizes: '(max-width: 749px) 100vw, 33vw',
-                   alt: m.alt | default: product.title }}
+                {{ m | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,700,1000,1400', sizes: '(max-width: 749px) 100vw, 50vw', alt: m.alt | default: product.title }}
               {%- endif -%}
+              {%- if m.alt != blank -%}<span class="seym-pgal__caption">{{ m.alt }}</span>{%- endif -%}
             </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
-      {%- assign idx = idx | plus: 3 -%}
+      {%- assign i = i | plus: 2 -%}
     {%- endif -%}
 
-    {%- comment -%} Row 3: Full-width (1 image) {%- endcomment -%}
-    {%- if idx < media_count -%}
-      <div class="seym-pgal__row seym-pgal__row--full">
-        <div class="seym-pgal__cell">
-          {%- assign m = media_list[idx] -%}
-          {%- if m.media_type == 'image' -%}
-            {{ m | image_url: width: 2400 | image_tag:
-               loading: 'lazy', widths: '600,1000,1400,1800,2400',
-               sizes: '100vw', alt: m.alt | default: product.title }}
+    {%- comment -%} Row 3: Trio {%- endcomment -%}
+    {%- if i < mc -%}
+      <div class="seym-pgal__row seym-pgal__row--trio" data-reveal-child>
+        {%- for n in (0..2) -%}
+          {%- assign pos = i | plus: n -%}
+          {%- if pos < mc -%}
+            <div class="seym-pgal__cell" onclick="seymLB(this)">
+              {%- assign m = ml[pos] -%}
+              {%- if m.media_type == 'image' -%}
+                {{ m | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '300,500,700,1000', sizes: '(max-width: 749px) 100vw, 33vw', alt: m.alt | default: product.title }}
+              {%- endif -%}
+              {%- if m.alt != blank -%}<span class="seym-pgal__caption">{{ m.alt }}</span>{%- endif -%}
+            </div>
           {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- assign i = i | plus: 3 -%}
+    {%- endif -%}
+
+    {%- comment -%} Row 4: Full-width {%- endcomment -%}
+    {%- if i < mc -%}
+      <div class="seym-pgal__row seym-pgal__row--full" data-reveal>
+        <div class="seym-pgal__cell" onclick="seymLB(this)">
+          {%- assign m = ml[i] -%}
+          {%- if m.media_type == 'image' -%}
+            {{ m | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,1000,1400,1800,2400', sizes: '100vw', alt: m.alt | default: product.title }}
+          {%- endif -%}
+          {%- if m.alt != blank -%}<span class="seym-pgal__caption">{{ m.alt }}</span>{%- endif -%}
         </div>
       </div>
-      {%- assign idx = idx | plus: 1 -%}
+      {%- assign i = i | plus: 1 -%}
     {%- endif -%}
 
-    {%- comment -%} Row 4: 1-1-1 (remaining images, 3 per row) {%- endcomment -%}
-    {%- if idx < media_count -%}
-      <div class="seym-pgal__row seym-pgal__row--trio">
-        {%- for i in (idx..media_count) -%}
-          {%- if i < media_count -%}
-            <div class="seym-pgal__cell">
-              {%- assign m = media_list[i] -%}
+    {%- comment -%} Row 5+: Remaining as trios {%- endcomment -%}
+    {%- if i < mc -%}
+      <div class="seym-pgal__row seym-pgal__row--trio" data-reveal-child>
+        {%- for n in (i..mc) -%}
+          {%- if n < mc -%}
+            <div class="seym-pgal__cell" onclick="seymLB(this)">
+              {%- assign m = ml[n] -%}
               {%- if m.media_type == 'image' -%}
-                {{ m | image_url: width: 1000 | image_tag:
-                   loading: 'lazy', widths: '300,500,700,1000',
-                   sizes: '(max-width: 749px) 100vw, 33vw',
-                   alt: m.alt | default: product.title }}
+                {{ m | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '300,500,700,1000', sizes: '(max-width: 749px) 100vw, 33vw', alt: m.alt | default: product.title }}
               {%- endif -%}
+              {%- if m.alt != blank -%}<span class="seym-pgal__caption">{{ m.alt }}</span>{%- endif -%}
             </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
   </div>
+
+  <div class="seym-pgal__lightbox" id="seymLightbox" onclick="this.classList.remove('active')">
+    <button class="seym-pgal__lb-close" aria-label="Close">✕</button>
+    <img id="seymLBImg" src="" alt="">
+  </div>
 </section>
+
+<script>
+  function seymLB(cell) {
+    var img = cell.querySelector('img');
+    if (!img) return;
+    var lb = document.getElementById('seymLightbox');
+    var lbImg = document.getElementById('seymLBImg');
+    var src = img.src.replace(/width=\d+/, 'width=2400');
+    lbImg.src = src;
+    lbImg.alt = img.alt;
+    lb.classList.add('active');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') document.getElementById('seymLightbox').classList.remove('active');
+  });
+</script>
 
 {% schema %}
 {
