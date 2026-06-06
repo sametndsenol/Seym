@@ -12,7 +12,7 @@
 {%- assign right = section.blocks[2] -%}
 
 <style>
-  #SeymHM-{{ section.id }}.shm { height: 300vh; position: relative; background: var(--seym-paper,#fcfbf9); }
+  #SeymHM-{{ section.id }}.shm { height: 190vh; position: relative; background: var(--seym-paper,#fcfbf9); }
   #SeymHM-{{ section.id }} .shm__stage {
     position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden;
     display: flex; align-items: center; justify-content: center; gap: 0; background: #0b0b0b;
@@ -28,6 +28,12 @@
   }
   #SeymHM-{{ section.id }} .shm__card:hover::before { opacity: .7; }
   #SeymHM-{{ section.id }} .shm__clip { position: absolute; inset: 0; overflow: hidden; }
+  /* Subtle vignette — gives depth and keeps a bright (e.g. white studio)
+     video from reading as a flat block against the coloured banners. */
+  #SeymHM-{{ section.id }} .shm__clip::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(125% 120% at 50% 42%, transparent 56%, rgba(0,0,0,.30));
+  }
   #SeymHM-{{ section.id }} .shm__card img,
   #SeymHM-{{ section.id }} .shm__card video {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
@@ -180,12 +186,16 @@
   function render(p){
     var vw=window.innerWidth, vh=window.innerHeight, e=ease(p);
     var marg=lerp(0,6,e), gap=lerp(0,8,e), rad=lerp(0,14,e);
-    var finalW=Math.min((vw-2*marg-2*gap)/3, (0.80*vh)*0.8);
+    /* leave breathing room above (clear of the fixed header) + below */
+    var padTop=lerp(0,96,e), padBot=lerp(0,26,e);
+    var availH=vh-padTop-padBot;
+    var finalW=Math.min((vw-2*marg-2*gap)/3, (availH*0.98)*0.8);
     var sideGrow=ease(seg(p,0.12,0.92));
     var sideW=finalW*sideGrow;
     var centerW=vw-2*marg-2*gap-2*sideW;
     var cardH=lerp(vh, finalW*1.25, e);
     stage.style.gap=gap+'px'; stage.style.paddingLeft=marg+'px'; stage.style.paddingRight=marg+'px';
+    stage.style.paddingTop=padTop+'px'; stage.style.paddingBottom=padBot+'px';
     cC.style.width=centerW+'px'; cC.style.height=cardH+'px';
     cL.style.width=sideW+'px'; cR.style.width=sideW+'px'; cL.style.height=cardH+'px'; cR.style.height=cardH+'px';
     cL.style.opacity=sideGrow; cR.style.opacity=sideGrow;
@@ -196,7 +206,7 @@
     if(cScrim) cScrim.style.opacity=lerp(.2,.58,e);
     if(capC) capC.style.opacity=ease(seg(p,0.68,0.95));
     var co=ease(seg(p,0.74,1)); if(capL)capL.style.opacity=co; if(capR)capR.style.opacity=co;
-    var bg=Math.round(lerp(11,252,ease(seg(p,0.05,0.6))));
+    var bg=Math.round(lerp(11,252,ease(seg(p,0.42,0.9))));
     stage.style.background='rgb('+bg+','+bg+','+(bg-3)+')';
   }
   var target=0,cur=0,run=false;
