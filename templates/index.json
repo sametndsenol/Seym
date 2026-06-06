@@ -118,16 +118,6 @@
         "products_to_show": 4
       }
     },
-    "atelier": {
-      "type": "seym-atelier",
-      "settings": {
-        "eyebrow": "The Atelier",
-        "heading": "Mouth-blown in <em>Istanbul</em>",
-        "text": "Each piece is shaped one at a time by master glassblowers in our Çengelköy atelier — Czech crystal transformed by hand into forms that carry a quiet narrative of light and nature.",
-        "cta_label": "Discover our story",
-        "cta_link": "/pages/about-us"
-      }
-    },
     "press_strip": {
       "type": "seym-press-strip",
       "blocks": {
@@ -174,13 +164,14 @@
       "settings": {
         "image": "shopify://shop_images/Premium_Isikli_Efekt_Ekleme.png",
         "eyebrow": "Find the ideal",
-        "heading": "GIFT",
+        "heading": "",
         "cta_label": "Discover the selection",
         "cta_link": "shopify://collections"
       }
     },
     "newsletter": {
       "type": "seym-newsletter",
+      "disabled": true,
       "settings": {
         "heading": "Join the Atelier",
         "subtitle": "Be the first to discover new collections, studio stories, and limited editions.",
@@ -193,7 +184,6 @@
     "hero_morph",
     "universes",
     "bestsellers",
-    "atelier",
     "press_strip",
     "gift_banner",
     "newsletter"
