@@ -121,14 +121,14 @@
         "p1": {
           "type": "publication",
           "settings": {
-            "name": "Homeart",
+            "name": "Home Art",
             "kind": "press"
           }
         },
         "p2": {
           "type": "publication",
           "settings": {
-            "name": "Design Turkey",
+            "name": "Gentleman",
             "kind": "press"
           }
         },
