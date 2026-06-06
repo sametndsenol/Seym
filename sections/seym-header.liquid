@@ -12,7 +12,7 @@
   .seym-bar {
     /* Dark scrim (top of the gradient) so light text stays legible
        over any video frame; flips to solid black when scrolled. */
-    background: linear-gradient(to bottom, rgba(10,10,10,0.55), rgba(10,10,10,0.34));
+    background: linear-gradient(to bottom, rgba(10,10,10,0.62), rgba(10,10,10,0.5));
     border-bottom: none;
     text-align: center;
     padding: 1rem 2rem;
@@ -39,9 +39,10 @@
      Colors transition smoothly between the two. — */
   .seym-hd {
     position: relative; z-index: 50;
-    /* Lower half of the scrim — fades from the bar's tint to clear so the
-       header never washes out against a bright video, yet stays airy. */
-    background: linear-gradient(to bottom, rgba(10,10,10,0.34), rgba(10,10,10,0));
+    /* Lower half of the scrim — stays present (does NOT fade to zero) right
+       through where the row content sits, so the white logo + nav are always
+       legible over any background until the header flips to solid. */
+    background: linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.18));
     border-bottom: 1px solid transparent;
     transition: background 400ms ease, border-color 400ms ease;
   }
@@ -400,7 +401,7 @@
     var ticking = false;
     function update(){
       ticking = false;
-      setSolid(window.scrollY > window.innerHeight * 0.6);
+      setSolid(window.scrollY > window.innerHeight * 0.42);
     }
     function onScroll(){
       if(!ticking){ ticking = true; requestAnimationFrame(update); }
