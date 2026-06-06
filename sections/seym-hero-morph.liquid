@@ -45,6 +45,10 @@
     position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.58), rgba(0,0,0,0) 46%);
   }
   #SeymHM-{{ section.id }} .shm__link { position: absolute; inset: 0; z-index: 4; }
+  #SeymHM-{{ section.id }} .shm__top {
+    position: absolute; top: 0; left: 0; right: 0; height: 26vh; z-index: 6; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0));
+  }
 
   #SeymHM-{{ section.id }} .shm__cap {
     position: absolute; left: 1.8rem; right: 1.8rem; bottom: 1.8rem; z-index: 3; color: #fff; opacity: 0;
@@ -107,6 +111,11 @@
 
 <section class="shm" id="SeymHM-{{ section.id }}">
   <div class="shm__stage" id="shmStage-{{ section.id }}">
+
+    {%- comment -%} Top scrim — darkens the header zone over the (possibly
+      light) video so the white nav is always legible; fades as the morph
+      begins and the header turns solid. {%- endcomment -%}
+    <div class="shm__top" id="shmTop-{{ section.id }}"></div>
 
     {%- comment -%} Left banner {%- endcomment -%}
     <article class="shm__card" id="shmL-{{ section.id }}" style="--glow: {{ left.settings.glow | default: 'rgba(72,98,182,.85)' }};">
@@ -174,7 +183,7 @@
   var sid='{{ section.id }}';
   var shm=document.getElementById('SeymHM-'+sid), stage=document.getElementById('shmStage-'+sid);
   var cL=document.getElementById('shmL-'+sid), cC=document.getElementById('shmC-'+sid), cR=document.getElementById('shmR-'+sid);
-  var hero=document.getElementById('shmHero-'+sid), cue=document.getElementById('shmCue-'+sid), cScrim=document.getElementById('shmCScrim-'+sid);
+  var hero=document.getElementById('shmHero-'+sid), cue=document.getElementById('shmCue-'+sid), cScrim=document.getElementById('shmCScrim-'+sid), topScrim=document.getElementById('shmTop-'+sid);
   var capL=document.getElementById('shmCapL-'+sid), capC=document.getElementById('shmCapC-'+sid), capR=document.getElementById('shmCapR-'+sid);
   if(!shm||!cC) return;
   function lerp(a,b,t){return a+(b-a)*t}
@@ -203,6 +212,7 @@
     var rec=Math.sin(clamp(p/0.7)*Math.PI)*0.015; cC.style.transform='scale('+(1-rec)+')';
     var hf=ease(seg(p,0,0.26)); if(hero){hero.style.opacity=1-hf; hero.style.transform='translateY('+(-30*hf)+'px)';}
     if(cue) cue.style.opacity=1-ease(seg(p,0,0.12));
+    if(topScrim) topScrim.style.opacity=1-ease(seg(p,0,0.32));
     if(cScrim) cScrim.style.opacity=lerp(.2,.58,e);
     if(capC) capC.style.opacity=ease(seg(p,0.68,0.95));
     var co=ease(seg(p,0.74,1)); if(capL)capL.style.opacity=co; if(capR)capR.style.opacity=co;
