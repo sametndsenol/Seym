@@ -163,25 +163,35 @@
         <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">{{ section.settings.cta_label }} →</a>
       {%- endif -%}
 
-      {%- liquid
-        assign press_blocks = section.blocks | where: 'settings.kind', 'press'
-        assign award_blocks = section.blocks | where: 'settings.kind', 'award'
-      -%}
-      {%- if press_blocks.size > 0 or award_blocks.size > 0 -%}
+      {%- comment -%}
+        Count by category up front. NOTE: Liquid's `where` filter does not
+        resolve nested paths like 'settings.kind' on block objects, so we
+        iterate blocks manually and test block.settings.kind directly.
+      {%- endcomment -%}
+      {%- assign press_count = 0 -%}
+      {%- assign award_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.kind == 'award' -%}{%- assign award_count = award_count | plus: 1 -%}
+        {%- else -%}{%- assign press_count = press_count | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+
+      {%- if press_count > 0 or award_count > 0 -%}
         <div class="seym-ps__groups" id="PressGroups-{{ section.id }}">
-          {%- if press_blocks.size > 0 -%}
+          {%- if press_count > 0 -%}
             <div class="seym-ps__group seym-ps__group--press">
               {%- if section.settings.press_label != blank -%}
                 <p class="seym-ps__group-label">{{ section.settings.press_label }}</p>
               {%- endif -%}
               <div class="seym-ps__logos">
-                {%- for block in press_blocks -%}
-                  <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                {%- for block in section.blocks -%}
+                  {%- unless block.settings.kind == 'award' -%}
+                    <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                  {%- endunless -%}
                 {%- endfor -%}
               </div>
             </div>
           {%- endif -%}
-          {%- if award_blocks.size > 0 -%}
+          {%- if award_count > 0 -%}
             <div class="seym-ps__group seym-ps__group--award">
               {%- if section.settings.award_label != blank -%}
                 <p class="seym-ps__group-label">
@@ -190,8 +200,10 @@
                 </p>
               {%- endif -%}
               <div class="seym-ps__logos">
-                {%- for block in award_blocks -%}
-                  <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                {%- for block in section.blocks -%}
+                  {%- if block.settings.kind == 'award' -%}
+                    <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
             </div>

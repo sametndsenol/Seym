@@ -10,7 +10,9 @@
      solid black once scrolled / on non-hero pages. Text stays light/legible
      in both states. — */
   .seym-bar {
-    background: transparent;
+    /* Dark scrim (top of the gradient) so light text stays legible
+       over any video frame; flips to solid black when scrolled. */
+    background: linear-gradient(to bottom, rgba(10,10,10,0.55), rgba(10,10,10,0.34));
     border-bottom: none;
     text-align: center;
     padding: 1rem 2rem;
@@ -37,7 +39,9 @@
      Colors transition smoothly between the two. — */
   .seym-hd {
     position: relative; z-index: 50;
-    background: transparent;
+    /* Lower half of the scrim — fades from the bar's tint to clear so the
+       header never washes out against a bright video, yet stays airy. */
+    background: linear-gradient(to bottom, rgba(10,10,10,0.34), rgba(10,10,10,0));
     border-bottom: 1px solid transparent;
     transition: background 400ms ease, border-color 400ms ease;
   }
