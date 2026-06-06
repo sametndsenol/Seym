@@ -1,99 +1,149 @@
 {%- comment -%}
-  Gift Banner — fixed-height image with strong readable text overlay.
+  Gift Banner — two modes:
+   • Text-overlay mode: fixed-height cropped image + ivory scrim + editorial copy.
+   • Plain mode (show_text=false): finished self-contained banner image shown
+     WHOLE (uncropped), no scrim/overlay, the entire image is the link.
 {%- endcomment -%}
 
 <style>
-  .sgb {
+  #shopify-section-{{ section.id }} .sgb {
     position: relative;
     width: 100%;
     height: clamp(28rem, 50vh, 44rem);
     overflow: hidden;
+    background: var(--seym-ivory, #F5F1EA);
   }
-  .sgb__media {
+  #shopify-section-{{ section.id }} .sgb__media {
     position: absolute;
     inset: 0;
   }
-  .sgb__media img {
+  #shopify-section-{{ section.id }} .sgb__media img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 1.1s cubic-bezier(0.22,1,0.36,1);
   }
+  #shopify-section-{{ section.id }} .sgb:hover .sgb__media img { transform: scale(1.04); }
 
-  /* Plain mode — the image is a finished, self-contained banner
-     (text/CTA baked in). Show it whole, no crop, no scrim, no overlay;
-     the whole banner is the link. */
-  .sgb--plain { height: auto; overflow: visible; }
-  .sgb--plain .sgb__media { position: static; inset: auto; display: block; }
-  .sgb--plain .sgb__media img { height: auto; object-fit: initial; }
-  .sgb--plain a.sgb__media { cursor: pointer; }
-  .sgb__scrim {
+  /* ---- Plain mode — finished banner, whole & uncropped, whole image is link ---- */
+  #shopify-section-{{ section.id }} .sgb--plain {
+    height: auto;
+    overflow: hidden;
+    padding: clamp(7rem, 11vh, 11rem) 4.8rem;
+    display: flex;
+    justify-content: center;
+  }
+  #shopify-section-{{ section.id }} .sgb--plain .sgb__media {
+    position: static;
+    inset: auto;
+    display: block;
+    width: 100%;
+    max-width: 144rem;
+    line-height: 0;
+  }
+  #shopify-section-{{ section.id }} .sgb--plain .sgb__media img {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+  }
+  #shopify-section-{{ section.id }} .sgb--plain a.sgb__media { cursor: pointer; }
+  #shopify-section-{{ section.id }} .sgb--plain:hover .sgb__media img { transform: scale(1.012); }
+
+  /* ---- Text-overlay mode ---- */
+  #shopify-section-{{ section.id }} .sgb__scrim {
     position: absolute; inset: 0;
     background:
       linear-gradient(to right,
-        rgba(245,241,234,0.92) 0%,
-        rgba(245,241,234,0.7) 30%,
-        rgba(245,241,234,0.2) 55%,
-        transparent 75%);
+        rgba(245,241,234,0.94) 0%,
+        rgba(245,241,234,0.72) 32%,
+        rgba(245,241,234,0.22) 58%,
+        transparent 78%);
     z-index: 1;
   }
-  .sgb__txt {
+  #shopify-section-{{ section.id }} .sgb__txt {
     position: absolute;
     z-index: 2;
     top: 0; bottom: 0; left: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4rem 6rem;
-    max-width: 40rem;
+    padding: clamp(4rem, 8vh, 7rem) clamp(2rem, 6vw, 7rem);
+    max-width: 46rem;
   }
-  .sgb__ey {
+  #shopify-section-{{ section.id }} .sgb__ey {
     font: 300 0.7rem/1 'Inter', sans-serif;
-    letter-spacing: 0.34em;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.5);
-    margin: 0 0 1rem;
+    color: rgba(13,13,13,0.55);
+    margin: 0 0 1.4rem;
   }
-  .sgb__h {
-    font: 300 clamp(5rem, 10vw, 9rem)/0.88 'Cormorant Garamond', serif;
+  #shopify-section-{{ section.id }} .sgb__h {
+    font: 300 clamp(3.6rem, 8vw, 7rem)/0.96 'Cormorant Garamond', serif;
     font-style: italic;
-    color: #1A1A1A;
-    margin: 0 0 1.8rem;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+    letter-spacing: -0.01em;
+    color: var(--seym-ink, #0D0D0D);
+    margin: 0 0 2rem;
   }
-  .sgb__cta {
-    font: 400 0.72rem/1 'Inter', sans-serif;
-    letter-spacing: 0.28em;
+  #shopify-section-{{ section.id }} .sgb__cta {
+    position: relative;
+    font: 300 0.7rem/1 'Inter', sans-serif;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: #1A1A1A;
+    color: var(--seym-ink, #0D0D0D);
     text-decoration: none;
-    border-bottom: 1px solid rgba(26,26,26,0.4);
-    padding-bottom: 0.4rem;
+    padding-bottom: 0.55rem;
     align-self: flex-start;
-    transition: color .2s, border-color .2s;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+    transition: color .35s cubic-bezier(0.22,1,0.36,1);
   }
-  .sgb__cta:hover {
-    color: var(--seym-wine, #8E2244);
-    border-color: var(--seym-wine, #8E2244);
+  #shopify-section-{{ section.id }} .sgb__cta::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--seym-wine, #8E2244);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s cubic-bezier(0.22,1,0.36,1);
   }
+  #shopify-section-{{ section.id }} .sgb__cta::before {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(13,13,13,0.12);
+  }
+  #shopify-section-{{ section.id }} .sgb__cta:hover { color: var(--seym-wine, #8E2244); }
+  #shopify-section-{{ section.id }} .sgb__cta:hover::after { transform: scaleX(1); }
 
-  @media(max-width:749px) {
-    .sgb { height: clamp(24rem, 60vh, 36rem); }
-    .sgb__txt { padding: 2.4rem; max-width: none; }
-    .sgb__scrim {
-      background:
-        linear-gradient(to bottom,
-          rgba(245,241,234,0.9) 0%,
-          rgba(245,241,234,0.6) 50%,
-          transparent 100%);
-    }
-    .sgb__txt {
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .sgb { height: clamp(24rem, 60vh, 36rem); }
+    #shopify-section-{{ section.id }} .sgb--plain { padding: clamp(4.5rem, 9vh, 6rem) 2rem; }
+    #shopify-section-{{ section.id }} .sgb__txt {
       top: 0; bottom: auto; left: 0; right: 0;
       justify-content: flex-start;
-      padding-top: 3rem;
+      padding: 3rem 2rem 0;
+      max-width: none;
     }
+    #shopify-section-{{ section.id }} .sgb__scrim {
+      background:
+        linear-gradient(to bottom,
+          rgba(245,241,234,0.92) 0%,
+          rgba(245,241,234,0.62) 50%,
+          transparent 100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .sgb__media img,
+    #shopify-section-{{ section.id }} .sgb__cta,
+    #shopify-section-{{ section.id }} .sgb__cta::after { transition: none; }
+    #shopify-section-{{ section.id }} .sgb:hover .sgb__media img,
+    #shopify-section-{{ section.id }} .sgb--plain:hover .sgb__media img { transform: none; }
   }
 </style>
 
@@ -106,7 +156,8 @@
 {%- capture media -%}
   {%- if section.settings.image != blank -%}
     {{ section.settings.image | image_url: width: 2000 | image_tag:
-       loading: 'lazy', widths: '600,1000,1400,2000', sizes: '100vw' }}
+       loading: 'lazy', widths: '600,1000,1400,2000', sizes: '100vw',
+       alt: section.settings.heading | default: 'Gift' }}
   {%- endif -%}
 {%- endcapture -%}
 

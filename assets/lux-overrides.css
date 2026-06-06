@@ -1163,13 +1163,19 @@ input:focus, textarea:focus, select:focus {
   color: var(--seym-cream) !important;
 }
 
-/* ---------- 15. PAGE LOAD FADE ---------- */
-body { opacity: 0; animation: seym-page-in 800ms var(--seym-ease) forwards; }
+/* ---------- 15. PAGE LOAD FADE ----------
+   Opacity-only (no transform) so it never becomes a containing block for
+   the position:fixed header / ivory curtain — avoids any on-load shift.
+   Pairs with the JS ivory wash (~300ms) for one clean reveal. */
+body { opacity: 0; animation: seym-page-in 600ms var(--seym-ease) forwards; }
 @keyframes seym-page-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-.shopify-design-mode body { animation: none; opacity: 1; transform: none; }
+.shopify-design-mode body { animation: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  body { opacity: 1 !important; animation: none !important; }
+}
 
 /* ---------- 16. SCROLLBAR ---------- */
 @media (min-width: 990px) {
@@ -1629,6 +1635,53 @@ body:has(.seym-hd):has(.shm) { padding-top: 0; }
 .shopify-section + .shopify-section {
   margin-top: 0 !important;
 }
+
+/* ============================================================
+   28b. HOMEPAGE SECTION RHYTHM + SEAMS
+   ------------------------------------------------------------
+   COORDINATION CONTRACT:
+   • Teammates own each section's INTERNAL vertical padding
+     (target: clamp(7rem,11vh,11rem) desktop / clamp(4.5rem,9vh,6rem)
+     mobile, set inside each section's own <style>).
+   • THIS BLOCK owns the OUTER rhythm only: it removes stray margins
+     between section wrappers and guarantees clean seams so a dark
+     section meeting a light one looks intentional (no mismatched
+     strips). It does NOT set padding on the sections' inner
+     containers, so it never fights the teammates' internal padding.
+   ------------------------------------------------------------ */
+
+/* Shared rhythm token (outer spacing reference for any teammate). */
+:root {
+  --seym-section-pad: clamp(7rem, 11vh, 11rem);
+}
+@media (max-width: 749px) {
+  :root { --seym-section-pad: clamp(4.5rem, 9vh, 6rem); }
+}
+
+/* Zero every stray margin on the homepage section roots and their
+   wrappers so seams are flush — spacing comes only from each section's
+   internal padding, giving one even rhythm. */
+.shopify-section:has(> .shm),
+.shopify-section:has(> .sun),
+.shopify-section:has(> .sbs),
+.shopify-section:has(> .seym-ps),
+.shopify-section:has(> .sgb),
+.shopify-section:has(> .seym-nl),
+.shm, .sun, .sbs, .seym-ps, .sgb, .seym-nl {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Sections must paint edge-to-edge so no ivory/white body strip leaks
+   through at a seam. (We don't touch their internal padding.) */
+.shm, .sun, .sbs, .seym-ps, .sgb, .seym-nl {
+  display: block;
+  width: 100%;
+}
+
+/* Ivory is the brand canvas: any uncovered gap (e.g. a 1px subpixel
+   seam at a dark↔light boundary) shows brand ivory, never raw white. */
+html, body { background-color: #F5F1EA !important; }
 
 /* ============================================================
    29. NOVA CURRENCY CONVERTER — integrate into header style

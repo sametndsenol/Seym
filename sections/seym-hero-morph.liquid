@@ -4,16 +4,23 @@
   Side cards RISE FROM BELOW into their slot. Hero text fades, triptych
   captions appear. Final state: three portrait 1:2 cards, centered in the
   stage with the white background showing around them.
-  Mobile: no morph — hero stacks above triptych cards.
+
+  Motion is scroll-driven but SMOOTHED: scroll sets a target progress and
+  the rendered progress lerps toward it each rAF frame for buttery glide.
+  rAF idles when settled and restarts on scroll.
+
+  Mobile (<=749px): no morph — hero stacks above triptych cards.
+  Reduced motion: morph skipped — final triptych shown statically.
 {%- endcomment -%}
 
 <style>
-  .shm {
+  #SeymHM-{{ section.id }}.shm {
     height: 250vh;
     position: relative;
     background: #0a0a0a;
+    --shm-ease: cubic-bezier(0.22,1,0.36,1);
   }
-  .shm__stage {
+  #SeymHM-{{ section.id }} .shm__stage {
     position: sticky;
     top: 0;
     height: 100vh;
@@ -22,246 +29,382 @@
     display: flex;
     align-items: center;
     background: #0a0a0a;
-    transition: background 0.6s ease;
   }
 
   /* --- Side cards --- */
-  .shm__side {
+  #SeymHM-{{ section.id }} .shm__side {
     position: relative;
     flex: 0 0 0%;
     align-self: center;
     overflow: hidden;
+    border-radius: 2px;
     will-change: flex-basis, height;
-    transition: none;
   }
   /* Inner riser: clipped by the column, translates up from below */
-  .shm__side-inner {
+  #SeymHM-{{ section.id }} .shm__side-inner {
     position: absolute;
     inset: 0;
     transform: translateY(100%);
     opacity: 0;
     will-change: transform, opacity;
   }
-  .shm__side-link {
+  #SeymHM-{{ section.id }} .shm__side-link {
     position: absolute;
     inset: 0;
     display: block;
     text-decoration: none;
     z-index: 3;
   }
-  .shm__side img {
+  #SeymHM-{{ section.id }} .shm__side-media {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  #SeymHM-{{ section.id }} .shm__side img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
+    transition: transform 1.1s var(--shm-ease);
+    will-change: transform;
   }
-  .shm__side-inner::after {
+  #SeymHM-{{ section.id }} .shm__side-inner::after {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.55) 100%);
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0) 40%,
+      rgba(0,0,0,0.18) 62%,
+      rgba(0,0,0,0.58) 100%);
     z-index: 1;
+    pointer-events: none;
   }
-  .shm__side-txt {
+  #SeymHM-{{ section.id }} .shm__side-link:hover ~ .shm__side-inner img,
+  #SeymHM-{{ section.id }} .shm__side:hover img { transform: scale(1.04); }
+  #SeymHM-{{ section.id }} .shm__side-txt {
     position: absolute;
     z-index: 2;
-    bottom: 2.2rem; left: 2.2rem; right: 2.2rem;
+    bottom: 2.4rem; left: 2.2rem; right: 2.2rem;
     opacity: 0;
-    transition: none;
   }
-  .shm__side-ey {
+  #SeymHM-{{ section.id }} .shm__side-ey {
     display: block;
-    font: 300 0.65rem/1 'Inter', sans-serif;
+    font: 300 0.66rem/1 'Inter', sans-serif;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-    margin: 0 0 0.5rem;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 0.55rem;
   }
-  .shm__side-name {
-    font: 400 1.4rem/1.2 'Cormorant Garamond', serif;
-    color: #fff; margin: 0 0 0.6rem;
+  #SeymHM-{{ section.id }} .shm__side-name {
+    font: 300 1.55rem/1.2 'Cormorant Garamond', serif;
+    letter-spacing: 0.04em;
+    color: #fff; margin: 0 0 0.55rem;
   }
-  .shm__side-price {
+  #SeymHM-{{ section.id }} .shm__side-price {
     display: block;
-    font: 300 0.85rem/1.2 'Inter', sans-serif;
+    font: 300 0.82rem/1.2 'Inter', sans-serif;
     letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.85);
-    margin: 0 0 0.9rem;
+    color: rgba(255,255,255,0.82);
+    margin: 0 0 1rem;
   }
-  .shm__side-cta {
+  #SeymHM-{{ section.id }} .shm__side-cta {
     display: inline-flex;
     align-items: center;
     min-height: 24px;
-    font: 400 0.6rem/1 'Inter', sans-serif;
+    font: 400 0.62rem/1 'Inter', sans-serif;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: #fff;
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-    padding-bottom: 0.35rem;
+    position: relative;
+    padding-bottom: 0.4rem;
   }
+  #SeymHM-{{ section.id }} .shm__side-cta::after {
+    content: '';
+    position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.55);
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 0.5s var(--shm-ease), background 0.5s var(--shm-ease);
+  }
+  #SeymHM-{{ section.id }} .shm__side:hover .shm__side-cta::after { background: #fff; }
 
   /* --- Center (video) card --- */
-  .shm__center {
+  #SeymHM-{{ section.id }} .shm__center {
     position: relative;
     flex: 0 0 100%;
     align-self: center;
     z-index: 2;
     overflow: hidden;
+    border-radius: 2px;
     will-change: flex-basis, height;
   }
-  .shm__center-link {
+  #SeymHM-{{ section.id }} .shm__center-link {
     position: absolute;
     inset: 0;
     display: block;
     text-decoration: none;
     z-index: 1;
   }
-  .shm__center video,
-  .shm__center img {
+  #SeymHM-{{ section.id }} .shm__center video,
+  #SeymHM-{{ section.id }} .shm__center .shm__center-poster,
+  #SeymHM-{{ section.id }} .shm__center img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
   }
-  .shm__center-grad {
+  #SeymHM-{{ section.id }} .shm__center-poster {
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  #SeymHM-{{ section.id }} .shm__center video { z-index: 0; }
+  #SeymHM-{{ section.id }} .shm__center-grad {
     position: absolute; inset: 0;
     background: linear-gradient(to bottom,
-      rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.08) 30%,
-      rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.50) 100%);
+      rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.08) 28%,
+      rgba(0,0,0,0.06) 55%, rgba(0,0,0,0.52) 100%);
     z-index: 1;
     pointer-events: none;
   }
 
   /* Hero text — centered, fades out on scroll */
-  .shm__hero-txt {
+  #SeymHM-{{ section.id }} .shm__hero-txt {
     position: absolute;
     z-index: 3;
-    bottom: 10vh;
+    bottom: 12vh;
     left: 0; right: 0;
     text-align: center;
     color: #fff;
-    will-change: opacity;
+    will-change: opacity, transform;
     pointer-events: none;
   }
-  .shm__hero-txt > * { pointer-events: auto; }
-  .shm__hero-ey {
+  #SeymHM-{{ section.id }} .shm__hero-txt > * { pointer-events: auto; }
+  #SeymHM-{{ section.id }} .shm__hero-ey {
     font: 300 0.7rem/1 'Inter', sans-serif;
-    letter-spacing: 0.38em;
+    letter-spacing: 0.34em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.6);
-    margin: 0 0 1.4rem;
+    margin: 0 0 1.6rem;
   }
-  .shm__hero-h {
-    font: 300 clamp(3.2rem,6vw,6rem)/0.95 'Cormorant Garamond', serif;
-    letter-spacing: 0.06em;
-    margin: 0 0 2.6rem; color: #fff;
+  #SeymHM-{{ section.id }} .shm__hero-h {
+    font: 300 clamp(3.4rem,6vw,6.5rem)/0.98 'Cormorant Garamond', serif;
+    letter-spacing: 0.05em;
+    margin: 0 0 1.8rem; color: #fff;
   }
-  .shm__hero-cta {
-    display: inline-block;
-    font: 400 0.68rem/1 'Inter', sans-serif;
-    letter-spacing: 0.34em;
+  /* Thin animated divider under the masthead */
+  #SeymHM-{{ section.id }} .shm__hero-rule {
+    width: 1px;
+    height: 0;
+    margin: 0 auto 2.2rem;
+    background: rgba(255,255,255,0.4);
+  }
+  #SeymHM-{{ section.id }} .shm__hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: 400 0.7rem/1 'Inter', sans-serif;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
     color: #fff; text-decoration: none;
     border: 1px solid rgba(255,255,255,0.45);
-    padding: 1.05rem 2.8rem;
-    transition: background .25s, border-color .25s;
-    min-height: 44px;
+    padding: 0 2.8rem;
+    min-height: 48px;
+    transition: background .35s var(--shm-ease), border-color .35s var(--shm-ease);
   }
-  .shm__hero-cta:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+  #SeymHM-{{ section.id }} .shm__hero-cta:hover { background: rgba(255,255,255,0.12); border-color: #fff; }
+
+  /* Initial entrance (load) — refined ease-up */
+  #SeymHM-{{ section.id }} .shm__hero-ey,
+  #SeymHM-{{ section.id }} .shm__hero-h,
+  #SeymHM-{{ section.id }} .shm__hero-rule,
+  #SeymHM-{{ section.id }} .shm__hero-cta {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1s var(--shm-ease), transform 1.1s var(--shm-ease), height 1.1s var(--shm-ease), background .35s var(--shm-ease), border-color .35s var(--shm-ease);
+  }
+  #SeymHM-{{ section.id }}.is-entered .shm__hero-ey { opacity: 1; transform: none; transition-delay: .1s; }
+  #SeymHM-{{ section.id }}.is-entered .shm__hero-h  { opacity: 1; transform: none; transition-delay: .22s; }
+  #SeymHM-{{ section.id }}.is-entered .shm__hero-rule { height: 42px; transition-delay: .42s; opacity: 1; transform: none; }
+  #SeymHM-{{ section.id }}.is-entered .shm__hero-cta { opacity: 1; transform: none; transition-delay: .52s; }
+
+  /* Scroll cue — slim line + label, fades as morph begins */
+  #SeymHM-{{ section.id }} .shm__cue {
+    position: absolute;
+    left: 50%;
+    bottom: 2.6rem;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    will-change: opacity;
+    pointer-events: none;
+  }
+  #SeymHM-{{ section.id }} .shm__cue-label {
+    font: 300 0.58rem/1 'Inter', sans-serif;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+  #SeymHM-{{ section.id }} .shm__cue-line {
+    position: relative;
+    width: 1px;
+    height: 46px;
+    background: rgba(255,255,255,0.2);
+    overflow: hidden;
+  }
+  #SeymHM-{{ section.id }} .shm__cue-line::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 40%;
+    background: rgba(255,255,255,0.85);
+    animation: shmCue 2.4s var(--shm-ease) infinite;
+  }
+  @keyframes shmCue {
+    0%   { transform: translateY(-110%); }
+    60%  { transform: translateY(260%); }
+    100% { transform: translateY(260%); }
+  }
 
   /* Triptych center caption — hidden initially, fades in */
-  .shm__trip-txt {
+  #SeymHM-{{ section.id }} .shm__trip-txt {
     position: absolute; inset: 0;
     z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     text-align: center;
-    padding: 3rem;
+    padding: 0 2rem 2.4rem;
     opacity: 0;
     will-change: opacity;
     pointer-events: none;
   }
-  .shm__trip-txt > * { pointer-events: auto; }
-  .shm__trip-txt::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(0,0,0,0.32);
-    z-index: -1;
-  }
-  .shm__trip-ey {
-    font: 300 0.65rem/1 'Inter', sans-serif;
-    letter-spacing: 0.36em;
+  #SeymHM-{{ section.id }} .shm__trip-txt > * { pointer-events: auto; }
+  #SeymHM-{{ section.id }} .shm__trip-ey {
+    font: 300 0.66rem/1 'Inter', sans-serif;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin: 0 0 1.2rem;
+    color: rgba(255,255,255,0.62);
+    margin: 0 0 0.7rem;
   }
-  .shm__trip-h {
-    font: 300 clamp(2.4rem,4vw,4.4rem)/0.95 'Cormorant Garamond', serif;
-    letter-spacing: 0.06em;
+  #SeymHM-{{ section.id }} .shm__trip-h {
+    font: 300 clamp(1.9rem,2.4vw,2.8rem)/1.05 'Cormorant Garamond', serif;
+    letter-spacing: 0.04em;
     color: #fff;
-    margin: 0 0 0.8rem;
+    margin: 0 0 0.55rem;
   }
-  .shm__trip-price {
-    font: 300 1rem/1.2 'Inter', sans-serif;
+  #SeymHM-{{ section.id }} .shm__trip-price {
+    font: 300 0.9rem/1.2 'Inter', sans-serif;
     letter-spacing: 0.06em;
     color: rgba(255,255,255,0.85);
-    margin: 0 0 2rem;
+    margin: 0 0 1.2rem;
   }
-  .shm__trip-cta {
-    font: 400 0.64rem/1 'Inter', sans-serif;
-    letter-spacing: 0.32em;
+  #SeymHM-{{ section.id }} .shm__trip-cta {
+    font: 400 0.62rem/1 'Inter', sans-serif;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     color: #fff;
-    border: 1px solid rgba(255,255,255,0.4);
-    padding: 0.95rem 2.4rem;
-    min-height: 44px;
+    position: relative;
+    padding-bottom: 0.4rem;
+    min-height: 24px;
     display: inline-flex; align-items: center;
     text-decoration: none;
-    transition: background .25s, border-color .25s;
   }
-  .shm__trip-cta:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+  #SeymHM-{{ section.id }} .shm__trip-cta::after {
+    content: '';
+    position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.55);
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: background .5s var(--shm-ease);
+  }
+  #SeymHM-{{ section.id }} .shm__center:hover .shm__trip-cta::after { background: #fff; }
+  #SeymHM-{{ section.id }} .shm__center:hover img,
+  #SeymHM-{{ section.id }} .shm__center:hover video { /* video scale handled below */ }
 
   /* --- Gaps (animated via JS) --- */
-  .shm__gap {
-    flex: 0 0 0;
-    will-change: flex-basis;
-  }
-  .shm__pad {
-    flex: 0 0 0;
-    will-change: flex-basis;
+  #SeymHM-{{ section.id }} .shm__gap { flex: 0 0 0; will-change: flex-basis; }
+  #SeymHM-{{ section.id }} .shm__pad { flex: 0 0 0; will-change: flex-basis; }
+
+  /* --- Reduced motion: skip morph, show final triptych statically --- */
+  @media (prefers-reduced-motion: reduce) {
+    #SeymHM-{{ section.id }}.shm { height: auto; background: #faf9f7; }
+    #SeymHM-{{ section.id }} .shm__stage {
+      position: relative;
+      height: auto;
+      background: #faf9f7 !important;
+      gap: 1.2rem;
+      padding: 1.6rem;
+      align-items: stretch;
+    }
+    #SeymHM-{{ section.id }} .shm__center,
+    #SeymHM-{{ section.id }} .shm__side {
+      flex: 1 1 0 !important;
+      height: auto !important;
+      aspect-ratio: 1 / 2;
+    }
+    #SeymHM-{{ section.id }} .shm__side-inner {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+    #SeymHM-{{ section.id }} .shm__side-txt,
+    #SeymHM-{{ section.id }} .shm__trip-txt { opacity: 1 !important; }
+    #SeymHM-{{ section.id }} .shm__hero-txt,
+    #SeymHM-{{ section.id }} .shm__cue { display: none; }
+    #SeymHM-{{ section.id }} .shm__gap,
+    #SeymHM-{{ section.id }} .shm__pad { display: none; }
+    #SeymHM-{{ section.id }} .shm__hero-ey,
+    #SeymHM-{{ section.id }} .shm__hero-h,
+    #SeymHM-{{ section.id }} .shm__hero-rule,
+    #SeymHM-{{ section.id }} .shm__hero-cta { transition: none; }
   }
 
   /* --- Mobile: no morph, stack as portrait 1:2 cards --- */
   @media(max-width:749px){
-    .shm { height: auto; background: #fff; }
-    .shm__stage {
+    #SeymHM-{{ section.id }}.shm { height: auto; background: #faf9f7; }
+    #SeymHM-{{ section.id }} .shm__stage {
       position: relative;
       height: auto;
       flex-direction: column;
       align-items: stretch;
-      gap: 0.5rem;
-      padding: 0.5rem;
+      gap: 1rem;
+      padding: 1rem;
+      background: #faf9f7 !important;
     }
-    .shm__center {
+    #SeymHM-{{ section.id }} .shm__center {
       position: relative;
       inset: auto;
       flex: 0 0 auto !important;
       aspect-ratio: 1 / 2;
-      max-height: 90vh;
+      max-height: 88vh;
+      height: auto !important;
       z-index: 1;
     }
-    .shm__side {
+    #SeymHM-{{ section.id }} .shm__side {
       flex: 0 0 auto !important;
       aspect-ratio: 1 / 2;
-      max-height: 90vh;
+      max-height: 88vh;
+      height: auto !important;
     }
-    .shm__side-inner {
+    #SeymHM-{{ section.id }} .shm__side-inner {
       transform: none !important;
       opacity: 1 !important;
     }
-    .shm__side-txt { opacity: 1 !important; }
-    .shm__hero-txt { bottom: 6vh; padding: 0 2rem; }
-    .shm__trip-txt { display: none; }
-    .shm__gap, .shm__pad { display: none; }
+    #SeymHM-{{ section.id }} .shm__side-txt { opacity: 1 !important; }
+    #SeymHM-{{ section.id }} .shm__hero-txt {
+      bottom: 8vh; padding: 0 2rem;
+      opacity: 1 !important; transform: none !important;
+    }
+    #SeymHM-{{ section.id }} .shm__hero-ey,
+    #SeymHM-{{ section.id }} .shm__hero-h,
+    #SeymHM-{{ section.id }} .shm__hero-cta { opacity: 1; transform: none; }
+    #SeymHM-{{ section.id }} .shm__hero-rule { height: 42px; }
+    #SeymHM-{{ section.id }} .shm__trip-txt,
+    #SeymHM-{{ section.id }} .shm__cue { display: none; }
+    #SeymHM-{{ section.id }} .shm__gap,
+    #SeymHM-{{ section.id }} .shm__pad { display: none; }
   }
 </style>
 
@@ -273,11 +416,13 @@
     {%- assign left = section.blocks[0] -%}
     <div class="shm__side shm__side--l" id="shm-sideL-{{ section.id }}">
       <div class="shm__side-inner" id="shm-innerL-{{ section.id }}">
-        {%- if left.settings.image != blank -%}
-          {{ left.settings.image | image_url: width: 1000 | image_tag:
-             loading: 'lazy', widths: '400,600,800,1000',
-             sizes: '(max-width:749px) 100vw, 33vw' }}
-        {%- endif -%}
+        <div class="shm__side-media">
+          {%- if left.settings.image != blank -%}
+            {{ left.settings.image | image_url: width: 1000 | image_tag:
+               loading: 'lazy', widths: '400,600,800,1000',
+               sizes: '(max-width:749px) 100vw, 33vw' }}
+          {%- endif -%}
+        </div>
         <div class="shm__side-txt" id="shm-capL-{{ section.id }}">
           {%- if left.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ left.settings.eyebrow }}</span>{%- endif -%}
           {%- if left.settings.title != blank -%}<h3 class="shm__side-name">{{ left.settings.title }}</h3>{%- endif -%}
@@ -296,6 +441,9 @@
     {%- assign center = section.blocks[1] -%}
     <div class="shm__center" id="shm-center-{{ section.id }}">
       {%- if section.settings.video_asset != blank -%}
+        {%- if center.settings.image != blank -%}
+          <div class="shm__center-poster" style="background-image:url('{{ center.settings.image | image_url: width: 1920 }}');"></div>
+        {%- endif -%}
         <video autoplay muted loop playsinline preload="auto"
           {%- if center.settings.image != blank %} poster="{{ center.settings.image | image_url: width: 1920 }}"{% endif %}>
           <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
@@ -312,10 +460,18 @@
       <div class="shm__hero-txt" id="shm-heroTxt-{{ section.id }}">
         {%- if section.settings.hero_eyebrow != blank -%}<p class="shm__hero-ey">{{ section.settings.hero_eyebrow }}</p>{%- endif -%}
         {%- if section.settings.hero_heading != blank -%}<h1 class="shm__hero-h">{{ section.settings.hero_heading }}</h1>{%- endif -%}
+        <span class="shm__hero-rule" aria-hidden="true"></span>
         {%- if section.settings.hero_cta != blank and section.settings.hero_link != blank -%}
           <a href="{{ section.settings.hero_link }}" class="shm__hero-cta">{{ section.settings.hero_cta }}</a>
         {%- endif -%}
       </div>
+
+      {%- if section.settings.scroll_cue != blank -%}
+        <div class="shm__cue" id="shm-cue-{{ section.id }}" aria-hidden="true">
+          <span class="shm__cue-label">{{ section.settings.scroll_cue }}</span>
+          <span class="shm__cue-line"></span>
+        </div>
+      {%- endif -%}
 
       <div class="shm__trip-txt" id="shm-tripTxt-{{ section.id }}">
         {%- if center.settings.eyebrow != blank -%}<span class="shm__trip-ey">{{ center.settings.eyebrow }}</span>{%- endif -%}
@@ -337,11 +493,13 @@
     {%- assign right = section.blocks[2] -%}
     <div class="shm__side shm__side--r" id="shm-sideR-{{ section.id }}">
       <div class="shm__side-inner" id="shm-innerR-{{ section.id }}">
-        {%- if right.settings.image != blank -%}
-          {{ right.settings.image | image_url: width: 1000 | image_tag:
-             loading: 'lazy', widths: '400,600,800,1000',
-             sizes: '(max-width:749px) 100vw, 33vw' }}
-        {%- endif -%}
+        <div class="shm__side-media">
+          {%- if right.settings.image != blank -%}
+            {{ right.settings.image | image_url: width: 1000 | image_tag:
+               loading: 'lazy', widths: '400,600,800,1000',
+               sizes: '(max-width:749px) 100vw, 33vw' }}
+          {%- endif -%}
+        </div>
         <div class="shm__side-txt" id="shm-capR-{{ section.id }}">
           {%- if right.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ right.settings.eyebrow }}</span>{%- endif -%}
           {%- if right.settings.title != blank -%}<h3 class="shm__side-name">{{ right.settings.title }}</h3>{%- endif -%}
@@ -360,7 +518,9 @@
 
 <script>
 (function(){
-  if (window.innerWidth < 750) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;                       // static final triptych via CSS
+  if (window.innerWidth < 750) return;      // mobile stacked fallback
 
   var sec    = document.getElementById('SeymHM-{{ section.id }}');
   var stage  = document.getElementById('SeymHMStage-{{ section.id }}');
@@ -377,98 +537,131 @@
   var tripT  = document.getElementById('shm-tripTxt-{{ section.id }}');
   var capL   = document.getElementById('shm-capL-{{ section.id }}');
   var capR   = document.getElementById('shm-capR-{{ section.id }}');
+  var cue    = document.getElementById('shm-cue-{{ section.id }}');
 
   if (!sec || !center) return;
 
+  // Entrance on load
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ sec.classList.add('is-entered'); });
+  });
+
   function lerp(a, b, t) { return a + (b - a) * t; }
-  function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
-  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  // Spec easing cubic-bezier(0.22,1,0.36,1) ~ easeOutQuint-ish curve
+  function ease(t) { t = clamp(t); return 1 - Math.pow(1 - t, 3.2); }
+  function clamp(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function seg(p, a, b) { return clamp((p - a) / (b - a)); }
 
   // Final portrait card: 1:2 aspect, height capped at 80vh of the stage.
-  // The column width in the final 3-up is ~33.33vw; a 1:2 card from that
-  // width would be 2*33vw tall which exceeds the stage, so height is the
-  // binding dimension — we settle every card to the same portrait height.
   function portraitHeight() {
     return Math.min(window.innerHeight * 0.8, (window.innerWidth * 0.3333) * 2);
   }
 
-  var ticking = false;
-  function update() {
-    var rect = sec.getBoundingClientRect();
+  // ---- Smoothing / inertia ----
+  var target = 0;       // raw scroll-derived progress 0..1
+  var cur    = 0;       // rendered (lerped) progress
+  var rafId  = null;
+  var running = false;
+
+  function readTarget() {
     var scrollable = sec.offsetHeight - window.innerHeight;
-    var scrolled = -rect.top;
-    var p = clamp(scrolled / scrollable);
-    var ep = ease(p);
+    if (scrollable <= 0) { target = 0; return; }
+    var scrolled = -sec.getBoundingClientRect().top;
+    target = clamp(scrolled / scrollable);
+  }
 
-    // Center card: shrink from 100% to 33% (stay relative, no position jump)
-    center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
+  function render(p) {
+    // Center card: shrink 100% -> 33.33%
+    var contract = ease(seg(p, 0.06, 0.62));
+    center.style.flex = '0 0 ' + lerp(100, 33.33, contract) + '%';
 
-    // Side columns: give them their slot EARLY so the slot exists, then
-    // the inner content rises up into it. Slot width grows over the first
-    // ~55% so the layout is settled before the rise completes.
-    var slotEp = ease(clamp((p - 0.1) / 0.55));
-    var sideBasis = lerp(0, 33.33, slotEp);
+    // Side slots open early so layout settles before the rise completes.
+    var slot = ease(seg(p, 0.12, 0.6));
+    var sideBasis = lerp(0, 33.33, slot);
     sideL.style.flex = '0 0 ' + sideBasis + '%';
     sideR.style.flex = '0 0 ' + sideBasis + '%';
 
-    // Rise: latter ~60% of scroll. Inner translates 100% -> 0% and fades in.
-    var riseEp = ease(clamp((p - 0.4) / 0.6));
-    var riseY  = lerp(100, 0, riseEp);
-    var riseOp = lerp(0, 1, riseEp);
-    innerL.style.transform = 'translateY(' + riseY + '%)';
-    innerR.style.transform = 'translateY(' + riseY + '%)';
-    innerL.style.opacity = riseOp;
-    innerR.style.opacity = riseOp;
+    // Rise from below with a soft stagger (left slightly leads right).
+    var riseL = ease(seg(p, 0.40, 0.96));
+    var riseR = ease(seg(p, 0.46, 1.0));
+    innerL.style.transform = 'translateY(' + lerp(100, 0, riseL) + '%)';
+    innerR.style.transform = 'translateY(' + lerp(100, 0, riseR) + '%)';
+    innerL.style.opacity = lerp(0, 1, ease(seg(p, 0.40, 0.7)));
+    innerR.style.opacity = lerp(0, 1, ease(seg(p, 0.46, 0.76)));
 
-    // Final portrait shape: interpolate all three cards' heights from the
-    // full stage height down to the 1:2 portrait height as the morph
-    // completes (last ~45%). align-self:center keeps them vertically centered.
-    var shapeEp = ease(clamp((p - 0.55) / 0.45));
+    // Final portrait shape — heights settle to 1:2 over the last stretch.
+    var shape = ease(seg(p, 0.55, 0.98));
     var ph = portraitHeight();
-    var cardH = lerp(window.innerHeight, ph, shapeEp);
+    var cardH = lerp(window.innerHeight, ph, shape);
     center.style.height = cardH + 'px';
     sideL.style.height  = cardH + 'px';
     sideR.style.height  = cardH + 'px';
 
-    // Gaps: 0 to 2rem (breathing room between the three cards)
-    var gapVal = lerp(0, 2, ep) + 'rem';
-    gapL.style.flex = '0 0 ' + gapVal;
-    gapR.style.flex = '0 0 ' + gapVal;
+    // Gaps & padding breathe open with the contraction.
+    var frame = ease(seg(p, 0.1, 0.7));
+    gapL.style.flex = '0 0 ' + lerp(0, 1.6, frame) + 'rem';
+    gapR.style.flex = '0 0 ' + lerp(0, 1.6, frame) + 'rem';
+    padL.style.flex = '0 0 ' + lerp(0, 2.4, frame) + 'rem';
+    padR.style.flex = '0 0 ' + lerp(0, 2.4, frame) + 'rem';
 
-    // Padding: 0 to 1.2rem
-    var padVal = lerp(0, 1.2, ep) + 'rem';
-    padL.style.flex = '0 0 ' + padVal;
-    padR.style.flex = '0 0 ' + padVal;
+    // Hero text gracefully fades + lifts away early.
+    var heroFade = seg(p, 0.0, 0.3);
+    heroT.style.opacity = lerp(1, 0, ease(heroFade));
+    heroT.style.transform = 'translateY(' + lerp(0, -36, ease(heroFade)) + 'px)';
 
-    // Hero text: fade out first 35%
-    heroT.style.opacity = lerp(1, 0, clamp(p / 0.35));
+    // Scroll cue fades the moment morph begins.
+    if (cue) cue.style.opacity = lerp(1, 0, ease(seg(p, 0.0, 0.12)));
 
-    // Triptych center caption: fade in last 30%
-    tripT.style.opacity = lerp(0, 1, clamp((p - 0.65) / 0.35));
-
-    // Side captions: fade in last 25%
-    var capOp = lerp(0, 1, clamp((p - 0.7) / 0.3));
+    // Captions / prices fade in last.
+    tripT.style.opacity = lerp(0, 1, ease(seg(p, 0.72, 0.96)));
+    var capOp = lerp(0, 1, ease(seg(p, 0.78, 1.0)));
     capL.style.opacity = capOp;
     capR.style.opacity = capOp;
 
-    // Background: smooth black to white
-    var bgVal = Math.round(lerp(10, 255, ease(clamp(p / 0.5))));
-    stage.style.background = 'rgb(' + bgVal + ',' + bgVal + ',' + bgVal + ')';
-
-    ticking = false;
+    // Background: smooth black -> ivory. Cubic interpolation avoids banding.
+    var bg = ease(seg(p, 0.05, 0.6));
+    var r = Math.round(lerp(10, 250, bg));
+    var g = Math.round(lerp(10, 249, bg));
+    var b = Math.round(lerp(10, 247, bg));
+    stage.style.background = 'rgb(' + r + ',' + g + ',' + b + ')';
   }
 
-  window.addEventListener('scroll', function() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  });
-  window.addEventListener('resize', function() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  });
-  update();
+  function tick() {
+    var diff = target - cur;
+    if (Math.abs(diff) < 0.0006) {
+      cur = target;
+      render(cur);
+      running = false;
+      rafId = null;
+      return;                       // idle — stop churning
+    }
+    cur += diff * 0.12;             // inertial glide
+    render(cur);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function kick() {
+    readTarget();
+    if (!running) {
+      running = true;
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  var queued = false;
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function(){ queued = false; kick(); });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function(){ readTarget(); render(cur); kick(); });
+
+  // Initial paint at rest.
+  readTarget();
+  cur = target;
+  render(cur);
 })();
 </script>
 
@@ -482,7 +675,8 @@
     { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "Art de la Table" },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "SEYM" },
     { "type": "text", "id": "hero_cta", "label": "Hero CTA", "default": "Discover the collection" },
-    { "type": "url", "id": "hero_link", "label": "Hero CTA link" }
+    { "type": "url", "id": "hero_link", "label": "Hero CTA link" },
+    { "type": "text", "id": "scroll_cue", "label": "Scroll cue label", "default": "Scroll" }
   ],
   "blocks": [
     {

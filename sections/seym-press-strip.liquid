@@ -1,142 +1,206 @@
 {%- comment -%}
-  Seym Press Strip — featured magazine/publication banner on homepage.
+  Seym Press Strip — editorial "In the Press" feature.
+  Image on one side; eyebrow, serif heading, description, CTA and two
+  labeled name groups (press + award) on the other.
 {%- endcomment -%}
 
 <style>
+  #shopify-section-{{ section.id }} {
+    --ps-ivory: #F5F1EA;
+    --ps-lifted: #FAFAF7;
+    --ps-ink: #0D0D0D;
+    --ps-ink-soft: rgba(13,13,13,0.55);
+    --ps-ink-faint: rgba(13,13,13,0.12);
+    --ps-hairline: rgba(13,13,13,0.08);
+    --ps-wine: #8E2244;
+    --ps-gold: #C9A96E;
+    --ps-ease: cubic-bezier(0.22,1,0.36,1);
+  }
+
   .seym-ps {
-    background: var(--seym-ivory, #F5F1EA);
-    padding: 64px 0;
+    background: var(--ps-ivory);
+    padding: clamp(7rem, 11vh, 11rem) 0;
   }
   .seym-ps__wrap {
-    max-width: 132rem;
+    max-width: 150rem;
     margin: 0 auto;
-    padding: 0 4rem;
+    padding: 0 4.8rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: clamp(4rem, 6vw, 8rem);
     align-items: center;
   }
+
+  /* Media */
   .seym-ps__media {
-    aspect-ratio: 4 / 3;
+    position: relative;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
+    background: var(--ps-lifted);
   }
   .seym-ps__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
+    transition: transform 1.2s var(--ps-ease);
   }
-  .seym-ps__media:hover img { transform: scale(1.03); }
-  .seym-ps__body {}
+  .seym-ps__media:hover img { transform: scale(1.04); }
+  .seym-ps__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px var(--ps-hairline);
+    pointer-events: none;
+  }
+
+  /* Body */
+  .seym-ps__body { max-width: 52rem; }
   .seym-ps__eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.36em;
+    font-weight: 300;
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
-    margin: 0 0 1rem;
+    color: var(--ps-ink-soft);
+    margin: 0 0 1.6rem;
   }
   .seym-ps__heading {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: clamp(2.8rem, 4vw, 5.6rem);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
-    color: #1A1A1A;
-    margin: 0 0 1.6rem;
-    font-style: italic;
+    font-size: clamp(2.8rem, 5vw, 5.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: var(--ps-ink);
+    margin: 0 0 2rem;
   }
+  .seym-ps__heading em { font-style: italic; }
   .seym-ps__desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(1.6rem, 2vw, 2.4rem);
-    line-height: 1.45;
-    color: rgba(26,26,26,0.7);
-    max-width: 44ch;
-    margin: 0 0 2.4rem;
-    padding-left: 2.4rem;
-    border-left: 2px solid var(--seym-wine, #8E2244);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ps-ink-soft);
+    max-width: 46ch;
+    margin: 0 0 2.8rem;
   }
   .seym-ps__cta {
+    position: relative;
     display: inline-block;
     font-family: 'Inter', sans-serif;
-    font-size: 0.74rem;
+    font-weight: 300;
+    font-size: 0.72rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #1A1A1A;
+    color: var(--ps-ink);
     text-decoration: none;
-    border-bottom: 1px solid #1A1A1A;
-    padding-bottom: 0.4rem;
-    transition: color 220ms ease, border-color 220ms ease;
+    padding-bottom: 0.5rem;
     min-height: 44px;
   }
-  .seym-ps__cta:hover {
-    color: var(--seym-wine, #8E2244);
-    border-color: var(--seym-wine, #8E2244);
+  .seym-ps__cta-text { position: relative; }
+  .seym-ps__cta-text::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    width: 100%;
+    height: 1px;
+    background: var(--ps-ink);
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 0.5s var(--ps-ease), background 0.5s var(--ps-ease);
   }
+  .seym-ps__cta:hover .seym-ps__cta-text::after {
+    background: var(--ps-wine);
+  }
+  .seym-ps__cta-arrow {
+    display: inline-block;
+    margin-left: 0.5em;
+    transition: transform 0.5s var(--ps-ease), color 0.5s var(--ps-ease);
+  }
+  .seym-ps__cta:hover .seym-ps__cta-arrow {
+    transform: translateX(0.3em);
+    color: var(--ps-wine);
+  }
+
+  /* Groups */
   .seym-ps__groups {
     display: flex;
-    gap: 4rem;
+    gap: clamp(2.8rem, 4vw, 5rem);
     align-items: flex-start;
-    margin-top: 3.6rem;
+    margin-top: clamp(3.2rem, 5vh, 4.8rem);
+    padding-top: clamp(2.4rem, 4vh, 3.2rem);
+    border-top: 1px solid var(--ps-hairline);
     flex-wrap: wrap;
   }
-  .seym-ps__group {}
+  .seym-ps__group { min-width: 0; }
   .seym-ps__group--award {
-    padding-left: 3.2rem;
-    border-left: 1px solid rgba(26,26,26,0.12);
+    padding-left: clamp(2.8rem, 4vw, 4rem);
+    border-left: 1px solid var(--ps-hairline);
   }
   .seym-ps__group-label {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     font-family: 'Inter', sans-serif;
+    font-weight: 300;
     font-size: 0.66rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(26,26,26,0.45);
-    margin: 0 0 1.2rem;
+    color: var(--ps-ink-soft);
+    margin: 0 0 1.4rem;
   }
   .seym-ps__group--award .seym-ps__group-label {
-    color: var(--seym-wine, #8E2244);
+    color: var(--ps-wine);
   }
   .seym-ps__group-mark {
-    color: var(--seym-gold, #B08D57);
-    font-size: 0.9rem;
+    color: var(--ps-gold);
+    font-size: 0.82rem;
     line-height: 1;
+    transform: translateY(-0.05em);
   }
   .seym-ps__logos {
     display: flex;
-    gap: 3.2rem;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-start;
   }
   .seym-ps__logo {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 400;
-    color: rgba(26,26,26,0.35);
-    font-style: italic;
+    color: var(--ps-ink-soft);
+    transition: color 0.5s var(--ps-ease);
   }
   .seym-ps__group--award .seym-ps__logo {
-    color: rgba(26,26,26,0.55);
+    color: var(--ps-ink);
   }
+  .seym-ps__logo:hover { color: var(--ps-ink); }
+  .seym-ps__group--award .seym-ps__logo:hover { color: var(--ps-wine); }
 
   @media (max-width: 989px) {
-    .seym-ps__wrap { grid-template-columns: 1fr; gap: 2.8rem; }
+    .seym-ps__wrap { grid-template-columns: 1fr; gap: 3.2rem; }
+    .seym-ps__media { aspect-ratio: 4 / 3; }
+    .seym-ps__body { max-width: 56rem; }
   }
   @media (max-width: 749px) {
+    .seym-ps { padding: clamp(4.5rem, 9vh, 6rem) 0; }
     .seym-ps__wrap { padding: 0 2rem; }
-    .seym-ps { padding: 48px 0; }
     .seym-ps__groups { gap: 2.4rem; }
     .seym-ps__group--award {
       padding-left: 0;
       padding-top: 2.4rem;
       border-left: 0;
-      border-top: 1px solid rgba(26,26,26,0.12);
+      border-top: 1px solid var(--ps-hairline);
       width: 100%;
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seym-ps__media img,
+    .seym-ps__cta-text::after,
+    .seym-ps__cta-arrow,
+    .seym-ps__logo { transition: none; }
+    .seym-ps__media:hover img { transform: none; }
   }
 </style>
 
@@ -160,7 +224,10 @@
         <p class="seym-ps__desc">{{ section.settings.description }}</p>
       {%- endif -%}
       {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-        <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">{{ section.settings.cta_label }} →</a>
+        <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">
+          <span class="seym-ps__cta-text">{{ section.settings.cta_label }}</span>
+          <span class="seym-ps__cta-arrow" aria-hidden="true">&rarr;</span>
+        </a>
       {%- endif -%}
 
       {%- comment -%}
