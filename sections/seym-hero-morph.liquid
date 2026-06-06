@@ -28,21 +28,26 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 0;
     background: #0a0a0a;
   }
 
-  /* --- Side cards --- */
+  /* --- Side cards ---
+     Widths are driven by flex-GROW ratios against a flex-basis of 0, and the
+     spacing by the stage's own `gap`, so the three panels mathematically
+     always fill the row with no overflow and stay perfectly symmetric at
+     every scroll position. The side panels resolve in with a fade + a
+     whisper of lift (no "from-below" curtain — that read as half cards). */
   #SeymHM-{{ section.id }} .shm__side {
     position: relative;
-    flex: 0 0 0%;
+    flex: 0 0 auto;
+    width: 0;
     align-self: center;
     overflow: hidden;
-    border-radius: 2px;
-    /* The whole card travels up from below (clipped by the stage), so it
-       always reads as a complete card in motion — never a half-filled box. */
-    transform: translateY(100%);
+    border-radius: 3px;
     opacity: 0;
-    will-change: flex-basis, height, transform, opacity;
+    will-change: width, height, transform, opacity;
   }
   #SeymHM-{{ section.id }} .shm__side-inner {
     position: absolute;
@@ -129,12 +134,12 @@
   /* --- Center (video) card --- */
   #SeymHM-{{ section.id }} .shm__center {
     position: relative;
-    flex: 0 0 100%;
+    flex: 0 0 auto;
     align-self: center;
     z-index: 2;
     overflow: hidden;
-    border-radius: 2px;
-    will-change: flex-basis, height;
+    border-radius: 3px;
+    will-change: width, height;
   }
   #SeymHM-{{ section.id }} .shm__center-link {
     position: absolute;
@@ -325,8 +330,9 @@
   #SeymHM-{{ section.id }} .shm__center:hover video { /* video scale handled below */ }
 
   /* --- Gaps (animated via JS) --- */
-  #SeymHM-{{ section.id }} .shm__gap { flex: 0 0 0; will-change: flex-basis; }
-  #SeymHM-{{ section.id }} .shm__pad { flex: 0 0 0; will-change: flex-basis; }
+  /* Legacy spacer divs — no longer used (spacing is the stage's `gap`). */
+  #SeymHM-{{ section.id }} .shm__gap,
+  #SeymHM-{{ section.id }} .shm__pad { display: none; }
 
   /* --- Reduced motion: skip morph, show final triptych statically --- */
   @media (prefers-reduced-motion: reduce) {
@@ -342,8 +348,9 @@
     #SeymHM-{{ section.id }} .shm__center,
     #SeymHM-{{ section.id }} .shm__side {
       flex: 1 1 0 !important;
+      width: auto !important;
       height: auto !important;
-      aspect-ratio: 1 / 2;
+      aspect-ratio: 4 / 5;
     }
     #SeymHM-{{ section.id }} .shm__side,
     #SeymHM-{{ section.id }} .shm__side-inner {
@@ -378,15 +385,17 @@
       position: relative;
       inset: auto;
       flex: 0 0 auto !important;
-      aspect-ratio: 1 / 2;
-      max-height: 88vh;
+      width: 100% !important;
+      aspect-ratio: 4 / 5;
+      max-height: 86vh;
       height: auto !important;
       z-index: 1;
     }
     #SeymHM-{{ section.id }} .shm__side {
       flex: 0 0 auto !important;
-      aspect-ratio: 1 / 2;
-      max-height: 88vh;
+      width: 100% !important;
+      aspect-ratio: 4 / 5;
+      max-height: 86vh;
       height: auto !important;
     }
     #SeymHM-{{ section.id }} .shm__side,
@@ -572,58 +581,61 @@
     target = clamp(scrolled / scrollable);
   }
 
+  // All three cards share ONE constant aspect ratio so the video scales as a
+  // whole (uniform shrink) — it is never progressively re-cropped from the
+  // sides. Relaxed portrait 4:5.
+  var AR = 0.8; // width / height
+
   function render(p) {
-    // Center card: shrink 100% -> 33.33%
-    var contract = ease(seg(p, 0.06, 0.62));
-    center.style.flex = '0 0 ' + lerp(100, 33.33, contract) + '%';
+    var stageH = stage.clientHeight || window.innerHeight;
+    var stageW = stage.clientWidth  || window.innerWidth;
 
-    // Side slots open early so layout settles before the rise completes.
-    var slot = ease(seg(p, 0.12, 0.6));
-    var sideBasis = lerp(0, 33.33, slot);
-    sideL.style.flex = '0 0 ' + sideBasis + '%';
-    sideR.style.flex = '0 0 ' + sideBasis + '%';
+    // Card height: large framed video at the top -> smaller triptych card.
+    // The end height is capped so three cards + gaps + side margins always
+    // fit the row (no overflow, no edge-to-edge bleed).
+    var startH = stageH * 0.94;
+    var maxByW = (stageW - 184) / (3 * AR);   // 184 ≈ 2 gaps + 2 side margins
+    var endH   = Math.min(stageH * 0.62, maxByW);
+    var hh = lerp(startH, endH, ease(seg(p, 0.0, 0.85)));
+    var cw = hh * AR;
 
-    // Rise from below: the WHOLE card travels up into its already-open slot,
-    // clipped by the stage (not by its own box) so it always reads as a
-    // complete card gliding into place — never a half-filled domino.
-    var riseL = ease(seg(p, 0.45, 0.90));
-    var riseR = ease(seg(p, 0.50, 0.95));
-    sideL.style.transform = 'translateY(' + lerp(100, 0, riseL) + '%)';
-    sideR.style.transform = 'translateY(' + lerp(100, 0, riseR) + '%)';
-    sideL.style.opacity = lerp(0, 1, ease(seg(p, 0.45, 0.62)));
-    sideR.style.opacity = lerp(0, 1, ease(seg(p, 0.50, 0.67)));
+    center.style.height = hh + 'px';
+    center.style.width  = cw + 'px';
+    sideL.style.height = hh + 'px';
+    sideR.style.height = hh + 'px';
 
-    // Final portrait shape — heights settle to 1:2 over the last stretch.
-    var shape = ease(seg(p, 0.55, 0.98));
-    var ph = portraitHeight();
-    var cardH = lerp(window.innerHeight, ph, shape);
-    center.style.height = cardH + 'px';
-    sideL.style.height  = cardH + 'px';
-    sideR.style.height  = cardH + 'px';
+    // Side cards reveal SYMMETRICALLY: widen from the centre + fade in
+    // together (no from-below curtain, no stagger → always balanced).
+    var rev = ease(seg(p, 0.30, 0.80));
+    var sw = cw * rev;
+    sideL.style.width = sw + 'px';
+    sideR.style.width = sw + 'px';
+    var sop = ease(seg(p, 0.32, 0.64));
+    sideL.style.opacity = sop;
+    sideR.style.opacity = sop;
 
-    // Gaps & padding breathe open with the contraction.
-    var frame = ease(seg(p, 0.1, 0.7));
-    gapL.style.flex = '0 0 ' + lerp(0, 1.6, frame) + 'rem';
-    gapR.style.flex = '0 0 ' + lerp(0, 1.6, frame) + 'rem';
-    padL.style.flex = '0 0 ' + lerp(0, 2.4, frame) + 'rem';
-    padR.style.flex = '0 0 ' + lerp(0, 2.4, frame) + 'rem';
+    // Spacing: gap between cards + side margins (inset from the page edges,
+    // exactly like the gift section) open as the triptych forms.
+    var frame = ease(seg(p, 0.08, 0.70));
+    stage.style.gap = lerp(0, 28, frame) + 'px';
+    var pad = lerp(0, 64, frame);
+    stage.style.paddingLeft  = pad + 'px';
+    stage.style.paddingRight = pad + 'px';
 
     // Hero text gracefully fades + lifts away early.
-    var heroFade = seg(p, 0.0, 0.3);
-    heroT.style.opacity = lerp(1, 0, ease(heroFade));
-    heroT.style.transform = 'translateY(' + lerp(0, -36, ease(heroFade)) + 'px)';
-
-    // Scroll cue fades the moment morph begins.
+    var heroFade = ease(seg(p, 0.0, 0.28));
+    heroT.style.opacity = lerp(1, 0, heroFade);
+    heroT.style.transform = 'translateY(' + lerp(0, -32, heroFade) + 'px)';
     if (cue) cue.style.opacity = lerp(1, 0, ease(seg(p, 0.0, 0.12)));
 
     // Captions / prices fade in last.
-    tripT.style.opacity = lerp(0, 1, ease(seg(p, 0.72, 0.96)));
-    var capOp = lerp(0, 1, ease(seg(p, 0.78, 1.0)));
+    tripT.style.opacity = ease(seg(p, 0.70, 0.95));
+    var capOp = ease(seg(p, 0.74, 1.0));
     capL.style.opacity = capOp;
     capR.style.opacity = capOp;
 
-    // Background: smooth black -> ivory. Cubic interpolation avoids banding.
-    var bg = ease(seg(p, 0.05, 0.6));
+    // Background: black -> soft ivory (cubic interpolation avoids banding).
+    var bg = ease(seg(p, 0.04, 0.55));
     var r = Math.round(lerp(10, 250, bg));
     var g = Math.round(lerp(10, 249, bg));
     var b = Math.round(lerp(10, 247, bg));
@@ -639,7 +651,7 @@
       rafId = null;
       return;                       // idle — stop churning
     }
-    cur += diff * 0.12;             // inertial glide
+    cur += diff * 0.085;            // inertial glide (relaxed, extra smooth)
     render(cur);
     rafId = requestAnimationFrame(tick);
   }
