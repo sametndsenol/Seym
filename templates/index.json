@@ -163,6 +163,7 @@
       "type": "seym-gift-banner",
       "settings": {
         "image": "shopify://shop_images/Premium_Isikli_Efekt_Ekleme_1440_x_800_piksel.png",
+        "show_text": false,
         "eyebrow": "Find the ideal",
         "heading": "",
         "cta_label": "Discover the selection",

@@ -18,6 +18,14 @@
     object-fit: cover;
     display: block;
   }
+
+  /* Plain mode — the image is a finished, self-contained banner
+     (text/CTA baked in). Show it whole, no crop, no scrim, no overlay;
+     the whole banner is the link. */
+  .sgb--plain { height: auto; overflow: visible; }
+  .sgb--plain .sgb__media { position: static; inset: auto; display: block; }
+  .sgb--plain .sgb__media img { height: auto; object-fit: initial; }
+  .sgb--plain a.sgb__media { cursor: pointer; }
   .sgb__scrim {
     position: absolute; inset: 0;
     background:
@@ -89,21 +97,37 @@
   }
 </style>
 
-<section class="sgb" data-reveal>
-  <div class="sgb__media">
-    {%- if section.settings.image != blank -%}
-      {{ section.settings.image | image_url: width: 2000 | image_tag:
-         loading: 'lazy', widths: '600,1000,1400,2000', sizes: '100vw' }}
+{%- liquid
+  assign plain = false
+  if section.settings.show_text == false
+    assign plain = true
+  endif
+-%}
+{%- capture media -%}
+  {%- if section.settings.image != blank -%}
+    {{ section.settings.image | image_url: width: 2000 | image_tag:
+       loading: 'lazy', widths: '600,1000,1400,2000', sizes: '100vw' }}
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="sgb{% if plain %} sgb--plain{% endif %}" data-reveal>
+  {%- if plain -%}
+    {%- if section.settings.cta_link != blank -%}
+      <a href="{{ section.settings.cta_link }}" class="sgb__media" aria-label="{{ section.settings.cta_label | default: section.settings.heading | default: 'Gift' }}">{{ media }}</a>
+    {%- else -%}
+      <div class="sgb__media">{{ media }}</div>
     {%- endif -%}
-  </div>
-  <div class="sgb__scrim"></div>
-  <div class="sgb__txt">
-    {%- if section.settings.eyebrow != blank -%}<p class="sgb__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
-    {%- if section.settings.heading != blank -%}<h2 class="sgb__h">{{ section.settings.heading }}</h2>{%- endif -%}
-    {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-      <a href="{{ section.settings.cta_link }}" class="sgb__cta">{{ section.settings.cta_label }} →</a>
-    {%- endif -%}
-  </div>
+  {%- else -%}
+    <div class="sgb__media">{{ media }}</div>
+    <div class="sgb__scrim"></div>
+    <div class="sgb__txt">
+      {%- if section.settings.eyebrow != blank -%}<p class="sgb__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="sgb__h">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="sgb__cta">{{ section.settings.cta_label }} →</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -112,6 +136,7 @@
   "tag": "div",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "checkbox", "id": "show_text", "label": "Show text overlay", "info": "Turn off when the image already has its own text/CTA baked in — the whole banner becomes a clickable, full (uncropped) image.", "default": true },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Find the ideal" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "GIFT" },
     { "type": "text", "id": "cta_label", "label": "CTA", "default": "Discover the selection" },
