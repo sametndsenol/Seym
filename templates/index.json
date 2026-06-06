@@ -146,14 +146,12 @@
         "p3"
       ],
       "settings": {
-        "image": "shopify://shop_images/Tasarimin_kalbi_renklerde_atiyor_Homeart_Evlilik_dergisinin_son_sayisi_icin_yapilan_ozel_cekimlerle_tasarimlarimiz_birbirinden_guzel_kompozisyonlar_icerisinde_modern_dekorasyon_trendl.jpg",
+        "heading_1": "As seen",
+        "heading_2": "in print.",
         "eyebrow": "As featured in",
-        "heading": "In the Press",
-        "description": "Seym's hand-blown glass art has been featured in leading design and lifestyle publications.",
-        "cta_label": "Read more",
-        "cta_link": "/pages/press",
-        "press_label": "As featured in",
-        "award_label": "Awarded"
+        "image_1": "shopify://shop_images/Tasarimin_kalbi_renklerde_atiyor_Homeart_Evlilik_dergisinin_son_sayisi_icin_yapilan_ozel_cekimlerle_tasarimlarimiz_birbirinden_guzel_kompozisyonlar_icerisinde_modern_dekorasyon_trendl_854269d5-cc4b-48c7-934c-2269dddeec2b.jpg",
+        "image_2": "shopify://shop_images/The_captivating_blend_of_red_and_burgundy_in_Seym_Glass_Studio_s_designer_glass_accessories_adds_elegance_to_any_space__Design_GlassArt_Decor.jpg",
+        "image_3": "shopify://shop_images/d09c25dc984d99d2389a6f571f497b60.jpg"
       }
     },
     "gift_banner": {

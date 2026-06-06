@@ -1,321 +1,113 @@
 {%- comment -%}
-  Seym Press Strip — editorial "In the Press" feature.
-  Image on one side; eyebrow, serif heading, description, CTA and two
-  labeled name groups (press + award) on the other.
+  Seym Press — editorial "As seen in print" collage. Oversized serif headline
+  + press/award names (blocks, kind = press|award) on one side; a scrapbook of
+  tilted clippings on the other. Sits on a warm paper band; pairs with the
+  gift banner directly below to form one press+gift moment.
 {%- endcomment -%}
 
 <style>
   #shopify-section-{{ section.id }} {
-    --ps-ivory: #F5F1EA;
-    --ps-lifted: #FAFAF7;
-    --ps-ink: #0D0D0D;
-    --ps-ink-soft: rgba(13,13,13,0.55);
-    --ps-ink-faint: rgba(13,13,13,0.12);
-    --ps-hairline: rgba(13,13,13,0.08);
-    --ps-wine: #8E2244;
-    --ps-gold: #C9A96E;
-    --ps-ease: cubic-bezier(0.22,1,0.36,1);
+    --ink: #1a1a1a; --soft: rgba(26,26,26,.55); --line: rgba(26,26,26,.12);
+    --wine: #8E2244; --gold: #c9a96e; --ease: cubic-bezier(.22,1,.36,1);
   }
+  #shopify-section-{{ section.id }} .sps { background: var(--seym-warm,#f3efe8); padding: clamp(6rem,10vh,10rem) 0 clamp(2rem,4vh,3rem); }
+  #shopify-section-{{ section.id }} .sps__wrap {
+    max-width: 150rem; margin: 0 auto; padding: 0 4.8rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  #shopify-section-{{ section.id }} .sps__h {
+    font: 500 clamp(4rem,8vw,9rem)/.82 'Cormorant Garamond', serif; letter-spacing: -.01em; color: var(--ink); margin: 0;
+  }
+  #shopify-section-{{ section.id }} .sps__h em { font-style: italic; color: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__ey {
+    font: 300 .76rem/1 'Inter',sans-serif; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin: 1.8rem 0 1rem;
+  }
+  #shopify-section-{{ section.id }} .sps__names { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; }
+  #shopify-section-{{ section.id }} .sps__name { font: 400 1.35rem/1.2 'Cormorant Garamond', serif; color: var(--soft); transition: color .4s var(--ease); }
+  #shopify-section-{{ section.id }} .sps__name--award { color: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__star { color: var(--gold); }
 
-  .seym-ps {
-    background: var(--ps-ivory);
-    padding: clamp(7rem, 11vh, 11rem) 0;
+  #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(34rem,42vw,46rem); }
+  #shopify-section-{{ section.id }} .sps__clip {
+    position: absolute; border-radius: 3px; overflow: hidden; border: 7px solid #fff;
+    box-shadow: 0 26px 54px -24px rgba(0,0,0,.42); transition: transform .7s var(--ease);
   }
-  .seym-ps__wrap {
-    max-width: 150rem;
-    margin: 0 auto;
-    padding: 0 4.8rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(4rem, 6vw, 8rem);
-    align-items: center;
-  }
-
-  /* Media */
-  .seym-ps__media {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background: var(--ps-lifted);
-  }
-  .seym-ps__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 1.2s var(--ps-ease);
-  }
-  .seym-ps__media:hover img { transform: scale(1.04); }
-  .seym-ps__media::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 0 1px var(--ps-hairline);
-    pointer-events: none;
-  }
-
-  /* Body */
-  .seym-ps__body { max-width: 52rem; }
-  .seym-ps__eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 0.7rem;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--ps-ink-soft);
-    margin: 0 0 1.6rem;
-  }
-  .seym-ps__heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.8rem, 5vw, 5.2rem);
-    line-height: 1.02;
-    letter-spacing: -0.01em;
-    color: var(--ps-ink);
-    margin: 0 0 2rem;
-  }
-  .seym-ps__heading em { font-style: italic; }
-  .seym-ps__desc {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--ps-ink-soft);
-    max-width: 46ch;
-    margin: 0 0 2.8rem;
-  }
-  .seym-ps__cta {
-    position: relative;
-    display: inline-block;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 0.72rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--ps-ink);
-    text-decoration: none;
-    padding-bottom: 0.5rem;
-    min-height: 44px;
-  }
-  .seym-ps__cta-text { position: relative; }
-  .seym-ps__cta-text::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -0.5rem;
-    width: 100%;
-    height: 1px;
-    background: var(--ps-ink);
-    transform: scaleX(1);
-    transform-origin: left;
-    transition: transform 0.5s var(--ps-ease), background 0.5s var(--ps-ease);
-  }
-  .seym-ps__cta:hover .seym-ps__cta-text::after {
-    background: var(--ps-wine);
-  }
-  .seym-ps__cta-arrow {
-    display: inline-block;
-    margin-left: 0.5em;
-    transition: transform 0.5s var(--ps-ease), color 0.5s var(--ps-ease);
-  }
-  .seym-ps__cta:hover .seym-ps__cta-arrow {
-    transform: translateX(0.3em);
-    color: var(--ps-wine);
-  }
-
-  /* Groups */
-  .seym-ps__groups {
-    display: flex;
-    gap: clamp(2.8rem, 4vw, 5rem);
-    align-items: flex-start;
-    margin-top: clamp(3.2rem, 5vh, 4.8rem);
-    padding-top: clamp(2.4rem, 4vh, 3.2rem);
-    border-top: 1px solid var(--ps-hairline);
-    flex-wrap: wrap;
-  }
-  .seym-ps__group { min-width: 0; }
-  .seym-ps__group--award {
-    padding-left: clamp(2.8rem, 4vw, 4rem);
-    border-left: 1px solid var(--ps-hairline);
-  }
-  .seym-ps__group-label {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 0.66rem;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--ps-ink-soft);
-    margin: 0 0 1.4rem;
-  }
-  .seym-ps__group--award .seym-ps__group-label {
-    color: var(--ps-wine);
-  }
-  .seym-ps__group-mark {
-    color: var(--ps-gold);
-    font-size: 0.82rem;
-    line-height: 1;
-    transform: translateY(-0.05em);
-  }
-  .seym-ps__logos {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    align-items: flex-start;
-  }
-  .seym-ps__logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--ps-ink-soft);
-    transition: color 0.5s var(--ps-ease);
-  }
-  .seym-ps__group--award .seym-ps__logo {
-    color: var(--ps-ink);
-  }
-  .seym-ps__logo:hover { color: var(--ps-ink); }
-  .seym-ps__group--award .seym-ps__logo:hover { color: var(--ps-wine); }
+  #shopify-section-{{ section.id }} .sps__clip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .sps__clip--1 { width: 47%; aspect-ratio: 4/5; top: 0; left: 6%; transform: rotate(-6deg); }
+  #shopify-section-{{ section.id }} .sps__clip--2 { width: 44%; aspect-ratio: 4/5; top: 16%; right: 8%; transform: rotate(5deg); z-index: 2; }
+  #shopify-section-{{ section.id }} .sps__clip--3 { width: 41%; aspect-ratio: 4/5; bottom: 0; left: 32%; transform: rotate(2deg); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--1 { transform: rotate(-8deg) translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--2 { transform: rotate(6deg) translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--3 { transform: rotate(3deg) translateY(-6px); }
 
   @media (max-width: 989px) {
-    .seym-ps__wrap { grid-template-columns: 1fr; gap: 3.2rem; }
-    .seym-ps__media { aspect-ratio: 4 / 3; }
-    .seym-ps__body { max-width: 56rem; }
+    #shopify-section-{{ section.id }} .sps__wrap { grid-template-columns: 1fr; gap: 2rem; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 40rem; order: 2; }
   }
   @media (max-width: 749px) {
-    .seym-ps { padding: clamp(4.5rem, 9vh, 6rem) 0; }
-    .seym-ps__wrap { padding: 0 2rem; }
-    .seym-ps__groups { gap: 2.4rem; }
-    .seym-ps__group--award {
-      padding-left: 0;
-      padding-top: 2.4rem;
-      border-left: 0;
-      border-top: 1px solid var(--ps-hairline);
-      width: 100%;
-    }
+    #shopify-section-{{ section.id }} .sps { padding: clamp(4rem,8vh,5.5rem) 0 2rem; }
+    #shopify-section-{{ section.id }} .sps__wrap { padding: 0 2rem; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 32rem; }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .seym-ps__media img,
-    .seym-ps__cta-text::after,
-    .seym-ps__cta-arrow,
-    .seym-ps__logo { transition: none; }
-    .seym-ps__media:hover img { transform: none; }
+    #shopify-section-{{ section.id }} .sps__clip { transition: none; }
   }
 </style>
 
-<section class="seym-ps" data-reveal>
-  <div class="seym-ps__wrap">
-    <div class="seym-ps__media">
-      {%- if section.settings.image != blank -%}
-        {{ section.settings.image | image_url: width: 1200 | image_tag:
-           loading: 'lazy', widths: '400,700,1000,1400',
-           sizes: '(max-width: 989px) 100vw, 50vw' }}
-      {%- endif -%}
+<section class="sps" data-reveal>
+  <div class="sps__wrap">
+    <div class="sps__body">
+      <h2 class="sps__h">
+        {%- if section.settings.heading_1 != blank -%}{{ section.settings.heading_1 }}<br>{%- endif -%}
+        {%- if section.settings.heading_2 != blank -%}<em>{{ section.settings.heading_2 }}</em>{%- endif -%}
+      </h2>
+      {%- if section.settings.eyebrow != blank -%}<p class="sps__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <div class="sps__names">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.kind == 'award' -%}
+            <span class="sps__name sps__name--award" {{ block.shopify_attributes }}><span class="sps__star" aria-hidden="true">&#9733;</span> {{ block.settings.name }}</span>
+          {%- else -%}
+            <span class="sps__name" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     </div>
-    <div class="seym-ps__body">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="seym-ps__eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="seym-ps__heading">{{ section.settings.heading }}</h2>
-      {%- endif -%}
-      {%- if section.settings.description != blank -%}
-        <p class="seym-ps__desc">{{ section.settings.description }}</p>
-      {%- endif -%}
-      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-        <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">
-          <span class="seym-ps__cta-text">{{ section.settings.cta_label }}</span>
-          <span class="seym-ps__cta-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      {%- endif -%}
 
-      {%- comment -%}
-        Count by category up front. NOTE: Liquid's `where` filter does not
-        resolve nested paths like 'settings.kind' on block objects, so we
-        iterate blocks manually and test block.settings.kind directly.
-      {%- endcomment -%}
-      {%- assign press_count = 0 -%}
-      {%- assign award_count = 0 -%}
-      {%- for block in section.blocks -%}
-        {%- if block.settings.kind == 'award' -%}{%- assign award_count = award_count | plus: 1 -%}
-        {%- else -%}{%- assign press_count = press_count | plus: 1 -%}{%- endif -%}
-      {%- endfor -%}
-
-      {%- if press_count > 0 or award_count > 0 -%}
-        <div class="seym-ps__groups" id="PressGroups-{{ section.id }}">
-          {%- if press_count > 0 -%}
-            <div class="seym-ps__group seym-ps__group--press">
-              {%- if section.settings.press_label != blank -%}
-                <p class="seym-ps__group-label">{{ section.settings.press_label }}</p>
-              {%- endif -%}
-              <div class="seym-ps__logos">
-                {%- for block in section.blocks -%}
-                  {%- unless block.settings.kind == 'award' -%}
-                    <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
-                  {%- endunless -%}
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
-          {%- if award_count > 0 -%}
-            <div class="seym-ps__group seym-ps__group--award">
-              {%- if section.settings.award_label != blank -%}
-                <p class="seym-ps__group-label">
-                  <span class="seym-ps__group-mark" aria-hidden="true">&#9733;</span>
-                  {{ section.settings.award_label }}
-                </p>
-              {%- endif -%}
-              <div class="seym-ps__logos">
-                {%- for block in section.blocks -%}
-                  {%- if block.settings.kind == 'award' -%}
-                    <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
+    <div class="sps__collage">
+      {%- assign img1 = section.settings.image_1 | default: section.settings.image -%}
+      {%- if img1 != blank -%}<div class="sps__clip sps__clip--1">{{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if section.settings.image_2 != blank -%}<div class="sps__clip sps__clip--2">{{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if section.settings.image_3 != blank -%}<div class="sps__clip sps__clip--3">{{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Press Strip",
+  "name": "Press",
   "tag": "div",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Feature image" },
+    { "type": "text", "id": "heading_1", "label": "Heading line 1", "default": "As seen" },
+    { "type": "text", "id": "heading_2", "label": "Heading line 2 (italic)", "default": "in print." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "As featured in" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "In the Press" },
-    { "type": "textarea", "id": "description", "label": "Description" },
-    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Read more" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" },
-    { "type": "text", "id": "press_label", "label": "Press group label", "default": "As featured in" },
-    { "type": "text", "id": "award_label", "label": "Award group label", "default": "Awarded" }
+    { "type": "image_picker", "id": "image_1", "label": "Clipping 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Clipping 2" },
+    { "type": "image_picker", "id": "image_3", "label": "Clipping 3" },
+    { "type": "image_picker", "id": "image", "label": "(legacy) Feature image" }
   ],
   "blocks": [
     {
       "type": "publication",
       "name": "Publication",
       "settings": [
-        { "type": "text", "id": "name", "label": "Publication name" },
-        {
-          "type": "select",
-          "id": "kind",
-          "label": "Category",
-          "options": [
-            { "value": "press", "label": "Press" },
-            { "value": "award", "label": "Award" }
-          ],
-          "default": "press"
-        }
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "select", "id": "kind", "label": "Category", "default": "press",
+          "options": [ { "value": "press", "label": "Press" }, { "value": "award", "label": "Award" } ] }
       ]
     }
   ],
   "presets": [{
-    "name": "Press Strip",
+    "name": "Press",
     "blocks": [
       { "type": "publication", "settings": { "name": "Homeart", "kind": "press" } },
       { "type": "publication", "settings": { "name": "Design Turkey", "kind": "press" } },
