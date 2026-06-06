@@ -379,7 +379,10 @@
   (function(){
     var bar = document.getElementById('SeymBar');
     var prog = document.getElementById('SeymProg');
-    var hasHero = !!document.querySelector('.shm');
+    /* The hero (.shm) is parsed AFTER this header, so detect it once the DOM
+       is ready — otherwise hasHero is always false and the header never goes
+       transparent over the video. */
+    var hasHero = false;
 
     function setSolid(on){
       if(!hd) return;
@@ -402,11 +405,17 @@
     function onScroll(){
       if(!ticking){ ticking = true; requestAnimationFrame(update); }
     }
-    /* Pages WITHOUT a hero: lock solid; pages WITH the hero start transparent. */
-    if(!hasHero) setSolid(true);
+    function init(){
+      hasHero = !!document.querySelector('.shm');
+      /* Pages WITHOUT a hero: lock solid. WITH the hero: transparent at top. */
+      if(!hasHero) setSolid(true);
+      update();
+    }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    update();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else { init(); }
   })();
 
   /* ------------------------------------------------------------
