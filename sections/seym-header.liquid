@@ -74,10 +74,11 @@
      the solid state, smoothly. */
   .seym-hd__logo-img {
     display: block;
-    height: 5.2rem;
+    height: 4.6rem;
     width: auto;
     max-width: 24rem;
     object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
     filter: brightness(0) invert(1);
     transition: filter 400ms ease, opacity 300ms ease;
   }
@@ -126,22 +127,31 @@
   .seym-hd__nav a::after {
     content: ''; position: absolute;
     bottom: 2px; left: 1.8rem; right: 1.8rem;
-    height: 1px; background: #fff;
+    height: 1px; background: #b0935f;
     transform: scaleX(0); transform-origin: right center;
     transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
   }
+  /* Signature: links warm to gold + a soft gold glow on hover */
   .seym-hd__nav a:hover,
-  .seym-hd__nav a[aria-current] { color: #fff; }
+  .seym-hd__nav a[aria-current] { color: #b0935f; text-shadow: 0 0 14px rgba(176,147,95,0.45); }
   .seym-hd__nav a:hover::after,
   .seym-hd__nav a[aria-current]::after {
     transform: scaleX(1); transform-origin: left center;
   }
 
-  /* Solid state — dark ink nav over light fill */
-  .seym-hd--solid .seym-hd__nav a { color: rgba(13,13,13,0.55); }
-  .seym-hd--solid .seym-hd__nav a::after { background: #0d0d0d; }
+  /* Solid state — dark ink nav over light fill (still warms to gold) */
+  .seym-hd--solid .seym-hd__nav a { color: rgba(13,13,13,0.6); }
   .seym-hd--solid .seym-hd__nav a:hover,
-  .seym-hd--solid .seym-hd__nav a[aria-current] { color: #0d0d0d; }
+  .seym-hd--solid .seym-hd__nav a[aria-current] { color: #b0935f; }
+
+  /* Signature: gold scroll-progress line along the bottom of the bar */
+  .seym-hd__prog {
+    position: absolute; left: 0; bottom: -1px; height: 2px; width: 0;
+    background: linear-gradient(90deg, rgba(176,147,95,0), #b0935f 30%, #d9bd8a);
+    box-shadow: 0 0 12px rgba(176,147,95,0.55);
+    z-index: 3; pointer-events: none;
+    transition: width 120ms linear;
+  }
 
   /* — Icon cluster — */
   .seym-hd__icons {
@@ -255,16 +265,7 @@
   <div class="seym-hd__row">
 
     <a href="{{ routes.root_url }}" class="seym-hd__logo" aria-label="{{ shop.name }}">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 600 | image_tag:
-           class: 'seym-hd__logo-img',
-           widths: '160,240,320,480,600',
-           sizes: '180px',
-           alt: shop.name,
-           loading: 'eager' }}
-      {%- else -%}
-        <span class="seym-hd__logo-text">Seym</span>
-      {%- endif -%}
+      <img src="{{ 'seym-logo.png' | asset_url }}" class="seym-hd__logo-img" alt="{{ shop.name }}" width="240" height="111" loading="eager">
     </a>
 
     <nav aria-label="Main">
@@ -312,20 +313,13 @@
     </div>
 
   </div>
+  <span class="seym-hd__prog" id="SeymProg" aria-hidden="true"></span>
 </header>
 
 <div class="seym-drawer" id="SeymDrawer" role="dialog" aria-label="Menu" aria-hidden="true">
   <div class="seym-drawer__head">
     <a href="{{ routes.root_url }}" class="seym-hd__logo" tabindex="-1">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 480 | image_tag:
-           class: 'seym-hd__logo-img seym-hd__logo-img--ink',
-           widths: '160,240,320,480',
-           sizes: '150px',
-           alt: shop.name }}
-      {%- else -%}
-        <span class="seym-hd__logo-text" style="font-size:1.9rem">Seym</span>
-      {%- endif -%}
+      <img src="{{ 'seym-logo.png' | asset_url }}" class="seym-hd__logo-img seym-hd__logo-img--ink" alt="{{ shop.name }}" width="200">
     </a>
     <button class="seym-drawer__close" id="SeymDrawerClose" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
@@ -384,6 +378,7 @@
      ------------------------------------------------------------ */
   (function(){
     var bar = document.getElementById('SeymBar');
+    var prog = document.getElementById('SeymProg');
     var hasHero = !!document.querySelector('.shm');
 
     function setSolid(on){
@@ -391,21 +386,24 @@
       hd.classList.toggle('seym-hd--solid', on);
       if(bar) bar.classList.toggle('seym-bar--solid', on);
     }
-
-    if(!hasHero){
-      /* No dark hero → always solid. No scroll listener needed. */
-      setSolid(true);
-      return;
+    function setProgress(){
+      if(!prog) return;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      prog.style.width = pct + '%';
     }
 
     var ticking = false;
     function update(){
       ticking = false;
-      setSolid(window.scrollY > window.innerHeight * 0.42);
+      if(hasHero) setSolid(window.scrollY > window.innerHeight * 0.42);
+      setProgress();
     }
     function onScroll(){
       if(!ticking){ ticking = true; requestAnimationFrame(update); }
     }
+    /* Pages WITHOUT a hero: lock solid; pages WITH the hero start transparent. */
+    if(!hasHero) setSolid(true);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     update();
