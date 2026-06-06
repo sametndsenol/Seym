@@ -149,19 +149,19 @@
         "disabled": false,
         "settings": {}
       },
-      "2118589882331710876": {
-        "type": "shopify://apps/essential-trust-badges/blocks/app-embed/0ff65b25-07e1-408e-950f-f54dd3d1751b",
-        "disabled": false,
-        "settings": {}
-      },
       "1804893150726543839": {
         "type": "shopify://apps/nova-multi-currency-converter/blocks/app-embed/a5be3c35-cbd0-46a1-ac3a-1ace57a9c1ce",
         "disabled": false,
         "settings": {}
       },
+      "2118589882331710876": {
+        "type": "shopify://apps/essential-trust-badges/blocks/app-embed/0ff65b25-07e1-408e-950f-f54dd3d1751b",
+        "disabled": true,
+        "settings": {}
+      },
       "12424619676349770391": {
         "type": "shopify://apps/lably/blocks/app-embeds/6c1584f0-c71d-4a5f-8025-affd32e7e34d",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },
