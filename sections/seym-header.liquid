@@ -68,7 +68,21 @@
     transition: opacity 300ms ease;
   }
   .seym-hd__logo:hover { opacity: 0.55; }
-  .seym-hd__logo img { display: none; }
+  /* Logo image (theme settings.logo — a black monochrome wordmark PNG).
+     White over the dark video by default; flips to its natural black ink in
+     the solid state, smoothly. */
+  .seym-hd__logo-img {
+    display: block;
+    height: 5.2rem;
+    width: auto;
+    max-width: 24rem;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: filter 400ms ease, opacity 300ms ease;
+  }
+  .seym-hd--solid .seym-hd__logo-img { filter: none; }
+  /* Drawer / light surfaces: always ink. */
+  .seym-hd__logo-img--ink { filter: none !important; }
   .seym-hd__logo-text {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
@@ -224,6 +238,7 @@
     .seym-hd--solid .seym-hd__row { height: 5rem; }
     .seym-hd__row { padding: 0 1.6rem; }
     .seym-hd__logo-text { font-size: 2rem; letter-spacing: 0.36em; }
+    .seym-hd__logo-img { height: 4rem; }
     .seym-bar p { font-size: 0.8rem; letter-spacing: 0.2em; }
     .seym-bar { padding: 0.8rem 1.4rem; }
   }
@@ -239,7 +254,16 @@
   <div class="seym-hd__row">
 
     <a href="{{ routes.root_url }}" class="seym-hd__logo" aria-label="{{ shop.name }}">
-      <span class="seym-hd__logo-text">Seym</span>
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 600 | image_tag:
+           class: 'seym-hd__logo-img',
+           widths: '160,240,320,480,600',
+           sizes: '180px',
+           alt: shop.name,
+           loading: 'eager' }}
+      {%- else -%}
+        <span class="seym-hd__logo-text">Seym</span>
+      {%- endif -%}
     </a>
 
     <nav aria-label="Main">
@@ -292,7 +316,15 @@
 <div class="seym-drawer" id="SeymDrawer" role="dialog" aria-label="Menu" aria-hidden="true">
   <div class="seym-drawer__head">
     <a href="{{ routes.root_url }}" class="seym-hd__logo" tabindex="-1">
-      <span class="seym-hd__logo-text" style="font-size:1.9rem">Seym</span>
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 480 | image_tag:
+           class: 'seym-hd__logo-img seym-hd__logo-img--ink',
+           widths: '160,240,320,480',
+           sizes: '150px',
+           alt: shop.name }}
+      {%- else -%}
+        <span class="seym-hd__logo-text" style="font-size:1.9rem">Seym</span>
+      {%- endif -%}
     </a>
     <button class="seym-drawer__close" id="SeymDrawerClose" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>

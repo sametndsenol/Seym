@@ -38,15 +38,15 @@
     align-self: center;
     overflow: hidden;
     border-radius: 2px;
-    will-change: flex-basis, height;
+    /* The whole card travels up from below (clipped by the stage), so it
+       always reads as a complete card in motion — never a half-filled box. */
+    transform: translateY(100%);
+    opacity: 0;
+    will-change: flex-basis, height, transform, opacity;
   }
-  /* Inner riser: clipped by the column, translates up from below */
   #SeymHM-{{ section.id }} .shm__side-inner {
     position: absolute;
     inset: 0;
-    transform: translateY(100%);
-    opacity: 0;
-    will-change: transform, opacity;
   }
   #SeymHM-{{ section.id }} .shm__side-link {
     position: absolute;
@@ -345,6 +345,7 @@
       height: auto !important;
       aspect-ratio: 1 / 2;
     }
+    #SeymHM-{{ section.id }} .shm__side,
     #SeymHM-{{ section.id }} .shm__side-inner {
       transform: none !important;
       opacity: 1 !important;
@@ -388,6 +389,7 @@
       max-height: 88vh;
       height: auto !important;
     }
+    #SeymHM-{{ section.id }} .shm__side,
     #SeymHM-{{ section.id }} .shm__side-inner {
       transform: none !important;
       opacity: 1 !important;
@@ -581,13 +583,15 @@
     sideL.style.flex = '0 0 ' + sideBasis + '%';
     sideR.style.flex = '0 0 ' + sideBasis + '%';
 
-    // Rise from below with a soft stagger (left slightly leads right).
-    var riseL = ease(seg(p, 0.40, 0.96));
-    var riseR = ease(seg(p, 0.46, 1.0));
-    innerL.style.transform = 'translateY(' + lerp(100, 0, riseL) + '%)';
-    innerR.style.transform = 'translateY(' + lerp(100, 0, riseR) + '%)';
-    innerL.style.opacity = lerp(0, 1, ease(seg(p, 0.40, 0.7)));
-    innerR.style.opacity = lerp(0, 1, ease(seg(p, 0.46, 0.76)));
+    // Rise from below: the WHOLE card travels up into its already-open slot,
+    // clipped by the stage (not by its own box) so it always reads as a
+    // complete card gliding into place — never a half-filled domino.
+    var riseL = ease(seg(p, 0.45, 0.90));
+    var riseR = ease(seg(p, 0.50, 0.95));
+    sideL.style.transform = 'translateY(' + lerp(100, 0, riseL) + '%)';
+    sideR.style.transform = 'translateY(' + lerp(100, 0, riseR) + '%)';
+    sideL.style.opacity = lerp(0, 1, ease(seg(p, 0.45, 0.62)));
+    sideR.style.opacity = lerp(0, 1, ease(seg(p, 0.50, 0.67)));
 
     // Final portrait shape — heights settle to 1:2 over the last stretch.
     var shape = ease(seg(p, 0.55, 0.98));
