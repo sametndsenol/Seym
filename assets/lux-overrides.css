@@ -1572,6 +1572,17 @@ body:has(.seym-hd) { padding-top: 9.6rem; }
 }
 body:has(.seym-hd) .main-content-wrapper { padding-top: 0 !important; }
 
+/* Full-bleed exception: when the dark video hero (.shm) is on the page,
+   the header is transparent and sits OVER the hero, so the hero must start
+   at the very top under it. Zero the body offset only in that case; all
+   other pages keep the 9.6rem / 8.8rem offset so content clears the solid
+   header. (Hero contract: .shm renders full-bleed beneath a transparent,
+   fixed header at the top of the page.) */
+body:has(.seym-hd):has(.shm) { padding-top: 0; }
+@media (max-width: 749px) {
+  body:has(.seym-hd):has(.shm) { padding-top: 0; }
+}
+
 /* ============================================================
    28. GLOBAL SPACING REDUCTION
    ============================================================ */

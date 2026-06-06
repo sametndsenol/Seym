@@ -1,7 +1,9 @@
 {%- comment -%}
   Seym Hero Morph — full-screen video that morphs into the center card
-  of a triptych as the user scrolls. 300vh scroll runway, sticky stage.
-  Side cards slide in from left/right. Hero text fades, triptych captions appear.
+  of a triptych as the user scrolls. 250vh scroll runway, sticky stage.
+  Side cards RISE FROM BELOW into their slot. Hero text fades, triptych
+  captions appear. Final state: three portrait 1:2 cards, centered in the
+  stage with the white background showing around them.
   Mobile: no morph — hero stacks above triptych cards.
 {%- endcomment -%}
 
@@ -18,7 +20,7 @@
     height: 100dvh;
     overflow: hidden;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     background: #0a0a0a;
     transition: background 0.6s ease;
   }
@@ -27,30 +29,46 @@
   .shm__side {
     position: relative;
     flex: 0 0 0%;
+    align-self: center;
     overflow: hidden;
-    opacity: 0;
-    will-change: flex-basis, opacity, transform;
+    will-change: flex-basis, height;
     transition: none;
+  }
+  /* Inner riser: clipped by the column, translates up from below */
+  .shm__side-inner {
+    position: absolute;
+    inset: 0;
+    transform: translateY(100%);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .shm__side-link {
+    position: absolute;
+    inset: 0;
+    display: block;
+    text-decoration: none;
+    z-index: 3;
   }
   .shm__side img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
   }
-  .shm__side::after {
+  .shm__side-inner::after {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.45) 100%);
+    background: linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.55) 100%);
     z-index: 1;
   }
   .shm__side-txt {
     position: absolute;
     z-index: 2;
-    bottom: 2.4rem; left: 2.4rem; right: 2.4rem;
+    bottom: 2.2rem; left: 2.2rem; right: 2.2rem;
     opacity: 0;
     transition: none;
   }
   .shm__side-ey {
+    display: block;
     font: 300 0.65rem/1 'Inter', sans-serif;
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -59,16 +77,42 @@
   }
   .shm__side-name {
     font: 400 1.4rem/1.2 'Cormorant Garamond', serif;
-    color: #fff; margin: 0;
+    color: #fff; margin: 0 0 0.6rem;
+  }
+  .shm__side-price {
+    display: block;
+    font: 300 0.85rem/1.2 'Inter', sans-serif;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.85);
+    margin: 0 0 0.9rem;
+  }
+  .shm__side-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    font: 400 0.6rem/1 'Inter', sans-serif;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    padding-bottom: 0.35rem;
   }
 
   /* --- Center (video) card --- */
   .shm__center {
     position: relative;
     flex: 0 0 100%;
+    align-self: center;
     z-index: 2;
     overflow: hidden;
-    will-change: flex-basis;
+    will-change: flex-basis, height;
+  }
+  .shm__center-link {
+    position: absolute;
+    inset: 0;
+    display: block;
+    text-decoration: none;
+    z-index: 1;
   }
   .shm__center video,
   .shm__center img {
@@ -82,6 +126,7 @@
       rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.08) 30%,
       rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.50) 100%);
     z-index: 1;
+    pointer-events: none;
   }
 
   /* Hero text — centered, fades out on scroll */
@@ -93,7 +138,9 @@
     text-align: center;
     color: #fff;
     will-change: opacity;
+    pointer-events: none;
   }
+  .shm__hero-txt > * { pointer-events: auto; }
   .shm__hero-ey {
     font: 300 0.7rem/1 'Inter', sans-serif;
     letter-spacing: 0.38em;
@@ -131,7 +178,9 @@
     padding: 3rem;
     opacity: 0;
     will-change: opacity;
+    pointer-events: none;
   }
+  .shm__trip-txt > * { pointer-events: auto; }
   .shm__trip-txt::before {
     content: '';
     position: absolute; inset: 0;
@@ -149,7 +198,13 @@
     font: 300 clamp(2.4rem,4vw,4.4rem)/0.95 'Cormorant Garamond', serif;
     letter-spacing: 0.06em;
     color: #fff;
-    margin: 0 0 2.2rem;
+    margin: 0 0 0.8rem;
+  }
+  .shm__trip-price {
+    font: 300 1rem/1.2 'Inter', sans-serif;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.85);
+    margin: 0 0 2rem;
   }
   .shm__trip-cta {
     font: 400 0.64rem/1 'Inter', sans-serif;
@@ -160,7 +215,10 @@
     padding: 0.95rem 2.4rem;
     min-height: 44px;
     display: inline-flex; align-items: center;
+    text-decoration: none;
+    transition: background .25s, border-color .25s;
   }
+  .shm__trip-cta:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 
   /* --- Gaps (animated via JS) --- */
   .shm__gap {
@@ -172,28 +230,33 @@
     will-change: flex-basis;
   }
 
-  /* --- Mobile: no morph, stack --- */
+  /* --- Mobile: no morph, stack as portrait 1:2 cards --- */
   @media(max-width:749px){
     .shm { height: auto; background: #fff; }
     .shm__stage {
       position: relative;
       height: auto;
       flex-direction: column;
+      align-items: stretch;
       gap: 0.5rem;
-      padding: 0 0 0.5rem;
+      padding: 0.5rem;
     }
     .shm__center {
       position: relative;
       inset: auto;
-      aspect-ratio: 9 / 16;
-      max-height: 80vh;
+      flex: 0 0 auto !important;
+      aspect-ratio: 1 / 2;
+      max-height: 90vh;
       z-index: 1;
     }
     .shm__side {
       flex: 0 0 auto !important;
-      opacity: 1 !important;
+      aspect-ratio: 1 / 2;
+      max-height: 90vh;
+    }
+    .shm__side-inner {
       transform: none !important;
-      aspect-ratio: 3 / 4;
+      opacity: 1 !important;
     }
     .shm__side-txt { opacity: 1 !important; }
     .shm__hero-txt { bottom: 6vh; padding: 0 2rem; }
@@ -209,15 +272,22 @@
     {%- comment -%} Left side card {%- endcomment -%}
     {%- assign left = section.blocks[0] -%}
     <div class="shm__side shm__side--l" id="shm-sideL-{{ section.id }}">
-      {%- if left.settings.image != blank -%}
-        {{ left.settings.image | image_url: width: 1000 | image_tag:
-           loading: 'lazy', widths: '400,600,800,1000',
-           sizes: '(max-width:749px) 100vw, 33vw' }}
-      {%- endif -%}
-      <div class="shm__side-txt" id="shm-capL-{{ section.id }}">
-        {%- if left.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ left.settings.eyebrow }}</span>{%- endif -%}
-        {%- if left.settings.title != blank -%}<h3 class="shm__side-name">{{ left.settings.title }}</h3>{%- endif -%}
+      <div class="shm__side-inner" id="shm-innerL-{{ section.id }}">
+        {%- if left.settings.image != blank -%}
+          {{ left.settings.image | image_url: width: 1000 | image_tag:
+             loading: 'lazy', widths: '400,600,800,1000',
+             sizes: '(max-width:749px) 100vw, 33vw' }}
+        {%- endif -%}
+        <div class="shm__side-txt" id="shm-capL-{{ section.id }}">
+          {%- if left.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ left.settings.eyebrow }}</span>{%- endif -%}
+          {%- if left.settings.title != blank -%}<h3 class="shm__side-name">{{ left.settings.title }}</h3>{%- endif -%}
+          {%- if left.settings.price != blank -%}<span class="shm__side-price">{{ left.settings.price }}</span>{%- endif -%}
+          {%- if left.settings.side_cta != blank -%}<span class="shm__side-cta">{{ left.settings.side_cta }}</span>{%- endif -%}
+        </div>
       </div>
+      {%- if left.settings.link != blank -%}
+        <a class="shm__side-link" href="{{ left.settings.link }}" aria-label="{{ left.settings.title | default: 'View' | escape }}"></a>
+      {%- endif -%}
     </div>
 
     <div class="shm__gap" id="shm-gapL-{{ section.id }}"></div>
@@ -234,6 +304,9 @@
         {{ center.settings.image | image_url: width: 2000 | image_tag:
            loading: 'eager', widths: '800,1200,1600,2000', sizes: '100vw' }}
       {%- endif -%}
+      {%- if center.settings.link != blank -%}
+        <a class="shm__center-link" href="{{ center.settings.link }}" aria-label="{{ center.settings.title | default: 'View collection' | escape }}"></a>
+      {%- endif -%}
       <div class="shm__center-grad"></div>
 
       <div class="shm__hero-txt" id="shm-heroTxt-{{ section.id }}">
@@ -247,7 +320,14 @@
       <div class="shm__trip-txt" id="shm-tripTxt-{{ section.id }}">
         {%- if center.settings.eyebrow != blank -%}<span class="shm__trip-ey">{{ center.settings.eyebrow }}</span>{%- endif -%}
         {%- if center.settings.title != blank -%}<h2 class="shm__trip-h">{{ center.settings.title }}</h2>{%- endif -%}
-        {%- if center.settings.cta_label != blank -%}<span class="shm__trip-cta">{{ center.settings.cta_label }}</span>{%- endif -%}
+        {%- if center.settings.price != blank -%}<span class="shm__trip-price">{{ center.settings.price }}</span>{%- endif -%}
+        {%- if center.settings.cta_label != blank -%}
+          {%- if center.settings.link != blank -%}
+            <a class="shm__trip-cta" href="{{ center.settings.link }}">{{ center.settings.cta_label }}</a>
+          {%- else -%}
+            <span class="shm__trip-cta">{{ center.settings.cta_label }}</span>
+          {%- endif -%}
+        {%- endif -%}
       </div>
     </div>
 
@@ -256,15 +336,22 @@
     {%- comment -%} Right side card {%- endcomment -%}
     {%- assign right = section.blocks[2] -%}
     <div class="shm__side shm__side--r" id="shm-sideR-{{ section.id }}">
-      {%- if right.settings.image != blank -%}
-        {{ right.settings.image | image_url: width: 1000 | image_tag:
-           loading: 'lazy', widths: '400,600,800,1000',
-           sizes: '(max-width:749px) 100vw, 33vw' }}
-      {%- endif -%}
-      <div class="shm__side-txt" id="shm-capR-{{ section.id }}">
-        {%- if right.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ right.settings.eyebrow }}</span>{%- endif -%}
-        {%- if right.settings.title != blank -%}<h3 class="shm__side-name">{{ right.settings.title }}</h3>{%- endif -%}
+      <div class="shm__side-inner" id="shm-innerR-{{ section.id }}">
+        {%- if right.settings.image != blank -%}
+          {{ right.settings.image | image_url: width: 1000 | image_tag:
+             loading: 'lazy', widths: '400,600,800,1000',
+             sizes: '(max-width:749px) 100vw, 33vw' }}
+        {%- endif -%}
+        <div class="shm__side-txt" id="shm-capR-{{ section.id }}">
+          {%- if right.settings.eyebrow != blank -%}<span class="shm__side-ey">{{ right.settings.eyebrow }}</span>{%- endif -%}
+          {%- if right.settings.title != blank -%}<h3 class="shm__side-name">{{ right.settings.title }}</h3>{%- endif -%}
+          {%- if right.settings.price != blank -%}<span class="shm__side-price">{{ right.settings.price }}</span>{%- endif -%}
+          {%- if right.settings.side_cta != blank -%}<span class="shm__side-cta">{{ right.settings.side_cta }}</span>{%- endif -%}
+        </div>
       </div>
+      {%- if right.settings.link != blank -%}
+        <a class="shm__side-link" href="{{ right.settings.link }}" aria-label="{{ right.settings.title | default: 'View' | escape }}"></a>
+      {%- endif -%}
     </div>
 
     <div class="shm__pad" id="shm-padR-{{ section.id }}"></div>
@@ -280,6 +367,8 @@
   var center = document.getElementById('shm-center-{{ section.id }}');
   var sideL  = document.getElementById('shm-sideL-{{ section.id }}');
   var sideR  = document.getElementById('shm-sideR-{{ section.id }}');
+  var innerL = document.getElementById('shm-innerL-{{ section.id }}');
+  var innerR = document.getElementById('shm-innerR-{{ section.id }}');
   var gapL   = document.getElementById('shm-gapL-{{ section.id }}');
   var gapR   = document.getElementById('shm-gapR-{{ section.id }}');
   var padL   = document.getElementById('shm-padL-{{ section.id }}');
@@ -295,60 +384,91 @@
   function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
   function clamp(v) { return Math.max(0, Math.min(1, v)); }
 
+  // Final portrait card: 1:2 aspect, height capped at 80vh of the stage.
+  // The column width in the final 3-up is ~33.33vw; a 1:2 card from that
+  // width would be 2*33vw tall which exceeds the stage, so height is the
+  // binding dimension — we settle every card to the same portrait height.
+  function portraitHeight() {
+    return Math.min(window.innerHeight * 0.8, (window.innerWidth * 0.3333) * 2);
+  }
+
   var ticking = false;
+  function update() {
+    var rect = sec.getBoundingClientRect();
+    var scrollable = sec.offsetHeight - window.innerHeight;
+    var scrolled = -rect.top;
+    var p = clamp(scrolled / scrollable);
+    var ep = ease(p);
+
+    // Center card: shrink from 100% to 33% (stay relative, no position jump)
+    center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
+
+    // Side columns: give them their slot EARLY so the slot exists, then
+    // the inner content rises up into it. Slot width grows over the first
+    // ~55% so the layout is settled before the rise completes.
+    var slotEp = ease(clamp((p - 0.1) / 0.55));
+    var sideBasis = lerp(0, 33.33, slotEp);
+    sideL.style.flex = '0 0 ' + sideBasis + '%';
+    sideR.style.flex = '0 0 ' + sideBasis + '%';
+
+    // Rise: latter ~60% of scroll. Inner translates 100% -> 0% and fades in.
+    var riseEp = ease(clamp((p - 0.4) / 0.6));
+    var riseY  = lerp(100, 0, riseEp);
+    var riseOp = lerp(0, 1, riseEp);
+    innerL.style.transform = 'translateY(' + riseY + '%)';
+    innerR.style.transform = 'translateY(' + riseY + '%)';
+    innerL.style.opacity = riseOp;
+    innerR.style.opacity = riseOp;
+
+    // Final portrait shape: interpolate all three cards' heights from the
+    // full stage height down to the 1:2 portrait height as the morph
+    // completes (last ~45%). align-self:center keeps them vertically centered.
+    var shapeEp = ease(clamp((p - 0.55) / 0.45));
+    var ph = portraitHeight();
+    var cardH = lerp(window.innerHeight, ph, shapeEp);
+    center.style.height = cardH + 'px';
+    sideL.style.height  = cardH + 'px';
+    sideR.style.height  = cardH + 'px';
+
+    // Gaps: 0 to 1rem
+    var gapVal = lerp(0, 1, ep) + 'rem';
+    gapL.style.flex = '0 0 ' + gapVal;
+    gapR.style.flex = '0 0 ' + gapVal;
+
+    // Padding: 0 to 1.2rem
+    var padVal = lerp(0, 1.2, ep) + 'rem';
+    padL.style.flex = '0 0 ' + padVal;
+    padR.style.flex = '0 0 ' + padVal;
+
+    // Hero text: fade out first 35%
+    heroT.style.opacity = lerp(1, 0, clamp(p / 0.35));
+
+    // Triptych center caption: fade in last 30%
+    tripT.style.opacity = lerp(0, 1, clamp((p - 0.65) / 0.35));
+
+    // Side captions: fade in last 25%
+    var capOp = lerp(0, 1, clamp((p - 0.7) / 0.3));
+    capL.style.opacity = capOp;
+    capR.style.opacity = capOp;
+
+    // Background: smooth black to white
+    var bgVal = Math.round(lerp(10, 255, ease(clamp(p / 0.5))));
+    stage.style.background = 'rgb(' + bgVal + ',' + bgVal + ',' + bgVal + ')';
+
+    ticking = false;
+  }
+
   window.addEventListener('scroll', function() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function() {
-      var rect = sec.getBoundingClientRect();
-      var scrollable = sec.offsetHeight - window.innerHeight;
-      var scrolled = -rect.top;
-      var p = clamp(scrolled / scrollable);
-      var ep = ease(p);
-
-      // Center card: shrink from 100% to 33% (stay relative, no position jump)
-      center.style.flex = '0 0 ' + lerp(100, 33.33, ep) + '%';
-
-      // Side cards: grow from 0% to 33%
-      var sideP = clamp((p - 0.15) / 0.85);
-      var sideEp = ease(sideP);
-      var sideBasis = lerp(0, 33.33, sideEp);
-      var sideOp = lerp(0, 1, ease(clamp((p - 0.2) / 0.6)));
-      sideL.style.flex = '0 0 ' + sideBasis + '%';
-      sideR.style.flex = '0 0 ' + sideBasis + '%';
-      sideL.style.opacity = sideOp;
-      sideR.style.opacity = sideOp;
-
-      // Gaps: 0 to 1rem
-      var gapVal = lerp(0, 1, ep) + 'rem';
-      gapL.style.flex = '0 0 ' + gapVal;
-      gapR.style.flex = '0 0 ' + gapVal;
-
-      // Padding: 0 to 1.2rem
-      var padVal = lerp(0, 1.2, ep) + 'rem';
-      padL.style.flex = '0 0 ' + padVal;
-      padR.style.flex = '0 0 ' + padVal;
-      stage.style.paddingTop = padVal;
-      stage.style.paddingBottom = padVal;
-
-      // Hero text: fade out first 40%
-      heroT.style.opacity = lerp(1, 0, clamp(p / 0.35));
-
-      // Triptych center caption: fade in last 30%
-      tripT.style.opacity = lerp(0, 1, clamp((p - 0.65) / 0.35));
-
-      // Side captions: fade in last 25%
-      var capOp = lerp(0, 1, clamp((p - 0.7) / 0.3));
-      capL.style.opacity = capOp;
-      capR.style.opacity = capOp;
-
-      // Background: smooth black to white
-      var bgVal = Math.round(lerp(10, 255, ease(clamp(p / 0.5))));
-      stage.style.background = 'rgb(' + bgVal + ',' + bgVal + ',' + bgVal + ')';
-
-      ticking = false;
-    });
+    requestAnimationFrame(update);
   });
+  window.addEventListener('resize', function() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  });
+  update();
 })();
 </script>
 
@@ -372,7 +492,9 @@
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
         { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "price", "label": "Price" },
         { "type": "text", "id": "cta_label", "label": "CTA (center card)" },
+        { "type": "text", "id": "side_cta", "label": "Discover label (side cards)", "default": "Discover" },
         { "type": "url", "id": "link", "label": "Link" }
       ]
     }
@@ -380,9 +502,9 @@
   "presets": [{
     "name": "Hero Morph",
     "blocks": [
-      { "type": "card", "settings": { "eyebrow": "Collection", "title": "Flos" } },
+      { "type": "card", "settings": { "eyebrow": "Collection", "title": "Flos", "side_cta": "Discover" } },
       { "type": "card", "settings": { "eyebrow": "Seym Glass Studio", "title": "SEYM", "cta_label": "Discover" } },
-      { "type": "card", "settings": { "eyebrow": "Featured", "title": "Maris" } }
+      { "type": "card", "settings": { "eyebrow": "Featured", "title": "Maris", "side_cta": "Discover" } }
     ]
   }]
 }

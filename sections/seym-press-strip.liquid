@@ -75,11 +75,41 @@
     color: var(--seym-wine, #8E2244);
     border-color: var(--seym-wine, #8E2244);
   }
+  .seym-ps__groups {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    margin-top: 3.6rem;
+    flex-wrap: wrap;
+  }
+  .seym-ps__group {}
+  .seym-ps__group--award {
+    padding-left: 3.2rem;
+    border-left: 1px solid rgba(26,26,26,0.12);
+  }
+  .seym-ps__group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.45);
+    margin: 0 0 1.2rem;
+  }
+  .seym-ps__group--award .seym-ps__group-label {
+    color: var(--seym-wine, #8E2244);
+  }
+  .seym-ps__group-mark {
+    color: var(--seym-gold, #B08D57);
+    font-size: 0.9rem;
+    line-height: 1;
+  }
   .seym-ps__logos {
     display: flex;
     gap: 3.2rem;
     align-items: center;
-    margin-top: 3.6rem;
     flex-wrap: wrap;
   }
   .seym-ps__logo {
@@ -89,6 +119,9 @@
     color: rgba(26,26,26,0.35);
     font-style: italic;
   }
+  .seym-ps__group--award .seym-ps__logo {
+    color: rgba(26,26,26,0.55);
+  }
 
   @media (max-width: 989px) {
     .seym-ps__wrap { grid-template-columns: 1fr; gap: 2.8rem; }
@@ -96,6 +129,14 @@
   @media (max-width: 749px) {
     .seym-ps__wrap { padding: 0 2rem; }
     .seym-ps { padding: 48px 0; }
+    .seym-ps__groups { gap: 2.4rem; }
+    .seym-ps__group--award {
+      padding-left: 0;
+      padding-top: 2.4rem;
+      border-left: 0;
+      border-top: 1px solid rgba(26,26,26,0.12);
+      width: 100%;
+    }
   }
 </style>
 
@@ -122,11 +163,39 @@
         <a href="{{ section.settings.cta_link }}" class="seym-ps__cta">{{ section.settings.cta_label }} →</a>
       {%- endif -%}
 
-      {%- if section.blocks.size > 0 -%}
-        <div class="seym-ps__logos">
-          {%- for block in section.blocks -%}
-            <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
-          {%- endfor -%}
+      {%- liquid
+        assign press_blocks = section.blocks | where: 'settings.kind', 'press'
+        assign award_blocks = section.blocks | where: 'settings.kind', 'award'
+      -%}
+      {%- if press_blocks.size > 0 or award_blocks.size > 0 -%}
+        <div class="seym-ps__groups" id="PressGroups-{{ section.id }}">
+          {%- if press_blocks.size > 0 -%}
+            <div class="seym-ps__group seym-ps__group--press">
+              {%- if section.settings.press_label != blank -%}
+                <p class="seym-ps__group-label">{{ section.settings.press_label }}</p>
+              {%- endif -%}
+              <div class="seym-ps__logos">
+                {%- for block in press_blocks -%}
+                  <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+          {%- if award_blocks.size > 0 -%}
+            <div class="seym-ps__group seym-ps__group--award">
+              {%- if section.settings.award_label != blank -%}
+                <p class="seym-ps__group-label">
+                  <span class="seym-ps__group-mark" aria-hidden="true">&#9733;</span>
+                  {{ section.settings.award_label }}
+                </p>
+              {%- endif -%}
+              <div class="seym-ps__logos">
+                {%- for block in award_blocks -%}
+                  <span class="seym-ps__logo" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -143,23 +212,35 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "In the Press" },
     { "type": "textarea", "id": "description", "label": "Description" },
     { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Read more" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" }
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "text", "id": "press_label", "label": "Press group label", "default": "As featured in" },
+    { "type": "text", "id": "award_label", "label": "Award group label", "default": "Awarded" }
   ],
   "blocks": [
     {
       "type": "publication",
       "name": "Publication",
       "settings": [
-        { "type": "text", "id": "name", "label": "Publication name" }
+        { "type": "text", "id": "name", "label": "Publication name" },
+        {
+          "type": "select",
+          "id": "kind",
+          "label": "Category",
+          "options": [
+            { "value": "press", "label": "Press" },
+            { "value": "award", "label": "Award" }
+          ],
+          "default": "press"
+        }
       ]
     }
   ],
   "presets": [{
     "name": "Press Strip",
     "blocks": [
-      { "type": "publication", "settings": { "name": "Homeart" } },
-      { "type": "publication", "settings": { "name": "Design Turkey" } },
-      { "type": "publication", "settings": { "name": "A' Design Award" } }
+      { "type": "publication", "settings": { "name": "Homeart", "kind": "press" } },
+      { "type": "publication", "settings": { "name": "Design Turkey", "kind": "press" } },
+      { "type": "publication", "settings": { "name": "A' Design Award", "kind": "award" } }
     ]
   }]
 }

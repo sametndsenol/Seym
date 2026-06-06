@@ -5,27 +5,43 @@
 {%- endcomment -%}
 
 <style>
-  /* — Announcement bar — */
+  /* — Announcement bar —
+     Transparent over the dark video (so the video shows through under it),
+     solid black once scrolled / on non-hero pages. Text stays light/legible
+     in both states. — */
   .seym-bar {
-    background: #0d0d0d;
+    background: transparent;
     border-bottom: none;
     text-align: center;
     padding: 1rem 2rem;
     position: relative; z-index: 60;
+    transition: background 400ms ease;
   }
+  .seym-bar--solid { background: #0d0d0d; }
   .seym-bar p {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: rgba(250,250,247,0.55);
+    color: rgba(250,250,247,0.7);
     margin: 0;
   }
+  .seym-bar--solid p { color: rgba(250,250,247,0.55); }
   .seym-bar a { color: inherit; text-decoration: none; }
 
-  /* — Header shell — fixed via parent .shopify-section in lux-overrides. — */
+  /* — Header shell — fixed via parent .shopify-section in lux-overrides. —
+     Two states:
+       · default (over the dark video) → transparent, white text
+       · .seym-hd--solid (scrolled past hero, or pages with no hero)
+         → ivory fill, dark ink, subtle border
+     Colors transition smoothly between the two. — */
   .seym-hd {
     position: relative; z-index: 50;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 400ms ease, border-color 400ms ease;
+  }
+  .seym-hd--solid {
     background: var(--seym-ivory, #F5F1EA);
     border-bottom: 1px solid rgba(13,13,13,0.07);
   }
@@ -43,7 +59,7 @@
      mark always reads as a clean serif) — */
   .seym-hd__logo {
     display: flex; align-items: center;
-    text-decoration: none; color: #1A1A1A;
+    text-decoration: none; color: #fff;
     flex-shrink: 0; z-index: 2;
     transition: opacity 300ms ease;
   }
@@ -55,10 +71,13 @@
     font-size: 2.4rem;
     letter-spacing: 0.42em;
     text-transform: uppercase;
-    color: #1A1A1A;
+    color: #fff;
     line-height: 1;
     padding-left: 0.4em;
+    transition: color 400ms ease;
   }
+  .seym-hd--solid .seym-hd__logo { color: #1A1A1A; }
+  .seym-hd--solid .seym-hd__logo-text { color: #1A1A1A; }
 
   /* — Nav (centered absolutely) — */
   .seym-hd__nav {
@@ -81,23 +100,29 @@
     font-size: 0.95rem; font-weight: 400;
     line-height: 1;
     letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(13,13,13,0.55);
+    color: rgba(255,255,255,0.7);
     text-decoration: none; position: relative;
     transition: color 300ms ease;
   }
   .seym-hd__nav a::after {
     content: ''; position: absolute;
     bottom: 2px; left: 1.8rem; right: 1.8rem;
-    height: 1px; background: #0d0d0d;
+    height: 1px; background: #fff;
     transform: scaleX(0); transform-origin: right center;
     transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
   }
   .seym-hd__nav a:hover,
-  .seym-hd__nav a[aria-current] { color: #0d0d0d; }
+  .seym-hd__nav a[aria-current] { color: #fff; }
   .seym-hd__nav a:hover::after,
   .seym-hd__nav a[aria-current]::after {
     transform: scaleX(1); transform-origin: left center;
   }
+
+  /* Solid state — dark ink nav over light fill */
+  .seym-hd--solid .seym-hd__nav a { color: rgba(13,13,13,0.55); }
+  .seym-hd--solid .seym-hd__nav a::after { background: #0d0d0d; }
+  .seym-hd--solid .seym-hd__nav a:hover,
+  .seym-hd--solid .seym-hd__nav a[aria-current] { color: #0d0d0d; }
 
   /* — Icon cluster — */
   .seym-hd__icons {
@@ -107,10 +132,11 @@
   .seym-hd__icon {
     display: inline-flex; align-items: center; justify-content: center;
     width: 4rem; height: 4rem;
-    color: #0d0d0d; background: none; border: none;
+    color: #fff; background: none; border: none;
     cursor: pointer; text-decoration: none; position: relative;
-    transition: opacity 300ms ease;
+    transition: opacity 300ms ease, color 400ms ease;
   }
+  .seym-hd--solid .seym-hd__icon { color: #0d0d0d; }
   .seym-hd__icon:hover { opacity: 0.5; }
   .seym-hd__icon svg {
     width: 1.9rem; height: 1.9rem;
@@ -119,12 +145,14 @@
   }
   .seym-hd__badge {
     position: absolute; top: 5px; right: 5px;
-    background: #0d0d0d; color: #fafaf7;
+    background: #fff; color: #0d0d0d;
     width: 1.5rem; height: 1.5rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem; font-weight: 600; line-height: 1;
+    transition: background 400ms ease, color 400ms ease;
   }
+  .seym-hd--solid .seym-hd__badge { background: #0d0d0d; color: #fafaf7; }
 
   /* — Hamburger (mobile) — */
   .seym-hd__burger {
@@ -134,9 +162,10 @@
     background: none; border: none; cursor: pointer; padding: 1rem;
   }
   .seym-hd__burger span {
-    display: block; height: 1px; background: #0d0d0d;
+    display: block; height: 1px; background: #fff;
     transition: all 300ms ease;
   }
+  .seym-hd--solid .seym-hd__burger span { background: #0d0d0d; }
   .seym-hd__burger span:nth-child(2) { width: 70%; margin-left: auto; }
 
   /* — Mobile drawer — */
@@ -188,7 +217,7 @@
   }
   @media (max-width: 749px) {
     .seym-hd__row { height: 6rem; }
-    .seym-hd.scrolled .seym-hd__row { height: 5rem; }
+    .seym-hd--solid .seym-hd__row { height: 5rem; }
     .seym-hd__row { padding: 0 1.6rem; }
     .seym-hd__logo-text { font-size: 2rem; letter-spacing: 0.36em; }
     .seym-bar p { font-size: 0.8rem; letter-spacing: 0.2em; }
@@ -197,7 +226,7 @@
 </style>
 
 {%- if section.settings.show_bar and section.settings.bar_text != blank -%}
-<div class="seym-bar">
+<div class="seym-bar" id="SeymBar">
   <p>{{ section.settings.bar_text }}</p>
 </div>
 {%- endif -%}
@@ -305,6 +334,45 @@
   if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
   drawer && drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
+
+  /* ------------------------------------------------------------
+     Video-aware sticky header.
+     · Pages WITH the dark hero (.shm present): header starts
+       TRANSPARENT (white text over the video) and flips to the
+       SOLID state once the user scrolls past ~60% of the viewport
+       (i.e. leaves the dark hero).
+     · Pages WITHOUT a hero: lock to the SOLID state immediately so
+       dark ink reads on the light/ivory page background.
+     Toggles .seym-hd--solid on #SeymHd and .seym-bar--solid on the bar.
+     ------------------------------------------------------------ */
+  (function(){
+    var bar = document.getElementById('SeymBar');
+    var hasHero = !!document.querySelector('.shm');
+
+    function setSolid(on){
+      if(!hd) return;
+      hd.classList.toggle('seym-hd--solid', on);
+      if(bar) bar.classList.toggle('seym-bar--solid', on);
+    }
+
+    if(!hasHero){
+      /* No dark hero → always solid. No scroll listener needed. */
+      setSolid(true);
+      return;
+    }
+
+    var ticking = false;
+    function update(){
+      ticking = false;
+      setSolid(window.scrollY > window.innerHeight * 0.6);
+    }
+    function onScroll(){
+      if(!ticking){ ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  })();
 
   /* ------------------------------------------------------------
      Nuke any app-injected country/currency pill.
