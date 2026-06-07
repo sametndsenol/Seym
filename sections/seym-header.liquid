@@ -283,10 +283,10 @@
         {%- for link in linklists[section.settings.menu].links -%}
           {%- assign t = link.title | downcase | strip -%}
           {%- assign show = false -%}
-          {%- if t contains 'koleksiyon' -%}{%- assign show = true -%}{%- endif -%}
-          {%- if t contains 'mağaza' or t contains 'magaza' -%}{%- assign show = true -%}{%- endif -%}
-          {%- if t contains 'hakkımızda' or t contains 'hakkimizda' -%}{%- assign show = true -%}{%- endif -%}
-          {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'koleksiyon' or t contains 'collection' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'mağaza' or t contains 'magaza' or t contains 'store' or t contains 'shop' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'hakkımızda' or t contains 'hakkimizda' or t contains 'about' -%}{%- assign show = true -%}{%- endif -%}
+          {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' or t contains 'contact' -%}{%- assign show = true -%}{%- endif -%}
           {%- if show -%}
             <li>
               <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
@@ -334,10 +334,10 @@
       {%- for link in linklists[section.settings.menu].links -%}
         {%- assign t = link.title | downcase | strip -%}
         {%- assign show = false -%}
-        {%- if t contains 'koleksiyon' -%}{%- assign show = true -%}{%- endif -%}
-        {%- if t contains 'mağaza' or t contains 'magaza' -%}{%- assign show = true -%}{%- endif -%}
-        {%- if t contains 'hakkımızda' or t contains 'hakkimizda' -%}{%- assign show = true -%}{%- endif -%}
-        {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'koleksiyon' or t contains 'collection' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'mağaza' or t contains 'magaza' or t contains 'store' or t contains 'shop' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'hakkımızda' or t contains 'hakkimizda' or t contains 'about' -%}{%- assign show = true -%}{%- endif -%}
+        {%- if t contains 'i̇letişim' or t contains 'iletişim' or t contains 'iletisim' or t contains 'contact' -%}{%- assign show = true -%}{%- endif -%}
         {%- if show -%}
           <li><a href="{{ link.url }}">{{ link.title }}</a></li>
         {%- endif -%}
@@ -411,8 +411,13 @@
     }
     function init(){
       hasHero = !!document.querySelector('.shm');
-      /* Pages WITHOUT a hero: lock solid. WITH the hero: transparent at top. */
-      if(!hasHero) setSolid(true);
+      if(hasHero){
+        /* Force the hero full-bleed under the transparent header regardless of
+           CSS :has() quirks, so the white nav reads over the video. */
+        document.body.style.setProperty('padding-top','0','important');
+      } else {
+        setSolid(true);
+      }
       update();
     }
     window.addEventListener('scroll', onScroll, { passive: true });
