@@ -179,7 +179,7 @@
           "type": "post",
           "settings": {
             "image": "shopify://shop_images/d09c25dc984d99d2389a6f571f497b60.jpg",
-            "link": ""
+            "link": "https://www.instagram.com/p/DS7OrBtDGUm/"
           }
         },
         "s2": {
@@ -220,7 +220,7 @@
       ],
       "settings": {
         "handle": "@seym_glass",
-        "heading": "Our world, <em>in glass</em>",
+        "heading": "Our world, in glass",
         "subtitle": "Follow the atelier — daily light, colour and craft from Istanbul.",
         "cta_label": "Follow on Instagram",
         "cta_link": "https://www.instagram.com/"
