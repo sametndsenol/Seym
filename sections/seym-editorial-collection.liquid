@@ -102,6 +102,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 1.2rem;
     margin-bottom: 3.6rem;
   }
   .seym-coll__sort {
@@ -124,6 +125,38 @@
     background-repeat: no-repeat;
   }
   .seym-coll__sort:focus { outline: none; border-bottom-color: #1A1A1A; }
+
+  /* Themed sort dropdown — matches the site (ivory/wine/serif) instead of the
+     browser's native select list. */
+  .scsort__label { font: 400 .7rem/1 'Inter', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: rgba(26,26,26,.5); }
+  .scsort { position: relative; }
+  .scsort__btn {
+    display: inline-flex; align-items: center; gap: .7rem; background: transparent; border: 0;
+    border-bottom: 1px solid rgba(26,26,26,.28); padding: .5rem 0;
+    font: 400 .82rem/1 'Inter', sans-serif; letter-spacing: .14em; text-transform: uppercase;
+    color: #1A1A1A; cursor: pointer; transition: border-color .25s ease, color .25s ease;
+  }
+  .scsort__btn:hover { border-bottom-color: #1A1A1A; color: var(--seym-wine, #8E2244); }
+  .scsort__chev { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; stroke-width: 1.5; transition: transform .3s ease; }
+  .scsort.is-open .scsort__chev { transform: rotate(180deg); }
+  .scsort__panel {
+    position: absolute; top: calc(100% + .9rem); right: 0; min-width: 22rem;
+    background: #fff; border: 1px solid rgba(26,26,26,.07); border-radius: 12px;
+    box-shadow: 0 30px 60px -30px rgba(40,28,24,.38), 0 10px 24px -18px rgba(0,0,0,.2);
+    padding: .6rem; list-style: none; margin: 0; z-index: 30;
+    opacity: 0; transform: translateY(-6px); pointer-events: none;
+    transition: opacity .28s cubic-bezier(.22,1,.36,1), transform .28s cubic-bezier(.22,1,.36,1);
+  }
+  .scsort.is-open .scsort__panel { opacity: 1; transform: none; pointer-events: auto; }
+  .scsort__opt {
+    font: 400 1.25rem/1 'Cormorant Garamond', serif; color: rgba(26,26,26,.72);
+    padding: .95rem 1.2rem; border-radius: 8px; cursor: pointer; white-space: nowrap;
+    transition: background .2s ease, color .2s ease;
+  }
+  .scsort__opt:hover { background: rgba(142,34,68,.06); color: #1A1A1A; }
+  .scsort__opt.is-active { color: var(--seym-wine, #8E2244); }
+  .scsort__native { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+  @media (max-width: 749px) { .scsort__panel { min-width: 18rem; } }
 
   /* --- Grid: 3-column asymmetric cascade ---
      Each row stacks three smaller cards.
@@ -440,18 +473,49 @@
       {%- endif -%}
 
       {%- if section.settings.enable_sorting -%}
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        {%- assign current_name = collection.sort_options.first.name -%}
+        {%- for option in collection.sort_options -%}{%- if option.value == sort_by -%}{%- assign current_name = option.name -%}{%- endif -%}{%- endfor -%}
         <div class="seym-coll__toolbar">
-          <form method="get" class="seym-coll__sort-form">
-            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-            <select name="sort_by" class="seym-coll__sort" onchange="this.form.submit()">
+          <form method="get" class="seym-coll__sort-form" id="SeymSortForm-{{ section.id }}">
+            <span class="scsort__label">Sort</span>
+            <div class="scsort" id="SeymSort-{{ section.id }}">
+              <button type="button" class="scsort__btn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="scsort__current">{{ current_name | escape }}</span>
+                <svg class="scsort__chev" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <ul class="scsort__panel" role="listbox">
+                {%- for option in collection.sort_options -%}
+                  <li class="scsort__opt{% if option.value == sort_by %} is-active{% endif %}" role="option" data-value="{{ option.value | escape }}"{% if option.value == sort_by %} aria-selected="true"{% endif %}>{{ option.name | escape }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+            <select name="sort_by" class="seym-coll__sort scsort__native" onchange="this.form.submit()" aria-label="Sort by">
               {%- for option in collection.sort_options -%}
-                <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>
-                  {{ option.name | escape }}
-                </option>
+                <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
               {%- endfor -%}
             </select>
           </form>
         </div>
+        <noscript><style>#SeymSort-{{ section.id }}{display:none}#SeymSortForm-{{ section.id }} .scsort__native{position:static;width:auto;height:auto;opacity:1;overflow:visible;pointer-events:auto}</style></noscript>
+        <script>
+        (function(){
+          var root=document.getElementById('SeymSort-{{ section.id }}'); if(!root) return;
+          var form=document.getElementById('SeymSortForm-{{ section.id }}');
+          var native=form && form.querySelector('.scsort__native');
+          var btn=root.querySelector('.scsort__btn');
+          btn.addEventListener('click', function(e){ e.stopPropagation(); var open=root.classList.toggle('is-open'); btn.setAttribute('aria-expanded', open?'true':'false'); });
+          root.querySelectorAll('.scsort__opt').forEach(function(opt){
+            opt.addEventListener('click', function(){
+              var val=opt.getAttribute('data-value');
+              if(native){ native.value=val; }
+              if(form){ if(typeof form.requestSubmit==='function'){ form.requestSubmit(); } else { form.submit(); } }
+            });
+          });
+          document.addEventListener('click', function(e){ if(!root.contains(e.target)){ root.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); } });
+          document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ root.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); } });
+        })();
+        </script>
       {%- endif -%}
 
       {%- if collection.products.size == 0 -%}
