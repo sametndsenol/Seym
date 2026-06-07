@@ -23,8 +23,24 @@
     font: 300 .76rem/1 'Inter',sans-serif; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin: 1.8rem 0 1rem;
   }
   #shopify-section-{{ section.id }} .sps__names { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; }
-  #shopify-section-{{ section.id }} .sps__name { font: 400 1.35rem/1.2 'Cormorant Garamond', serif; color: var(--soft); transition: color .4s var(--ease); }
+  #shopify-section-{{ section.id }} .sps__name {
+    font: 400 1.35rem/1.2 'Cormorant Garamond', serif; color: var(--soft);
+    background: none; border: 0; padding: 0 0 .2rem; cursor: pointer; position: relative;
+    transition: color .4s var(--ease);
+  }
+  #shopify-section-{{ section.id }} .sps__name::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--wine);
+    transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease);
+  }
+  #shopify-section-{{ section.id }} .sps__name:hover { color: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__name:hover::after,
+  #shopify-section-{{ section.id }} .sps__name.is-active::after { transform: scaleX(1); }
+  #shopify-section-{{ section.id }} .sps__name.is-active { color: var(--wine); }
   #shopify-section-{{ section.id }} .sps__name--award { color: var(--wine); }
+  /* clicked clipping comes to the front, straightened */
+  #shopify-section-{{ section.id }} .sps__clip--front {
+    z-index: 6 !important; box-shadow: 0 34px 70px -26px rgba(0,0,0,.5) !important;
+  }
   #shopify-section-{{ section.id }} .sps__star { color: var(--gold); }
 
   #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(34rem,42vw,46rem); }
@@ -64,10 +80,11 @@
       {%- if section.settings.eyebrow != blank -%}<p class="sps__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
       <div class="sps__names">
         {%- for block in section.blocks -%}
+          {%- assign idx = forloop.index -%}
           {%- if block.settings.kind == 'award' -%}
-            <span class="sps__name sps__name--award" {{ block.shopify_attributes }}><span class="sps__star" aria-hidden="true">&#9733;</span> {{ block.settings.name }}</span>
+            <button type="button" class="sps__name sps__name--award" data-clip="{{ idx }}" {{ block.shopify_attributes }}><span class="sps__star" aria-hidden="true">&#9733;</span> {{ block.settings.name }}</button>
           {%- else -%}
-            <span class="sps__name" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+            <button type="button" class="sps__name" data-clip="{{ idx }}" {{ block.shopify_attributes }}>{{ block.settings.name }}</button>
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -75,12 +92,26 @@
 
     <div class="sps__collage">
       {%- assign img1 = section.settings.image_1 | default: section.settings.image -%}
-      {%- if img1 != blank -%}<div class="sps__clip sps__clip--1">{{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
-      {%- if section.settings.image_2 != blank -%}<div class="sps__clip sps__clip--2">{{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
-      {%- if section.settings.image_3 != blank -%}<div class="sps__clip sps__clip--3">{{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if img1 != blank -%}<div class="sps__clip sps__clip--1" data-clip="1">{{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if section.settings.image_2 != blank -%}<div class="sps__clip sps__clip--2" data-clip="2">{{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if section.settings.image_3 != blank -%}<div class="sps__clip sps__clip--3" data-clip="3">{{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
     </div>
   </div>
 </section>
+
+<script>
+(function(){
+  var sec = document.getElementById('shopify-section-{{ section.id }}');
+  if(!sec) return;
+  var names = sec.querySelectorAll('.sps__name');
+  var clips = sec.querySelectorAll('.sps__clip');
+  function bringFront(n){
+    clips.forEach(function(c){ c.classList.toggle('sps__clip--front', c.getAttribute('data-clip') === n); });
+    names.forEach(function(b){ b.classList.toggle('is-active', b.getAttribute('data-clip') === n); });
+  }
+  names.forEach(function(b){ b.addEventListener('click', function(){ bringFront(b.getAttribute('data-clip')); }); });
+})();
+</script>
 
 {% schema %}
 {
