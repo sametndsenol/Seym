@@ -107,6 +107,9 @@
   /* Asymmetric stagger + aspect variation, mirrors the product grid */
   .seym-cg__card:nth-child(3n + 2) { margin-top: 6.4rem; aspect-ratio: 1 / 1; }
   .seym-cg__card:nth-child(3n + 3) { margin-top: 3.2rem; aspect-ratio: 3 / 4; }
+  /* Uniform, aligned grid — remove the staggered offsets + mixed ratios so every
+     collection sits in the same row at the same 4/5 size (all breakpoints). */
+  .seym-cg__card { margin-top: 0 !important; aspect-ratio: 4 / 5 !important; }
 
   .seym-cg__card img {
     position: absolute;
