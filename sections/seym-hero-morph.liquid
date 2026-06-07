@@ -145,7 +145,7 @@
     <article class="shm__card" id="shmC-{{ section.id }}" style="--glow: {{ center.settings.glow | default: 'rgba(28,150,131,.9)' }};">
       <div class="shm__clip">
         {%- if section.settings.video_asset != blank -%}
-          <video autoplay muted loop playsinline preload="auto"{% if center.settings.image != blank %} poster="{{ center.settings.image | image_url: width: 1600 }}"{% endif %}>
+          <video id="shmVid-{{ section.id }}" autoplay muted playsinline preload="auto"{% if center.settings.image != blank %} poster="{{ center.settings.image | image_url: width: 1600 }}"{% endif %}>
             <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
           </video>
         {%- elsif center.settings.image != blank -%}
@@ -239,6 +239,42 @@
   window.addEventListener('resize',function(){measureHeader();readT();render(cur)},{passive:true});
   window.addEventListener('load',function(){measureHeader();readT();render(cur)});
   measureHeader(); readT(); cur=target; render(cur);
+})();
+</script>
+
+<script>
+(function(){
+  /* Hero video: ping-pong — play forward, then REWIND (reverse) smoothly back to
+     the start, then forward again, instead of a hard loop restart. */
+  var v = document.getElementById('shmVid-{{ section.id }}');
+  if(!v) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ v.loop = true; return; }
+  v.loop = false;
+  var dir = 1, last = null, raf = null;
+  function rev(ts){
+    if(dir !== -1){ raf = null; last = null; return; }
+    if(last === null){ last = ts; raf = requestAnimationFrame(rev); return; }
+    var t = v.currentTime - (ts - last) / 1000;
+    last = ts;
+    if(t <= 0.02){
+      v.currentTime = 0; dir = 1; last = null; raf = null;
+      var p = v.play(); if(p && p.catch){ p.catch(function(){}); }
+      return;
+    }
+    v.currentTime = t;
+    raf = requestAnimationFrame(rev);
+  }
+  function startRev(){
+    if(dir === -1) return;
+    dir = -1; last = null;
+    try { v.pause(); } catch(e){}
+    if(!raf) raf = requestAnimationFrame(rev);
+  }
+  v.addEventListener('ended', startRev);
+  v.addEventListener('timeupdate', function(){
+    if(dir === 1 && v.duration && v.currentTime >= v.duration - 0.12){ startRev(); }
+  });
+  var pp = v.play(); if(pp && pp.catch){ pp.catch(function(){}); }
 })();
 </script>
 
