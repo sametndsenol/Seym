@@ -1,49 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "seym-contact",
-      "blocks": {
-        "room_mo_bosphorus": {
-          "type": "showroom",
-          "settings": {
-            "name": "Mandarin Oriental Bosphorus, İstanbul",
-            "address": "Kuruçeşme, Muallim Naci Cd. No:62, 34345 Beşiktaş / İstanbul",
-            "phone": "(0212) 349 88 88"
-          }
-        },
-        "room_mo_bodrum": {
-          "type": "showroom",
-          "settings": {
-            "name": "Mandarin Oriental, Bodrum",
-            "address": "Gölköy, 314 Sokak No.10, 48483 Muğla",
-            "phone": "(0252) 311 18 88"
-          }
-        },
-        "room_jw_marriott": {
-          "type": "showroom",
-          "settings": {
-            "name": "JW Marriott Hotel İstanbul Marmara Sea",
-            "address": "Ataköy 2-5-6. Kısım, Kısım Mah. Rauf Orbay Cd. 2/1 L B, 34158 Bakırköy / İstanbul",
-            "phone": "(0212) 413 01 01"
-          }
-        }
-      },
-      "block_order": ["room_mo_bosphorus", "room_mo_bodrum", "room_jw_marriott"],
-      "settings": {
-        "eyebrow": "Contact",
-        "title": "Get in touch with our <em>atelier</em>.",
-        "lead": "Whether you would like to see our pieces in person, commission something bespoke, or simply say hello — write to us. We are a small studio, and every message is read personally.",
-        "rooms_tag": "Visit us",
-        "atelier_name": "The Atelier — Çengelköy",
-        "atelier_address": "Çengelköy Mah. Boğaziçi Cad. No:27, Üsküdar / İstanbul",
-        "atelier_hours": "Visits 10:00–18:00, Monday–Friday, by appointment via e-mail.",
-        "rooms_heading": "Where to <em>discover</em> our designs.",
-        "direct_label": "Direct",
-        "direct_email": "info@seym.com.tr",
-        "direct_phone": "",
-        "padding_top": 80,
-        "padding_bottom": 96
-      }
+      "type": "seym-page-router",
+      "settings": {}
     }
   },
   "order": ["main"]

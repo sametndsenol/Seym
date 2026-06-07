@@ -11,6 +11,7 @@
   assign is_catalog = false
   assign is_press = false
   assign is_achievements = false
+  assign is_contact = false
 
   if h contains 'about' or h contains 'hakkimizda' or h contains 'hakkımızda' or h == 'hakkimiz' or h == 'hakkımız'
     assign is_hub = true
@@ -20,6 +21,8 @@
     assign is_press = true
   elsif h == 'our-achievements' or h contains 'basari'
     assign is_achievements = true
+  elsif h == 'contact' or h contains 'iletisim' or h contains 'iletişim'
+    assign is_contact = true
   endif
 -%}
 
@@ -31,6 +34,8 @@
   {%- render 'seym-press-body' -%}
 {%- elsif is_achievements -%}
   {%- render 'seym-achievements-body' -%}
+{%- elsif is_contact -%}
+  {%- render 'seym-contact-body' -%}
 {%- else -%}
   {%- render 'seym-page-body' -%}
 {%- endif -%}

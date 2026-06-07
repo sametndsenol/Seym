@@ -1,0 +1,134 @@
+{%- comment -%}
+  Seym Contact body — clean, premium contact rendered by the page router so the
+  contact page never dumps the raw page.content (image + repeated address text).
+  Self-contained: hero + atelier/showrooms column + contact form.
+{%- endcomment -%}
+
+<style>
+  .scb { background: var(--seym-ivory, #F5F1EA); color: var(--seym-ink, #1A1A1A); padding: 64px 0 96px; }
+  .scb__wrap { max-width: 132rem; margin: 0 auto; padding: 0 4rem; }
+  .scb__hero { display: grid; grid-template-columns: 7fr 5fr; gap: 6rem; align-items: end; padding-bottom: 3.2rem; margin-bottom: 6.4rem; border-bottom: 1px solid rgba(26,26,26,0.1); }
+  .scb__eyebrow { display: inline-block; position: relative; font: 400 0.74rem/1 'Inter', sans-serif; letter-spacing: 0.36em; text-transform: uppercase; color: var(--seym-wine, #8E2244); margin-bottom: 1.6rem; padding-left: 2.6rem; }
+  .scb__eyebrow::before { content: ''; position: absolute; left: 0; top: 50%; width: 2rem; height: 1px; background: var(--seym-wine, #8E2244); }
+  .scb__title { font: 300 clamp(3.6rem, 5.4vw, 7.2rem)/1.02 'Cormorant Garamond', serif; letter-spacing: -0.018em; margin: 0; color: #1A1A1A; }
+  .scb__title em { font-style: italic; color: var(--seym-wine, #8E2244); }
+  .scb__lead { font: 400 clamp(1.7rem, 1.7vw, 2.05rem)/1.55 'Cormorant Garamond', serif; font-style: italic; color: rgba(26,26,26,0.78); margin: 0; }
+
+  .scb__grid { display: grid; grid-template-columns: 5fr 7fr; gap: 6rem; align-items: start; }
+  .scb__tag { display: inline-block; font: 400 0.7rem/1 'Inter', sans-serif; letter-spacing: 0.34em; text-transform: uppercase; color: var(--seym-wine, #8E2244); margin-bottom: 1.6rem; }
+  .scb__heading { font: 300 clamp(2.4rem, 3vw, 3.6rem)/1.08 'Cormorant Garamond', serif; letter-spacing: -0.012em; color: #1A1A1A; margin: 0 0 2.8rem; }
+  .scb__heading em { font-style: italic; color: var(--seym-wine, #8E2244); }
+
+  .scb__atelier { margin: 0 0 2.6rem; padding-bottom: 2.4rem; border-bottom: 1px solid rgba(26,26,26,0.12); }
+  .scb__atelier-name { display: block; font: 400 2.1rem/1.2 'Cormorant Garamond', serif; color: #1A1A1A; margin: 0 0 0.8rem; }
+  .scb__line { display: block; font: 300 1.35rem/1.7 'Inter', sans-serif; color: rgba(26,26,26,0.78); text-decoration: none; }
+  a.scb__line { width: fit-content; border-bottom: 1px solid transparent; transition: color 220ms ease, border-color 220ms ease; }
+  a.scb__line:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
+  .scb__hours { margin-top: 0.9rem; font-style: italic; color: var(--seym-wine, #8E2244); }
+  .scb__subtag { font: 400 0.66rem/1 'Inter', sans-serif; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(26,26,26,0.45); margin: 0 0 1.6rem; }
+  .scb__rooms { display: flex; flex-direction: column; gap: 2.2rem; }
+  .scb__room { padding-bottom: 2rem; border-bottom: 1px solid rgba(26,26,26,0.08); }
+  .scb__room:last-child { border-bottom: 0; padding-bottom: 0; }
+  .scb__room-name { display: block; font: 400 1.7rem/1.25 'Cormorant Garamond', serif; color: #1A1A1A; margin: 0 0 0.5rem; }
+
+  .scb__form-card { background: #FFFFFF; padding: 4.4rem 4rem; border: 1px solid rgba(26,26,26,0.06); border-radius: 18px; box-shadow: 0 50px 90px -55px rgba(40,28,24,0.35), 0 16px 40px -34px rgba(0,0,0,0.16); }
+  .scb__note { margin: 0 0 2.4rem; padding: 1.6rem 1.8rem; font: 300 1.3rem/1.55 'Inter', sans-serif; border-left: 2px solid var(--seym-wine, #8E2244); background: rgba(142,34,68,0.05); color: #1A1A1A; }
+  .scb__row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .scb__field { margin-bottom: 1.8rem; }
+  .scb__label { display: block; font: 400 0.7rem/1 'Inter', sans-serif; letter-spacing: 0.32em; text-transform: uppercase; color: var(--seym-wine, #8E2244); margin-bottom: 0.8rem; }
+  .scb__input, .scb__textarea { display: block; width: 100%; background: transparent; border: 0; border-bottom: 1px solid rgba(26,26,26,0.25); padding: 0.8rem 0 1rem; font: 300 1.45rem/1.5 'Inter', sans-serif; color: #1A1A1A; border-radius: 0; -webkit-appearance: none; appearance: none; transition: border-color 220ms ease; }
+  .scb__textarea { min-height: 14rem; padding-top: 1.2rem; resize: vertical; }
+  .scb__input:focus, .scb__textarea:focus { outline: 0; border-bottom-color: var(--seym-wine, #8E2244); }
+  .scb__input::placeholder, .scb__textarea::placeholder { color: rgba(26,26,26,0.35); font-style: italic; }
+  .scb__submit { display: inline-block; margin-top: 1.2rem; background: var(--seym-wine, #8E2244); color: var(--seym-ivory, #F5F1EA); border: 1px solid var(--seym-wine, #8E2244); font: 400 0.78rem/1 'Inter', sans-serif; letter-spacing: 0.32em; text-transform: uppercase; padding: 1.3rem 2.6rem; cursor: pointer; transition: background 220ms ease, color 220ms ease, transform 220ms ease, box-shadow 220ms ease; }
+  .scb__submit:hover { background: transparent; color: var(--seym-wine, #8E2244); transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(142,34,68,0.6); }
+
+  @media (max-width: 989px) {
+    .scb__wrap { padding: 0 2.4rem; }
+    .scb__hero, .scb__grid { grid-template-columns: 1fr; gap: 2.8rem; }
+    .scb__hero { margin-bottom: 4rem; }
+    .scb__form-card { padding: 3.2rem 2.4rem; }
+    .scb__row { grid-template-columns: 1fr; gap: 0; }
+  }
+  @media (max-width: 749px) {
+    .scb__wrap { padding: 0 1.8rem; }
+    .scb__input, .scb__textarea { font-size: 1.6rem; }
+  }
+</style>
+
+<section class="scb">
+  <div class="scb__wrap">
+    <header class="scb__hero">
+      <div>
+        <span class="scb__eyebrow">Contact</span>
+        <h1 class="scb__title">Get in touch with our <em>atelier</em>.</h1>
+      </div>
+      <p class="scb__lead">Whether you would like to see our pieces in person, commission something bespoke, or simply say hello — write to us. We are a small studio, and every message is read personally.</p>
+    </header>
+
+    <div class="scb__grid">
+      <aside>
+        <span class="scb__tag">Visit us</span>
+        <h2 class="scb__heading">Where to <em>discover</em> our designs.</h2>
+
+        <div class="scb__atelier">
+          <span class="scb__atelier-name">The Atelier — Çengelköy</span>
+          <span class="scb__line">Çengelköy Mah. Boğaziçi Cad. No:27, Üsküdar / İstanbul</span>
+          <a class="scb__line" href="mailto:info@seym.com.tr">info@seym.com.tr</a>
+          <span class="scb__line scb__hours">Visits 10:00–18:00, Monday–Friday, by appointment via e-mail.</span>
+        </div>
+
+        <p class="scb__subtag">Also on display at</p>
+        <div class="scb__rooms">
+          <div class="scb__room">
+            <span class="scb__room-name">Mandarin Oriental Bosphorus, İstanbul</span>
+            <span class="scb__line">Kuruçeşme, Muallim Naci Cd. No:62, 34345 Beşiktaş / İstanbul</span>
+            <a class="scb__line" href="tel:02123498888">(0212) 349 88 88</a>
+          </div>
+          <div class="scb__room">
+            <span class="scb__room-name">Mandarin Oriental, Bodrum</span>
+            <span class="scb__line">Gölköy, 314 Sokak No.10, 48483 Muğla</span>
+            <a class="scb__line" href="tel:02523111888">(0252) 311 18 88</a>
+          </div>
+          <div class="scb__room">
+            <span class="scb__room-name">JW Marriott Hotel İstanbul Marmara Sea</span>
+            <span class="scb__line">Ataköy 2-5-6. Kısım, Rauf Orbay Cd. 2/1 L B, 34158 Bakırköy / İstanbul</span>
+            <a class="scb__line" href="tel:02124130101">(0212) 413 01 01</a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="scb__form-card">
+        {%- form 'contact', id: 'SeymContactForm' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="scb__note" tabindex="-1" autofocus>{{ 'templates.contact.form.post_success' | t }}</p>
+          {%- elsif form.errors -%}
+            <div class="scb__note" role="alert" tabindex="-1" autofocus>
+              <strong>{{ 'templates.contact.form.error_heading' | t }}</strong>
+            </div>
+          {%- endif -%}
+
+          <div class="scb__row">
+            <div class="scb__field">
+              <label class="scb__label" for="ScbName">{{ 'templates.contact.form.name' | t }}</label>
+              <input class="scb__input" type="text" id="ScbName" name="contact[{{ 'templates.contact.form.name' | t }}]" autocomplete="name" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            </div>
+            <div class="scb__field">
+              <label class="scb__label" for="ScbEmail">{{ 'templates.contact.form.email' | t }} *</label>
+              <input class="scb__input" type="email" id="ScbEmail" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" aria-required="true" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+            </div>
+          </div>
+          <div class="scb__field">
+            <label class="scb__label" for="ScbPhone">{{ 'templates.contact.form.phone' | t }}</label>
+            <input class="scb__input" type="tel" id="ScbPhone" name="contact[{{ 'templates.contact.form.phone' | t }}]" autocomplete="tel" pattern="[0-9\-\+\s\(\)]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+          </div>
+          <div class="scb__field">
+            <label class="scb__label" for="ScbBody">{{ 'templates.contact.form.comment' | t }}</label>
+            <textarea class="scb__textarea" id="ScbBody" name="contact[{{ 'templates.contact.form.comment' | t }}]" rows="6">{{ form.body }}</textarea>
+          </div>
+          <button type="submit" class="scb__submit">{{ 'templates.contact.form.send' | t }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
