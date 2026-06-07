@@ -8,12 +8,21 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
 <style>
-  #shopify-section-{{ section.id }} .sbs { background: #ffffff; padding: clamp(6rem,10vh,9rem) 0; }
-  /* Match /collections/all exactly: white card surfaces so the product photos
-     blend seamlessly instead of reading as cream/white boxes on the section. */
-  #shopify-section-{{ section.id }} .sbs .card.color-background-1,
-  #shopify-section-{{ section.id }} .sbs .card.color-background-1 .card__content { background: transparent !important; --color-background: 255,255,255; }
+  #shopify-section-{{ section.id }} .sbs { background: var(--seym-ivory-2, #FAF7F2); padding: clamp(6rem,10vh,9rem) 0; }
+  /* The product MEDIA backdrop is --seym-ivory-2 (set !important in brand css),
+     so the section + card fills use the SAME tone — nothing reads as a box.
+     This is the seamless /collections/all look. */
+  #shopify-section-{{ section.id }} .sbs .card,
+  #shopify-section-{{ section.id }} .sbs .card .card__content { background: transparent !important; }
   #shopify-section-{{ section.id }} .sbs .card__inner { border: 0; }
+  /* Signature wine ("pembe") hover, like /collections/all: the media lifts with a
+     soft wine glow. The track is padded so the scroller doesn't clip the glow. */
+  #shopify-section-{{ section.id }} .sbs .card-wrapper { transition: transform .55s cubic-bezier(.22,1,.36,1); }
+  #shopify-section-{{ section.id }} .sbs .card-wrapper:hover { transform: translateY(-5px); }
+  #shopify-section-{{ section.id }} .sbs .card__media { transition: box-shadow .55s cubic-bezier(.22,1,.36,1); }
+  #shopify-section-{{ section.id }} .sbs .card-wrapper:hover .card__media {
+    box-shadow: 0 22px 55px -22px rgba(142,34,68,.5), 0 8px 22px -14px rgba(142,34,68,.35);
+  }
   #shopify-section-{{ section.id }} .sbs__wrap { max-width: 156rem; margin: 0 auto; padding: 0 4.8rem; }
   #shopify-section-{{ section.id }} .sbs__hd {
     display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
@@ -42,7 +51,7 @@
   #shopify-section-{{ section.id }} .sbs__track {
     --gap: 2.4rem;
     display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory;
-    scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: .5rem;
+    scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding: 1.6rem 0 3.4rem;
     scrollbar-width: none;
   }
   #shopify-section-{{ section.id }} .sbs__track::-webkit-scrollbar { display: none; }
