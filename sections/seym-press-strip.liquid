@@ -1,8 +1,9 @@
 {%- comment -%}
-  Seym Press — editorial "As seen in print" collage. Oversized serif headline
-  + press/award names (blocks, kind = press|award) on one side; a scrapbook of
-  tilted clippings on the other. Sits on a warm paper band; pairs with the
-  gift banner directly below to form one press+gift moment.
+  Seym Press — editorial "As seen in print" collage. Oversized serif headline +
+  a clickable index of press/award names (blocks) on one side; a scrapbook of
+  tilted clippings that FILLS its column (no dead centre) on the other. Clicking
+  a name brings its matching clipping forward; each clipping can carry its own
+  link. Sits on a warm paper band; pairs with the gift banner directly below.
 {%- endcomment -%}
 
 <style>
@@ -13,57 +14,77 @@
   #shopify-section-{{ section.id }} .sps { background: var(--seym-warm,#f3efe8); padding: clamp(6rem,10vh,10rem) 0 clamp(2rem,4vh,3rem); }
   #shopify-section-{{ section.id }} .sps__wrap {
     max-width: 150rem; margin: 0 auto; padding: 0 4.8rem;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    display: grid; grid-template-columns: 0.82fr 1.18fr; gap: clamp(2rem,4vw,4.5rem); align-items: center;
   }
   #shopify-section-{{ section.id }} .sps__h {
-    font: 500 clamp(4rem,8vw,9rem)/.82 'Cormorant Garamond', serif; letter-spacing: -.01em; color: var(--ink); margin: 0;
+    font: 500 clamp(3.6rem,7.4vw,8.2rem)/.84 'Cormorant Garamond', serif; letter-spacing: -.01em; color: var(--ink); margin: 0;
   }
   #shopify-section-{{ section.id }} .sps__h em { font-style: italic; color: var(--wine); }
   #shopify-section-{{ section.id }} .sps__ey {
-    font: 300 .76rem/1 'Inter',sans-serif; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin: 1.8rem 0 1rem;
+    font: 300 .76rem/1 'Inter',sans-serif; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin: 2rem 0 1.1rem;
   }
-  #shopify-section-{{ section.id }} .sps__names { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; }
+
+  /* Clickable index of names */
+  #shopify-section-{{ section.id }} .sps__names { display: flex; flex-direction: column; gap: .55rem; align-items: flex-start; }
   #shopify-section-{{ section.id }} .sps__name {
-    font: 400 1.35rem/1.2 'Cormorant Garamond', serif; color: var(--soft);
-    background: none; border: 0; padding: 0 0 .2rem; cursor: pointer; position: relative;
+    display: inline-flex; align-items: baseline; gap: .9rem;
+    background: none; border: 0; padding: .25rem 0; cursor: pointer; position: relative;
+  }
+  #shopify-section-{{ section.id }} .sps__idx {
+    font: 400 .72rem/1 'Inter',sans-serif; letter-spacing: .18em; color: var(--soft);
+    transition: color .4s var(--ease); min-width: 1.6em;
+  }
+  #shopify-section-{{ section.id }} .sps__nm {
+    font: 400 1.7rem/1.15 'Cormorant Garamond', serif; color: var(--ink); position: relative;
     transition: color .4s var(--ease);
   }
-  #shopify-section-{{ section.id }} .sps__name::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--wine);
-    transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease);
+  /* faint persistent underline = "this is clickable"; fills + reddens on hover/active */
+  #shopify-section-{{ section.id }} .sps__nm::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px;
+    background: currentColor; opacity: .25; transform-origin: left;
+    transition: opacity .4s var(--ease), height .4s var(--ease), background .4s var(--ease);
   }
-  #shopify-section-{{ section.id }} .sps__name:hover { color: var(--wine); }
-  #shopify-section-{{ section.id }} .sps__name:hover::after,
-  #shopify-section-{{ section.id }} .sps__name.is-active::after { transform: scaleX(1); }
-  #shopify-section-{{ section.id }} .sps__name.is-active { color: var(--wine); }
-  #shopify-section-{{ section.id }} .sps__name--award { color: var(--wine); }
-  /* clicked clipping comes to the front, straightened */
-  #shopify-section-{{ section.id }} .sps__clip--front {
-    z-index: 6 !important; box-shadow: 0 34px 70px -26px rgba(0,0,0,.5) !important;
+  #shopify-section-{{ section.id }} .sps__name:hover .sps__nm,
+  #shopify-section-{{ section.id }} .sps__name.is-active .sps__nm,
+  #shopify-section-{{ section.id }} .sps__name:hover .sps__idx,
+  #shopify-section-{{ section.id }} .sps__name.is-active .sps__idx { color: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__name:hover .sps__nm::after,
+  #shopify-section-{{ section.id }} .sps__name.is-active .sps__nm::after { opacity: 1; height: 1.5px; background: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__name--award .sps__nm { color: var(--wine); }
+  #shopify-section-{{ section.id }} .sps__star { color: var(--gold); font-size: .82em; }
+  #shopify-section-{{ section.id }} .sps__hint {
+    font: 300 .72rem/1.5 'Inter',sans-serif; letter-spacing: .06em; color: var(--soft); margin: 1.5rem 0 0; max-width: 26rem;
   }
-  #shopify-section-{{ section.id }} .sps__star { color: var(--gold); }
 
-  #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(34rem,42vw,46rem); }
+  /* Collage that fills the whole right column — no empty middle */
+  #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(32rem,38vw,44rem); }
   #shopify-section-{{ section.id }} .sps__clip {
     position: absolute; border-radius: 3px; overflow: hidden; border: 7px solid #fff;
-    box-shadow: 0 26px 54px -24px rgba(0,0,0,.42); transition: transform .7s var(--ease);
+    box-shadow: 0 26px 54px -24px rgba(0,0,0,.42); transition: transform .7s var(--ease), box-shadow .7s var(--ease);
   }
   #shopify-section-{{ section.id }} .sps__clip img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #shopify-section-{{ section.id }} .sps__clip--1 { width: 47%; aspect-ratio: 4/5; top: 0; left: 6%; transform: rotate(-6deg); }
-  #shopify-section-{{ section.id }} .sps__clip--2 { width: 44%; aspect-ratio: 4/5; top: 16%; right: 8%; transform: rotate(5deg); z-index: 2; }
-  #shopify-section-{{ section.id }} .sps__clip--3 { width: 41%; aspect-ratio: 4/5; bottom: 0; left: 32%; transform: rotate(2deg); }
-  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--1 { transform: rotate(-8deg) translateY(-6px); }
-  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--2 { transform: rotate(6deg) translateY(-6px); }
-  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--3 { transform: rotate(3deg) translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__cliplink { position: absolute; inset: 0; z-index: 4; }
+  #shopify-section-{{ section.id }} .sps__clip--1 { width: 43%; aspect-ratio: 4/5; top: 6%;  left: 0;   transform: rotate(-5deg); z-index: 1; }
+  #shopify-section-{{ section.id }} .sps__clip--2 { width: 41%; aspect-ratio: 4/5; top: 0;   left: 30%; transform: rotate(3deg);  z-index: 3; }
+  #shopify-section-{{ section.id }} .sps__clip--3 { width: 43%; aspect-ratio: 4/5; top: 13%; right: 0;  transform: rotate(6deg);  z-index: 2; }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--1 { transform: rotate(-7deg) translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--2 { transform: rotate(4deg)  translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--3 { transform: rotate(7deg)  translateY(-6px); }
+  /* clicked clipping comes to the front */
+  #shopify-section-{{ section.id }} .sps__clip--front {
+    z-index: 6 !important; box-shadow: 0 36px 74px -26px rgba(0,0,0,.52) !important;
+  }
 
   @media (max-width: 989px) {
-    #shopify-section-{{ section.id }} .sps__wrap { grid-template-columns: 1fr; gap: 2rem; }
-    #shopify-section-{{ section.id }} .sps__collage { height: 40rem; order: 2; }
+    #shopify-section-{{ section.id }} .sps__wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 38rem; order: 2; }
+    #shopify-section-{{ section.id }} .sps__hint { display: none; }
   }
   @media (max-width: 749px) {
     #shopify-section-{{ section.id }} .sps { padding: clamp(4rem,8vh,5.5rem) 0 2rem; }
     #shopify-section-{{ section.id }} .sps__wrap { padding: 0 2rem; }
-    #shopify-section-{{ section.id }} .sps__collage { height: 32rem; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 30rem; }
+    #shopify-section-{{ section.id }} .sps__nm { font-size: 1.5rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ section.id }} .sps__clip { transition: none; }
@@ -81,20 +102,35 @@
       <div class="sps__names">
         {%- for block in section.blocks -%}
           {%- assign idx = forloop.index -%}
-          {%- if block.settings.kind == 'award' -%}
-            <button type="button" class="sps__name sps__name--award" data-clip="{{ idx }}" {{ block.shopify_attributes }}><span class="sps__star" aria-hidden="true">&#9733;</span> {{ block.settings.name }}</button>
-          {%- else -%}
-            <button type="button" class="sps__name" data-clip="{{ idx }}" {{ block.shopify_attributes }}>{{ block.settings.name }}</button>
-          {%- endif -%}
+          <button type="button" class="sps__name{% if block.settings.kind == 'award' %} sps__name--award{% endif %}" data-clip="{{ idx }}" {{ block.shopify_attributes }}>
+            <span class="sps__idx">0{{ idx }}</span>
+            <span class="sps__nm">{% if block.settings.kind == 'award' %}<span class="sps__star" aria-hidden="true">&#9733;</span> {% endif %}{{ block.settings.name }}</span>
+          </button>
         {%- endfor -%}
       </div>
+      {%- if section.settings.hint != blank -%}<p class="sps__hint">{{ section.settings.hint }}</p>{%- endif -%}
     </div>
 
     <div class="sps__collage">
       {%- assign img1 = section.settings.image_1 | default: section.settings.image -%}
-      {%- if img1 != blank -%}<div class="sps__clip sps__clip--1" data-clip="1">{{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
-      {%- if section.settings.image_2 != blank -%}<div class="sps__clip sps__clip--2" data-clip="2">{{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
-      {%- if section.settings.image_3 != blank -%}<div class="sps__clip sps__clip--3" data-clip="3">{{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}</div>{%- endif -%}
+      {%- if img1 != blank -%}
+        <div class="sps__clip sps__clip--1" data-clip="1">
+          {%- if section.settings.link_1 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_1 }}" aria-label="View feature"></a>{%- endif -%}
+          {{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.image_2 != blank -%}
+        <div class="sps__clip sps__clip--2" data-clip="2">
+          {%- if section.settings.link_2 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_2 }}" aria-label="View feature"></a>{%- endif -%}
+          {{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.image_3 != blank -%}
+        <div class="sps__clip sps__clip--3" data-clip="3">
+          {%- if section.settings.link_3 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_3 }}" aria-label="View feature"></a>{%- endif -%}
+          {{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -121,9 +157,14 @@
     { "type": "text", "id": "heading_1", "label": "Heading line 1", "default": "As seen" },
     { "type": "text", "id": "heading_2", "label": "Heading line 2 (italic)", "default": "in print." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "As featured in" },
+    { "type": "text", "id": "hint", "label": "Hint under names", "default": "Select a title to bring its feature forward." },
+    { "type": "header", "content": "Clippings (each can link)" },
     { "type": "image_picker", "id": "image_1", "label": "Clipping 1" },
+    { "type": "url", "id": "link_1", "label": "Clipping 1 link" },
     { "type": "image_picker", "id": "image_2", "label": "Clipping 2" },
+    { "type": "url", "id": "link_2", "label": "Clipping 2 link" },
     { "type": "image_picker", "id": "image_3", "label": "Clipping 3" },
+    { "type": "url", "id": "link_3", "label": "Clipping 3 link" },
     { "type": "image_picker", "id": "image", "label": "(legacy) Feature image" }
   ],
   "blocks": [

@@ -15,10 +15,10 @@
   #SeymHM-{{ section.id }}.shm { height: 190vh; position: relative; background: var(--seym-paper,#fcfbf9); }
   #SeymHM-{{ section.id }} .shm__stage {
     position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; gap: 0; background: #0b0b0b;
+    display: flex; align-items: center; justify-content: center; gap: 0; background: var(--seym-paper,#fcfbf9);
   }
   #SeymHM-{{ section.id }} .shm__card {
-    position: relative; flex: 0 0 auto; background: #0b0b0b; overflow: visible;
+    position: relative; flex: 0 0 auto; background: var(--seym-warm,#f3efe8); overflow: visible;
     will-change: width, height, transform;
   }
   #SeymHM-{{ section.id }} .shm__card::before {
@@ -63,6 +63,10 @@
     font: 400 1.9rem/1.1 'Cormorant Garamond',serif; margin: 0 0 .8rem; color: #fff;
   }
   #SeymHM-{{ section.id }} .shm__cap--c .shm__name { font-weight: 300; font-size: 2.4rem; letter-spacing: .1em; margin: 0; }
+  #SeymHM-{{ section.id }} .shm__cap-logo {
+    display: block; height: clamp(1.7rem, 2.1vw, 2.3rem); width: auto; margin: .2rem auto 0;
+    filter: brightness(0) invert(1) drop-shadow(0 1px 10px rgba(0,0,0,.45));
+  }
   #SeymHM-{{ section.id }} .shm__cap .shm__cta {
     font: 400 .62rem/1 'Inter',sans-serif; letter-spacing: .3em; text-transform: uppercase; color: #fff;
     border-bottom: 1px solid rgba(255,255,255,.55); padding-bottom: .3rem; display: inline-block;
@@ -81,7 +85,7 @@
     font: 300 clamp(3.4rem,8vw,8rem)/.9 'Cormorant Garamond',serif; letter-spacing: .14em; margin: 0; color: #fff;
   }
   #SeymHM-{{ section.id }} .shm__hero-logo {
-    display: block; height: clamp(6rem, 11vw, 12rem); width: auto; margin: 0 auto;
+    display: block; height: clamp(5rem, 9vw, 10rem); width: auto; margin: 0 auto;
     filter: brightness(0) invert(1) drop-shadow(0 2px 18px rgba(0,0,0,.45));
   }
   #SeymHM-{{ section.id }} .shm__hero-rule { display: block; width: 1px; height: 50px; background: rgba(255,255,255,.5); margin: 1.8rem auto; }
@@ -159,7 +163,7 @@
 
       <div class="shm__cap shm__cap--c" id="shmCapC-{{ section.id }}">
         {%- if center.settings.eyebrow != blank -%}<span class="shm__ey">{{ center.settings.eyebrow }}</span>{%- endif -%}
-        {%- if center.settings.title != blank -%}<h2 class="shm__name">{{ center.settings.title }}</h2>{%- endif -%}
+        <img class="shm__cap-logo" src="{{ 'seym-logo.png' | asset_url }}" alt="{{ center.settings.title | default: 'SEYM' | escape }}" loading="lazy">
       </div>
     </article>
 
@@ -190,6 +194,8 @@
   var hero=document.getElementById('shmHero-'+sid), cue=document.getElementById('shmCue-'+sid), cScrim=document.getElementById('shmCScrim-'+sid), topScrim=document.getElementById('shmTop-'+sid);
   var capL=document.getElementById('shmCapL-'+sid), capC=document.getElementById('shmCapC-'+sid), capR=document.getElementById('shmCapR-'+sid);
   if(!shm||!cC) return;
+  var headerH=150;
+  function measureHeader(){var hw=document.querySelector('.seym-header-wrap')||document.querySelector('.seym-hd'); if(hw){var h=hw.getBoundingClientRect().height; if(h>0) headerH=Math.round(h);}}
   function lerp(a,b,t){return a+(b-a)*t}
   function clamp(v){return v<0?0:v>1?1:v}
   function seg(p,a,b){return clamp((p-a)/(b-a))}
@@ -198,9 +204,9 @@
 
   function render(p){
     var vw=window.innerWidth, vh=window.innerHeight, e=ease(p);
-    var marg=lerp(0,6,e), gap=lerp(0,8,e), rad=lerp(0,14,e);
+    var marg=lerp(0,6,e), gap=lerp(0,8,e), rad=lerp(0,22,e);
     /* leave breathing room above (clear of the fixed header) + below */
-    var padTop=lerp(0,96,e), padBot=lerp(0,26,e);
+    var padTop=lerp(0,headerH+22,e), padBot=lerp(0,30,e);
     var availH=vh-padTop-padBot;
     var finalW=Math.min((vw-2*marg-2*gap)/3, (availH*0.98)*0.8);
     var sideGrow=ease(seg(p,0.12,0.92));
@@ -213,6 +219,8 @@
     cL.style.width=sideW+'px'; cR.style.width=sideW+'px'; cL.style.height=cardH+'px'; cR.style.height=cardH+'px';
     cL.style.opacity=sideGrow; cR.style.opacity=sideGrow;
     clipR(cC,rad); clipR(cL,rad); clipR(cR,rad);
+    var sh=e*e, shadow='0 '+(36*sh).toFixed(1)+'px '+(82*sh).toFixed(1)+'px -'+(48*sh).toFixed(0)+'px rgba(40,28,24,'+(0.32*sh).toFixed(3)+')';
+    cC.style.boxShadow=shadow; cL.style.boxShadow=shadow; cR.style.boxShadow=shadow;
     var rec=Math.sin(clamp(p/0.7)*Math.PI)*0.015; cC.style.transform='scale('+(1-rec)+')';
     var hf=ease(seg(p,0,0.26)); if(hero){hero.style.opacity=1-hf; hero.style.transform='translateY('+(-30*hf)+'px)';}
     if(cue) cue.style.opacity=1-ease(seg(p,0,0.12));
@@ -220,16 +228,15 @@
     if(cScrim) cScrim.style.opacity=lerp(.2,.58,e);
     if(capC) capC.style.opacity=ease(seg(p,0.68,0.95));
     var co=ease(seg(p,0.74,1)); if(capL)capL.style.opacity=co; if(capR)capR.style.opacity=co;
-    var bg=Math.round(lerp(11,252,ease(seg(p,0.42,0.9))));
-    stage.style.background='rgb('+bg+','+bg+','+(bg-3)+')';
   }
   var target=0,cur=0,run=false;
   function readT(){var s=shm.offsetHeight-window.innerHeight; target=s<=0?0:clamp(-shm.getBoundingClientRect().top/s);}
   function tick(){var d=target-cur; if(Math.abs(d)<0.0005){cur=target;render(cur);run=false;return;} cur+=d*0.09; render(cur); requestAnimationFrame(tick);}
   function kick(){readT(); if(!run){run=true; requestAnimationFrame(tick);}}
   window.addEventListener('scroll',function(){requestAnimationFrame(kick)},{passive:true});
-  window.addEventListener('resize',function(){readT();render(cur)},{passive:true});
-  readT(); cur=target; render(cur);
+  window.addEventListener('resize',function(){measureHeader();readT();render(cur)},{passive:true});
+  window.addEventListener('load',function(){measureHeader();readT();render(cur)});
+  measureHeader(); readT(); cur=target; render(cur);
 })();
 </script>
 

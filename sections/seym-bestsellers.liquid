@@ -8,7 +8,12 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
 <style>
-  #shopify-section-{{ section.id }} .sbs { background: var(--seym-ivory, #fcfbf9); padding: clamp(6rem,10vh,9rem) 0; }
+  #shopify-section-{{ section.id }} .sbs { background: #ffffff; padding: clamp(6rem,10vh,9rem) 0; }
+  /* Match /collections/all exactly: white card surfaces so the product photos
+     blend seamlessly instead of reading as cream/white boxes on the section. */
+  #shopify-section-{{ section.id }} .sbs .card.color-background-1,
+  #shopify-section-{{ section.id }} .sbs .card.color-background-1 .card__content { background: transparent !important; --color-background: 255,255,255; }
+  #shopify-section-{{ section.id }} .sbs .card__inner { border: 0; }
   #shopify-section-{{ section.id }} .sbs__wrap { max-width: 156rem; margin: 0 auto; padding: 0 4.8rem; }
   #shopify-section-{{ section.id }} .sbs__hd {
     display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
