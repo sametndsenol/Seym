@@ -1,0 +1,44 @@
+{%- comment -%}
+  Reusable editorial product card — matches /collections/all exactly.
+  Params:
+    product_card: {Product} the product to render (required)
+    card_ratio:   {String} aspect-ratio for the media, e.g. '4 / 5' (optional)
+  Requires seym-card.css (load once per section).
+{%- endcomment -%}
+{%- liquid
+  assign p = product_card
+  assign primary = p.featured_media
+  assign secondary = p.media[1]
+-%}
+<article class="seymcard">
+  <a class="seymcard__media{% if secondary != blank %} seymcard__media--life{% endif %}" href="{{ p.url }}"{% if card_ratio %} style="aspect-ratio: {{ card_ratio }};"{% endif %} aria-label="{{ p.title | escape }}">
+    {%- if primary != blank -%}
+      {{ primary | image_url: width: 1200 | image_tag:
+         class: 'seymcard__img seymcard__img--primary', loading: 'lazy',
+         widths: '300,450,600,800,1100,1400', sizes: '(max-width:749px) 80vw, 24vw',
+         alt: p.title | escape }}
+    {%- endif -%}
+    {%- if secondary != blank -%}
+      {{ secondary | image_url: width: 1400 | image_tag:
+         class: 'seymcard__img seymcard__img--secondary', loading: 'lazy',
+         widths: '400,600,800,1100,1400,1800', sizes: '(max-width:749px) 80vw, 24vw',
+         alt: p.title | escape }}
+      <div class="seymcard__overlay">
+        <span class="seymcard__overlay-tag">In your space</span>
+        <span class="seymcard__overlay-name">{{ p.title }}</span>
+        <span class="seymcard__overlay-price">{{ p.price | money }}</span>
+      </div>
+    {%- endif -%}
+    {%- unless p.available -%}<span class="seymcard__sold">Sold</span>{%- endunless -%}
+  </a>
+  <div class="seymcard__info">
+    <a class="seymcard__name" href="{{ p.url }}">{{ p.title }}</a>
+    <div class="seymcard__price">
+      {%- if p.compare_at_price > p.price -%}
+        <span class="seymcard__price-compare">{{ p.compare_at_price | money }}</span><span class="seymcard__price-sale">{{ p.price | money }}</span>
+      {%- else -%}
+        {{ p.price | money }}
+      {%- endif -%}
+    </div>
+  </div>
+</article>

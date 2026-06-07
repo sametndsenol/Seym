@@ -1,28 +1,12 @@
 {%- comment -%}
-  Seym Bestsellers — horizontal scroller. Always 4 cards in view (desktop),
-  8 products total, swipe / arrow to reveal the rest. Uses the same
-  'card-product' component as the collection pages so the look matches.
+  Seym Bestsellers — horizontal scroller using the SAME editorial card as
+  /collections/all (cutout floats on white, lifestyle on hover). 4 in view.
 {%- endcomment -%}
 
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'seym-card.css' | asset_url | stylesheet_tag }}
 
 <style>
-  #shopify-section-{{ section.id }} .sbs { background: var(--seym-ivory-2, #FAF7F2); padding: clamp(6rem,10vh,9rem) 0; }
-  /* The product MEDIA backdrop is --seym-ivory-2 (set !important in brand css),
-     so the section + card fills use the SAME tone — nothing reads as a box.
-     This is the seamless /collections/all look. */
-  #shopify-section-{{ section.id }} .sbs .card,
-  #shopify-section-{{ section.id }} .sbs .card .card__content { background: transparent !important; }
-  #shopify-section-{{ section.id }} .sbs .card__inner { border: 0; }
-  /* Signature wine ("pembe") hover, like /collections/all: the media lifts with a
-     soft wine glow. The track is padded so the scroller doesn't clip the glow. */
-  #shopify-section-{{ section.id }} .sbs .card-wrapper { transition: transform .55s cubic-bezier(.22,1,.36,1); }
-  #shopify-section-{{ section.id }} .sbs .card-wrapper:hover { transform: translateY(-5px); }
-  #shopify-section-{{ section.id }} .sbs .card__media { transition: box-shadow .55s cubic-bezier(.22,1,.36,1); }
-  #shopify-section-{{ section.id }} .sbs .card-wrapper:hover .card__media {
-    box-shadow: 0 22px 55px -22px rgba(142,34,68,.5), 0 8px 22px -14px rgba(142,34,68,.35);
-  }
+  #shopify-section-{{ section.id }} .sbs { background: #ffffff; padding: clamp(6rem,10vh,9rem) 0; }
   #shopify-section-{{ section.id }} .sbs__wrap { max-width: 156rem; margin: 0 auto; padding: 0 4.8rem; }
   #shopify-section-{{ section.id }} .sbs__hd {
     display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
@@ -36,7 +20,6 @@
     font: 300 clamp(2.6rem,4.4vw,4.6rem)/1.02 'Cormorant Garamond',serif; letter-spacing: -0.01em;
     color: var(--seym-ink,#1a1a1a); margin: 0;
   }
-  /* arrows */
   #shopify-section-{{ section.id }} .sbs__nav { display: flex; gap: .8rem; flex-shrink: 0; }
   #shopify-section-{{ section.id }} .sbs__arrow {
     width: 4.4rem; height: 4.4rem; border-radius: 999px; border: 1px solid rgba(13,13,13,.18);
@@ -51,14 +34,13 @@
   #shopify-section-{{ section.id }} .sbs__track {
     --gap: 2.4rem;
     display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory;
-    scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding: 1.6rem 0 3.4rem;
+    scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: .5rem;
     scrollbar-width: none;
   }
   #shopify-section-{{ section.id }} .sbs__track::-webkit-scrollbar { display: none; }
   #shopify-section-{{ section.id }} .sbs__item {
     flex: 0 0 calc((100% - 3 * var(--gap)) / 4); scroll-snap-align: start;
   }
-  #shopify-section-{{ section.id }} .sbs__item .card-wrapper { height: 100%; }
 
   @media (max-width: 989px) {
     #shopify-section-{{ section.id }} .sbs__track { --gap: 1.6rem; }
@@ -89,14 +71,7 @@
       <div class="sbs__track" id="sbsTrack-{{ section.id }}">
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
           <div class="sbs__item">
-            {% render 'card-product',
-              card_product: product,
-              media_aspect_ratio: section.settings.image_ratio,
-              image_shape: 'default',
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: false, show_rating: false, lazy_load: true,
-              show_quick_add: false, section_id: section.id
-            %}
+            {% render 'seym-product-card', product_card: product %}
           </div>
         {%- endfor -%}
       </div>
@@ -126,16 +101,7 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Notre Sélection" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Our Bestsellers" },
     { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "products_to_show", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 8 },
-    {
-      "type": "select", "id": "image_ratio", "label": "Image ratio", "default": "adapt",
-      "options": [
-        { "value": "adapt", "label": "Adapt to image" },
-        { "value": "portrait", "label": "Portrait" },
-        { "value": "square", "label": "Square" }
-      ]
-    },
-    { "type": "checkbox", "id": "show_secondary_image", "label": "Show second image on hover", "default": true }
+    { "type": "range", "id": "products_to_show", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 8 }
   ],
   "presets": [{ "name": "Best Sellers" }]
 }

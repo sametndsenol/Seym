@@ -1,0 +1,68 @@
+{%- comment -%}
+  Seym Related — "You may also like", same editorial card as /collections/all.
+  Pulls from the product's own collection (server-side), excludes the current piece.
+{%- endcomment -%}
+
+{{ 'seym-card.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} .sr { background: #ffffff; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .sr__wrap { max-width: 156rem; margin: 0 auto; padding: 0 4.8rem; }
+  #shopify-section-{{ section.id }} .sr__hd { text-align: center; margin-bottom: clamp(2.6rem,4vh,3.6rem); }
+  #shopify-section-{{ section.id }} .sr__h {
+    font: 300 clamp(2.4rem,3.4vw,3.6rem)/1.04 'Cormorant Garamond',serif; letter-spacing: -0.01em;
+    color: var(--seym-ink,#1a1a1a); margin: 0;
+  }
+  #shopify-section-{{ section.id }} .sr__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.6rem,2.4vw,3rem); }
+  @media (max-width: 989px) { #shopify-section-{{ section.id }} .sr__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .sr__wrap { padding: 0 2rem; }
+    #shopify-section-{{ section.id }} .sr__grid { gap: 1.6rem 1.2rem; }
+  }
+</style>
+
+{%- liquid
+  assign coll = nil
+  for c in product.collections
+    unless c.handle == 'all' or c.handle == 'frontpage'
+      assign coll = c
+      break
+    endunless
+  endfor
+  if coll == nil and product.collections.size > 0
+    assign coll = product.collections.first
+  endif
+-%}
+
+{%- if coll and coll.products.size > 1 -%}
+  <section class="sr" data-reveal>
+    <div class="sr__wrap">
+      {%- if section.settings.heading != blank -%}
+        <header class="sr__hd"><h2 class="sr__h">{{ section.settings.heading }}</h2></header>
+      {%- endif -%}
+      <div class="sr__grid">
+        {%- assign shown = 0 -%}
+        {%- for p in coll.products -%}
+          {%- if p.id != product.id and shown < section.settings.products_to_show -%}
+            {% render 'seym-product-card', product_card: p %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Seym Related",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You may also like" },
+    { "type": "range", "id": "products_to_show", "label": "Products", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "presets": [{ "name": "Seym Related" }]
+}
+{% endschema %}
