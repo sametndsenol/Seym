@@ -104,6 +104,45 @@
     color: var(--seym-wine, #8E2244);
   }
 
+  /* Primary atelier (Çengelköy) — highlighted above the showrooms */
+  #seym-contact-{{ section.id }} .sc__atelier {
+    margin: 0 0 2.8rem;
+    padding-bottom: 2.6rem;
+    border-bottom: 1px solid rgba(26,26,26,0.12);
+  }
+  #seym-contact-{{ section.id }} .sc__atelier-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1.2;
+    color: #1A1A1A;
+    margin: 0 0 0.8rem;
+  }
+  #seym-contact-{{ section.id }} .sc__atelier-line {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1.35rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.78);
+    text-decoration: none;
+  }
+  #seym-contact-{{ section.id }} a.sc__atelier-line {
+    border-bottom: 1px solid transparent;
+    width: fit-content;
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+  #seym-contact-{{ section.id }} a.sc__atelier-line:hover {
+    color: var(--seym-wine, #8E2244);
+    border-color: var(--seym-wine, #8E2244);
+  }
+  #seym-contact-{{ section.id }} .sc__atelier-hours {
+    margin-top: 0.9rem;
+    font-style: italic;
+    color: var(--seym-wine, #8E2244);
+  }
+
   #seym-contact-{{ section.id }} .sc__rooms {
     display: flex;
     flex-direction: column;
@@ -333,6 +372,15 @@
         {%- endif -%}
         <h2 class="sc__col-heading">{{ s.rooms_heading }}</h2>
 
+        {%- if s.atelier_address != blank -%}
+          <div class="sc__atelier">
+            {%- if s.atelier_name != blank -%}<span class="sc__atelier-name">{{ s.atelier_name }}</span>{%- endif -%}
+            <span class="sc__atelier-line">{{ s.atelier_address }}</span>
+            {%- if s.direct_email != blank -%}<a class="sc__atelier-line" href="mailto:{{ s.direct_email }}">{{ s.direct_email }}</a>{%- endif -%}
+            {%- if s.atelier_hours != blank -%}<span class="sc__atelier-line sc__atelier-hours">{{ s.atelier_hours }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+
         <div class="sc__rooms">
           {%- for block in section.blocks -%}
             {%- if block.type == 'showroom' -%}
@@ -479,6 +527,24 @@
       "id": "rooms_tag",
       "label": "Column tag",
       "default": "Visit us"
+    },
+    {
+      "type": "text",
+      "id": "atelier_name",
+      "label": "Atelier name",
+      "default": "The Atelier — Çengelköy"
+    },
+    {
+      "type": "textarea",
+      "id": "atelier_address",
+      "label": "Atelier address",
+      "default": "Çengelköy Mah. Boğaziçi Cad. No:27, Üsküdar / İstanbul"
+    },
+    {
+      "type": "text",
+      "id": "atelier_hours",
+      "label": "Atelier hours",
+      "default": "Visits 10:00–18:00, Monday–Friday, by appointment via e-mail."
     },
     {
       "type": "inline_richtext",

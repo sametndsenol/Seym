@@ -1777,6 +1777,16 @@ html, body { background-color: #F5F1EA !important; }
    Does not touch cart-drawer.
    ============================================================ */
 
+/* --- Constrain the cart to a calmer centred column so the few columns aren't
+   stretched across the full ultra-wide page (kills the empty middle and the
+   floating remove button). --- */
+cart-items .page-width,
+#main-cart-footer .page-width {
+  max-width: 104rem !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /* --- Page header: smaller title, inline continue-shopping --- */
 cart-items .title-wrapper-with-link {
   display: flex;
@@ -1823,18 +1833,18 @@ cart-items .cart-items thead th {
 
 /* --- Rows: tighter vertical rhythm --- */
 @media screen and (min-width: 750px) {
-  cart-items .cart-items td { padding-top: 2rem !important; }
+  cart-items .cart-items td { padding-top: 1.4rem !important; padding-bottom: 1.4rem !important; vertical-align: middle !important; }
   cart-items .cart-item > td + td { padding-left: 2.4rem !important; }
   cart-items .cart-items th + th { padding-left: 2.4rem !important; }
   cart-items .cart-item__media { width: 8.5rem !important; }
-  cart-items .cart-item__details { width: auto !important; }
+  cart-items .cart-item__details { width: 100% !important; }
   cart-items .cart-item__quantity,
   cart-items .cart-items .cart-items__heading--wide { padding-left: 2.4rem !important; }
 }
 @media screen and (min-width: 990px) {
   cart-items .cart-item .cart-item__quantity,
   cart-items .cart-items .cart-items__heading--wide { padding-left: 3rem !important; }
-  cart-items .cart-item__details { width: auto !important; max-width: 38rem; }
+  cart-items .cart-item__details { width: 100% !important; max-width: none !important; }
 }
 
 /* --- Product cell: smaller image, tighter text --- */
@@ -1882,9 +1892,15 @@ cart-items cart-remove-button .button:not([disabled]) {
   min-width: 3.6rem !important;
   min-height: 3.6rem !important;
   padding: 0 !important;
-  margin: 0 0 0 0.6rem !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--seym-wine, #8E2244) !important;
+  opacity: 0.55;
+  transition: opacity .25s ease;
 }
-cart-items cart-remove-button .icon-remove { height: 1.3rem; width: 1.3rem; }
+cart-items cart-remove-button .button:hover { opacity: 1 !important; }
+cart-items cart-remove-button .icon-remove { height: 1.5rem; width: 1.5rem; }
 
 /* --- Price column: align, tighten --- */
 cart-items .cart-item__totals .price {
