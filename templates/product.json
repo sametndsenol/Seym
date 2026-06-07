@@ -65,16 +65,7 @@
           "settings": {
             "heading": "Material & Care",
             "icon": "none",
-            "content": "<p>100% Czech crystal glass. Hand-wash only with warm water and mild soap. Dry with a soft cloth to preserve clarity. Avoid abrupt temperature changes. Decorative use; not dishwasher-safe.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_tab_dimensions": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Dimensions",
-            "icon": "none",
-            "content": "<p>{{ product.metafields.custom.dimensions.value }}</p>",
+            "content": "<p>Hand-blown crystal glass. Hand-wash only with warm water and mild soap. Dry with a soft cloth to preserve clarity. Avoid abrupt temperature changes. Decorative use; not dishwasher-safe.</p>",
             "page": ""
           }
         },
@@ -85,14 +76,6 @@
             "icon": "none",
             "content": "<p>Complimentary insured shipping within Türkiye. International shipping arranged personally — please contact info@seym.com.tr. Each piece is made to order; cancellations and exchanges are not accepted once production has begun. We are committed to resolving any quality concerns; please write to us within 14 days of receipt.</p>",
             "page": ""
-          }
-        },
-        "essential_trust_badges_app_block_B7r3EP": {
-          "type": "shopify://apps/essential-trust-badges/blocks/app-block/0ff65b25-07e1-408e-950f-f54dd3d1751b",
-          "disabled": true,
-          "settings": {
-            "banner_display": "single",
-            "banner_id": "5aa0fbef-047f-4b68-a0c1-2a9427fed4f9"
           }
         }
       },
@@ -106,9 +89,7 @@
         "share",
         "collapsible_tab_provenance",
         "collapsible_tab_material",
-        "collapsible_tab_dimensions",
-        "collapsible_tab_shipping",
-        "essential_trust_badges_app_block_B7r3EP"
+        "collapsible_tab_shipping"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -123,12 +104,8 @@
         "hide_variants": false,
         "enable_video_looping": false,
         "padding_top": 36,
-        "padding_bottom": 44
+        "padding_bottom": 56
       }
-    },
-    "editorial_gallery": {
-      "type": "seym-product-gallery",
-      "settings": {}
     },
     "story": {
       "type": "rich-text",
@@ -144,7 +121,7 @@
         "heading_story": {
           "type": "heading",
           "settings": {
-            "heading": "{{ product.title }}",
+            "heading": "Held to the light.",
             "heading_size": "h1"
           }
         },
@@ -165,43 +142,32 @@
         "content_alignment": "center",
         "color_scheme": "background-1",
         "full_width": true,
-        "padding_top": 100,
-        "padding_bottom": 100
+        "padding_top": 88,
+        "padding_bottom": 88
       }
     },
-    "featured_collection_parent": {
-      "type": "featured-collection",
+    "related": {
+      "type": "related-products",
       "settings": {
-        "title": "From the same collection",
+        "heading": "You may also like",
         "heading_size": "h2",
-        "description": "<p>{{ section.settings.collection.metafields.custom.koleksiyonaciklamasi | metafield_tag }}</p>",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "{{ product.metafields.custom.koleksiyon.value }}",
         "products_to_show": 4,
         "columns_desktop": 4,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "link",
-        "enable_desktop_slider": false,
         "color_scheme": "background-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "enable_quick_add": true,
         "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 36,
+        "padding_top": 40,
         "padding_bottom": 80
       }
     }
   },
   "order": [
     "main",
-    "editorial_gallery",
     "story",
-    "featured_collection_parent"
+    "related"
   ]
 }

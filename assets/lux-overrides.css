@@ -1809,13 +1809,15 @@ cart-items .underlined-link {
   font-family: 'Inter', sans-serif !important;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  font-size: 1.05rem !important;
-  color: var(--seym-cream-soft) !important;
+  font-size: 1.15rem !important;
+  color: var(--seym-cream) !important;
   text-decoration: none !important;
   border-bottom: 1px solid var(--seym-cream-faint);
   padding-bottom: 0.2rem;
   transition: color var(--seym-fast) var(--seym-ease), border-color var(--seym-fast) var(--seym-ease);
 }
+cart-items .underlined-link::before { content: "\2190"; margin-right: 0.7rem; display: inline-block; }
+cart-items .underlined-link:hover { color: var(--seym-wine, #8E2244) !important; border-bottom-color: var(--seym-wine, #8E2244) !important; }
 cart-items .underlined-link:hover {
   color: var(--seym-cream) !important;
   border-bottom-color: var(--seym-cream) !important;
