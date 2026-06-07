@@ -10,9 +10,9 @@
      solid black once scrolled / on non-hero pages. Text stays light/legible
      in both states. — */
   .seym-bar {
-    /* Dark scrim (top of the gradient) so light text stays legible
-       over any video frame; flips to solid black when scrolled. */
-    background: linear-gradient(to bottom, rgba(10,10,10,0.62), rgba(10,10,10,0.5));
+    /* Floats ON the video — fully transparent, light text kept legible with a
+       soft shadow (no grey band). Turns solid black once scrolled. */
+    background: transparent;
     border-bottom: none;
     text-align: center;
     padding: 1rem 2rem;
@@ -25,10 +25,12 @@
     font-size: 0.9rem;
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: rgba(250,250,247,0.7);
+    color: rgba(250,250,247,0.82);
+    text-shadow: 0 1px 14px rgba(0,0,0,0.4);
     margin: 0;
+    transition: text-shadow 400ms ease, color 400ms ease;
   }
-  .seym-bar--solid p { color: rgba(250,250,247,0.55); }
+  .seym-bar--solid p { color: rgba(250,250,247,0.55); text-shadow: none; }
   .seym-bar a { color: inherit; text-decoration: none; }
 
   /* — Header shell — fixed via parent .shopify-section in lux-overrides. —
@@ -39,10 +41,9 @@
      Colors transition smoothly between the two. — */
   .seym-hd {
     position: relative; z-index: 50;
-    /* Lower half of the scrim — stays present (does NOT fade to zero) right
-       through where the row content sits, so the white logo + nav are always
-       legible over any background until the header flips to solid. */
-    background: linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.18));
+    /* Floats ON the video — fully transparent. Legibility comes from soft
+       text/icon shadows + a faint hero top-scrim, not a grey bar. */
+    background: transparent;
     border-bottom: 1px solid transparent;
     transition: background 400ms ease, border-color 400ms ease;
   }
@@ -79,7 +80,7 @@
     max-width: 24rem;
     object-fit: contain;
     image-rendering: -webkit-optimize-contrast;
-    filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1) drop-shadow(0 1px 10px rgba(0,0,0,0.45));
     transition: filter 400ms ease, opacity 300ms ease;
   }
   .seym-hd--solid .seym-hd__logo-img { filter: none; }
@@ -120,10 +121,12 @@
     font-size: 0.95rem; font-weight: 400;
     line-height: 1;
     letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 1px 14px rgba(0,0,0,0.45);
     text-decoration: none; position: relative;
-    transition: color 300ms ease;
+    transition: color 300ms ease, text-shadow 400ms ease;
   }
+  .seym-hd--solid .seym-hd__nav a { text-shadow: none; }
   .seym-hd__nav a::after {
     content: ''; position: absolute;
     bottom: 2px; left: 1.8rem; right: 1.8rem;
@@ -163,9 +166,10 @@
     width: 4rem; height: 4rem;
     color: #fff; background: none; border: none;
     cursor: pointer; text-decoration: none; position: relative;
-    transition: opacity 300ms ease, color 400ms ease;
+    filter: drop-shadow(0 1px 10px rgba(0,0,0,0.45));
+    transition: opacity 300ms ease, color 400ms ease, filter 400ms ease;
   }
-  .seym-hd--solid .seym-hd__icon { color: #0d0d0d; }
+  .seym-hd--solid .seym-hd__icon { color: #0d0d0d; filter: none; }
   .seym-hd__icon:hover { opacity: 0.5; }
   .seym-hd__icon svg {
     width: 1.9rem; height: 1.9rem;
