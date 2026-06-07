@@ -181,7 +181,9 @@
   #seym-contact-{{ section.id }} .sc__form-card {
     background: #FFFFFF;
     padding: 4.4rem 4rem;
-    border: 1px solid rgba(26,26,26,0.08);
+    border: 1px solid rgba(26,26,26,0.06);
+    border-radius: 18px;
+    box-shadow: 0 50px 90px -55px rgba(40,28,24,0.35), 0 16px 40px -34px rgba(0,0,0,0.16);
   }
   #seym-contact-{{ section.id }} .sc__success,
   #seym-contact-{{ section.id }} .sc__error {
@@ -271,11 +273,13 @@
     text-transform: uppercase;
     padding: 1.3rem 2.6rem;
     cursor: pointer;
-    transition: background 220ms ease, color 220ms ease;
+    transition: background 220ms ease, color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
   }
   #seym-contact-{{ section.id }} .sc__submit:hover {
     background: transparent;
     color: var(--seym-wine, #8E2244);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px -18px rgba(142,34,68,0.6);
   }
 
   @media (max-width: 989px) {
@@ -452,19 +456,19 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "İletişim"
+      "default": "Contact"
     },
     {
       "type": "inline_richtext",
       "id": "title",
       "label": "Title",
-      "default": "Atölyemizle <em>bağlantı</em> kurun."
+      "default": "Get in touch with our <em>atelier</em>."
     },
     {
       "type": "textarea",
       "id": "lead",
       "label": "Lead",
-      "default": "Tasarımlarımızı yakından görmek, özel bir sipariş ya da işbirliği için yazın — küçük bir ekibiz, her mesaj bizzat okunur."
+      "default": "Whether you would like to see our pieces in person, commission something bespoke, or simply say hello — write to us. We are a small studio, and every message is read personally."
     },
     {
       "type": "header",
@@ -474,13 +478,13 @@
       "type": "text",
       "id": "rooms_tag",
       "label": "Column tag",
-      "default": "Bizi Ziyaret Edin"
+      "default": "Visit us"
     },
     {
       "type": "inline_richtext",
       "id": "rooms_heading",
       "label": "Column heading",
-      "default": "Tasarımlarımızı keşfedebileceğiniz <em>adresler</em>."
+      "default": "Where to <em>discover</em> our designs."
     },
     {
       "type": "header",
@@ -490,7 +494,7 @@
       "type": "text",
       "id": "direct_label",
       "label": "Direct label",
-      "default": "Doğrudan"
+      "default": "Direct"
     },
     {
       "type": "text",
