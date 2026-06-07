@@ -83,7 +83,7 @@
           "type": "universe",
           "settings": {
             "collection": "terra",
-            "label": "Maris",
+            "label": "Terra",
             "link": ""
           }
         },
@@ -91,7 +91,7 @@
           "type": "universe",
           "settings": {
             "collection": "testa",
-            "label": "Luna",
+            "label": "Testa",
             "link": ""
           }
         }
