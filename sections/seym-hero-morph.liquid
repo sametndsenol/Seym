@@ -46,8 +46,8 @@
   }
   #SeymHM-{{ section.id }} .shm__link { position: absolute; inset: 0; z-index: 4; }
   #SeymHM-{{ section.id }} .shm__top {
-    position: absolute; top: 0; left: 0; right: 0; height: 32vh; z-index: 6; pointer-events: none;
-    background: linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,0));
+    position: absolute; top: 0; left: 0; right: 0; height: 22vh; z-index: 6; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(252,251,249,.62), rgba(252,251,249,0));
   }
 
   #SeymHM-{{ section.id }} .shm__cap {
@@ -79,6 +79,10 @@
   }
   #SeymHM-{{ section.id }} .shm__hero-h {
     font: 300 clamp(3.4rem,8vw,8rem)/.9 'Cormorant Garamond',serif; letter-spacing: .14em; margin: 0; color: #fff;
+  }
+  #SeymHM-{{ section.id }} .shm__hero-logo {
+    display: block; height: clamp(6rem, 11vw, 12rem); width: auto; margin: 0 auto;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 18px rgba(0,0,0,.45));
   }
   #SeymHM-{{ section.id }} .shm__hero-rule { display: block; width: 1px; height: 50px; background: rgba(255,255,255,.5); margin: 1.8rem auto; }
   #SeymHM-{{ section.id }} .shm__hero-cta {
@@ -147,7 +151,7 @@
 
       <div class="shm__hero" id="shmHero-{{ section.id }}">
         {%- if section.settings.hero_eyebrow != blank -%}<p class="shm__hero-ey">{{ section.settings.hero_eyebrow }}</p>{%- endif -%}
-        {%- if section.settings.hero_heading != blank -%}<h1 class="shm__hero-h">{{ section.settings.hero_heading }}</h1>{%- endif -%}
+        <img class="shm__hero-logo" src="{{ 'seym-logo.png' | asset_url }}" alt="{{ section.settings.hero_heading | default: 'SEYM' }}">
         <span class="shm__hero-rule" aria-hidden="true"></span>
         {%- if section.settings.hero_cta != blank and section.settings.hero_link != blank -%}<a class="shm__hero-cta" href="{{ section.settings.hero_link }}">{{ section.settings.hero_cta }}</a>{%- endif -%}
       </div>

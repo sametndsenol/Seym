@@ -6,12 +6,12 @@
 <style>
   #shopify-section-{{ section.id }} .sf {
     background: #0d0d0d; color: rgba(250,250,247,.7);
-    padding: clamp(4rem,6vh,5.5rem) 4.8rem clamp(1.6rem,3vh,2.2rem);
+    padding: clamp(3.4rem,5vh,4.6rem) 4.8rem clamp(1.4rem,2.5vh,2rem);
     font-family: 'Inter', sans-serif;
   }
   #shopify-section-{{ section.id }} .sf__in { max-width: 150rem; margin: 0 auto; }
   #shopify-section-{{ section.id }} .sf__top {
-    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 3rem;
+    display: grid; grid-template-columns: 1.5fr 1.5fr 1fr 1fr; gap: 2.6rem;
     padding-bottom: clamp(2.4rem,4vh,3.2rem); border-bottom: 1px solid rgba(250,250,247,.1);
   }
   #shopify-section-{{ section.id }} .sf__brand {
@@ -32,7 +32,9 @@
     color: rgba(250,250,247,.5) !important; margin: 0 0 1.4rem !important;
   }
   #shopify-section-{{ section.id }} .sf__col ul { list-style: none; margin: 0; padding: 0; }
-  #shopify-section-{{ section.id }} .sf__col li { margin: 0 0 .8rem; }
+  #shopify-section-{{ section.id }} .sf__col li { margin: 0 0 .65rem; }
+  /* Explore split into two columns to keep the footer short */
+  #shopify-section-{{ section.id }} .sf__ul--2col { column-count: 2; column-gap: 2.4rem; }
   #shopify-section-{{ section.id }} .sf__col a, #shopify-section-{{ section.id }} .sf__contact a { color: rgba(250,250,247,.7); text-decoration: none; font-size: .92rem; transition: color .3s ease; }
   #shopify-section-{{ section.id }} .sf__col a:hover, #shopify-section-{{ section.id }} .sf__contact a:hover { color: #fafaf7; }
   #shopify-section-{{ section.id }} .sf__contact p { font-size: .92rem; line-height: 1.8; color: rgba(250,250,247,.6); margin: 0; }
@@ -67,7 +69,7 @@
       <div class="sf__col">
         {%- if section.settings.menu_1 != blank -%}
           <p class="sf__ttl">{{ section.settings.menu_1_title }}</p>
-          <ul>{%- for link in linklists[section.settings.menu_1].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
+          <ul class="sf__ul--2col">{%- for link in linklists[section.settings.menu_1].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
         {%- endif -%}
       </div>
 
