@@ -154,6 +154,19 @@
     names.forEach(function(b){ b.classList.toggle('is-active', b.getAttribute('data-clip') === n); });
   }
   names.forEach(function(b){ b.addEventListener('click', function(){ bringFront(b.getAttribute('data-clip')); }); });
+  /* Click a clipping -> open its linked magazine PDF in a new tab. Done in JS
+     (window.open) so it works robustly and even inside the theme editor. */
+  clips.forEach(function(c){
+    c.addEventListener('click', function(e){
+      var a = c.querySelector('.sps__cliplink');
+      if(!a) return;
+      var href = a.getAttribute('href');
+      if(!href) return;
+      e.preventDefault();
+      window.open(href, '_blank', 'noopener');
+    });
+    c.style.cursor = 'pointer';
+  });
 })();
 </script>
 
