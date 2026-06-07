@@ -244,37 +244,38 @@
 
 <script>
 (function(){
-  /* Hero video: ping-pong — play forward, then REWIND (reverse) smoothly back to
-     the start, then forward again, instead of a hard loop restart. */
+  /* Hero video: forward, then REWIND back to the start, then forward — no hard
+     loop cut. Reverse is SEEK-PACED (each frame waits for the previous seek to
+     land) and only runs once the clip is buffered, so it stays smooth instead of
+     stalling. If not yet buffered, it cleanly restarts that cycle. */
   var v = document.getElementById('shmVid-{{ section.id }}');
   if(!v) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ v.loop = true; return; }
   v.loop = false;
-  var dir = 1, last = null, raf = null;
-  function rev(ts){
-    if(dir !== -1){ raf = null; last = null; return; }
-    if(last === null){ last = ts; raf = requestAnimationFrame(rev); return; }
-    var t = v.currentTime - (ts - last) / 1000;
-    last = ts;
-    if(t <= 0.02){
-      v.currentTime = 0; dir = 1; last = null; raf = null;
-      var p = v.play(); if(p && p.catch){ p.catch(function(){}); }
-      return;
-    }
-    v.currentTime = t;
-    raf = requestAnimationFrame(rev);
+  var dir = 1;             /* 1 = forward, -1 = rewinding */
+  var STEP = 1 / 24;       /* rewind step in seconds */
+  function isBuffered(){
+    try { return v.buffered.length > 0 && v.buffered.end(v.buffered.length - 1) >= (v.duration - 0.3); }
+    catch(e){ return false; }
   }
-  function startRev(){
-    if(dir === -1) return;
-    dir = -1; last = null;
-    try { v.pause(); } catch(e){}
-    if(!raf) raf = requestAnimationFrame(rev);
+  function playForward(){ dir = 1; var p = v.play(); if(p && p.catch){ p.catch(function(){}); } }
+  function stepBack(){
+    if(dir !== -1) return;
+    var t = v.currentTime - STEP;
+    if(t <= 0.05){ v.currentTime = 0; playForward(); return; }
+    v.currentTime = t;     /* 'seeked' fires → next stepBack */
   }
-  v.addEventListener('ended', startRev);
+  v.addEventListener('seeked', function(){ if(dir === -1) stepBack(); });
+  function atEnd(){
+    if(dir !== 1) return;
+    if(isBuffered()){ dir = -1; try { v.pause(); } catch(e){} stepBack(); }
+    else { v.currentTime = 0; playForward(); }
+  }
+  v.addEventListener('ended', atEnd);
   v.addEventListener('timeupdate', function(){
-    if(dir === 1 && v.duration && v.currentTime >= v.duration - 0.12){ startRev(); }
+    if(dir === 1 && v.duration && v.currentTime >= v.duration - 0.18){ atEnd(); }
   });
-  var pp = v.play(); if(pp && pp.catch){ pp.catch(function(){}); }
+  playForward();
 })();
 </script>
 
@@ -299,8 +300,8 @@
         { "type": "image_picker", "id": "image", "label": "Image (poster for center)" },
         { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
         { "type": "text", "id": "title", "label": "Title" },
-        { "type": "text", "id": "cta_label", "label": "Link label", "default": "Discover" },
-        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "cta_label", "label": "Button text", "default": "Discover", "info": "The small label shown on the banner (e.g. Discover)." },
+        { "type": "url", "id": "link", "label": "Banner link (URL)", "info": "Where this banner goes when clicked — the whole banner is the link. Pick a collection or page." },
         { "type": "text", "id": "glow", "label": "Hover glow colour (rgba/hex)", "info": "e.g. rgba(150,38,72,.9)" }
       ]
     }
