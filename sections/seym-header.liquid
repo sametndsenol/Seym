@@ -163,6 +163,25 @@
     display: flex; align-items: center; gap: 0.4rem;
     flex-shrink: 0; z-index: 2;
   }
+  /* — Language switcher (EN / TR) — */
+  .seym-hd__lang { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0 0.6rem 0 0; }
+  .seym-hd__lang-btn {
+    background: none; border: 0; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.1em;
+    color: rgba(13,13,13,0.55); padding: 0.4rem 0.2rem; transition: color 300ms ease;
+  }
+  .seym-hd__lang-btn.is-active { color: #0d0d0d; }
+  .seym-hd__lang-btn:hover { color: #8E2244; }
+  .seym-hd__lang-sep { color: rgba(13,13,13,0.28); font-size: 0.8rem; }
+  /* Language switcher inside the mobile drawer */
+  .seym-drawer__lang { display: flex; gap: 1.8rem; padding: 2.4rem; margin-top: auto; border-top: 1px solid rgba(13,13,13,0.07); }
+  .seym-drawer__lang-btn {
+    background: none; border: 0; cursor: pointer; padding: 0;
+    font-family: 'Inter', sans-serif; font-size: 1.1rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(13,13,13,0.5); transition: color 300ms ease;
+  }
+  .seym-drawer__lang-btn.is-active { color: #0d0d0d; }
+  .seym-drawer__lang-btn:hover { color: #8E2244; }
   .seym-hd__icon {
     display: inline-flex; align-items: center; justify-content: center;
     width: 4rem; height: 4rem;
@@ -244,6 +263,7 @@
   /* — Responsive — */
   @media (max-width: 989px) {
     .seym-hd__nav { display: none; }
+    .seym-hd__lang { display: none; }
     .seym-hd__burger { display: flex; }
     .seym-hd__row { padding: 0 2rem; }
     .seym-hd__icon[data-account] { display: none; }
@@ -299,6 +319,15 @@
     </nav>
 
     <div class="seym-hd__icons">
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'seym-hd__lang' -%}
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          {%- for language in localization.available_languages -%}
+            <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-hd__lang-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}" aria-label="{{ language.endonym_name | escape }}">{{ language.iso_code | upcase }}</button>
+            {%- unless forloop.last -%}<span class="seym-hd__lang-sep" aria-hidden="true">/</span>{%- endunless -%}
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
       <a href="{{ routes.search_url }}" class="seym-hd__icon" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
       </a>
@@ -346,6 +375,14 @@
       {%- endfor -%}
     </ul>
   </nav>
+  {%- if localization.available_languages.size > 1 -%}
+    {%- form 'localization', class: 'seym-drawer__lang' -%}
+      <input type="hidden" name="return_to" value="{{ request.path }}">
+      {%- for language in localization.available_languages -%}
+        <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-drawer__lang-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
+      {%- endfor -%}
+    {%- endform -%}
+  {%- endif -%}
 </div>
 
 <script>

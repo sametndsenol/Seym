@@ -63,7 +63,15 @@
     box-shadow: 0 26px 54px -24px rgba(0,0,0,.42); transition: transform .7s var(--ease), box-shadow .7s var(--ease);
   }
   #shopify-section-{{ section.id }} .sps__clip img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #shopify-section-{{ section.id }} .sps__cliplink { position: absolute; inset: 0; z-index: 4; }
+  #shopify-section-{{ section.id }} .sps__cliplink { position: absolute; inset: 0; z-index: 4; cursor: pointer; }
+  #shopify-section-{{ section.id }} .sps__cliplink::after {
+    content: 'Read \2197'; position: absolute; left: 50%; bottom: 1.2rem;
+    transform: translateX(-50%) translateY(8px);
+    font: 400 .6rem/1 'Inter', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #fff;
+    background: rgba(142,34,68,.95); padding: .6rem 1rem; border-radius: 999px; white-space: nowrap;
+    opacity: 0; transition: opacity .35s ease, transform .35s ease; pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .sps__clip:hover .sps__cliplink::after { opacity: 1; transform: translateX(-50%) translateY(0); }
   #shopify-section-{{ section.id }} .sps__clip--1 { width: 43%; aspect-ratio: 4/5; top: 6%;  left: 0;   transform: rotate(-5deg); z-index: 1; }
   #shopify-section-{{ section.id }} .sps__clip--2 { width: 41%; aspect-ratio: 4/5; top: 0;   left: 30%; transform: rotate(3deg);  z-index: 3; }
   #shopify-section-{{ section.id }} .sps__clip--3 { width: 43%; aspect-ratio: 4/5; top: 13%; right: 0;  transform: rotate(6deg);  z-index: 2; }
@@ -115,19 +123,19 @@
       {%- assign img1 = section.settings.image_1 | default: section.settings.image -%}
       {%- if img1 != blank -%}
         <div class="sps__clip sps__clip--1" data-clip="1">
-          {%- if section.settings.link_1 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_1 }}" aria-label="View feature"></a>{%- endif -%}
+          {%- if section.settings.link_1 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_1 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
           {{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
       {%- if section.settings.image_2 != blank -%}
         <div class="sps__clip sps__clip--2" data-clip="2">
-          {%- if section.settings.link_2 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_2 }}" aria-label="View feature"></a>{%- endif -%}
+          {%- if section.settings.link_2 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_2 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
           {{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
       {%- if section.settings.image_3 != blank -%}
         <div class="sps__clip sps__clip--3" data-clip="3">
-          {%- if section.settings.link_3 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_3 }}" aria-label="View feature"></a>{%- endif -%}
+          {%- if section.settings.link_3 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_3 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
           {{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
@@ -158,9 +166,9 @@
     { "type": "text", "id": "heading_2", "label": "Heading line 2 (italic)", "default": "in print." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "As featured in" },
     { "type": "text", "id": "hint", "label": "Hint under names", "default": "Select a title to bring its feature forward." },
-    { "type": "header", "content": "Clippings (each can link)" },
+    { "type": "header", "content": "Clippings — link each to its magazine PDF" },
     { "type": "image_picker", "id": "image_1", "label": "Clipping 1" },
-    { "type": "url", "id": "link_1", "label": "Clipping 1 link" },
+    { "type": "url", "id": "link_1", "label": "Clipping 1 link (PDF / URL)", "info": "Upload the magazine PDF in Content → Files, copy its link, and paste it here. Opens in a new tab." },
     { "type": "image_picker", "id": "image_2", "label": "Clipping 2" },
     { "type": "url", "id": "link_2", "label": "Clipping 2 link" },
     { "type": "image_picker", "id": "image_3", "label": "Clipping 3" },
