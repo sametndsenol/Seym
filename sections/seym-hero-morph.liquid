@@ -44,7 +44,8 @@
   #SeymHM-{{ section.id }} .shm__scrim {
     position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.58), rgba(0,0,0,0) 46%);
   }
-  #SeymHM-{{ section.id }} .shm__link { position: absolute; inset: 0; z-index: 4; }
+  #SeymHM-{{ section.id }} .shm__link { position: absolute; inset: 0; z-index: 7; pointer-events: auto; cursor: pointer; }
+  #SeymHM-{{ section.id }} .shm__card[data-link] { cursor: pointer; }
   #SeymHM-{{ section.id }} .shm__top {
     position: absolute; top: 0; left: 0; right: 0; height: 22vh; z-index: 6; pointer-events: none;
     background: linear-gradient(to bottom, rgba(252,251,249,.62), rgba(252,251,249,0));
@@ -128,7 +129,7 @@
     <div class="shm__top" id="shmTop-{{ section.id }}"></div>
 
     {%- comment -%} Left banner {%- endcomment -%}
-    <article class="shm__card" id="shmL-{{ section.id }}" style="--glow: {{ left.settings.glow | default: 'rgba(72,98,182,.85)' }};">
+    <article class="shm__card" id="shmL-{{ section.id }}" data-link="{{ left.settings.link }}" style="--glow: {{ left.settings.glow | default: 'rgba(72,98,182,.85)' }};">
       <div class="shm__clip">
         {%- if left.settings.image != blank -%}{{ left.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', sizes: '40vw', alt: left.settings.title }}{%- endif -%}
         <div class="shm__scrim"></div>
@@ -142,7 +143,7 @@
     </article>
 
     {%- comment -%} Center video {%- endcomment -%}
-    <article class="shm__card" id="shmC-{{ section.id }}" style="--glow: {{ center.settings.glow | default: 'rgba(28,150,131,.9)' }};">
+    <article class="shm__card" id="shmC-{{ section.id }}" data-link="{{ center.settings.link }}" style="--glow: {{ center.settings.glow | default: 'rgba(28,150,131,.9)' }};">
       <div class="shm__clip">
         {%- if section.settings.video_asset != blank -%}
           <video id="shmVid-{{ section.id }}" autoplay muted playsinline preload="auto"{% if center.settings.image != blank %} poster="{{ center.settings.image | image_url: width: 1600 }}"{% endif %}>
@@ -170,7 +171,7 @@
     </article>
 
     {%- comment -%} Right banner {%- endcomment -%}
-    <article class="shm__card" id="shmR-{{ section.id }}" style="--glow: {{ right.settings.glow | default: 'rgba(150,38,72,.9)' }};">
+    <article class="shm__card" id="shmR-{{ section.id }}" data-link="{{ right.settings.link }}" style="--glow: {{ right.settings.glow | default: 'rgba(150,38,72,.9)' }};">
       <div class="shm__clip">
         {%- if right.settings.image != blank -%}{{ right.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', sizes: '40vw', alt: right.settings.title }}{%- endif -%}
         <div class="shm__scrim"></div>
@@ -244,6 +245,23 @@
 
 <script>
 (function(){
+  /* Make each hero banner clickable as a WHOLE (robust against any overlay /
+     stacking quirk). Real links inside (e.g. the masthead CTA) still work. */
+  var sid='{{ section.id }}';
+  ['shmL-'+sid,'shmC-'+sid,'shmR-'+sid].forEach(function(id){
+    var card=document.getElementById(id); if(!card) return;
+    var lnk=card.getAttribute('data-link'); if(!lnk) return;
+    card.style.cursor='pointer';
+    card.addEventListener('click', function(e){
+      if(e.target.closest('a')) return;
+      window.location.href = lnk;
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
   /* Hero video: forward, then REWIND back to the start, then forward — no hard
      loop cut. Reverse is SEEK-PACED (each frame waits for the previous seek to
      land) and only runs once the clip is buffered, so it stays smooth instead of
@@ -252,23 +270,26 @@
   if(!v) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ v.loop = true; return; }
   v.loop = false;
-  var dir = 1;             /* 1 = forward, -1 = rewinding */
-  var STEP = 1 / 24;       /* rewind step in seconds */
+  var REV_SPEED = 0.8;     /* rewind speed vs forward (1 = same, lower = slower) */
+  var dir = 1, t0 = 0, from = 0, seeking = false;
   function isBuffered(){
     try { return v.buffered.length > 0 && v.buffered.end(v.buffered.length - 1) >= (v.duration - 0.3); }
     catch(e){ return false; }
   }
   function playForward(){ dir = 1; var p = v.play(); if(p && p.catch){ p.catch(function(){}); } }
-  function stepBack(){
+  v.addEventListener('seeking', function(){ seeking = true; });
+  v.addEventListener('seeked', function(){ seeking = false; });
+  function revLoop(ts){
     if(dir !== -1) return;
-    var t = v.currentTime - STEP;
-    if(t <= 0.05){ v.currentTime = 0; playForward(); return; }
-    v.currentTime = t;     /* 'seeked' fires → next stepBack */
+    if(!t0){ t0 = ts; from = v.currentTime; }
+    var target = from - ((ts - t0) / 1000) * REV_SPEED;   /* time-paced, can't run away */
+    if(target <= 0.04){ v.currentTime = 0; playForward(); return; }
+    if(!seeking){ v.currentTime = target; }               /* skip while a seek is pending */
+    requestAnimationFrame(revLoop);
   }
-  v.addEventListener('seeked', function(){ if(dir === -1) stepBack(); });
   function atEnd(){
     if(dir !== 1) return;
-    if(isBuffered()){ dir = -1; try { v.pause(); } catch(e){} stepBack(); }
+    if(isBuffered()){ dir = -1; t0 = 0; try { v.pause(); } catch(e){} requestAnimationFrame(revLoop); }
     else { v.currentTime = 0; playForward(); }
   }
   v.addEventListener('ended', atEnd);
