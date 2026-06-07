@@ -12,55 +12,17 @@
   "type": "footer",
   "sections": {
     "footer": {
-      "type": "footer",
-      "blocks": {
-        "brand": {
-          "type": "brand_information",
-          "settings": {
-            "show_social": false
-          }
-        },
-        "link_explore": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Explore",
-            "menu": "main-menu"
-          }
-        },
-        "link_quick": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Information",
-            "menu": "footer"
-          }
-        },
-        "contact": {
-          "type": "text",
-          "settings": {
-            "heading": "Atelier",
-            "subtext": "<p>Çengelköy<br/>Istanbul, Türkiye</p><p><a href=\"mailto:info@seym.com.tr\">info@seym.com.tr</a></p>"
-          }
-        }
-      },
-      "block_order": [
-        "brand",
-        "link_explore",
-        "link_quick",
-        "contact"
-      ],
+      "type": "seym-footer",
       "settings": {
-        "color_scheme": "background-2",
-        "newsletter_enable": false,
-        "newsletter_heading": "",
-        "enable_follow_on_shop": false,
-        "show_social": false,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "payment_enable": false,
-        "show_policy": false,
-        "margin_top": 0,
-        "padding_top": 56,
-        "padding_bottom": 0
+        "blurb": "An Istanbul atelier creating handcrafted, mouth-blown glass objects inspired by mythology and nature.",
+        "instagram": "https://www.instagram.com/",
+        "menu_1_title": "Explore",
+        "menu_1": "main-menu",
+        "menu_2_title": "Information",
+        "menu_2": "footer",
+        "contact_title": "Atelier",
+        "address": "Çengelköy, Istanbul, Türkiye",
+        "email": "info@seym.com.tr"
       }
     }
   },
