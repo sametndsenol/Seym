@@ -187,7 +187,7 @@
   .seym-loc__opt {
     display: block; width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
     font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; line-height: 1.2; color: rgba(13,13,13,0.75);
-    padding: 0.7rem 0.8rem; border-radius: 7px; transition: background 200ms ease, color 200ms ease;
+    padding: 0.7rem 0.8rem; border-radius: 7px; text-decoration: none; transition: background 200ms ease, color 200ms ease;
   }
   .seym-loc__opt:hover { background: rgba(142,34,68,0.06); color: #1a1a1a; }
   .seym-loc__opt.is-active { color: #8E2244; }
@@ -197,7 +197,7 @@
   .seym-drawer__loc-btn {
     background: none; border: 0; cursor: pointer; padding: 0;
     font-family: 'Inter', sans-serif; font-size: 1.05rem; letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(13,13,13,0.5); transition: color 300ms ease;
+    color: rgba(13,13,13,0.5); text-decoration: none; transition: color 300ms ease;
   }
   .seym-drawer__loc-btn.is-active { color: #0d0d0d; }
   .seym-drawer__loc-btn:hover { color: #8E2244; }
@@ -300,6 +300,21 @@
   }
 </style>
 
+{%- liquid
+  # Robust EN/TR switch that doesn't depend on Markets config: link straight to
+  # the root (EN) and /tr (TR) versions of the current page.
+  assign locale_cur = request.locale.iso_code | default: 'en'
+  assign locale_base = request.path
+  if request.path == '/tr'
+    assign locale_base = '/'
+  elsif request.path contains '/tr/'
+    assign locale_base = request.path | remove_first: '/tr'
+  endif
+  if locale_base == blank
+    assign locale_base = '/'
+  endif
+-%}
+
 {%- if section.settings.show_bar and section.settings.bar_text != blank -%}
 <div class="seym-bar" id="SeymBar">
   <p>{{ section.settings.bar_text }}</p>
@@ -338,22 +353,17 @@
     </nav>
 
     <div class="seym-hd__icons">
-      {%- if localization.available_languages.size > 1 or localization.available_countries.size > 1 -%}
         <div class="seym-loc" id="SeymLoc">
           <button type="button" class="seym-loc__btn" aria-haspopup="true" aria-expanded="false" aria-label="Language and currency">
-            <span>{{ localization.language.iso_code | upcase }}{% if localization.available_countries.size > 1 %} · {{ localization.country.currency.iso_code }}{% endif %}</span>
+            <span>{{ locale_cur | upcase }}{% if localization.available_countries.size > 1 %} · {{ localization.country.currency.iso_code }}{% endif %}</span>
             <svg class="seym-loc__chev" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="seym-loc__panel">
-            {%- if localization.available_languages.size > 1 -%}
-              {%- form 'localization', class: 'seym-loc__group' -%}
-                <input type="hidden" name="return_to" value="{{ request.path }}">
-                <p class="seym-loc__lbl">Language</p>
-                {%- for language in localization.available_languages -%}
-                  <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-loc__opt{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
-                {%- endfor -%}
-              {%- endform -%}
-            {%- endif -%}
+            <div class="seym-loc__group">
+              <p class="seym-loc__lbl">Language</p>
+              <a href="{{ locale_base }}" class="seym-loc__opt{% if locale_cur != 'tr' %} is-active{% endif %}" hreflang="en">English</a>
+              <a href="/tr{{ locale_base }}" class="seym-loc__opt{% if locale_cur == 'tr' %} is-active{% endif %}" hreflang="tr">Türkçe</a>
+            </div>
             {%- if localization.available_countries.size > 1 -%}
               {%- form 'localization', class: 'seym-loc__group' -%}
                 <input type="hidden" name="return_to" value="{{ request.path }}">
@@ -365,7 +375,6 @@
             {%- endif -%}
           </div>
         </div>
-      {%- endif -%}
       <a href="{{ routes.search_url }}" class="seym-hd__icon" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
       </a>
@@ -413,26 +422,20 @@
       {%- endfor -%}
     </ul>
   </nav>
-  {%- if localization.available_languages.size > 1 or localization.available_countries.size > 1 -%}
-    <div class="seym-drawer__loc">
-      {%- if localization.available_languages.size > 1 -%}
-        {%- form 'localization', class: 'seym-drawer__locrow' -%}
-          <input type="hidden" name="return_to" value="{{ request.path }}">
-          {%- for language in localization.available_languages -%}
-            <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-drawer__loc-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
-          {%- endfor -%}
-        {%- endform -%}
-      {%- endif -%}
-      {%- if localization.available_countries.size > 1 -%}
-        {%- form 'localization', class: 'seym-drawer__locrow' -%}
-          <input type="hidden" name="return_to" value="{{ request.path }}">
-          {%- for country in localization.available_countries -%}
-            <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-drawer__loc-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
-          {%- endfor -%}
-        {%- endform -%}
-      {%- endif -%}
+  <div class="seym-drawer__loc">
+    <div class="seym-drawer__locrow">
+      <a href="{{ locale_base }}" class="seym-drawer__loc-btn{% if locale_cur != 'tr' %} is-active{% endif %}" hreflang="en">English</a>
+      <a href="/tr{{ locale_base }}" class="seym-drawer__loc-btn{% if locale_cur == 'tr' %} is-active{% endif %}" hreflang="tr">Türkçe</a>
     </div>
-  {%- endif -%}
+    {%- if localization.available_countries.size > 1 -%}
+      {%- form 'localization', class: 'seym-drawer__locrow' -%}
+        <input type="hidden" name="return_to" value="{{ request.path }}">
+        {%- for country in localization.available_countries -%}
+          <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-drawer__loc-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
+        {%- endfor -%}
+      {%- endform -%}
+    {%- endif -%}
+  </div>
 </div>
 
 <script>
