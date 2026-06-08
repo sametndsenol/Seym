@@ -174,10 +174,10 @@
   .seym-loc__chev { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 1.5; transition: transform 300ms ease; }
   .seym-loc.is-open .seym-loc__chev { transform: rotate(180deg); }
   .seym-loc__panel {
-    position: absolute; top: calc(100% + 1rem); right: 0; min-width: 21rem; max-height: 62vh; overflow-y: auto;
-    background: #fff; border: 1px solid rgba(13,13,13,0.07); border-radius: 12px;
-    box-shadow: 0 30px 60px -30px rgba(40,28,24,0.4), 0 10px 24px -18px rgba(0,0,0,0.18);
-    padding: 1rem; z-index: 80; opacity: 0; transform: translateY(-6px); pointer-events: none;
+    position: absolute; top: calc(100% + 1rem); right: 0; min-width: 23rem; max-height: 62vh; overflow-y: auto;
+    background: #fff; border: 1px solid rgba(13,13,13,0.14); border-radius: 12px;
+    box-shadow: 0 30px 70px -28px rgba(40,28,24,0.5), 0 12px 28px -18px rgba(0,0,0,0.25);
+    padding: 0.8rem; z-index: 80; opacity: 0; transform: translateY(-6px); pointer-events: none;
     transition: opacity 280ms cubic-bezier(.22,1,.36,1), transform 280ms cubic-bezier(.22,1,.36,1);
   }
   .seym-loc.is-open .seym-loc__panel { opacity: 1; transform: none; pointer-events: auto; }
