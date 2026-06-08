@@ -163,25 +163,44 @@
     display: flex; align-items: center; gap: 0.4rem;
     flex-shrink: 0; z-index: 2;
   }
-  /* — Language switcher (EN / TR) — */
-  .seym-hd__lang { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0 0.6rem 0 0; }
-  .seym-hd__lang-btn {
-    background: none; border: 0; cursor: pointer;
-    font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.1em;
-    color: rgba(13,13,13,0.55); padding: 0.4rem 0.2rem; transition: color 300ms ease;
+  /* — Locale selector (language + currency) — */
+  .seym-loc { position: relative; margin: 0 0.7rem 0 0; }
+  .seym-loc__btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: 0; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(13,13,13,0.75); padding: 0.5rem 0; transition: color 300ms ease;
   }
-  .seym-hd__lang-btn.is-active { color: #0d0d0d; }
-  .seym-hd__lang-btn:hover { color: #8E2244; }
-  .seym-hd__lang-sep { color: rgba(13,13,13,0.28); font-size: 0.8rem; }
-  /* Language switcher inside the mobile drawer */
-  .seym-drawer__lang { display: flex; gap: 1.8rem; padding: 2.4rem; margin-top: auto; border-top: 1px solid rgba(13,13,13,0.07); }
-  .seym-drawer__lang-btn {
+  .seym-loc__btn:hover { color: #8E2244; }
+  .seym-loc__chev { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 1.5; transition: transform 300ms ease; }
+  .seym-loc.is-open .seym-loc__chev { transform: rotate(180deg); }
+  .seym-loc__panel {
+    position: absolute; top: calc(100% + 1rem); right: 0; min-width: 21rem; max-height: 62vh; overflow-y: auto;
+    background: #fff; border: 1px solid rgba(13,13,13,0.07); border-radius: 12px;
+    box-shadow: 0 30px 60px -30px rgba(40,28,24,0.4), 0 10px 24px -18px rgba(0,0,0,0.18);
+    padding: 1rem; z-index: 80; opacity: 0; transform: translateY(-6px); pointer-events: none;
+    transition: opacity 280ms cubic-bezier(.22,1,.36,1), transform 280ms cubic-bezier(.22,1,.36,1);
+  }
+  .seym-loc.is-open .seym-loc__panel { opacity: 1; transform: none; pointer-events: auto; }
+  .seym-loc__group { margin: 0; }
+  .seym-loc__group + .seym-loc__group { margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(13,13,13,0.08); }
+  .seym-loc__lbl { font-family: 'Inter', sans-serif; font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(13,13,13,0.4); margin: 0 0 0.5rem; padding: 0 0.8rem; }
+  .seym-loc__opt {
+    display: block; width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; line-height: 1.2; color: rgba(13,13,13,0.75);
+    padding: 0.7rem 0.8rem; border-radius: 7px; transition: background 200ms ease, color 200ms ease;
+  }
+  .seym-loc__opt:hover { background: rgba(142,34,68,0.06); color: #1a1a1a; }
+  .seym-loc__opt.is-active { color: #8E2244; }
+  /* Language + currency inside the mobile drawer */
+  .seym-drawer__loc { margin-top: auto; padding: 2rem 2.4rem; border-top: 1px solid rgba(13,13,13,0.07); display: flex; flex-direction: column; gap: 1.2rem; }
+  .seym-drawer__locrow { display: flex; flex-wrap: wrap; gap: 1.4rem 1.8rem; }
+  .seym-drawer__loc-btn {
     background: none; border: 0; cursor: pointer; padding: 0;
-    font-family: 'Inter', sans-serif; font-size: 1.1rem; letter-spacing: 0.16em; text-transform: uppercase;
+    font-family: 'Inter', sans-serif; font-size: 1.05rem; letter-spacing: 0.14em; text-transform: uppercase;
     color: rgba(13,13,13,0.5); transition: color 300ms ease;
   }
-  .seym-drawer__lang-btn.is-active { color: #0d0d0d; }
-  .seym-drawer__lang-btn:hover { color: #8E2244; }
+  .seym-drawer__loc-btn.is-active { color: #0d0d0d; }
+  .seym-drawer__loc-btn:hover { color: #8E2244; }
   .seym-hd__icon {
     display: inline-flex; align-items: center; justify-content: center;
     width: 4rem; height: 4rem;
@@ -263,7 +282,6 @@
   /* — Responsive — */
   @media (max-width: 989px) {
     .seym-hd__nav { display: none; }
-    .seym-hd__lang { display: none; }
     .seym-hd__burger { display: flex; }
     .seym-hd__row { padding: 0 2rem; }
     .seym-hd__icon[data-account] { display: none; }
@@ -271,6 +289,7 @@
     .seym-hd__burger { width: 4.4rem; height: 4.4rem; }
   }
   @media (max-width: 749px) {
+    .seym-loc { display: none; }
     .seym-hd__row { height: 6rem; }
     .seym-hd--solid .seym-hd__row { height: 5rem; }
     .seym-hd__row { padding: 0 1.6rem; }
@@ -319,14 +338,33 @@
     </nav>
 
     <div class="seym-hd__icons">
-      {%- if localization.available_languages.size > 1 -%}
-        {%- form 'localization', class: 'seym-hd__lang' -%}
-          <input type="hidden" name="return_to" value="{{ request.path }}">
-          {%- for language in localization.available_languages -%}
-            <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-hd__lang-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}" aria-label="{{ language.endonym_name | escape }}">{{ language.iso_code | upcase }}</button>
-            {%- unless forloop.last -%}<span class="seym-hd__lang-sep" aria-hidden="true">/</span>{%- endunless -%}
-          {%- endfor -%}
-        {%- endform -%}
+      {%- if localization.available_languages.size > 1 or localization.available_countries.size > 1 -%}
+        <div class="seym-loc" id="SeymLoc">
+          <button type="button" class="seym-loc__btn" aria-haspopup="true" aria-expanded="false" aria-label="Language and currency">
+            <span>{{ localization.language.iso_code | upcase }}{% if localization.available_countries.size > 1 %} · {{ localization.country.currency.iso_code }}{% endif %}</span>
+            <svg class="seym-loc__chev" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="seym-loc__panel">
+            {%- if localization.available_languages.size > 1 -%}
+              {%- form 'localization', class: 'seym-loc__group' -%}
+                <input type="hidden" name="return_to" value="{{ request.path }}">
+                <p class="seym-loc__lbl">Language</p>
+                {%- for language in localization.available_languages -%}
+                  <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-loc__opt{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
+                {%- endfor -%}
+              {%- endform -%}
+            {%- endif -%}
+            {%- if localization.available_countries.size > 1 -%}
+              {%- form 'localization', class: 'seym-loc__group' -%}
+                <input type="hidden" name="return_to" value="{{ request.path }}">
+                <p class="seym-loc__lbl">Currency</p>
+                {%- for country in localization.available_countries -%}
+                  <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-loc__opt{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.name }} · {{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
+                {%- endfor -%}
+              {%- endform -%}
+            {%- endif -%}
+          </div>
+        </div>
       {%- endif -%}
       <a href="{{ routes.search_url }}" class="seym-hd__icon" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
@@ -375,13 +413,25 @@
       {%- endfor -%}
     </ul>
   </nav>
-  {%- if localization.available_languages.size > 1 -%}
-    {%- form 'localization', class: 'seym-drawer__lang' -%}
-      <input type="hidden" name="return_to" value="{{ request.path }}">
-      {%- for language in localization.available_languages -%}
-        <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-drawer__lang-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
-      {%- endfor -%}
-    {%- endform -%}
+  {%- if localization.available_languages.size > 1 or localization.available_countries.size > 1 -%}
+    <div class="seym-drawer__loc">
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'seym-drawer__locrow' -%}
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          {%- for language in localization.available_languages -%}
+            <button type="submit" name="locale_code" value="{{ language.iso_code }}" class="seym-drawer__loc-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}" lang="{{ language.iso_code }}">{{ language.endonym_name }}</button>
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
+      {%- if localization.available_countries.size > 1 -%}
+        {%- form 'localization', class: 'seym-drawer__locrow' -%}
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          {%- for country in localization.available_countries -%}
+            <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-drawer__loc-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
+    </div>
   {%- endif -%}
 </div>
 
@@ -562,6 +612,23 @@
   if ('MutationObserver' in window) {
     new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true });
   }
+})();
+</script>
+
+<script>
+(function(){
+  var loc = document.getElementById('SeymLoc');
+  if(!loc) return;
+  var btn = loc.querySelector('.seym-loc__btn');
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = loc.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!loc.contains(e.target)){ loc.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); }
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ loc.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); } });
 })();
 </script>
 
