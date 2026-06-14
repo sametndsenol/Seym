@@ -478,7 +478,7 @@
         {%- for option in collection.sort_options -%}{%- if option.value == sort_by -%}{%- assign current_name = option.name -%}{%- endif -%}{%- endfor -%}
         <div class="seym-coll__toolbar">
           <form method="get" class="seym-coll__sort-form" id="SeymSortForm-{{ section.id }}">
-            <span class="scsort__label">Sort</span>
+            <span class="scsort__label">{{ 'products.facets.sort_button' | t }}</span>
             <div class="scsort" id="SeymSort-{{ section.id }}">
               <button type="button" class="scsort__btn" aria-haspopup="listbox" aria-expanded="false">
                 <span class="scsort__current">{{ current_name | escape }}</span>
@@ -550,7 +550,7 @@
                        sizes: '(max-width: 540px) 92vw, (max-width: 989px) 44vw, 28vw',
                        alt: product.title | escape }}
                   <div class="seym-coll__overlay">
-                    <span class="seym-coll__overlay-tag">In your space</span>
+                    <span class="seym-coll__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
                     <span class="seym-coll__overlay-name">{{ product.title }}</span>
                     <span class="seym-coll__overlay-price">
                       {%- if product.compare_at_price > product.price -%}
@@ -562,7 +562,7 @@
                   </div>
                 {%- endif -%}
                 {%- unless product.available -%}
-                  <span class="seym-coll__sold">Sold</span>
+                  <span class="seym-coll__sold">{{ 'sections.seym.sold' | t }}</span>
                 {%- endunless -%}
               </a>
               <div class="seym-coll__info">

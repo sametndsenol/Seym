@@ -360,14 +360,14 @@
           </button>
           <div class="seym-loc__panel">
             <div class="seym-loc__group">
-              <p class="seym-loc__lbl">Language</p>
+              <p class="seym-loc__lbl">{{ 'sections.seym.language' | t }}</p>
               <a href="{{ locale_base }}" class="seym-loc__opt{% if locale_cur != 'tr' %} is-active{% endif %}" hreflang="en">English</a>
               <a href="/tr{{ locale_base }}" class="seym-loc__opt{% if locale_cur == 'tr' %} is-active{% endif %}" hreflang="tr">Türkçe</a>
             </div>
             {%- if localization.available_countries.size > 1 -%}
               {%- form 'localization', class: 'seym-loc__group' -%}
                 <input type="hidden" name="return_to" value="{{ request.path }}">
-                <p class="seym-loc__lbl">Currency</p>
+                <p class="seym-loc__lbl">{{ 'sections.seym.currency' | t }}</p>
                 {%- for country in localization.available_countries -%}
                   <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-loc__opt{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.name }} · {{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
                 {%- endfor -%}

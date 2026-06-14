@@ -4,6 +4,14 @@
   Self-contained: hero + atelier/showrooms column + contact form.
 {%- endcomment -%}
 
+{%- liquid
+  assign lang = localization.language.iso_code
+  assign is_tr = false
+  if lang == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   .scb { background: var(--seym-ivory, #F5F1EA); color: var(--seym-ink, #1A1A1A); padding: 64px 0 96px; }
   .scb__wrap { max-width: 132rem; margin: 0 auto; padding: 0 4rem; }
@@ -60,25 +68,25 @@
   <div class="scb__wrap">
     <header class="scb__hero">
       <div>
-        <span class="scb__eyebrow">Contact</span>
-        <h1 class="scb__title">Get in touch with our <em>atelier</em>.</h1>
+        <span class="scb__eyebrow">{%- if is_tr -%}İletişim{%- else -%}Contact{%- endif -%}</span>
+        <h1 class="scb__title">{%- if is_tr -%}Atölyemizle <em>iletişime</em> geçin.{%- else -%}Get in touch with our <em>atelier</em>.{%- endif -%}</h1>
       </div>
-      <p class="scb__lead">Whether you would like to see our pieces in person, commission something bespoke, or simply say hello — write to us. We are a small studio, and every message is read personally.</p>
+      <p class="scb__lead">{%- if is_tr -%}İster parçalarımızı yakından görmek, ister size özel bir tasarım sipariş etmek, ister yalnızca merhaba demek isteyin — bize yazın. Küçük bir atölyeyiz ve her mesaj bizzat okunur.{%- else -%}Whether you would like to see our pieces in person, commission something bespoke, or simply say hello — write to us. We are a small studio, and every message is read personally.{%- endif -%}</p>
     </header>
 
     <div class="scb__grid">
       <aside>
-        <span class="scb__tag">Visit us</span>
-        <h2 class="scb__heading">Where to <em>discover</em> our designs.</h2>
+        <span class="scb__tag">{%- if is_tr -%}Bizi ziyaret edin{%- else -%}Visit us{%- endif -%}</span>
+        <h2 class="scb__heading">{%- if is_tr -%}Tasarımlarımızı nerede <em>keşfedebilirsiniz</em>.{%- else -%}Where to <em>discover</em> our designs.{%- endif -%}</h2>
 
         <div class="scb__atelier">
-          <span class="scb__atelier-name">The Atelier — Çengelköy</span>
+          <span class="scb__atelier-name">{%- if is_tr -%}Atölye — Çengelköy{%- else -%}The Atelier — Çengelköy{%- endif -%}</span>
           <span class="scb__line">Çengelköy Mah. Boğaziçi Cad. No:27, Üsküdar / İstanbul</span>
           <a class="scb__line" href="mailto:info@seym.com.tr">info@seym.com.tr</a>
-          <span class="scb__line scb__hours">Visits 10:00–18:00, Monday–Friday, by appointment via e-mail.</span>
+          <span class="scb__line scb__hours">{%- if is_tr -%}Ziyaretler 10:00–18:00, Pazartesi–Cuma, e-posta ile randevuyla.{%- else -%}Visits 10:00–18:00, Monday–Friday, by appointment via e-mail.{%- endif -%}</span>
         </div>
 
-        <p class="scb__subtag">Also on display at</p>
+        <p class="scb__subtag">{%- if is_tr -%}Ayrıca şuralarda sergileniyor{%- else -%}Also on display at{%- endif -%}</p>
         <div class="scb__rooms">
           <div class="scb__room">
             <span class="scb__room-name">Mandarin Oriental Bosphorus, İstanbul</span>

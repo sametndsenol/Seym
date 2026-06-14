@@ -24,12 +24,12 @@
          widths: '400,600,800,1100,1400,1800', sizes: '(max-width:749px) 80vw, 24vw',
          alt: p.title | escape }}
       <div class="seymcard__overlay">
-        <span class="seymcard__overlay-tag">In your space</span>
+        <span class="seymcard__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
         <span class="seymcard__overlay-name">{{ p.title }}</span>
         <span class="seymcard__overlay-price">{{ p.price | money }}</span>
       </div>
     {%- endif -%}
-    {%- unless p.available -%}<span class="seymcard__sold">Sold</span>{%- endunless -%}
+    {%- unless p.available -%}<span class="seymcard__sold">{{ 'sections.seym.sold' | t }}</span>{%- endunless -%}
   </a>
   <div class="seymcard__info">
     <a class="seymcard__name" href="{{ p.url }}">{{ p.title }}</a>

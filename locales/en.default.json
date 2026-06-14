@@ -271,6 +271,13 @@
     }
   },
   "sections": {
+    "seym": {
+      "in_your_space": "In your space",
+      "sold": "Sold",
+      "language": "Language",
+      "currency": "Currency",
+      "explore": "Explore"
+    },
     "seym_press": {
       "read": "Read",
       "read_aria": "Read the feature (PDF)"

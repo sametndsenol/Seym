@@ -271,6 +271,13 @@
     }
   },
   "sections": {
+    "seym": {
+      "in_your_space": "Kendi alanında",
+      "sold": "Tükendi",
+      "language": "Dil",
+      "currency": "Para birimi",
+      "explore": "Keşfet"
+    },
     "seym_press": {
       "read": "Oku",
       "read_aria": "Haberi okuyun (PDF)"
