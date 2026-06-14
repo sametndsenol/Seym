@@ -69,6 +69,15 @@
             "page": ""
           }
         },
+        "specifications_dimensions": {
+          "type": "specifications",
+          "settings": {
+            "heading": "",
+            "icon": "none",
+            "content": "",
+            "open_by_default": false
+          }
+        },
         "collapsible_tab_shipping": {
           "type": "collapsible_tab",
           "settings": {
@@ -89,6 +98,7 @@
         "share",
         "collapsible_tab_provenance",
         "collapsible_tab_material",
+        "specifications_dimensions",
         "collapsible_tab_shipping"
       ],
       "settings": {
