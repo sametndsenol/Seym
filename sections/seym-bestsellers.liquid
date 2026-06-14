@@ -62,8 +62,8 @@
         {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{{ section.settings.heading }}</h2>{%- endif -%}
       </div>
       <div class="sbs__nav">
-        <button class="sbs__arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg></button>
-        <button class="sbs__arrow" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg></button>
+        <button class="sbs__arrow" data-dir="-1" aria-label="{{ 'general.slider.previous_slide' | t }}"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg></button>
+        <button class="sbs__arrow" data-dir="1" aria-label="{{ 'general.slider.next_slide' | t }}"><svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg></button>
       </div>
     </header>
 

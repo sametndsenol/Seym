@@ -57,27 +57,32 @@
   }
 
   /* Collage that fills the whole right column — no empty middle */
-  #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(32rem,38vw,44rem); }
+  #shopify-section-{{ section.id }} .sps__collage { position: relative; height: clamp(40rem,48vw,58rem); }
   #shopify-section-{{ section.id }} .sps__clip {
-    position: absolute; border-radius: 3px; overflow: hidden; border: 7px solid #fff;
+    position: absolute; width: 37%; aspect-ratio: 4/5; border-radius: 3px; overflow: hidden; border: 7px solid #fff;
     box-shadow: 0 26px 54px -24px rgba(0,0,0,.42); transition: transform .7s var(--ease), box-shadow .7s var(--ease);
   }
   #shopify-section-{{ section.id }} .sps__clip img { width: 100%; height: 100%; object-fit: cover; display: block; }
   #shopify-section-{{ section.id }} .sps__cliplink { position: absolute; inset: 0; z-index: 4; cursor: pointer; }
   #shopify-section-{{ section.id }} .sps__cliplink::after {
-    content: 'Read \2197'; position: absolute; left: 50%; bottom: 1.2rem;
+    content: '{{ 'sections.seym_press.read' | t }} \2197'; position: absolute; left: 50%; bottom: 1.2rem;
     transform: translateX(-50%) translateY(8px);
     font: 400 .6rem/1 'Inter', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #fff;
     background: rgba(142,34,68,.95); padding: .6rem 1rem; border-radius: 999px; white-space: nowrap;
     opacity: 0; transition: opacity .35s ease, transform .35s ease; pointer-events: none;
   }
   #shopify-section-{{ section.id }} .sps__clip:hover .sps__cliplink::after { opacity: 1; transform: translateX(-50%) translateY(0); }
-  #shopify-section-{{ section.id }} .sps__clip--1 { width: 43%; aspect-ratio: 4/5; top: 6%;  left: 0;   transform: rotate(-5deg); z-index: 1; }
-  #shopify-section-{{ section.id }} .sps__clip--2 { width: 41%; aspect-ratio: 4/5; top: 0;   left: 30%; transform: rotate(3deg);  z-index: 3; }
-  #shopify-section-{{ section.id }} .sps__clip--3 { width: 43%; aspect-ratio: 4/5; top: 13%; right: 0;  transform: rotate(6deg);  z-index: 2; }
+  /* scrapbook of up to five clippings, two rows, filling the column */
+  #shopify-section-{{ section.id }} .sps__clip--1 { top: 1%;  left: 1%;    transform: rotate(-6deg); z-index: 2; }
+  #shopify-section-{{ section.id }} .sps__clip--2 { top: 0;   left: 33%;   transform: rotate(3deg);  z-index: 4; }
+  #shopify-section-{{ section.id }} .sps__clip--3 { top: 5%;  right: 1%;   transform: rotate(6deg);  z-index: 3; }
+  #shopify-section-{{ section.id }} .sps__clip--4 { bottom: 1%; left: 13%; transform: rotate(4deg);  z-index: 5; }
+  #shopify-section-{{ section.id }} .sps__clip--5 { bottom: 4%; right: 12%; transform: rotate(-5deg); z-index: 1; }
   #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--1 { transform: rotate(-7deg) translateY(-6px); }
   #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--2 { transform: rotate(4deg)  translateY(-6px); }
   #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--3 { transform: rotate(7deg)  translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--4 { transform: rotate(5deg)  translateY(-6px); }
+  #shopify-section-{{ section.id }} .sps__collage:hover .sps__clip--5 { transform: rotate(-6deg) translateY(-6px); }
   /* clicked clipping comes to the front */
   #shopify-section-{{ section.id }} .sps__clip--front {
     z-index: 6 !important; box-shadow: 0 36px 74px -26px rgba(0,0,0,.52) !important;
@@ -85,13 +90,13 @@
 
   @media (max-width: 989px) {
     #shopify-section-{{ section.id }} .sps__wrap { grid-template-columns: 1fr; gap: 2.5rem; }
-    #shopify-section-{{ section.id }} .sps__collage { height: 38rem; order: 2; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 48rem; order: 2; }
     #shopify-section-{{ section.id }} .sps__hint { display: none; }
   }
   @media (max-width: 749px) {
     #shopify-section-{{ section.id }} .sps { padding: clamp(4rem,8vh,5.5rem) 0 2rem; }
     #shopify-section-{{ section.id }} .sps__wrap { padding: 0 2rem; }
-    #shopify-section-{{ section.id }} .sps__collage { height: 30rem; }
+    #shopify-section-{{ section.id }} .sps__collage { height: 40rem; }
     #shopify-section-{{ section.id }} .sps__nm { font-size: 1.5rem; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -120,23 +125,36 @@
     </div>
 
     <div class="sps__collage">
+      {%- assign read_aria = 'sections.seym_press.read_aria' | t -%}
       {%- assign img1 = section.settings.image_1 | default: section.settings.image -%}
       {%- if img1 != blank -%}
         <div class="sps__clip sps__clip--1" data-clip="1">
-          {%- if section.settings.link_1 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_1 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
+          {%- if section.settings.link_1 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_1 }}" target="_blank" rel="noopener" aria-label="{{ read_aria }}"></a>{%- endif -%}
           {{ img1 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
       {%- if section.settings.image_2 != blank -%}
         <div class="sps__clip sps__clip--2" data-clip="2">
-          {%- if section.settings.link_2 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_2 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
+          {%- if section.settings.link_2 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_2 }}" target="_blank" rel="noopener" aria-label="{{ read_aria }}"></a>{%- endif -%}
           {{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
       {%- if section.settings.image_3 != blank -%}
         <div class="sps__clip sps__clip--3" data-clip="3">
-          {%- if section.settings.link_3 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_3 }}" target="_blank" rel="noopener" aria-label="Read the feature (PDF)"></a>{%- endif -%}
+          {%- if section.settings.link_3 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_3 }}" target="_blank" rel="noopener" aria-label="{{ read_aria }}"></a>{%- endif -%}
           {{ section.settings.image_3 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.image_4 != blank -%}
+        <div class="sps__clip sps__clip--4" data-clip="4">
+          {%- if section.settings.link_4 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_4 }}" target="_blank" rel="noopener" aria-label="{{ read_aria }}"></a>{%- endif -%}
+          {{ section.settings.image_4 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.image_5 != blank -%}
+        <div class="sps__clip sps__clip--5" data-clip="5">
+          {%- if section.settings.link_5 != blank -%}<a class="sps__cliplink" href="{{ section.settings.link_5 }}" target="_blank" rel="noopener" aria-label="{{ read_aria }}"></a>{%- endif -%}
+          {{ section.settings.image_5 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,500,700', alt: '' }}
         </div>
       {%- endif -%}
     </div>
@@ -186,6 +204,10 @@
     { "type": "url", "id": "link_2", "label": "Clipping 2 link" },
     { "type": "image_picker", "id": "image_3", "label": "Clipping 3" },
     { "type": "url", "id": "link_3", "label": "Clipping 3 link" },
+    { "type": "image_picker", "id": "image_4", "label": "Clipping 4" },
+    { "type": "url", "id": "link_4", "label": "Clipping 4 link" },
+    { "type": "image_picker", "id": "image_5", "label": "Clipping 5" },
+    { "type": "url", "id": "link_5", "label": "Clipping 5 link" },
     { "type": "image_picker", "id": "image", "label": "(legacy) Feature image" }
   ],
   "blocks": [
@@ -204,6 +226,8 @@
     "blocks": [
       { "type": "publication", "settings": { "name": "Homeart", "kind": "press" } },
       { "type": "publication", "settings": { "name": "Design Turkey", "kind": "press" } },
+      { "type": "publication", "settings": { "name": "Maison & Objet", "kind": "press" } },
+      { "type": "publication", "settings": { "name": "Elle Decor", "kind": "press" } },
       { "type": "publication", "settings": { "name": "A' Design Award", "kind": "award" } }
     ]
   }]
