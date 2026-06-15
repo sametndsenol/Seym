@@ -297,14 +297,23 @@
   .seym-coll__info {
     margin-top: 1.8rem;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1.6rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.7rem;
+  }
+  .seym-coll__vendor {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.5);
   }
   .seym-coll__name {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     line-height: 1.2;
     margin: 0;
     color: #1A1A1A;
@@ -314,7 +323,7 @@
   .seym-coll__name:hover { color: var(--seym-terracotta, #C54730); }
   .seym-coll__price {
     font-family: 'Inter', sans-serif;
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     letter-spacing: 0.04em;
     color: rgba(26,26,26,0.78);
     white-space: nowrap;
@@ -400,8 +409,8 @@
     .seym-coll__item:nth-child(3n + 3) .seym-coll__media { aspect-ratio: 4 / 5; }
     .seym-coll__item:nth-child(2n) { margin-top: 4rem; }
     .seym-coll__item:nth-child(2n) .seym-coll__media { aspect-ratio: 1 / 1; }
-    .seym-coll__name { font-size: 1.55rem; }
-    .seym-coll__info { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    .seym-coll__name { font-size: 1.85rem; }
+    .seym-coll__info { align-items: center; gap: 0.5rem; }
     .seym-coll__passage { padding: 3rem 0; margin: 1rem auto; }
   }
 
@@ -570,6 +579,9 @@
                 {%- endunless -%}
               </a>
               <div class="seym-coll__info">
+                {%- if product.vendor != blank and product.vendor != shop.name -%}
+                  <span class="seym-coll__vendor">{{ product.vendor }}</span>
+                {%- endif -%}
                 <h3 style="margin:0">
                   <a class="seym-coll__name" href="{{ product.url }}">{{ product.title }}</a>
                 </h3>

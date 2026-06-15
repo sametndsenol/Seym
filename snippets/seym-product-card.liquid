@@ -32,6 +32,7 @@
     {%- unless p.available -%}<span class="seymcard__sold">{{ 'sections.seym.sold' | t }}</span>{%- endunless -%}
   </a>
   <div class="seymcard__info">
+    {%- if p.vendor != blank and p.vendor != shop.name -%}<span class="seymcard__vendor">{{ p.vendor }}</span>{%- endif -%}
     <a class="seymcard__name" href="{{ p.url }}">{{ p.title }}</a>
     <div class="seymcard__price">
       {%- if p.compare_at_price > p.price -%}
