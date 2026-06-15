@@ -3,6 +3,13 @@
   /collections/all (cutout floats on white, lifestyle on hover). 4 in view.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 {{ 'seym-card.css' | asset_url | stylesheet_tag }}
 
 <style>
@@ -59,7 +66,7 @@
     <header class="sbs__hd">
       <div>
         {%- if section.settings.eyebrow != blank -%}<p class="sbs__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{% if is_tr %}ÇOK SATANLAR{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
       </div>
       <div class="sbs__nav">
         <button class="sbs__arrow" data-dir="-1" aria-label="{{ 'general.slider.previous_slide' | t }}"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg></button>

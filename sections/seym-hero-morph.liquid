@@ -7,6 +7,13 @@
   Mobile / reduced-motion: no morph — clean stacked cards.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 {%- assign left = section.blocks[0] -%}
 {%- assign center = section.blocks[1] -%}
 {%- assign right = section.blocks[2] -%}
@@ -136,9 +143,9 @@
       </div>
       {%- if left.settings.link != blank -%}<a class="shm__link" href="{{ left.settings.link }}" aria-label="{{ left.settings.title | escape }}"></a>{%- endif -%}
       <div class="shm__cap" id="shmCapL-{{ section.id }}">
-        {%- if left.settings.eyebrow != blank -%}<span class="shm__ey">{{ left.settings.eyebrow }}</span>{%- endif -%}
+        {%- if left.settings.eyebrow != blank -%}<span class="shm__ey">{% if is_tr %}{% if left.settings.eyebrow contains 'eatured' %}Öne Çıkan{% else %}Koleksiyon{% endif %}{% else %}{{ left.settings.eyebrow }}{% endif %}</span>{%- endif -%}
         {%- if left.settings.title != blank -%}<h3 class="shm__name">{{ left.settings.title }}</h3>{%- endif -%}
-        {%- if left.settings.cta_label != blank -%}<span class="shm__cta">{{ left.settings.cta_label }}</span>{%- endif -%}
+        {%- if left.settings.cta_label != blank -%}<span class="shm__cta">{% if is_tr %}Keşfet{% else %}{{ left.settings.cta_label }}{% endif %}</span>{%- endif -%}
       </div>
     </article>
 
@@ -160,12 +167,12 @@
         {%- if section.settings.hero_eyebrow != blank -%}<p class="shm__hero-ey">{{ section.settings.hero_eyebrow }}</p>{%- endif -%}
         <img class="shm__hero-logo" src="{{ 'seym-logo.png' | asset_url }}" alt="{{ section.settings.hero_heading | default: 'SEYM' }}">
         <span class="shm__hero-rule" aria-hidden="true"></span>
-        {%- if section.settings.hero_cta != blank and section.settings.hero_link != blank -%}<a class="shm__hero-cta" href="{{ section.settings.hero_link }}">{{ section.settings.hero_cta }}</a>{%- endif -%}
+        {%- if section.settings.hero_cta != blank and section.settings.hero_link != blank -%}<a class="shm__hero-cta" href="{{ section.settings.hero_link }}">{% if is_tr %}Koleksiyonu keşfet{% else %}{{ section.settings.hero_cta }}{% endif %}</a>{%- endif -%}
       </div>
       {%- if section.settings.scroll_cue != blank -%}<div class="shm__cue" id="shmCue-{{ section.id }}">{{ section.settings.scroll_cue }}</div>{%- endif -%}
 
       <div class="shm__cap shm__cap--c" id="shmCapC-{{ section.id }}">
-        {%- if center.settings.eyebrow != blank -%}<span class="shm__ey">{{ center.settings.eyebrow }}</span>{%- endif -%}
+        {%- if center.settings.eyebrow != blank -%}<span class="shm__ey">{% if is_tr %}{% if center.settings.eyebrow contains 'eatured' %}Öne Çıkan{% else %}Koleksiyon{% endif %}{% else %}{{ center.settings.eyebrow }}{% endif %}</span>{%- endif -%}
         <img class="shm__cap-logo" src="{{ 'seym-logo.png' | asset_url }}" alt="{{ center.settings.title | default: 'SEYM' | escape }}" loading="lazy">
       </div>
     </article>
@@ -178,9 +185,9 @@
       </div>
       {%- if right.settings.link != blank -%}<a class="shm__link" href="{{ right.settings.link }}" aria-label="{{ right.settings.title | escape }}"></a>{%- endif -%}
       <div class="shm__cap" id="shmCapR-{{ section.id }}">
-        {%- if right.settings.eyebrow != blank -%}<span class="shm__ey">{{ right.settings.eyebrow }}</span>{%- endif -%}
+        {%- if right.settings.eyebrow != blank -%}<span class="shm__ey">{% if is_tr %}{% if right.settings.eyebrow contains 'eatured' %}Öne Çıkan{% else %}Koleksiyon{% endif %}{% else %}{{ right.settings.eyebrow }}{% endif %}</span>{%- endif -%}
         {%- if right.settings.title != blank -%}<h3 class="shm__name">{{ right.settings.title }}</h3>{%- endif -%}
-        {%- if right.settings.cta_label != blank -%}<span class="shm__cta">{{ right.settings.cta_label }}</span>{%- endif -%}
+        {%- if right.settings.cta_label != blank -%}<span class="shm__cta">{% if is_tr %}Keşfet{% else %}{{ right.settings.cta_label }}{% endif %}</span>{%- endif -%}
       </div>
     </article>
 

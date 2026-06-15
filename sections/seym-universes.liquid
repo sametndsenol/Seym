@@ -3,6 +3,13 @@
   Serif name + uppercase eyebrow, refined framing, restrained hover.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   #shopify-section-{{ section.id }} .sun {
     background: var(--seym-ivory, #F5F1EA);
@@ -134,7 +141,7 @@
   <div class="sun__wrap">
     <header class="sun__hd">
       {%- if section.settings.eyebrow != blank -%}<p class="sun__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      {%- if section.settings.heading != blank -%}<h2 class="sun__h">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="sun__h">{% if is_tr %}EVRENLERİMİZ{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
     </header>
     <div class="sun__grid" data-reveal-child>
       {%- for block in section.blocks -%}
@@ -154,9 +161,9 @@
             {%- endif -%}
           </div>
           <span class="sun__meta">
-            {%- if section.settings.kicker != blank -%}<span class="sun__kicker">{{ section.settings.kicker }}</span>{%- endif -%}
+            {%- if section.settings.kicker != blank -%}<span class="sun__kicker">{% if is_tr %}Koleksiyon{% else %}{{ section.settings.kicker }}{% endif %}</span>{%- endif -%}
             <span class="sun__name">{{ card_label }}</span>
-            <span class="sun__explore">{{ section.settings.explore_label | default: 'Explore' }}</span>
+            <span class="sun__explore">{% if is_tr %}Keşfet{% else %}{{ section.settings.explore_label | default: 'Explore' }}{% endif %}</span>
           </span>
         </a>
       {%- endfor -%}

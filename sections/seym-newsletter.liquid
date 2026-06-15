@@ -3,6 +3,13 @@
   Premium minimal moment on dark ground with an inline hairline field.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   #shopify-section-{{ section.id }} {
     --nl-ivory: #F5F1EA;
@@ -170,23 +177,23 @@
       <p class="seym-nl__eyebrow">{{ section.settings.eyebrow }}</p>
     {%- endif -%}
     {%- if section.settings.heading != blank -%}
-      <h2 class="seym-nl__heading">{{ section.settings.heading }}</h2>
+      <h2 class="seym-nl__heading">{% if is_tr %}Atölyeye Katılın{% else %}{{ section.settings.heading }}{% endif %}</h2>
     {%- endif -%}
     {%- if section.settings.subtitle != blank -%}
-      <p class="seym-nl__sub">{{ section.settings.subtitle }}</p>
+      <p class="seym-nl__sub">{% if is_tr %}Yeni koleksiyonları, atölye hikâyelerini ve sınırlı üretimleri ilk siz keşfedin.{% else %}{{ section.settings.subtitle }}{% endif %}</p>
     {%- endif -%}
     {%- form 'customer', id: 'SeymNewsletter', class: 'seym-nl__form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
       <div class="seym-nl__field">
         <input class="seym-nl__input" type="email" name="contact[email]"
-          aria-label="{{ section.settings.placeholder | default: 'Your email address' }}"
-          placeholder="{{ section.settings.placeholder | default: 'Your email address' }}" required>
+          aria-label="{% if is_tr %}E-posta adresiniz{% else %}{{ section.settings.placeholder | default: 'Your email address' }}{% endif %}"
+          placeholder="{% if is_tr %}E-posta adresiniz{% else %}{{ section.settings.placeholder | default: 'Your email address' }}{% endif %}" required>
         <button class="seym-nl__btn" type="submit">
-          <span class="seym-nl__btn-text">{{ section.settings.btn_label | default: 'Subscribe' }}</span>
+          <span class="seym-nl__btn-text">{% if is_tr %}Abone ol{% else %}{{ section.settings.btn_label | default: 'Subscribe' }}{% endif %}</span>
         </button>
       </div>
       {%- if form.posted_successfully? -%}
-        <p class="seym-nl__msg seym-nl__msg--success">{{ section.settings.success_text | default: 'Thank you — welcome to the atelier.' }}</p>
+        <p class="seym-nl__msg seym-nl__msg--success">{% if is_tr %}Teşekkürler — atölyeye hoş geldiniz.{% else %}{{ section.settings.success_text | default: 'Thank you — welcome to the atelier.' }}{% endif %}</p>
       {%- elsif form.errors -%}
         <p class="seym-nl__msg seym-nl__msg--error">{{ form.errors | default_errors }}</p>
       {%- endif -%}

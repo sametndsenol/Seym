@@ -6,6 +6,13 @@
   link. Sits on a warm paper band; pairs with the gift banner directly below.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   #shopify-section-{{ section.id }} {
     --ink: #1a1a1a; --soft: rgba(26,26,26,.55); --line: rgba(26,26,26,.12);
@@ -108,10 +115,13 @@
   <div class="sps__wrap">
     <div class="sps__body">
       <h2 class="sps__h">
-        {%- if section.settings.heading_1 != blank -%}{{ section.settings.heading_1 }}<br>{%- endif -%}
-        {%- if section.settings.heading_2 != blank -%}<em>{{ section.settings.heading_2 }}</em>{%- endif -%}
+        {%- if is_tr -%}Basında<br><em>yer aldık.</em>
+        {%- else -%}
+          {%- if section.settings.heading_1 != blank -%}{{ section.settings.heading_1 }}<br>{%- endif -%}
+          {%- if section.settings.heading_2 != blank -%}<em>{{ section.settings.heading_2 }}</em>{%- endif -%}
+        {%- endif -%}
       </h2>
-      {%- if section.settings.eyebrow != blank -%}<p class="sps__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.eyebrow != blank -%}<p class="sps__ey">{% if is_tr %}Yer aldığımız yayınlar{% else %}{{ section.settings.eyebrow }}{% endif %}</p>{%- endif -%}
       <div class="sps__names">
         {%- for block in section.blocks -%}
           {%- assign idx = forloop.index -%}
@@ -121,7 +131,7 @@
           </button>
         {%- endfor -%}
       </div>
-      {%- if section.settings.hint != blank -%}<p class="sps__hint">{{ section.settings.hint }}</p>{%- endif -%}
+      {%- if section.settings.hint != blank -%}<p class="sps__hint">{% if is_tr %}Öne çıkarmak için bir başlık seçin.{% else %}{{ section.settings.hint }}{% endif %}</p>{%- endif -%}
     </div>
 
     <div class="sps__collage">

@@ -5,6 +5,13 @@
      WHOLE (uncropped), no scrim/overlay, the entire image is the link.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   #shopify-section-{{ section.id }} .sgb {
     position: relative;
@@ -186,7 +193,7 @@
       {%- if section.settings.eyebrow != blank -%}<p class="sgb__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
       {%- if section.settings.heading != blank -%}<h2 class="sgb__h">{{ section.settings.heading }}</h2>{%- endif -%}
       {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-        <a href="{{ section.settings.cta_link }}" class="sgb__cta">{{ section.settings.cta_label }} →</a>
+        <a href="{{ section.settings.cta_link }}" class="sgb__cta">{% if is_tr %}Seçkiyi keşfet{% else %}{{ section.settings.cta_label }}{% endif %} →</a>
       {%- endif -%}
     </div>
   {%- endif -%}

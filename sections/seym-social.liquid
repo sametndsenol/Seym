@@ -4,6 +4,13 @@
   Keeps the homepage's white / charcoal / wine language.
 {%- endcomment -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
+
 <style>
   #shopify-section-{{ section.id }} {
     --ink:#1a1a1a; --soft:rgba(26,26,26,.55); --wine:#8E2244; --ease:cubic-bezier(.22,1,.36,1);
@@ -39,8 +46,8 @@
   <div class="ssoc__in">
     <header class="ssoc__hd">
       {%- if section.settings.handle != blank -%}<p class="ssoc__ey">{{ section.settings.handle }}</p>{%- endif -%}
-      {%- if section.settings.heading != blank -%}<h2 class="ssoc__h">{{ section.settings.heading }}</h2>{%- endif -%}
-      {%- if section.settings.subtitle != blank -%}<p class="ssoc__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="ssoc__h">{% if is_tr %}Camdan dünyamız{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
+      {%- if section.settings.subtitle != blank -%}<p class="ssoc__sub">{% if is_tr %}Atölyeyi takip edin — İstanbul'dan her gün ışık, renk ve zanaat.{% else %}{{ section.settings.subtitle }}{% endif %}</p>{%- endif -%}
     </header>
 
     <div class="ssoc__grid">
