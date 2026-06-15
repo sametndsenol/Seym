@@ -140,12 +140,28 @@
             "name": "A' Design Award",
             "kind": "award"
           }
+        },
+        "p4": {
+          "type": "publication",
+          "settings": {
+            "name": "Hello",
+            "kind": "press"
+          }
+        },
+        "p5": {
+          "type": "publication",
+          "settings": {
+            "name": "Home Art",
+            "kind": "press"
+          }
         }
       },
       "block_order": [
         "p1",
         "p2",
-        "p3"
+        "p3",
+        "p4",
+        "p5"
       ],
       "settings": {
         "heading_1": "As seen",
