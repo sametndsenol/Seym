@@ -52,12 +52,18 @@
 {%- capture ig_svg -%}<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7" fill="currentColor" stroke="none"/></svg>{%- endcapture -%}
 {%- capture pin_svg -%}<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-.8-.2-2 0-2.9l1.2-5s-.3-.6-.3-1.5c0-1.4.8-2.4 1.8-2.4.9 0 1.3.6 1.3 1.4 0 .9-.6 2.2-.9 3.4-.2 1 .5 1.8 1.5 1.8 1.8 0 3-2.3 3-5 0-2.1-1.4-3.6-3.9-3.6-2.8 0-4.6 2.1-4.6 4.4 0 .8.2 1.4.6 1.8.2.2.2.3.1.5l-.2.9c-.1.3-.3.4-.5.2-1-.4-1.5-1.6-1.5-2.9 0-2.4 2-5.2 6-5.2 3.2 0 5.3 2.3 5.3 4.8 0 3.3-1.8 5.7-4.5 5.7-.9 0-1.8-.5-2.1-1l-.6 2.2c-.2.7-.6 1.5-1 2A10 10 0 1 0 12 2z" fill="currentColor" stroke="none"/></svg>{%- endcapture -%}
 
+{%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
+-%}
 <footer class="sf">
   <div class="sf__in">
     <div class="sf__top">
       <div class="sf__brand-col">
         <p class="sf__brand">{{ shop.name | default: 'Seym' }}</p>
-        {%- if section.settings.blurb != blank -%}<p class="sf__blurb">{{ section.settings.blurb }}</p>{%- endif -%}
+        {%- if section.settings.blurb != blank -%}<p class="sf__blurb">{% if is_tr %}Mitoloji ve doğadan ilham alan, elde üflenmiş cam nesneler üreten bir İstanbul atölyesi.{% else %}{{ section.settings.blurb }}{% endif %}</p>{%- endif -%}
         <div class="sf__social">
           {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{{ ig_svg }}</a>{%- endif -%}
           {%- if section.settings.instagram_2 != blank -%}<a href="{{ section.settings.instagram_2 }}" target="_blank" rel="noopener" aria-label="Instagram">{{ ig_svg }}</a>{%- endif -%}
@@ -68,20 +74,20 @@
 
       <div class="sf__col">
         {%- if section.settings.menu_1 != blank -%}
-          <p class="sf__ttl">{{ section.settings.menu_1_title }}</p>
+          <p class="sf__ttl">{% if is_tr %}Keşfet{% else %}{{ section.settings.menu_1_title }}{% endif %}</p>
           <ul class="sf__ul--2col">{%- for link in linklists[section.settings.menu_1].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
         {%- endif -%}
       </div>
 
       <div class="sf__col">
         {%- if section.settings.menu_2 != blank -%}
-          <p class="sf__ttl">{{ section.settings.menu_2_title }}</p>
+          <p class="sf__ttl">{% if is_tr %}Bilgi{% else %}{{ section.settings.menu_2_title }}{% endif %}</p>
           <ul>{%- for link in linklists[section.settings.menu_2].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
         {%- endif -%}
       </div>
 
       <div class="sf__col sf__contact">
-        <p class="sf__ttl">{{ section.settings.contact_title }}</p>
+        <p class="sf__ttl">{% if is_tr %}Atölye{% else %}{{ section.settings.contact_title }}{% endif %}</p>
         {%- if section.settings.address != blank -%}<p>{{ section.settings.address }}</p>{%- endif -%}
         {%- if section.settings.email != blank -%}<p><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>{%- endif -%}
       </div>

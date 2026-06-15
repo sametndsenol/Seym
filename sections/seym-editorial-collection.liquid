@@ -429,6 +429,10 @@
   assign mf_passage_2 = collection.metafields.custom.story_passage_2
   assign mf_passage_2_after_raw = collection.metafields.custom.story_passage_2_after
 
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
   assign eyebrow_text = mf_eyebrow | default: section.settings.fallback_eyebrow
   assign heading_text = mf_heading | default: collection.title
   assign intro_text   = mf_intro   | default: section.settings.fallback_intro
@@ -457,7 +461,7 @@
         <header class="seym-coll__hero">
           <div class="seym-coll__hero-lead">
             {%- if eyebrow_text != blank -%}
-              <span class="seym-coll__eyebrow">{{ eyebrow_text }}</span>
+              <span class="seym-coll__eyebrow">{% if is_tr %}ATÖLYE{% else %}{{ eyebrow_text }}{% endif %}</span>
             {%- endif -%}
             {%- if heading_text != blank -%}
               <h1 class="seym-coll__heading">{{ heading_text }}</h1>

@@ -60,7 +60,7 @@
     </div>
 
     {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
-      <div class="ssoc__cta"><a href="{{ section.settings.cta_link }}" target="_blank" rel="noopener">{{ section.settings.cta_label }} &rarr;</a></div>
+      <div class="ssoc__cta"><a href="{{ section.settings.cta_link }}" target="_blank" rel="noopener">{% if is_tr %}Instagram'da takip et{% else %}{{ section.settings.cta_label }}{% endif %} &rarr;</a></div>
     {%- endif -%}
   </div>
 </section>

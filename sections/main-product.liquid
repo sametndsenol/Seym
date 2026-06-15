@@ -79,6 +79,8 @@
         class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
       >
         {%- assign product_form_id = 'product-form-' | append: section.id -%}
+        {%- assign is_tr = false -%}
+        {%- if localization.language.iso_code == 'tr' -%}{%- assign is_tr = true -%}{%- endif -%}
 
         {%- for block in section.blocks -%}
           {%- case block.type -%}
@@ -200,13 +202,13 @@
                     <div class="summary__title">
                       {% render 'icon-accordion', icon: block.settings.icon %}
                       <h2 class="h4 accordion__title inline-richtext">
-                        {{ block.settings.heading | default: block.settings.page.title }}
+                        {% if is_tr and block.settings.heading_tr != blank %}{{ block.settings.heading_tr }}{% else %}{{ block.settings.heading | default: block.settings.page.title }}{% endif %}
                       </h2>
                     </div>
                     {% render 'icon-caret' %}
                   </summary>
                   <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                    {{ block.settings.content }}
+                    {% if is_tr and block.settings.content_tr != blank %}{{ block.settings.content_tr }}{% else %}{{ block.settings.content }}{% endif %}
                     {{ block.settings.page.content }}
                   </div>
                 </details>
@@ -976,6 +978,18 @@
           "default": "Collapsible row",
           "info": "t:sections.main-product.blocks.collapsible_tab.settings.heading.info",
           "label": "t:sections.main-product.blocks.collapsible_tab.settings.heading.label"
+        },
+        {
+          "type": "text",
+          "id": "heading_tr",
+          "label": "Heading (Turkish)",
+          "info": "Shown on the /tr storefront. Leave blank to use the default heading."
+        },
+        {
+          "type": "richtext",
+          "id": "content_tr",
+          "label": "Content (Turkish)",
+          "info": "Shown on the /tr storefront. Leave blank to use the default content."
         },
         {
           "type": "select",
