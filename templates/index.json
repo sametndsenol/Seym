@@ -141,13 +141,6 @@
             "kind": "award"
           }
         },
-        "publication_tccJD7": {
-          "type": "publication",
-          "settings": {
-            "name": "",
-            "kind": "press"
-          }
-        },
         "p4": {
           "type": "publication",
           "settings": {
@@ -167,7 +160,6 @@
         "p1",
         "p2",
         "p3",
-        "publication_tccJD7",
         "p4",
         "p5"
       ],
