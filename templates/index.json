@@ -17,9 +17,9 @@
           "settings": {
             "image": "shopify://shop_images/3JmG2nplhMLsiO4qMZOd_PCOiHROM.png",
             "eyebrow": "Collection",
-            "title": "Flos",
+            "title": "Maris",
             "cta_label": "Discover",
-            "link": "/collections/luna",
+            "link": "shopify://collections/mari̇s",
             "glow": "rgba(72,98,182,.85)"
           }
         },
