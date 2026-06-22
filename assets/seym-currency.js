@@ -73,8 +73,10 @@
 
   function formatMoney(cents, code) {
     var amount = (cents / 100) * (rates[code] || FALLBACK[code] || 1);
-    // USD/EUR shown as whole numbers (no cents); TRY keeps its server format.
+    // USD/EUR shown as whole numbers, rounded to the nearest 10 (531 -> 530);
+    // TRY keeps its exact server format.
     var digits = code === 'TRY' ? 2 : 0;
+    if (code !== 'TRY') amount = Math.round(amount / 10) * 10;
     try {
       return new Intl.NumberFormat(LOCALE, {
         style: 'currency',
