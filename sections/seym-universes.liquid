@@ -140,7 +140,7 @@
 <section class="sun" data-reveal>
   <div class="sun__wrap">
     <header class="sun__hd">
-      {%- if section.settings.eyebrow != blank -%}<p class="sun__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.eyebrow != blank -%}<p class="sun__ey">{% if is_tr %}Keşfe çıkın{% else %}{{ section.settings.eyebrow }}{% endif %}</p>{%- endif -%}
       {%- if section.settings.heading != blank -%}<h2 class="sun__h">{% if is_tr %}EVRENLERİMİZ{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
     </header>
     <div class="sun__grid" data-reveal-child>

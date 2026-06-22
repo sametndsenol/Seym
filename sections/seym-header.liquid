@@ -26,7 +26,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     letter-spacing: 0.26em;
-    text-transform: uppercase;
+    text-transform: none;
     color: #F5F1EA;
     margin: 0;
     text-shadow: none;
@@ -316,7 +316,7 @@
 
 {%- if section.settings.show_bar and section.settings.bar_text != blank -%}
 <div class="seym-bar" id="SeymBar">
-  <p>{% if locale_cur == 'tr' %}Türkiye içi ücretsiz kargo · Hand-blown in Istanbul{% else %}Complimentary shipping within Türkiye · Hand-blown in Istanbul{% endif %}</p>
+  <p>{% if locale_cur == 'tr' %}TÜRKİYE İÇİ ÜCRETSİZ KARGO · HAND-BLOWN IN ISTANBUL{% else %}COMPLIMENTARY SHIPPING WITHIN TÜRKİYE · HAND-BLOWN IN ISTANBUL{% endif %}</p>
 </div>
 {%- endif -%}
 

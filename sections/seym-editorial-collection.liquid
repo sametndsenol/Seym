@@ -534,8 +534,12 @@
       {%- if collection.products.size == 0 -%}
         <div class="seym-coll__empty">No pieces in this collection — yet.</div>
       {%- else -%}
+        {%- comment -%} Sold-out pieces always sink to the bottom, keeping the chosen sort within each group. {%- endcomment -%}
+        {%- assign coll_in_stock = collection.products | where: 'available', true -%}
+        {%- assign coll_out_stock = collection.products | where: 'available', false -%}
+        {%- assign coll_ordered = coll_in_stock | concat: coll_out_stock -%}
         <div class="seym-coll__grid">
-          {%- for product in collection.products -%}
+          {%- for product in coll_ordered -%}
             {%- assign idx = forloop.index -%}
 
             <article class="seym-coll__item">
