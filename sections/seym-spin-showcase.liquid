@@ -245,7 +245,7 @@
                   <div class="seym-spin__back">
                     <span class="seym-spin__back-name">{{ product.title }}</span>
                     <span class="seym-spin__back-rule"></span>
-                    <span class="seym-spin__back-price">{{ product.price | money }}</span>
+                    <span class="seym-spin__back-price">{% render 'seym-money', amount: product.price %}</span>
                   </div>
 
                 </div>
@@ -253,7 +253,7 @@
 
               <div class="seym-spin__meta">
                 <h3 class="seym-spin__title">{{ product.title }}</h3>
-                <p class="seym-spin__price">{{ product.price | money }}</p>
+                <p class="seym-spin__price">{% render 'seym-money', amount: product.price %}</p>
               </div>
             </a>
           </div>

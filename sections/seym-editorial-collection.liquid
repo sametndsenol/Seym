@@ -566,11 +566,7 @@
                     <span class="seym-coll__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
                     <span class="seym-coll__overlay-name">{{ product.title }}</span>
                     <span class="seym-coll__overlay-price">
-                      {%- if product.compare_at_price > product.price -%}
-                        {{ product.price | money }}
-                      {%- else -%}
-                        {{ product.price | money }}
-                      {%- endif -%}
+                      {% render 'seym-money', amount: product.price %}
                     </span>
                   </div>
                 {%- endif -%}
@@ -587,10 +583,10 @@
                 </h3>
                 <div class="seym-coll__price">
                   {%- if product.compare_at_price > product.price -%}
-                    <span class="seym-coll__price-compare">{{ product.compare_at_price | money }}</span>
-                    <span class="seym-coll__price-sale">{{ product.price | money }}</span>
+                    {% render 'seym-money', amount: product.compare_at_price, class: 'seym-coll__price-compare' %}
+                    {% render 'seym-money', amount: product.price, class: 'seym-coll__price-sale' %}
                   {%- else -%}
-                    {{ product.price | money }}
+                    {% render 'seym-money', amount: product.price %}
                   {%- endif -%}
                 </div>
               </div>

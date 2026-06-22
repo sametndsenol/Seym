@@ -374,7 +374,7 @@
         <span class="seym-ed__acquire-eyebrow">{{ section.settings.acquire_eyebrow | default: 'Add to your collection' }}</span>
         {%- if product != blank -%}
           <h3 class="seym-ed__acquire-name">{{ product.title }}</h3>
-          <p class="seym-ed__acquire-price">{{ product.price | money }}</p>
+          <p class="seym-ed__acquire-price">{% render 'seym-money', amount: product.price %}</p>
           <a href="{{ product.url }}" class="seym-ed__acquire-btn">{{ section.settings.cta_label | default: 'Acquire this piece' }}</a>
           {%- if section.settings.acquire_note != blank -%}
             <span class="seym-ed__acquire-note">{{ section.settings.acquire_note }}</span>
