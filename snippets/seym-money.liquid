@@ -1,0 +1,8 @@
+{%- comment -%}
+  Wraps a money amount so seym-currency.js can convert it for display.
+  Accepts:
+    amount: {Number} the amount in TRY cents (e.g. product.price). Required.
+    class:  {String} extra classes for the span (optional).
+  Falls back to a plain `money` filter when JS is off.
+{%- endcomment -%}
+<span class="seym-money{% if class %} {{ class }}{% endif %}" data-base="{{ amount | default: 0 }}">{{ amount | default: 0 | money }}</span>

@@ -354,7 +354,7 @@
     <div class="seym-hd__icons">
         <div class="seym-loc" id="SeymLoc">
           <button type="button" class="seym-loc__btn" aria-haspopup="true" aria-expanded="false" aria-label="Language and currency">
-            <span>{{ locale_cur | upcase }}{% if localization.available_countries.size > 1 %} · {{ localization.country.currency.iso_code }}{% endif %}</span>
+            <span>{{ locale_cur | upcase }} · <span data-cur-label>TRY</span></span>
             <svg class="seym-loc__chev" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="seym-loc__panel">
@@ -363,15 +363,15 @@
               <a href="{{ locale_base }}" class="seym-loc__opt{% if locale_cur != 'tr' %} is-active{% endif %}" hreflang="en">English</a>
               <a href="/tr{{ locale_base }}" class="seym-loc__opt{% if locale_cur == 'tr' %} is-active{% endif %}" hreflang="tr">Türkçe</a>
             </div>
-            {%- if localization.available_countries.size > 1 -%}
-              {%- form 'localization', class: 'seym-loc__group' -%}
-                <input type="hidden" name="return_to" value="{{ request.path }}">
-                <p class="seym-loc__lbl">{{ 'sections.seym.currency' | t }}</p>
-                {%- for country in localization.available_countries -%}
-                  <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-loc__opt{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.name }} · {{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
-                {%- endfor -%}
-              {%- endform -%}
-            {%- endif -%}
+            <div class="seym-loc__group" role="group" aria-label="Currency">
+              <p class="seym-loc__lbl">{{ 'sections.seym.currency' | t }}</p>
+              <button type="button" class="seym-loc__opt is-active" data-currency="TRY">TRY ₺</button>
+              <button type="button" class="seym-loc__opt" data-currency="USD">USD $</button>
+              <button type="button" class="seym-loc__opt" data-currency="EUR">EUR €</button>
+              <p class="seym-loc__note" data-currency-note hidden style="font-size:.62rem;letter-spacing:.1em;color:rgba(13,13,13,.42);margin:.6rem 0 0;text-transform:none;line-height:1.4;">
+                {%- if locale_cur == 'tr' -%}≈ Yaklaşık · ödeme ₺ ile yapılır{%- else -%}≈ Estimate · charged in ₺{%- endif -%}
+              </p>
+            </div>
           </div>
         </div>
       <a href="{{ routes.search_url }}" class="seym-hd__icon" aria-label="Search">
@@ -426,14 +426,14 @@
       <a href="{{ locale_base }}" class="seym-drawer__loc-btn{% if locale_cur != 'tr' %} is-active{% endif %}" hreflang="en">English</a>
       <a href="/tr{{ locale_base }}" class="seym-drawer__loc-btn{% if locale_cur == 'tr' %} is-active{% endif %}" hreflang="tr">Türkçe</a>
     </div>
-    {%- if localization.available_countries.size > 1 -%}
-      {%- form 'localization', class: 'seym-drawer__locrow' -%}
-        <input type="hidden" name="return_to" value="{{ request.path }}">
-        {%- for country in localization.available_countries -%}
-          <button type="submit" name="country_code" value="{{ country.iso_code }}" class="seym-drawer__loc-btn{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">{{ country.currency.iso_code }} {{ country.currency.symbol }}</button>
-        {%- endfor -%}
-      {%- endform -%}
-    {%- endif -%}
+    <div class="seym-drawer__locrow" role="group" aria-label="Currency">
+      <button type="button" class="seym-drawer__loc-btn is-active" data-currency="TRY">TRY ₺</button>
+      <button type="button" class="seym-drawer__loc-btn" data-currency="USD">USD $</button>
+      <button type="button" class="seym-drawer__loc-btn" data-currency="EUR">EUR €</button>
+    </div>
+    <p class="seym-drawer__loc-note" data-currency-note hidden style="font-size:.66rem;letter-spacing:.1em;color:rgba(13,13,13,.42);margin:.8rem 0 0;line-height:1.4;">
+      {%- if locale_cur == 'tr' -%}≈ Yaklaşık · ödeme ₺ ile yapılır{%- else -%}≈ Estimate · charged in ₺{%- endif -%}
+    </p>
   </div>
 </div>
 

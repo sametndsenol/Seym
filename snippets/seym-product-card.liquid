@@ -26,7 +26,7 @@
       <div class="seymcard__overlay">
         <span class="seymcard__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
         <span class="seymcard__overlay-name">{{ p.title }}</span>
-        <span class="seymcard__overlay-price">{{ p.price | money }}</span>
+        <span class="seymcard__overlay-price">{% render 'seym-money', amount: p.price %}</span>
       </div>
     {%- endif -%}
     {%- unless p.available -%}<span class="seymcard__sold">{{ 'sections.seym.sold' | t }}</span>{%- endunless -%}
@@ -36,9 +36,9 @@
     <a class="seymcard__name" href="{{ p.url }}">{{ p.title }}</a>
     <div class="seymcard__price">
       {%- if p.compare_at_price > p.price -%}
-        <span class="seymcard__price-compare">{{ p.compare_at_price | money }}</span><span class="seymcard__price-sale">{{ p.price | money }}</span>
+        {% render 'seym-money', amount: p.compare_at_price, class: 'seymcard__price-compare' %}{% render 'seym-money', amount: p.price, class: 'seymcard__price-sale' %}
       {%- else -%}
-        {{ p.price | money }}
+        {% render 'seym-money', amount: p.price %}
       {%- endif -%}
     </div>
   </div>
