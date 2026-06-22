@@ -38,7 +38,7 @@
   <section class="sr" data-reveal>
     <div class="sr__wrap">
       {%- if section.settings.heading != blank -%}
-        <header class="sr__hd"><h2 class="sr__h">{{ section.settings.heading }}</h2></header>
+        <header class="sr__hd"><h2 class="sr__h">{% if localization.language.iso_code == 'tr' %}Bunları da beğenebilirsiniz{% else %}{{ section.settings.heading }}{% endif %}</h2></header>
       {%- endif -%}
       <div class="sr__grid">
         {%- assign shown = 0 -%}

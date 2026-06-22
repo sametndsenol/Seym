@@ -91,7 +91,7 @@
                 class="product__text inline-richtext{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
                 {{ block.shopify_attributes }}
               >
-                {{- block.settings.text -}}
+                {%- if is_tr and block.settings.text_tr != blank -%}{{ block.settings.text_tr }}{%- else -%}{{ block.settings.text }}{%- endif -%}
               </p>
             {%- when 'title' -%}
               <div class="product__title" {{ block.shopify_attributes }}>
@@ -717,6 +717,12 @@
           "id": "text",
           "default": "Text block",
           "label": "t:sections.main-product.blocks.text.settings.text.label"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_tr",
+          "label": "Text (Türkçe)",
+          "info": "Turkish version shown on /tr. Leave blank to reuse the text above."
         },
         {
           "type": "select",

@@ -16,6 +16,7 @@
           "type": "text",
           "settings": {
             "text": "Mouth-blown · Istanbul · Limited Edition",
+            "text_tr": "El üflemesi · İstanbul · Sınırlı Üretim",
             "text_style": "uppercase"
           }
         },
@@ -130,6 +131,7 @@
           "type": "caption",
           "settings": {
             "caption": "The Story",
+            "caption_tr": "Hikâye",
             "text_style": "caption-with-letter-spacing",
             "text_size": "medium"
           }
@@ -138,13 +140,15 @@
           "type": "heading",
           "settings": {
             "heading": "Held to the light.",
+            "heading_tr": "Işığa tutulmuş.",
             "heading_size": "h1"
           }
         },
         "text_story": {
           "type": "text",
           "settings": {
-            "text": "<p>Each Seym piece carries a quiet narrative — a fragment of myth, a memory of nature, captured in glass. Hold it to the light, and the story begins.</p>"
+            "text": "<p>Each Seym piece carries a quiet narrative — a fragment of myth, a memory of nature, captured in glass. Hold it to the light, and the story begins.</p>",
+            "text_tr": "<p>Her Seym parçası sessiz bir hikâye taşır — bir efsane kırıntısı, doğanın bir anısı, camda yakalanmış. Işığa tuttuğunuzda hikâye başlar.</p>"
           }
         }
       },

@@ -37,6 +37,8 @@
   <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
     <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
       <div class="rich-text__blocks {{ section.settings.content_alignment }}">
+        {%- assign is_tr = false -%}
+        {%- if localization.language.iso_code == 'tr' -%}{%- assign is_tr = true -%}{%- endif -%}
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
@@ -48,7 +50,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {{ block.settings.heading }}
+                {% if is_tr and block.settings.heading_tr != blank %}{{ block.settings.heading_tr }}{% else %}{{ block.settings.heading }}{% endif %}
               </h2>
             {%- when 'caption' -%}
               <p
@@ -59,7 +61,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {{ block.settings.caption | escape }}
+                {% if is_tr and block.settings.caption_tr != blank %}{{ block.settings.caption_tr | escape }}{% else %}{{ block.settings.caption | escape }}{% endif %}
               </p>
             {%- when 'text' -%}
               <div
@@ -70,7 +72,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {{ block.settings.text }}
+                {% if is_tr and block.settings.text_tr != blank %}{{ block.settings.text_tr }}{% else %}{{ block.settings.text }}{% endif %}
               </div>
             {%- when 'button' -%}
               <div
@@ -213,6 +215,12 @@
           "label": "t:sections.rich-text.blocks.heading.settings.heading.label"
         },
         {
+          "type": "inline_richtext",
+          "id": "heading_tr",
+          "label": "Heading (Türkçe)",
+          "info": "Turkish version shown on /tr. Leave blank to reuse the heading above."
+        },
+        {
           "type": "select",
           "id": "heading_size",
           "options": [
@@ -248,6 +256,12 @@
           "id": "caption",
           "default": "Add a tagline",
           "label": "t:sections.rich-text.blocks.caption.settings.text.label"
+        },
+        {
+          "type": "text",
+          "id": "caption_tr",
+          "label": "Tagline (Türkçe)",
+          "info": "Turkish version shown on /tr. Leave blank to reuse the tagline above."
         },
         {
           "type": "select",
@@ -297,6 +311,12 @@
           "id": "text",
           "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
           "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text_tr",
+          "label": "Text (Türkçe)",
+          "info": "Turkish version shown on /tr. Leave blank to reuse the text above."
         }
       ]
     },

@@ -15,12 +15,12 @@
 <share-button id="Share-{{ section.id }}" class="share-button quick-add-hidden" {{ block.shopify_attributes }}>
   <button class="share-button__button hidden">
     {% render 'icon-share' %}
-    {{ block.settings.share_label | escape }}
+    {% if localization.language.iso_code == 'tr' %}Paylaş{% else %}{{ block.settings.share_label | escape }}{% endif %}
   </button>
   <details id="Details-{{ block.id }}-{{ section.id }}">
     <summary class="share-button__button">
       {% render 'icon-share' %}
-      {{ block.settings.share_label | escape }}
+      {% if localization.language.iso_code == 'tr' %}Paylaş{% else %}{{ block.settings.share_label | escape }}{% endif %}
     </summary>
     <div class="share-button__fallback motion-reduce">
       <div class="field">
