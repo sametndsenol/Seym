@@ -40,7 +40,7 @@
             "eyebrow": "Featured",
             "title": "Discover",
             "cta_label": "Collection",
-            "link": "/collections/solis",
+            "link": "shopify://collections",
             "glow": "rgba(150,38,72,.9)"
           }
         }
