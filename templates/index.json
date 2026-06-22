@@ -17,8 +17,8 @@
           "settings": {
             "image": "shopify://shop_images/3JmG2nplhMLsiO4qMZOd_PCOiHROM.png",
             "eyebrow": "Collection",
-            "title": "Flos",
-            "cta_label": "Discover",
+            "title": "Discover",
+            "cta_label": "Collection",
             "link": "shopify://collections/flos-koleksi̇yonu",
             "glow": "rgba(72,98,182,.85)"
           }
@@ -38,8 +38,8 @@
           "settings": {
             "image": "shopify://shop_images/WZkBzxv1b9kaNYOtI6Tt6_uXMuDbwY.png",
             "eyebrow": "Featured",
-            "title": "Solis",
-            "cta_label": "Discover",
+            "title": "Discover",
+            "cta_label": "Collection",
             "link": "/collections/solis",
             "glow": "rgba(150,38,72,.9)"
           }
