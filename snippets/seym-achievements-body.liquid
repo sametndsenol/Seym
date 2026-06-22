@@ -146,10 +146,46 @@
   }
   .seym-ach__back a:hover { color: var(--seym-wine, #8E2244); border-color: var(--seym-wine, #8E2244); }
 
+  /* 3D stage inside the milestones block */
+  .seym-ach__stage {
+    position: relative;
+    margin: 0 0 3.2rem;
+    aspect-ratio: 16 / 10;
+    background:
+      radial-gradient(70% 70% at 50% 40%, rgba(142,34,68,0.06), transparent 70%),
+      #f0ede8;
+    border: 1px solid rgba(26,26,26,0.08);
+    overflow: hidden;
+  }
+  .seym-ach__stage model-viewer {
+    width: 100%;
+    height: 100%;
+    --poster-color: transparent;
+  }
+  .seym-ach__stage-hint {
+    position: absolute;
+    left: 50%; bottom: 1.4rem;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+    background: rgba(245,241,234,0.7);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2rem;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+
   @media (max-width: 749px) {
     .seym-ach__wrap { padding: 0 2.4rem; }
     .seym-ach__item { grid-template-columns: 3.6rem 1fr; gap: 1.6rem; }
     .seym-ach__num { font-size: 2.2rem; }
+    .seym-ach__stage { aspect-ratio: 4 / 5; }
   }
 </style>
 
@@ -164,25 +200,49 @@
       </h1>
       <p class="seym-ach__lead">
         {%- if is_tr -%}
-          Genç bir atölyenin adımları — şekillendirilen parçalarla, kazanılan tanınırlıkla, girilen evlerle ölçülen.
+          Genç bir atölyenin adımları — şekillendirilen parçalarla, doğan koleksiyonlarla, girilen evlerle ölçülen.
         {%- else -%}
-          Milestones of a young atelier — measured in pieces shaped, in recognitions earned, in homes entered.
+          Milestones of a young atelier — measured in pieces shaped, in collections born, in homes entered.
         {%- endif -%}
       </p>
     </header>
+
+    {%- assign ach_model = 'kTXk9osi445YD8EzpWGkU_trellis2_71a8b9e8726840be83e2fc9258984f12.glb' -%}
+    <div class="seym-ach__stage" id="SeymAchStage">
+      <model-viewer
+        id="SeymAchModel"
+        src="{{ ach_model | asset_url }}"
+        alt="{%- if is_tr -%}Seym el üflemesi cam — etkileşimli 3D model{%- else -%}Seym mouth-blown glass — interactive 3D model{%- endif -%}"
+        camera-controls
+        interaction-prompt="none"
+        camera-orbit="0deg 75deg 105%"
+        min-camera-orbit="auto auto 80%"
+        max-camera-orbit="auto auto 130%"
+        environment-image="neutral"
+        shadow-intensity="0"
+        exposure="1.0"
+        loading="lazy"
+        reveal="auto"
+        disable-zoom
+        disable-tap
+      ></model-viewer>
+      <span class="seym-ach__stage-hint">
+        {%- if is_tr -%}Döndürmek için sürükleyin{%- else -%}Drag to rotate{%- endif -%}
+      </span>
+    </div>
 
     <ol class="seym-ach__list">
       <li class="seym-ach__item">
         <span class="seym-ach__num"></span>
         <div class="seym-ach__body">
           <h3 class="seym-ach__heading">
-            {%- if is_tr -%}A' Design Award — Gümüş Ödül{%- else -%}A' Design Award — Silver{%- endif -%}
+            {%- if is_tr -%}12 Koleksiyon{%- else -%}12 Collections{%- endif -%}
           </h3>
           <p class="seym-ach__desc">
             {%- if is_tr -%}
-              Stella koleksiyonu ile uluslararası tasarım sahnesinde gümüş ödül.
+              Her biri doğanın bir dilinden esinlenen on iki koleksiyon.
             {%- else -%}
-              Silver award on the international design stage with the Stella collection.
+              Twelve collections, each inspired by a language of nature.
             {%- endif -%}
           </p>
         </div>
@@ -191,13 +251,13 @@
         <span class="seym-ach__num"></span>
         <div class="seym-ach__body">
           <h3 class="seym-ach__heading">
-            {%- if is_tr -%}100+ Benzersiz Tasarım{%- else -%}100+ Unique Designs{%- endif -%}
+            {%- if is_tr -%}70+ Ürün{%- else -%}70+ Pieces{%- endif -%}
           </h3>
           <p class="seym-ach__desc">
             {%- if is_tr -%}
-              Her biri elle üflenen, tekrarlanmayan parçalar — Çengelköy atölyesinden dünyaya.
+              Yetmişten fazla parça — Çengelköy atölyesinden dünyaya.
             {%- else -%}
-              Each hand-blown, never repeated — from the Çengelköy atelier to the world.
+              More than seventy pieces — from the Çengelköy atelier to the world.
             {%- endif -%}
           </p>
         </div>
@@ -206,28 +266,13 @@
         <span class="seym-ach__num"></span>
         <div class="seym-ach__body">
           <h3 class="seym-ach__heading">
-            {%- if is_tr -%}6 Koleksiyon{%- else -%}6 Collections{%- endif -%}
+            {%- if is_tr -%}El Üflemesi{%- else -%}Mouth-Blown{%- endif -%}
           </h3>
           <p class="seym-ach__desc">
             {%- if is_tr -%}
-              Flos, Solis, Glacies, Luminis, Maris, Luna — her biri doğanın bir dilinden esinlenen.
+              Her biri usta ellerde, nefesle şekillenen — seri üretim değil, sanat.
             {%- else -%}
-              Flos, Solis, Glacies, Luminis, Maris, Luna — each inspired by a language of nature.
-            {%- endif -%}
-          </p>
-        </div>
-      </li>
-      <li class="seym-ach__item">
-        <span class="seym-ach__num"></span>
-        <div class="seym-ach__body">
-          <h3 class="seym-ach__heading">
-            {%- if is_tr -%}Çek Kristali · El Üfleme{%- else -%}Czech Crystal · Mouth-Blown{%- endif -%}
-          </h3>
-          <p class="seym-ach__desc">
-            {%- if is_tr -%}
-              %100 Çek kristali, usta ellerde şekillenen — seri üretim değil, sanat.
-            {%- else -%}
-              100% Czech crystal, shaped by master hands — not mass production, but art.
+              Each shaped by master hands and breath — not mass production, but art.
             {%- endif -%}
           </p>
         </div>
@@ -239,6 +284,59 @@
         {{ page.content }}
       </div>
     {%- endif -%}
+
+    <script>
+      (function () {
+        var stage = document.getElementById('SeymAchStage');
+        if (!stage) return;
+        var loaded = false;
+        function inject() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.type = 'module';
+          s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
+          document.head.appendChild(s);
+        }
+        if ('IntersectionObserver' in window) {
+          var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { inject(); obs.disconnect(); }
+            });
+          }, { rootMargin: '200px 0px' });
+          obs.observe(stage);
+        } else { inject(); }
+
+        var viewer = document.getElementById('SeymAchModel');
+        if (!viewer) return;
+        viewer.addEventListener('load', function () {
+          var hint = stage.querySelector('.seym-ach__stage-hint');
+          if (hint) setTimeout(function () { hint.style.opacity = '0'; }, 4000);
+        });
+        var spinning = false;
+        function startSpin() {
+          if (spinning) return;
+          spinning = true;
+          viewer.setAttribute('auto-rotate', '');
+          viewer.setAttribute('rotation-per-second', '8deg');
+        }
+        function stopSpin() {
+          if (!spinning) return;
+          spinning = false;
+          viewer.removeAttribute('auto-rotate');
+        }
+        viewer.addEventListener('mouseenter', startSpin);
+        viewer.addEventListener('mouseleave', stopSpin);
+        viewer.addEventListener('touchstart', startSpin, { passive: true });
+        viewer.addEventListener('touchend', function () { setTimeout(stopSpin, 2000); }, { passive: true });
+        if ('IntersectionObserver' in window) {
+          var visObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { if (!e.isIntersecting) stopSpin(); });
+          }, { threshold: 0 });
+          visObs.observe(viewer);
+        }
+      })();
+    </script>
 
     <nav class="seym-ach__back" aria-label="Related">
       <a href="/pages/about-us">

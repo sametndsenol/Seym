@@ -140,7 +140,15 @@
 
   @media (max-width: 749px) {
     #shopify-section-{{ section.id }} .sgb { height: clamp(24rem, 60vh, 36rem); }
-    #shopify-section-{{ section.id }} .sgb--plain { padding: clamp(4.5rem, 9vh, 6rem) 2rem; }
+    #shopify-section-{{ section.id }} .sgb--plain { padding: clamp(2.4rem, 5vh, 3.4rem) 1.2rem; }
+    /* Wide banner becomes a short strip on a narrow screen — trim the rounded
+       corners + shadow so it doesn't look like a tiny card lost in the paper. */
+    #shopify-section-{{ section.id }} .sgb--plain .sgb__media {
+      max-width: none;
+      border-radius: 12px;
+      box-shadow: 0 24px 50px -34px rgba(142,34,68,.40), 0 10px 26px -24px rgba(0,0,0,.22);
+    }
+    #shopify-section-{{ section.id }} .sgb--plain .sgb__media img { border-radius: 12px; }
     #shopify-section-{{ section.id }} .sgb__txt {
       top: 0; bottom: auto; left: 0; right: 0;
       justify-content: flex-start;
