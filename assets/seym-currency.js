@@ -73,16 +73,18 @@
 
   function formatMoney(cents, code) {
     var amount = (cents / 100) * (rates[code] || FALLBACK[code] || 1);
+    // USD/EUR shown as whole numbers (no cents); TRY keeps its server format.
+    var digits = code === 'TRY' ? 2 : 0;
     try {
       return new Intl.NumberFormat(LOCALE, {
         style: 'currency',
         currency: code,
-        minimumFractionDigits: code === 'TRY' ? 2 : 2,
-        maximumFractionDigits: 2
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
       }).format(amount);
     } catch (e) {
       var sym = (CURRENCIES[code] || {}).symbol || '';
-      return sym + amount.toFixed(2);
+      return sym + (digits ? amount.toFixed(2) : Math.round(amount));
     }
   }
 
