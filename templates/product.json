@@ -42,10 +42,6 @@
             "show_gift_card_recipient": false
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "share": {
           "type": "share",
           "settings": {
@@ -57,9 +53,9 @@
           "settings": {
             "heading": "Provenance",
             "heading_tr": "Köken",
+            "content_tr": "<p>İstanbul Çengelköy'deki atölyemizde usta eller tarafından elde üflenir. Her parça tek tek bitirilir ve ustasının sessiz imzasını taşır. Evrensel cam sanatı geleneği, çağdaş mekânlar için yeniden yorumlanır.</p>",
             "icon": "none",
             "content": "<p>Mouth-blown by master hands in our Çengelköy atelier, Istanbul. Each piece is finished one at a time and bears its maker's quiet signature. Universal glass-art tradition reimagined for contemporary spaces.</p>",
-            "content_tr": "<p>İstanbul Çengelköy'deki atölyemizde usta eller tarafından elde üflenir. Her parça tek tek bitirilir ve ustasının sessiz imzasını taşır. Evrensel cam sanatı geleneği, çağdaş mekânlar için yeniden yorumlanır.</p>",
             "page": ""
           }
         },
@@ -68,9 +64,9 @@
           "settings": {
             "heading": "Material & Care",
             "heading_tr": "Malzeme ve Bakım",
+            "content_tr": "<p>Elde üflenmiş kristal cam. Yalnızca ılık su ve yumuşak sabunla elde yıkayın. Berraklığını korumak için yumuşak bir bezle kurulayın. Ani sıcaklık değişimlerinden kaçının. Dekoratif kullanım içindir; bulaşık makinesinde yıkanmaz.</p>",
             "icon": "none",
             "content": "<p>Hand-blown crystal glass. Hand-wash only with warm water and mild soap. Dry with a soft cloth to preserve clarity. Avoid abrupt temperature changes. Decorative use; not dishwasher-safe.</p>",
-            "content_tr": "<p>Elde üflenmiş kristal cam. Yalnızca ılık su ve yumuşak sabunla elde yıkayın. Berraklığını korumak için yumuşak bir bezle kurulayın. Ani sıcaklık değişimlerinden kaçının. Dekoratif kullanım içindir; bulaşık makinesinde yıkanmaz.</p>",
             "page": ""
           }
         },
@@ -78,9 +74,9 @@
           "type": "specifications",
           "settings": {
             "heading": "",
-            "icon": "none",
             "content": "",
-            "open_by_default": false
+            "open_by_default": false,
+            "icon": "none"
           }
         },
         "collapsible_tab_shipping": {
@@ -88,9 +84,9 @@
           "settings": {
             "heading": "Shipping & Returns",
             "heading_tr": "Kargo ve İade",
+            "content_tr": "<p>Türkiye içinde ücretsiz sigortalı kargo. Uluslararası gönderim bizzat ayarlanır — lütfen info@seym.com.tr ile iletişime geçin. Her parça siparişe özel üretilir; üretim başladıktan sonra iptal ve değişim kabul edilmez. Herhangi bir kalite sorununu çözmeye kararlıyız; lütfen teslimden sonraki 14 gün içinde bize yazın.</p>",
             "icon": "none",
             "content": "<p>Complimentary insured shipping within Türkiye. International shipping arranged personally — please contact info@seym.com.tr. Each piece is made to order; cancellations and exchanges are not accepted once production has begun. We are committed to resolving any quality concerns; please write to us within 14 days of receipt.</p>",
-            "content_tr": "<p>Türkiye içinde ücretsiz sigortalı kargo. Uluslararası gönderim bizzat ayarlanır — lütfen info@seym.com.tr ile iletişime geçin. Her parça siparişe özel üretilir; üretim başladıktan sonra iptal ve değişim kabul edilmez. Herhangi bir kalite sorununu çözmeye kararlıyız; lütfen teslimden sonraki 14 gün içinde bize yazın.</p>",
             "page": ""
           }
         }
@@ -101,7 +97,6 @@
         "price",
         "variant_picker",
         "buy_buttons",
-        "description",
         "share",
         "collapsible_tab_provenance",
         "collapsible_tab_material",
