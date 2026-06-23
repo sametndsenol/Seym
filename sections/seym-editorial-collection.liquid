@@ -479,7 +479,7 @@
           <div class="seym-coll__hero-meta">
             <div class="seym-coll__hero-count">
               <em>{{ collection.products_count }}</em>
-              {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}
+              {% if is_tr %}parça{% elsif collection.products_count == 1 %}piece{% else %}pieces{% endif %}
             </div>
           </div>
         </header>
@@ -532,7 +532,7 @@
       {%- endif -%}
 
       {%- if collection.products.size == 0 -%}
-        <div class="seym-coll__empty">No pieces in this collection — yet.</div>
+        <div class="seym-coll__empty">{% if is_tr %}Bu koleksiyonda henüz parça yok.{% else %}No pieces in this collection — yet.{% endif %}</div>
       {%- else -%}
         {%- comment -%} Sold-out pieces always sink to the bottom, keeping the chosen sort within each group. {%- endcomment -%}
         {%- assign coll_in_stock = collection.products | where: 'available', true -%}
