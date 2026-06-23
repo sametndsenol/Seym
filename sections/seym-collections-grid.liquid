@@ -256,8 +256,16 @@
 </style>
 
 {%- liquid
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
   assign eyebrow_text = section.settings.eyebrow
   assign heading_text = section.settings.heading
+  if is_tr
+    assign eyebrow_text = 'ATÖLYE'
+    assign heading_text = 'Tüm Koleksiyon'
+  endif
 -%}
 
 <section class="seym-cg" id="SeymCG-{{ section.id }}">
@@ -276,7 +284,7 @@
         <div class="seym-cg__hero-meta">
           <div class="seym-cg__hero-count">
             <em>{{ collections.size }}</em>
-            {% if collections.size == 1 %}collection{% else %}collections{% endif %}
+            {% if is_tr %}koleksiyon{% elsif collections.size == 1 %}collection{% else %}collections{% endif %}
           </div>
         </div>
       </header>
@@ -309,10 +317,10 @@
             <div class="seym-cg__overlay">
               <span class="seym-cg__tag">
                 {{ collection.products_count }}
-                {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}
+                {% if is_tr %}parça{% elsif collection.products_count == 1 %}piece{% else %}pieces{% endif %}
               </span>
               <h2 class="seym-cg__name">{{ collection.title }}</h2>
-              <span class="seym-cg__discover">{{ section.settings.cta_label | default: 'Discover' }}</span>
+              <span class="seym-cg__discover">{% if is_tr %}Keşfet{% else %}{{ section.settings.cta_label | default: 'Discover' }}{% endif %}</span>
             </div>
           </a>
         {%- endfor -%}
