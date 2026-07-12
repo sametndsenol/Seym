@@ -276,7 +276,11 @@
       "sold": "Tükendi",
       "language": "Dil",
       "currency": "Para birimi",
-      "explore": "Keşfet"
+      "explore": "Keşfet",
+      "set_of_2": "2'li Set",
+      "set_of_3": "3'lü Set",
+      "set_note_2": "2'li set olarak satılır — fiyat 2 parçayı kapsar.",
+      "set_note_3": "3'lü set olarak satılır — fiyat 3 parçayı kapsar."
     },
     "seym_press": {
       "read": "Oku",

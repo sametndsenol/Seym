@@ -276,7 +276,11 @@
       "sold": "Sold",
       "language": "Language",
       "currency": "Currency",
-      "explore": "Explore"
+      "explore": "Explore",
+      "set_of_2": "Set of 2",
+      "set_of_3": "Set of 3",
+      "set_note_2": "Sold as a set of two — the price covers 2 pieces.",
+      "set_note_3": "Sold as a set of three — the price covers 3 pieces."
     },
     "seym_press": {
       "read": "Read",

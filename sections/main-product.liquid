@@ -111,6 +111,28 @@
                   price_class: 'price--large'
                 -%}
               </div>
+              {%- liquid
+                assign seym_set_label = ''
+                assign seym_set_note = ''
+                if product.tags contains 'set-2'
+                  assign seym_set_label = 'sections.seym.set_of_2' | t
+                  assign seym_set_note = 'sections.seym.set_note_2' | t
+                elsif product.tags contains 'set-3'
+                  assign seym_set_label = 'sections.seym.set_of_3' | t
+                  assign seym_set_note = 'sections.seym.set_note_3' | t
+                endif
+              -%}
+              {%- if seym_set_label != blank -%}
+                <div class="seym-set-note">
+                  <span class="seym-set-note__badge">{{ seym_set_label }}</span>
+                  <span class="seym-set-note__text">{{ seym_set_note }}</span>
+                </div>
+                <style>
+                  .seym-set-note { display: flex; align-items: center; gap: 1rem; margin: 1.2rem 0 0.2rem; }
+                  .seym-set-note__badge { flex: none; font: 400 .66rem/1 'Inter', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #1A1A1A; border: 1px solid rgba(26,26,26,.35); padding: .55rem .85rem .5rem; }
+                  .seym-set-note__text { font: 400 .82rem/1.5 'Inter', sans-serif; letter-spacing: .02em; color: rgba(26,26,26,.65); }
+                </style>
+              {%- endif -%}
               {%- if product.quantity_price_breaks_configured? -%}
                 <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
                   <span>{{ 'products.product.volume_pricing.note' | t }}</span>

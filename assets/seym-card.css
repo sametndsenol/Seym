@@ -49,6 +49,7 @@
 .seymcard__vendor { font: 400 .72rem/1 'Inter', sans-serif; letter-spacing: .28em; text-transform: uppercase; color: rgba(26,26,26,.5); }
 .seymcard__name { font: 400 2rem/1.2 'Cormorant Garamond', serif; margin: 0; color: #1A1A1A; text-decoration: none; transition: color 220ms ease; }
 .seymcard__name:hover { color: var(--seym-terracotta, #C54730); }
+.seymcard__set { font: 400 .68rem/1 'Inter', sans-serif; letter-spacing: .28em; text-transform: uppercase; color: rgba(26,26,26,.55); }
 .seymcard__price { font: 400 1.15rem/1 'Inter', sans-serif; letter-spacing: .04em; color: rgba(26,26,26,.78); white-space: nowrap; }
 .seymcard__price-compare { text-decoration: line-through; color: rgba(26,26,26,.4); margin-right: .6rem; }
 .seymcard__price-sale { color: var(--seym-orange, #FD4401); }

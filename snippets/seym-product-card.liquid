@@ -9,6 +9,12 @@
   assign p = product_card
   assign primary = p.featured_media
   assign secondary = p.media[1]
+  assign set_label = ''
+  if p.tags contains 'set-2'
+    assign set_label = 'sections.seym.set_of_2' | t
+  elsif p.tags contains 'set-3'
+    assign set_label = 'sections.seym.set_of_3' | t
+  endif
 -%}
 <article class="seymcard">
   <a class="seymcard__media{% if secondary != blank %} seymcard__media--life{% endif %}" href="{{ p.url }}"{% if card_ratio %} style="aspect-ratio: {{ card_ratio }};"{% endif %} aria-label="{{ p.title | escape }}">
@@ -26,7 +32,7 @@
       <div class="seymcard__overlay">
         <span class="seymcard__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
         <span class="seymcard__overlay-name">{{ p.title }}</span>
-        <span class="seymcard__overlay-price">{% render 'seym-money', amount: p.price %}</span>
+        <span class="seymcard__overlay-price">{% render 'seym-money', amount: p.price %}{% if set_label != blank %} · {{ set_label }}{% endif %}</span>
       </div>
     {%- endif -%}
     {%- unless p.available -%}<span class="seymcard__sold">{{ 'sections.seym.sold' | t }}</span>{%- endunless -%}
@@ -34,6 +40,7 @@
   <div class="seymcard__info">
     {%- if p.vendor != blank and p.vendor != shop.name -%}<span class="seymcard__vendor">{{ p.vendor }}</span>{%- endif -%}
     <a class="seymcard__name" href="{{ p.url }}">{{ p.title }}</a>
+    {%- if set_label != blank -%}<span class="seymcard__set">{{ set_label }}</span>{%- endif -%}
     <div class="seymcard__price">
       {%- if p.compare_at_price > p.price -%}
         {% render 'seym-money', amount: p.compare_at_price, class: 'seymcard__price-compare' %}{% render 'seym-money', amount: p.price, class: 'seymcard__price-sale' %}

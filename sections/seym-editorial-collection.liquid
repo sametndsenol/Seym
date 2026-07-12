@@ -321,6 +321,14 @@
     transition: color 220ms ease;
   }
   .seym-coll__name:hover { color: var(--seym-terracotta, #C54730); }
+  .seym-coll__set {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+  }
   .seym-coll__price {
     font-family: 'Inter', sans-serif;
     font-size: 1.15rem;
@@ -545,6 +553,12 @@
             <article class="seym-coll__item">
               {%- assign primary = product.featured_media -%}
               {%- assign secondary = product.media[1] -%}
+              {%- assign set_label = '' -%}
+              {%- if product.tags contains 'set-2' -%}
+                {%- assign set_label = 'sections.seym.set_of_2' | t -%}
+              {%- elsif product.tags contains 'set-3' -%}
+                {%- assign set_label = 'sections.seym.set_of_3' | t -%}
+              {%- endif -%}
               <a class="seym-coll__media{% if secondary != blank %} seym-coll__media--has-lifestyle{% endif %}"
                  href="{{ product.url }}" aria-label="{{ product.title | escape }}">
                 {%- if primary != blank -%}
@@ -570,7 +584,7 @@
                     <span class="seym-coll__overlay-tag">{{ 'sections.seym.in_your_space' | t }}</span>
                     <span class="seym-coll__overlay-name">{{ product.title }}</span>
                     <span class="seym-coll__overlay-price">
-                      {% render 'seym-money', amount: product.price %}
+                      {% render 'seym-money', amount: product.price %}{% if set_label != blank %} · {{ set_label }}{% endif %}
                     </span>
                   </div>
                 {%- endif -%}
@@ -585,6 +599,9 @@
                 <h3 style="margin:0">
                   <a class="seym-coll__name" href="{{ product.url }}">{{ product.title }}</a>
                 </h3>
+                {%- if set_label != blank -%}
+                  <span class="seym-coll__set">{{ set_label }}</span>
+                {%- endif -%}
                 <div class="seym-coll__price">
                   {%- if product.compare_at_price > product.price -%}
                     {% render 'seym-money', amount: product.compare_at_price, class: 'seym-coll__price-compare' %}
