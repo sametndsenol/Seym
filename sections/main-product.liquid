@@ -128,9 +128,10 @@
                   <span class="seym-set-note__text">{{ seym_set_note }}</span>
                 </div>
                 <style>
-                  .seym-set-note { display: flex; align-items: center; gap: 1rem; margin: 1.2rem 0 0.2rem; }
+                  .seym-set-note { display: flex; align-items: center; gap: 1rem; margin: 1rem 0 1.6rem; }
                   .seym-set-note__badge { flex: none; font: 400 .66rem/1 'Inter', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #1A1A1A; border: 1px solid rgba(26,26,26,.35); padding: .55rem .85rem .5rem; }
                   .seym-set-note__text { font: 400 .82rem/1.5 'Inter', sans-serif; letter-spacing: .02em; color: rgba(26,26,26,.65); }
+                  .seym-set-note ~ .product__tax { margin-top: 0; }
                 </style>
               {%- endif -%}
               {%- if product.quantity_price_breaks_configured? -%}
