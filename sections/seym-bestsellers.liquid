@@ -65,8 +65,8 @@
   <div class="sbs__wrap">
     <header class="sbs__hd">
       <div>
-        {%- if section.settings.eyebrow != blank -%}<p class="sbs__ey">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{% if is_tr %}ÇOK SATANLAR{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
+        {%- if section.settings.eyebrow != blank -%}<p class="sbs__ey">{% if is_tr and section.settings.eyebrow_tr != blank %}{{ section.settings.eyebrow_tr }}{% else %}{{ section.settings.eyebrow }}{% endif %}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="sbs__h">{% if is_tr and section.settings.heading_tr != blank %}{{ section.settings.heading_tr }}{% else %}{{ section.settings.heading }}{% endif %}</h2>{%- endif -%}
       </div>
       <div class="sbs__nav">
         <button class="sbs__arrow" data-dir="-1" aria-label="{{ 'general.slider.previous_slide' | t }}"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg></button>
@@ -106,7 +106,9 @@
   "tag": "div",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Notre Sélection" },
+    { "type": "text", "id": "eyebrow_tr", "label": "Eyebrow (TR)" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Our Bestsellers" },
+    { "type": "text", "id": "heading_tr", "label": "Heading (TR)", "default": "Yeni Gelenler" },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "products_to_show", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 8 }
   ],
