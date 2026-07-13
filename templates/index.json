@@ -112,7 +112,7 @@
       "type": "seym-bestsellers",
       "settings": {
         "eyebrow": "Notre Sélection",
-        "heading": "OUR BESTSELLERS",
+        "heading": "Yeni Gelenler",
         "collection": "all",
         "products_to_show": 16
       }
