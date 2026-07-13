@@ -1,10 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "seym_collections_grid": {
       "type": "seym-collections-grid",
       "settings": {
+        "sort_mode": "az",
+        "slot_1": "cheer",
+        "slot_2": "cookies",
+        "slot_3": "purity",
+        "slot_4": "passion",
+        "slot_5": "",
+        "slot_6": "",
+        "slot_7": "",
+        "slot_8": "",
+        "slot_9": "",
+        "slot_10": "",
+        "slot_11": "",
+        "slot_12": "",
+        "slot_13": "",
+        "slot_14": "",
+        "slot_15": "",
+        "slot_16": "",
+        "slot_17": "",
         "eyebrow": "The Atelier",
-        "heading": "All <em>collections</em>.",
+        "heading": "All collections.",
         "cta_label": "Discover",
         "padding_top": 56,
         "padding_bottom": 80
