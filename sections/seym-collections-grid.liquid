@@ -313,6 +313,10 @@
         assign cg_rest = collections | sort: 'products_count' | reverse
       elsif section.settings.sort_mode == 'count_asc'
         assign cg_rest = collections | sort: 'products_count'
+      elsif section.settings.sort_mode == 'new_first'
+        assign cg_rest = collections | sort: 'id' | reverse
+      elsif section.settings.sort_mode == 'old_first'
+        assign cg_rest = collections | sort: 'id'
       endif
       for cg_c in cg_rest
         assign cg_token = ',' | append: cg_c.handle | append: ','
@@ -417,7 +421,9 @@
         { "value": "az", "label": "Alfabetik (A–Z)" },
         { "value": "za", "label": "Alfabetik (Z–A)" },
         { "value": "count_desc", "label": "Ürün sayısı (çoktan aza)" },
-        { "value": "count_asc", "label": "Ürün sayısı (azdan çoğa)" }
+        { "value": "count_asc", "label": "Ürün sayısı (azdan çoğa)" },
+        { "value": "new_first", "label": "Yeni açılan önce" },
+        { "value": "old_first", "label": "Eski açılan önce" }
       ],
       "default": "az"
     },
