@@ -306,7 +306,15 @@
           endunless
         endif
       endfor
-      for cg_c in collections
+      assign cg_rest = collections
+      if section.settings.sort_mode == 'za'
+        assign cg_rest = collections | sort_natural: 'title' | reverse
+      elsif section.settings.sort_mode == 'count_desc'
+        assign cg_rest = collections | sort: 'products_count' | reverse
+      elsif section.settings.sort_mode == 'count_asc'
+        assign cg_rest = collections | sort: 'products_count'
+      endif
+      for cg_c in cg_rest
         assign cg_token = ',' | append: cg_c.handle | append: ','
         unless cg_order contains cg_token
           assign cg_order = cg_order | append: cg_c.handle | append: ','
@@ -399,7 +407,19 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Sıra için blok ekleyin: bloklar üstte, blok eklenmeyen koleksiyonlar alfabetik olarak sona eklenir."
+      "content": "Bloklar her zaman en üstte, kendi sıranla gösterilir. Aşağıdaki Sıralama ayarı blok eklenmeyen koleksiyonlara uygulanır."
+    },
+    {
+      "type": "select",
+      "id": "sort_mode",
+      "label": "Sıralama",
+      "options": [
+        { "value": "az", "label": "Alfabetik (A–Z)" },
+        { "value": "za", "label": "Alfabetik (Z–A)" },
+        { "value": "count_desc", "label": "Ürün sayısı (çoktan aza)" },
+        { "value": "count_asc", "label": "Ürün sayısı (azdan çoğa)" }
+      ],
+      "default": "az"
     },
     {
       "type": "text",
