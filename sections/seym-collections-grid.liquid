@@ -292,17 +292,18 @@
 
     {%- liquid
       comment
-        Order: collection blocks first (drag to reorder in the editor),
-        then any collection without a block, alphabetically. Handles are
+        Order: numbered slot pickers first (slot_1..slot_17 in the editor),
+        then any collection without a slot, per the sort setting. Handles are
         comma-delimited on both sides so lookups can't partial-match.
       endcomment
       assign cg_order = ','
-      for block in section.blocks
-        assign cg_bcol = block.settings.collection
-        if cg_bcol != blank
-          assign cg_token = ',' | append: cg_bcol.handle | append: ','
+      for cg_i in (1..17)
+        assign cg_key = 'slot_' | append: cg_i
+        assign cg_scol = section.settings[cg_key]
+        if cg_scol != blank
+          assign cg_token = ',' | append: cg_scol.handle | append: ','
           unless cg_order contains cg_token
-            assign cg_order = cg_order | append: cg_bcol.handle | append: ','
+            assign cg_order = cg_order | append: cg_scol.handle | append: ','
           endunless
         endif
       endfor
@@ -398,34 +399,135 @@
   "name": "Collections Grid",
   "tag": "section",
   "class": "shopify-section seym-cg-section",
-  "max_blocks": 40,
-  "blocks": [
-    {
-      "type": "collection",
-      "name": "Collection",
-      "settings": [
-        { "type": "collection", "id": "collection", "label": "Collection" }
-      ]
-    }
-  ],
   "settings": [
     {
       "type": "paragraph",
-      "content": "Bloklar her zaman en üstte, kendi sıranla gösterilir. Aşağıdaki Sıralama ayarı blok eklenmeyen koleksiyonlara uygulanır."
+      "content": "El ile sıra: aşağıdan 1., 2., 3.… kutularına koleksiyon seç. Boş bıraktıkların Sıralama ayarına göre arkaya dizilir."
     },
     {
       "type": "select",
       "id": "sort_mode",
       "label": "Sıralama",
       "options": [
-        { "value": "az", "label": "Alfabetik (A–Z)" },
-        { "value": "za", "label": "Alfabetik (Z–A)" },
-        { "value": "count_desc", "label": "Ürün sayısı (çoktan aza)" },
-        { "value": "count_asc", "label": "Ürün sayısı (azdan çoğa)" },
-        { "value": "new_first", "label": "Yeni açılan önce" },
-        { "value": "old_first", "label": "Eski açılan önce" }
+        {
+          "value": "az",
+          "label": "Alfabetik (A–Z)"
+        },
+        {
+          "value": "za",
+          "label": "Alfabetik (Z–A)"
+        },
+        {
+          "value": "count_desc",
+          "label": "Ürün sayısı (çoktan aza)"
+        },
+        {
+          "value": "count_asc",
+          "label": "Ürün sayısı (azdan çoğa)"
+        },
+        {
+          "value": "new_first",
+          "label": "Yeni açılan önce"
+        },
+        {
+          "value": "old_first",
+          "label": "Eski açılan önce"
+        }
       ],
       "default": "az"
+    },
+    {
+      "type": "header",
+      "content": "El ile sıra"
+    },
+    {
+      "type": "collection",
+      "id": "slot_1",
+      "label": "1."
+    },
+    {
+      "type": "collection",
+      "id": "slot_2",
+      "label": "2."
+    },
+    {
+      "type": "collection",
+      "id": "slot_3",
+      "label": "3."
+    },
+    {
+      "type": "collection",
+      "id": "slot_4",
+      "label": "4."
+    },
+    {
+      "type": "collection",
+      "id": "slot_5",
+      "label": "5."
+    },
+    {
+      "type": "collection",
+      "id": "slot_6",
+      "label": "6."
+    },
+    {
+      "type": "collection",
+      "id": "slot_7",
+      "label": "7."
+    },
+    {
+      "type": "collection",
+      "id": "slot_8",
+      "label": "8."
+    },
+    {
+      "type": "collection",
+      "id": "slot_9",
+      "label": "9."
+    },
+    {
+      "type": "collection",
+      "id": "slot_10",
+      "label": "10."
+    },
+    {
+      "type": "collection",
+      "id": "slot_11",
+      "label": "11."
+    },
+    {
+      "type": "collection",
+      "id": "slot_12",
+      "label": "12."
+    },
+    {
+      "type": "collection",
+      "id": "slot_13",
+      "label": "13."
+    },
+    {
+      "type": "collection",
+      "id": "slot_14",
+      "label": "14."
+    },
+    {
+      "type": "collection",
+      "id": "slot_15",
+      "label": "15."
+    },
+    {
+      "type": "collection",
+      "id": "slot_16",
+      "label": "16."
+    },
+    {
+      "type": "collection",
+      "id": "slot_17",
+      "label": "17."
+    },
+    {
+      "type": "header",
+      "content": "Metinler ve boşluk"
     },
     {
       "type": "text",
@@ -467,7 +569,9 @@
     }
   ],
   "presets": [
-    { "name": "Collections Grid" }
+    {
+      "name": "Collections Grid"
+    }
   ]
 }
 {% endschema %}
