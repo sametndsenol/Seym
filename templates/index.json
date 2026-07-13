@@ -15,7 +15,7 @@
         "left": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/3JmG2nplhMLsiO4qMZOd_PCOiHROM.png",
+            "image": "shopify://shop_images/0404.jpg",
             "eyebrow": "Collection",
             "title": "Discover",
             "cta_label": "Collection",
@@ -36,7 +36,7 @@
         "right": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/WZkBzxv1b9kaNYOtI6Tt6_uXMuDbwY.png",
+            "image": "shopify://shop_images/0545.jpg",
             "eyebrow": "Featured",
             "title": "Discover",
             "cta_label": "Collection",
@@ -112,7 +112,9 @@
       "type": "seym-bestsellers",
       "settings": {
         "eyebrow": "Notre Sélection",
+        "eyebrow_tr": "",
         "heading": "News",
+        "heading_tr": "Yeni Gelenler",
         "collection": "all",
         "products_to_show": 16
       }
