@@ -290,11 +290,39 @@
       </header>
     {%- endif -%}
 
+    {%- liquid
+      comment
+        Order: collection blocks first (drag to reorder in the editor),
+        then any collection without a block, alphabetically. Handles are
+        comma-delimited on both sides so lookups can't partial-match.
+      endcomment
+      assign cg_order = ','
+      for block in section.blocks
+        assign cg_bcol = block.settings.collection
+        if cg_bcol != blank
+          assign cg_token = ',' | append: cg_bcol.handle | append: ','
+          unless cg_order contains cg_token
+            assign cg_order = cg_order | append: cg_bcol.handle | append: ','
+          endunless
+        endif
+      endfor
+      for cg_c in collections
+        assign cg_token = ',' | append: cg_c.handle | append: ','
+        unless cg_order contains cg_token
+          assign cg_order = cg_order | append: cg_c.handle | append: ','
+        endunless
+      endfor
+      assign cg_handles = cg_order | split: ','
+    -%}
+
     {%- if collections.size == 0 -%}
       <div class="seym-cg__empty">No collections yet.</div>
     {%- else -%}
       <div class="seym-cg__grid">
-        {%- for collection in collections -%}
+        {%- for cg_h in cg_handles -%}
+          {%- if cg_h == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign collection = collections[cg_h] -%}
+          {%- if collection == blank -%}{%- continue -%}{%- endif -%}
           {%- comment -%} Use the collection's own image set in admin
             (Collections → [name] → Image). No product fallback —
             if blank, the placeholder watermark shows instead. {%- endcomment -%}
@@ -358,7 +386,21 @@
   "name": "Collections Grid",
   "tag": "section",
   "class": "shopify-section seym-cg-section",
+  "max_blocks": 40,
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Sıra için blok ekleyin: bloklar üstte, blok eklenmeyen koleksiyonlar alfabetik olarak sona eklenir."
+    },
     {
       "type": "text",
       "id": "eyebrow",
