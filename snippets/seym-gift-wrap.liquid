@@ -1,0 +1,58 @@
+{%- comment -%}
+  Seym gift-wrap opt-in — toggles a free "Gift Wrap" line item in the cart.
+  Params:
+    block: {Block} the gift_wrap block (settings: variant_id, label, label_tr)
+  Requires block.settings.variant_id to be a real, purchasable variant on this
+  store (a free "Gift Wrap" product created in admin) — set in the theme editor.
+{%- endcomment -%}
+{%- liquid
+  assign gw_variant_id = block.settings.variant_id | plus: 0
+-%}
+{%- if block.settings.variant_id != blank and gw_variant_id != 0 -%}
+  {%- liquid
+    assign gw_checked = false
+    for item in cart.items
+      if item.variant_id == gw_variant_id
+        assign gw_checked = true
+      endif
+    endfor
+    assign gw_label = block.settings.label
+    if is_tr and block.settings.label_tr != blank
+      assign gw_label = block.settings.label_tr
+    endif
+    assign gw_adding = 'Adding…'
+    assign gw_removing = 'Removing…'
+    assign gw_added = 'Added to your cart'
+    assign gw_error = 'Could not update — please try again.'
+    if is_tr
+      assign gw_adding = 'Ekleniyor…'
+      assign gw_removing = 'Kaldırılıyor…'
+      assign gw_added = 'Sepetinize eklendi'
+      assign gw_error = 'Güncellenemedi — lütfen tekrar deneyin.'
+    endif
+  -%}
+  <div
+    class="seym-gift-wrap"
+    data-seym-gift-wrap
+    data-variant-id="{{ gw_variant_id }}"
+    data-adding-text="{{ gw_adding }}"
+    data-removing-text="{{ gw_removing }}"
+    data-added-text="{{ gw_added }}"
+    data-error-text="{{ gw_error }}"
+    {{ block.shopify_attributes }}
+  >
+    <label class="seym-gift-wrap__row">
+      <input type="checkbox" class="seym-gift-wrap__box" {% if gw_checked %}checked{% endif %}>
+      <span class="seym-gift-wrap__label">🎁 {{ gw_label }}</span>
+    </label>
+    <span class="seym-gift-wrap__status" data-seym-gift-wrap-status aria-live="polite"></span>
+  </div>
+  <style>
+    .seym-gift-wrap { display: flex; align-items: center; gap: 1rem; margin: 1.4rem 0; flex-wrap: wrap; }
+    .seym-gift-wrap__row { display: inline-flex; align-items: center; gap: .8rem; cursor: pointer; font: 400 .92rem/1.3 'Inter', sans-serif; color: rgba(26,26,26,.82); }
+    .seym-gift-wrap__box { width: 1.15rem; height: 1.15rem; accent-color: #8E2244; cursor: pointer; flex: none; }
+    .seym-gift-wrap__box:disabled { cursor: wait; opacity: .6; }
+    .seym-gift-wrap__status { font: 400 .74rem/1 'Inter', sans-serif; letter-spacing: .03em; color: rgba(26,26,26,.5); }
+  </style>
+  <script src="{{ 'seym-gift-wrap.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

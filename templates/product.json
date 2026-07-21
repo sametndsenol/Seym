@@ -42,6 +42,14 @@
             "show_gift_card_recipient": false
           }
         },
+        "gift_wrap": {
+          "type": "gift_wrap",
+          "settings": {
+            "variant_id": "",
+            "label": "Add gift wrapping (free)",
+            "label_tr": "Hediyelik paketleme ekle (ücretsiz)"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -97,6 +105,7 @@
         "price",
         "variant_picker",
         "buy_buttons",
+        "gift_wrap",
         "share",
         "collapsible_tab_provenance",
         "collapsible_tab_material",

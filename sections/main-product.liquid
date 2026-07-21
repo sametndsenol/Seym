@@ -465,6 +465,8 @@
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
             {%- when 'buy_buttons' -%}
               {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true -%}
+            {%- when 'gift_wrap' -%}
+              {%- render 'seym-gift-wrap', block: block -%}
             {%- when 'rating' -%}
               {%- if product.metafields.reviews.rating.value != blank -%}
                 {% liquid
@@ -954,6 +956,33 @@
           "id": "custom_liquid",
           "label": "t:sections.custom-liquid.settings.custom_liquid.label",
           "info": "t:sections.custom-liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "type": "gift_wrap",
+      "name": "Gift Wrap",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Kurulum: Admin'de ücretsiz bir 'Hediye Paketi' ürünü oluşturun (fiyat ₺0, stok takipsiz, yayınlanmış). Ürünü açtığında adres çubuğundaki /products/... sonrası admin ID'sini değil, varyantın kendi ID'sini gir: ürün sayfasında sağ üstten '⋯ → JSON olarak görüntüle' ile açılan sayfada \"variants\" içindeki \"id\" değerini kopyala."
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Gift wrap variant ID"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Add gift wrapping (free)"
+        },
+        {
+          "type": "text",
+          "id": "label_tr",
+          "label": "Label (TR)",
+          "default": "Hediyelik paketleme ekle (ücretsiz)"
         }
       ]
     },
