@@ -19,9 +19,12 @@
       checkbox.disabled = true;
       status.textContent = wantChecked ? root.dataset.addingText : root.dataset.removingText;
 
+      // Always use the explicit .js endpoints — this theme's window.routes.cart_add_url
+      // / cart_change_url resolve to the extension-less form routes, which redirect
+      // (302, empty body) instead of returning JSON when posted a JSON body.
       // /cart/add.js accepts a numeric id; /cart/change.js requires it as a string
       // (a bare number 400s: "expected Integer to be a ... : id").
-      var url = wantChecked ? window.routes.cart_add_url : window.routes.cart_change_url;
+      var url = wantChecked ? '/cart/add.js' : '/cart/change.js';
       var body = wantChecked
         ? { id: variantId, quantity: 1, sections: 'cart-icon-bubble', sections_url: window.location.pathname }
         : { id: String(variantId), quantity: 0, sections: 'cart-icon-bubble', sections_url: window.location.pathname };
