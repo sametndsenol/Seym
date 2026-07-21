@@ -6,6 +6,15 @@
   store (a free "Gift Wrap" product created in admin) — set in the theme editor.
 {%- endcomment -%}
 {%- liquid
+  comment
+    {% render %} does not inherit the parent template's local variables
+    (unlike the deprecated {% include %}), so is_tr must be computed here
+    too rather than assumed from the caller's scope.
+  endcomment
+  assign is_tr = false
+  if localization.language.iso_code == 'tr'
+    assign is_tr = true
+  endif
   assign gw_variant_id = block.settings.variant_id | plus: 0
 -%}
 {%- if block.settings.variant_id != blank and gw_variant_id != 0 -%}
