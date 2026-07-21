@@ -20,6 +20,14 @@
             "text_style": "uppercase"
           }
         },
+        "gift_wrap_yUWwap": {
+          "type": "gift_wrap",
+          "settings": {
+            "variant_id": "9189295095982",
+            "label": "Add gift wrapping",
+            "label_tr": "Siparişimi hediye paketiyle gönder"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {}
@@ -101,6 +109,7 @@
       },
       "block_order": [
         "eyebrow",
+        "gift_wrap_yUWwap",
         "title",
         "price",
         "variant_picker",
