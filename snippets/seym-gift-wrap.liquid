@@ -4,13 +4,10 @@
     block: {Block} the gift_wrap block (settings: variant_id, label, label_tr)
   Requires block.settings.variant_id to be a real, purchasable variant on this
   store (a free "Gift Wrap" product created in admin) — set in the theme editor.
+  Note: render doesn't inherit the caller's local variables, so is_tr is
+  recomputed here rather than assumed from the parent section's scope.
 {%- endcomment -%}
 {%- liquid
-  comment
-    {% render %} does not inherit the parent template's local variables
-    (unlike the deprecated {% include %}), so is_tr must be computed here
-    too rather than assumed from the caller's scope.
-  endcomment
   assign is_tr = false
   if localization.language.iso_code == 'tr'
     assign is_tr = true
