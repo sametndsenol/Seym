@@ -547,8 +547,11 @@
         {%- assign coll_out_stock = collection.products | where: 'available', false -%}
         {%- assign coll_ordered = coll_in_stock | concat: coll_out_stock -%}
         <div class="seym-coll__grid">
+          {%- assign visible_idx = 0 -%}
           {%- for product in coll_ordered -%}
-            {%- assign idx = forloop.index -%}
+            {%- unless product.tags contains 'hidden-product' -%}
+            {%- assign visible_idx = visible_idx | plus: 1 -%}
+            {%- assign idx = visible_idx -%}
 
             <article class="seym-coll__item">
               {%- assign primary = product.featured_media -%}
@@ -619,6 +622,7 @@
             {%- if passage_2_text != blank and idx == passage_2_after -%}
               <aside class="seym-coll__passage">{{ passage_2_text }}</aside>
             {%- endif -%}
+            {%- endunless -%}
 
           {%- endfor -%}
         </div>
