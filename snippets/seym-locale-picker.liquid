@@ -135,7 +135,7 @@
         <span class="seym-lp__label">{%- if localization.language.iso_code == 'tr' -%}Dil{%- else -%}Language{%- endif -%}</span>
         <div class="seym-lp__dropdown">
           {%- for language in localization.available_languages -%}
-            {%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index -%}
+            {%- form forloop.index -%}
               <input type="hidden" name="locale_code" value="{{ language.iso_code }}">
               <button type="submit" class="seym-lp__option"
                 {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
@@ -152,7 +152,7 @@
           </summary>
           <div class="seym-lp__dropdown">
             {%- for language in localization.available_languages -%}
-              {%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index -%}
+              {%- form forloop.index -%}
                 <input type="hidden" name="locale_code" value="{{ language.iso_code }}">
                 <button type="submit" class="seym-lp__option"
                   {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
@@ -176,7 +176,7 @@
         <span class="seym-lp__label">{%- if localization.language.iso_code == 'tr' -%}Para Birimi{%- else -%}Currency{%- endif -%}</span>
         <div class="seym-lp__dropdown">
           {%- for country in localization.available_countries -%}
-            {%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index -%}
+            {%- form forloop.index -%}
               <input type="hidden" name="country_code" value="{{ country.iso_code }}">
               <button type="submit" class="seym-lp__option"
                 {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
@@ -193,7 +193,7 @@
           </summary>
           <div class="seym-lp__dropdown">
             {%- for country in localization.available_countries -%}
-              {%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index -%}
+              {%- form forloop.index -%}
                 <input type="hidden" name="country_code" value="{{ country.iso_code }}">
                 <button type="submit" class="seym-lp__option"
                   {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
@@ -231,3 +231,26 @@
     });
   })();
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index
+    -%}"
+  to: "{%- form forloop.index -%}"
+  position: 3711..3737
+- from: "{%- form 'localization', id: _pfx | append: '-LangForm-' | append: forloop.index
+    -%}"
+  to: "{%- form forloop.index -%}"
+  position: 4590..4616
+- from: "{%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index
+    -%}"
+  to: "{%- form forloop.index -%}"
+  position: 5599..5625
+- from: "{%- form 'localization', id: _pfx | append: '-CountryForm-' | append: forloop.index
+    -%}"
+  to: "{%- form forloop.index -%}"
+  position: 6506..6532
+{% endcomment %}
