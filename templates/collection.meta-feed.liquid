@@ -1,0 +1,36 @@
+{%- layout none -%}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+<title>{{ shop.name | escape }} - {{ collection.title | escape }}</title>
+<link>{{ shop.url }}</link>
+<description>{{ collection.title | escape }} Meta catalog feed</description>
+{%- paginate collection.products by 250 -%}
+{%- for product in collection.products -%}
+{%- if product.tags contains 'hidden-product' -%}{%- continue -%}{%- endif -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+<item>
+<g:id>{{ product.id }}</g:id>
+<g:title>{{ product.title | escape }}</g:title>
+<g:description>{{ product.description | strip_html | strip_newlines | truncate: 9000 | escape }}</g:description>
+<g:link>{{ shop.url }}{{ product.url | escape }}</g:link>
+<g:image_link>https:{{ product.featured_image | image_url: width: 1200 | escape }}</g:image_link>
+{%- for extra in product.images offset: 1 limit: 10 %}
+<g:additional_image_link>https:{{ extra | image_url: width: 1200 | escape }}</g:additional_image_link>
+{%- endfor %}
+<g:availability>{% if product.available %}in stock{% else %}out of stock{% endif %}</g:availability>
+<g:condition>new</g:condition>
+{%- if variant.compare_at_price > variant.price %}
+<g:price>{{ variant.compare_at_price | divided_by: 100.0 }} {{ shop.currency }}</g:price>
+<g:sale_price>{{ variant.price | divided_by: 100.0 }} {{ shop.currency }}</g:sale_price>
+{%- else %}
+<g:price>{{ variant.price | divided_by: 100.0 }} {{ shop.currency }}</g:price>
+{%- endif %}
+<g:brand>{{ product.vendor | escape }}</g:brand>
+{%- if product.type != blank %}
+<g:product_type>{{ product.type | escape }}</g:product_type>
+{%- endif %}
+</item>
+{%- endfor -%}
+{%- endpaginate -%}
+</channel>
+</rss>
