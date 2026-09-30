@@ -1,0 +1,42 @@
+{%- layout none -%}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+<title>{{ shop.name | escape }} - {{ collection.title | escape }}</title>
+<link>{{ shop.url }}</link>
+<description>{{ collection.title | escape }} Google Shopping feed</description>
+{%- paginate collection.products by 250 -%}
+{%- for product in collection.products -%}
+{%- if product.tags contains 'hidden-product' -%}{%- continue -%}{%- endif -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+<item>
+<g:id>{{ product.id }}</g:id>
+<g:title>{{ product.title | escape }}</g:title>
+<g:description>{{ product.description | strip_html | strip_newlines | truncate: 4900 | escape }}</g:description>
+<g:link>{{ shop.url }}{{ product.url | escape }}</g:link>
+<g:image_link>https:{{ product.featured_image | image_url: width: 1200 | escape }}</g:image_link>
+<g:availability>{% if product.available %}in_stock{% else %}out_of_stock{% endif %}</g:availability>
+<g:condition>new</g:condition>
+{%- if variant.compare_at_price > variant.price %}
+<g:price>{{ variant.compare_at_price | divided_by: 100.0 }} {{ shop.currency }}</g:price>
+<g:sale_price>{{ variant.price | divided_by: 100.0 }} {{ shop.currency }}</g:sale_price>
+{%- else %}
+<g:price>{{ variant.price | divided_by: 100.0 }} {{ shop.currency }}</g:price>
+{%- endif %}
+<g:brand>{{ product.vendor | escape }}</g:brand>
+{%- if product.type != blank %}
+<g:product_type>{{ product.type | escape }}</g:product_type>
+{%- endif %}
+{%- if variant.barcode != blank %}
+<g:gtin>{{ variant.barcode | escape }}</g:gtin>
+{%- endif %}
+{%- if variant.sku != blank %}
+<g:mpn>{{ variant.sku | escape }}</g:mpn>
+{%- endif %}
+{%- if variant.barcode == blank and variant.sku == blank %}
+<g:identifier_exists>no</g:identifier_exists>
+{%- endif %}
+</item>
+{%- endfor -%}
+{%- endpaginate -%}
+</channel>
+</rss>
